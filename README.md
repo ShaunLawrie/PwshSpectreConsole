@@ -1,4 +1,4 @@
-# PwshSpectreConsole
+# 👻 PwshSpectreConsole
 
 [![PowerShell Gallery](https://img.shields.io/powershellgallery/v/PwshSpectreConsole)](https://www.powershellgallery.com/packages/PwshSpectreConsole)
 [![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/PwshSpectreConsole)](https://www.powershellgallery.com/packages/PwshSpectreConsole)
@@ -22,7 +22,7 @@ Start-SpectreDemo
 
 PwshSpectreConsole exposes the following functions for you to use in your scripts:
 
-> **Info**  
+> **Note**  
 > Documentation of the functions is incomplete, run `Start-SpectreDemo` for example code using the functions below.
 
 | Command                               | Description                                                                                                                                                             |
