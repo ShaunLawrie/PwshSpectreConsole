@@ -3,9 +3,6 @@
 > **Warning**  
 > This is a very early work in progress, the function formats and parameters are likely to be unstable while I work out how to interface with the Spectre.Console from PowerShell
 
-[![Build](https://img.shields.io/github/actions/workflow/status/ShaunLawrie/PwshSpectreConsole/test.yml)](https://github.com/ShaunLawrie/PwshSpectreConsole/actions/workflows/test.yml)
-[![PowerShell Gallery](https://img.shields.io/powershellgallery/v/PwshSpectreConsole)](https://www.powershellgallery.com/packages/PwshSpectreConsole)
-[![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/PwshSpectreConsole)](https://www.powershellgallery.com/packages/PwshSpectreConsole)
 [![GitHub license](https://img.shields.io/github/license/ShaunLawrie/PwshSpectreConsole)](https://github.com/ShaunLawrie/PwshSpectreConsole/blob/main/LICENSE)
 
 PwshSpectreConsole is an opinionated wrapper for the [awesome Spectre.Console library](https://spectreconsole.net/).
@@ -17,7 +14,11 @@ The module doesn't expose the full feature set of Spectre.Console because the sc
 
 # Installation
 ```pwsh
-Install-Module PwshSpectreConsole -Scope CurrentUser
+# Clone this repo
+Import-Module "./PwshSpectreConsole/PwshSpectreConsole.psm1"
+./Demo.ps1
+# This is nto published on PSGallery yet
+# Install-Module PwshSpectreConsole -Scope CurrentUser
 ```
 
 # Usage
