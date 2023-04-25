@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<coreProperties xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.openxmlformats.org/package/2006/metadata/core-properties">
+  <dc:creator>Six Labors and contributors</dc:creator>
+  <dc:description>A new, fully featured, fully managed, cross-platform, 2D graphics API for .NET</dc:description>
+  <dc:identifier>SixLabors.ImageSharp</dc:identifier>
+  <version>2.1.3</version>
+  <keywords>Image Resize Crop Gif Jpg Jpeg Bitmap Pbm Png Tga Tiff WebP NetCore</keywords>
+  <lastModifiedBy>NuGet.Build.Tasks.Pack, Version=6.2.1.2, Culture=neutral, PublicKeyToken=31bf3856ad364e35;</lastModifiedBy>
+</coreProperties>

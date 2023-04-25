@@ -201,23 +201,6 @@ function Read-SpectreText {
     return Invoke-SpectrePromptAsync -Prompt $prompt
 }
 
-function Write-SpectreStatus {
-    param (
-        [string] $Spinner,
-        [Spectre.Console.Color] $Color = $script:AccentColor
-    )
-    [Spectre.Console.AnsiConsole]::Status().Start("Showing a $Spinner status spinner...", {
-        param (
-            $ctx
-        )
-        $ctx.Spinner = [Spectre.Console.Spinner+Known]::$Spinner
-        $ctx.SpinnerStyle = [Spectre.Console.Style]::new($Color)
-        Start-Sleep -Seconds 3
-        $ctx.Status = "With an update..."
-        Start-Sleep -Seconds 3
-    })
-}
-
 function Invoke-SpectreCommandWithStatus {
     param (
         [scriptblock] $ScriptBlock,

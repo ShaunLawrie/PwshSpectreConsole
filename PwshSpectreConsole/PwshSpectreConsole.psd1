@@ -6,9 +6,31 @@
     Copyright = '(c) Shaun Lawrie. All rights reserved.'
     Description = 'A convenient PowerShell wrapper for Spectre.Console'
     PowerShellVersion = '7.0'
-    PowerShellHostName = 'ConsoleHost'
     RootModule = 'PwshSpectreConsole'
-    FunctionsToExport = '*'
+    FunctionsToExport = @(
+        'Add-SpectreJob',
+        'Format-SpectreBarChart',
+        'Format-SpectreBreakdownChart',
+        'Format-SpectrePanel',
+        'Format-SpectreTable',
+        'Format-SpectreTree',
+        'Get-SpectreImage',
+        'Invoke-SpectreCommandWithProgress',
+        'Invoke-SpectreCommandWithStatus',
+        'Invoke-SpectrePromptAsync',
+        'Read-SpectreMultiSelection',
+        'Read-SpectreMultiSelectionGrouped',
+        'Read-SpectrePause',
+        'Read-SpectreSelection',
+        'Read-SpectreText',
+        'Set-SpectreColors',
+        'Start-SpectreDemo',
+        'Wait-SpectreJobs',
+        'Write-SpectreFigletText',
+        'Write-SpectreHost',
+        'Write-SpectreParagraph',
+        'Write-SpectreRule'
+    )
     CmdletsToExport = @()
     VariablesToExport = '*'
     AliasesToExport = @()
