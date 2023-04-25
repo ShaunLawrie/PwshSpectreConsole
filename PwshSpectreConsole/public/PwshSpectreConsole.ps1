@@ -1,6 +1,8 @@
 $script:AccentColor = [Spectre.Console.Color]::Blue
 $script:DefaultValueColor = [Spectre.Console.Color]::Grey
 
+$script:Colors = @("Aqua", "Aquamarine1", "Aquamarine1_1", "Aquamarine3", "Black", "Blue", "Blue1", "Blue3", "Blue3_1", "BlueViolet", "CadetBlue", "CadetBlue_1", "Chartreuse1", "Chartreuse2", "Chartreuse2_1", "Chartreuse3", "Chartreuse3_1", "Chartreuse4", "CornflowerBlue", "Cornsilk1", "Cyan1", "Cyan2", "Cyan3", "DarkBlue", "DarkCyan", "DarkGoldenrod", "DarkGreen", "DarkKhaki", "DarkMagenta", "DarkMagenta_1", "DarkOliveGreen1", "DarkOliveGreen1_1", "DarkOliveGreen2", "DarkOliveGreen3", "DarkOliveGreen3_1", "DarkOliveGreen3_2", "DarkOrange", "DarkOrange3", "DarkOrange3_1", "DarkRed", "DarkRed_1", "DarkSeaGreen", "DarkSeaGreen1", "DarkSeaGreen1_1", "DarkSeaGreen2", "DarkSeaGreen2_1", "DarkSeaGreen3", "DarkSeaGreen3_1", "DarkSeaGreen4", "DarkSeaGreen4_1", "DarkSlateGray1", "DarkSlateGray2", "DarkSlateGray3", "DarkTurquoise", "DarkViolet", "DarkViolet_1", "DeepPink1", "DeepPink1_1", "DeepPink2", "DeepPink3", "DeepPink3_1", "DeepPink4", "DeepPink4_1", "DeepPink4_2", "DeepSkyBlue1", "DeepSkyBlue2", "DeepSkyBlue3", "DeepSkyBlue3_1", "DeepSkyBlue4", "DeepSkyBlue4_1", "DeepSkyBlue4_2", "Default", "DodgerBlue1", "DodgerBlue2", "DodgerBlue3", "Fuchsia", "Gold1", "Gold3", "Gold3_1", "Green", "Green1", "Green3", "Green3_1", "Green4", "GreenYellow", "Grey", "Grey0", "Grey100", "Grey11", "Grey15", "Grey19", "Grey23", "Grey27", "Grey3", "Grey30", "Grey35", "Grey37", "Grey39", "Grey42", "Grey46", "Grey50", "Grey53", "Grey54", "Grey58", "Grey62", "Grey63", "Grey66", "Grey69", "Grey7", "Grey70", "Grey74", "Grey78", "Grey82", "Grey84", "Grey85", "Grey89", "Grey93", "Honeydew2", "HotPink", "HotPink2", "HotPink3", "HotPink3_1", "HotPink_1", "IndianRed", "IndianRed1", "IndianRed1_1", "IndianRed_1", "Khaki1", "Khaki3", "LightCoral", "LightCyan1", "LightCyan3", "LightGoldenrod1", "LightGoldenrod2", "LightGoldenrod2_1", "LightGoldenrod2_2", "LightGoldenrod3", "LightGreen", "LightGreen_1", "LightPink1", "LightPink3", "LightPink4", "LightSalmon1", "LightSalmon3", "LightSalmon3_1", "LightSeaGreen", "LightSkyBlue1", "LightSkyBlue3", "LightSkyBlue3_1", "LightSlateBlue", "LightSlateGrey", "LightSteelBlue", "LightSteelBlue1", "LightSteelBlue3", "LightYellow3", "Lime", "Magenta1", "Magenta2", "Magenta2_1", "Magenta3", "Magenta3_1", "Magenta3_2", "Maroon", "MediumOrchid", "MediumOrchid1", "MediumOrchid1_1", "MediumOrchid3", "MediumPurple", "MediumPurple1", "MediumPurple2", "MediumPurple2_1", "MediumPurple3", "MediumPurple3_1", "MediumPurple4", "MediumSpringGreen", "MediumTurquoise", "MediumVioletRed", "MistyRose1", "MistyRose3", "NavajoWhite1", "NavajoWhite3", "Navy", "NavyBlue", "Olive", "Orange1", "Orange3", "Orange4", "Orange4_1", "OrangeRed1", "Orchid", "Orchid1", "Orchid2", "PaleGreen1", "PaleGreen1_1", "PaleGreen3", "PaleGreen3_1", "PaleTurquoise1", "PaleTurquoise4", "PaleVioletRed1", "Pink1", "Pink3", "Plum1", "Plum2", "Plum3", "Plum4", "Purple", "Purple3", "Purple4", "Purple4_1", "Purple_1", "Purple_2", "Red", "Red1", "Red3", "Red3_1", "RosyBrown", "RoyalBlue1", "Salmon1", "SandyBrown", "SeaGreen1", "SeaGreen1_1", "SeaGreen2", "SeaGreen3", "Silver", "SkyBlue1", "SkyBlue2", "SkyBlue3", "SlateBlue1", "SlateBlue3", "SlateBlue3_1", "SpringGreen1", "SpringGreen2", "SpringGreen2_1", "SpringGreen3", "SpringGreen3_1", "SpringGreen4", "SteelBlue", "SteelBlue1", "SteelBlue1_1", "SteelBlue3", "Tan", "Teal", "Thistle1", "Thistle3", "Turquoise2", "Turquoise4", "Violet", "Wheat1", "Wheat4", "White", "Yellow", "Yellow1", "Yellow2", "Yellow3", "Yellow3_1", "Yellow4", "Yellow4_1")
+
 function Invoke-SpectrePromptAsync {
     param (
         $Prompt
@@ -18,11 +20,13 @@ function Invoke-SpectrePromptAsync {
 
 function Set-SpectreColors {
     param (
-        [Spectre.Console.Color] $AccentColor = [Spectre.Console.Color]::Blue,
-        [Spectre.Console.Color] $DefaultValueColor = [Spectre.Console.Color]::Grey
+        [ValidateScript({if($script:Colors -contains $_) { $true } else { throw "Color must be one of $($script:Colors -join ', ')" } })]
+        [string] $AccentColor = "Blue",
+        [ValidateScript({if($script:Colors -contains $_) { $true } else { throw "Color must be one of $($script:Colors -join ', ')" } })]
+        [string] $DefaultValueColor = "Grey"
     )
-    $script:AccentColor = $AccentColor
-    $script:DefaultValueColor = $DefaultValueColor
+    $script:AccentColor = [Spectre.Console.Color]::$AccentColor
+    $script:DefaultValueColor = [Spectre.Console.Color]::$DefaultValueColor
 }
 
 function Write-SpectreParagraph {
@@ -40,10 +44,10 @@ function Write-SpectreRule {
     param (
         [string] $Title,
         [string] $Alignment = "Left",
-        [Spectre.Console.Color] $Color = $script:AccentColor
+        [ValidateScript({if($script:Colors -contains $_) { $true } else { throw "Color must be one of $($script:Colors -join ', ')" } })]
+        [string] $Color = $script:AccentColor.ToString()
     )
-
-    $rule = [Spectre.Console.Rule]::new("[$($Color.ToString())]$Title[/]")
+    $rule = [Spectre.Console.Rule]::new("[$($Color)]$Title[/]")
     $rule.Justification = [Spectre.Console.Justify]::$Alignment
     [Spectre.Console.AnsiConsole]::Write($rule)
 }
@@ -52,7 +56,8 @@ function Write-SpectreFigletText {
     param (
         [string] $Text = "Hello Spectre!",
         [string] $Alignment = "Left",
-        [Spectre.Console.Color] $Color = $script:AccentColor
+        [ValidateScript({if($script:Colors -contains $_) { $true } else { throw "Color must be one of $($script:Colors -join ', ')" } })]
+        [string] $Color = $script:AccentColor.ToString()
     )
     $figletText = [Spectre.Console.FigletText]::new($Text)
     $figletText.Justification = switch($Alignment) {
@@ -61,7 +66,7 @@ function Write-SpectreFigletText {
         "Centered" { [Spectre.Console.Justify]::Center }
         default { Write-Error "Invalid alignment $Alignment" }
     }
-    $figletText.Color = $Color
+    $figletText.Color = [Spectre.Console.Color]::$Color
     [Spectre.Console.AnsiConsole]::Write($figletText)
 }
 
@@ -70,7 +75,8 @@ function Read-SpectreSelection {
         [string] $Title = "What's your favourite colour [$($script:AccentColor.ToString())]option[/]?",
         [array] $Choices = @("red", "green", "blue"),
         [string] $ChoiceLabelProperty,
-        [Spectre.Console.Color] $Color = $script:AccentColor,
+        [ValidateScript({if($script:Colors -contains $_) { $true } else { throw "Color must be one of $($script:Colors -join ', ')" } })]
+        [string] $Color = $script:AccentColor.ToString(),
         [int] $PageSize = 5
     )
     $prompt = [Spectre.Console.SelectionPrompt[string]]::new()
@@ -90,7 +96,7 @@ function Read-SpectreSelection {
     $prompt.Title = $Title
     $prompt.PageSize = $PageSize
     $prompt.WrapAround = $true
-    $prompt.HighlightStyle = [Spectre.Console.Style]::new($Color)
+    $prompt.HighlightStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::$Color)
     $prompt.MoreChoicesText = "[$($script:DefaultValueColor)](Move up and down to reveal more choices)[/]"
     $selected = Invoke-SpectrePromptAsync -Prompt $prompt
 
@@ -106,7 +112,8 @@ function Read-SpectreMultiSelection {
         [string] $Title = "What are your favourite [$($script:AccentColor.ToString())]colors[/]?",
         [array] $Choices = @("red", "orange", "yellow", "green", "blue", "indigo", "violet"),
         [string] $ChoiceLabelProperty,
-        [Spectre.Console.Color] $Color = $script:AccentColor,
+        [ValidateScript({if($script:Colors -contains $_) { $true } else { throw "Color must be one of $($script:Colors -join ', ')" } })]
+        [string] $Color = $script:AccentColor.ToString(),
         [int] $PageSize = 5
     )
     $prompt = [Spectre.Console.MultiSelectionPrompt[string]]::new()
@@ -126,7 +133,7 @@ function Read-SpectreMultiSelection {
     $prompt.Title = $Title
     $prompt.PageSize = $PageSize
     $prompt.WrapAround = $true
-    $prompt.HighlightStyle = [Spectre.Console.Style]::new($Color)
+    $prompt.HighlightStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::$Color)
     $prompt.InstructionsText = "[$($script:DefaultValueColor)](Press [$($script:AccentColor.ToString())]space[/] to toggle a choice and press [$($script:AccentColor.ToString())]<enter>[/] to submit your answer)[/]"
     $prompt.MoreChoicesText = "[$($script:DefaultValueColor)](Move up and down to reveal more choices)[/]"
     $selected = Invoke-SpectrePromptAsync -Prompt $prompt
@@ -152,7 +159,8 @@ function Read-SpectreMultiSelectionGrouped {
             }
         ),
         [string] $ChoiceLabelProperty,
-        [Spectre.Console.Color] $Color = $script:AccentColor,
+        [ValidateScript({if($script:Colors -contains $_) { $true } else { throw "Color must be one of $($script:Colors -join ', ')" } })]
+        [string] $Color = $script:AccentColor.ToString(),
         [int] $PageSize = 10
     )
     $prompt = [Spectre.Console.MultiSelectionPrompt[string]]::new()
@@ -178,7 +186,7 @@ function Read-SpectreMultiSelectionGrouped {
     $prompt.Title = $Title
     $prompt.PageSize = $PageSize
     $prompt.WrapAround = $true
-    $prompt.HighlightStyle = [Spectre.Console.Style]::new($Color)
+    $prompt.HighlightStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::$Color)
     $prompt.InstructionsText = "[$($script:DefaultValueColor)](Press [$($script:AccentColor.ToString())]space[/] to toggle a choice and press [$($script:AccentColor.ToString())]<enter>[/] to submit your answer)[/]"
     $prompt.MoreChoicesText = "[$($script:DefaultValueColor)](Move up and down to reveal more choices)[/]"
     $selected = Invoke-SpectrePromptAsync -Prompt $prompt
@@ -206,14 +214,15 @@ function Invoke-SpectreCommandWithStatus {
         [scriptblock] $ScriptBlock,
         [string] $Spinner,
         [string] $Title,
-        [Spectre.Console.Color] $Color = $script:AccentColor
+        [ValidateScript({if($script:Colors -contains $_) { $true } else { throw "Color must be one of $($script:Colors -join ', ')" } })]
+        [string] $Color = $script:AccentColor.ToString()
     )
     [Spectre.Console.AnsiConsole]::Status().Start($Title, {
         param (
             $ctx
         )
         $ctx.Spinner = [Spectre.Console.Spinner+Known]::$Spinner
-        $ctx.SpinnerStyle = [Spectre.Console.Style]::new($Color)
+        $ctx.SpinnerStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::$Color)
         & $ScriptBlock
     })
 }
@@ -232,8 +241,7 @@ function Write-SpectreHost {
 
 function Invoke-SpectreCommandWithProgress {
     param (
-        [scriptblock] $ScriptBlock,
-        [Spectre.Console.Color] $Color = $script:AccentColor
+        [scriptblock] $ScriptBlock
     )
     [Spectre.Console.AnsiConsole]::Progress().Start({
         param (
@@ -328,7 +336,8 @@ function Format-SpectrePanel {
         [string] $Title,
         [string] $Border = "Rounded",
         [switch] $Expand, 
-        [Spectre.Console.Color] $Color = $script:AccentColor
+        [ValidateScript({if($script:Colors -contains $_) { $true } else { throw "Color must be one of $($script:Colors -join ', ')" } })]
+        [string] $Color = $script:AccentColor.ToString()
     )
     $panel = [Spectre.Console.Panel]::new($Data)
     if($Title) {
@@ -336,7 +345,7 @@ function Format-SpectrePanel {
     }
     $panel.Expand = $Expand
     $panel.Border = [Spectre.Console.BoxBorder]::$Border
-    $panel.BorderStyle = [Spectre.Console.Style]::new($Color)
+    $panel.BorderStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::$Color)
     [Spectre.Console.AnsiConsole]::Write($panel)
 }
 
@@ -346,12 +355,13 @@ function Format-SpectreTable {
         [Parameter(ValueFromPipeline)]
         [array] $Data,
         [string] $Border = "Double",
-        [Spectre.Console.Color] $Color = $script:AccentColor
+        [ValidateScript({if($script:Colors -contains $_) { $true } else { throw "Color must be one of $($script:Colors -join ', ')" } })]
+        [string] $Color = $script:AccentColor.ToString()
     )
     begin {
         $table = [Spectre.Console.Table]::new()
         $table.Border = [Spectre.Console.TableBorder]::$Border
-        $table.BorderStyle = [Spectre.Console.Style]::new($Color)
+        $table.BorderStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::$Color)
         $headerProcessed = $false
     }
     process {
@@ -381,7 +391,8 @@ function Format-SpectreTree {
         [Parameter(ValueFromPipeline)]
         [hashtable] $Data,
         [string] $Border = "Rounded",
-        [Spectre.Console.Color] $Color = $script:AccentColor
+        [ValidateScript({if($script:Colors -contains $_) { $true } else { throw "Color must be one of $($script:Colors -join ', ')" } })]
+        [string] $Color = $script:AccentColor.ToString()
     )
 
     function Add-SpectreTreeNode {
@@ -402,7 +413,7 @@ function Format-SpectreTree {
 
     Add-SpectreTreeNode -Node $tree -Children $Data.Children
 
-    $tree.Style = [Spectre.Console.Style]::new($Color)
+    $tree.Style = [Spectre.Console.Style]::new([Spectre.Console.Color]::$Color)
     [Spectre.Console.AnsiConsole]::Write($tree)
 }
 
