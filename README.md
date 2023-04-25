@@ -13,6 +13,8 @@ It's opinionated in that I have not just exposed the internals of Spectre Consol
 
 The module doesn't expose the full feature set of Spectre.Console because the scope of the library is huge and I've focused on the features that I can use to enhance my scripts.
 
+![Demo](/PwshSpectreConsole/private/demo.gif)
+
 # Installation
 ```pwsh
 Install-Module PwshSpectreConsole -Scope CurrentUser
