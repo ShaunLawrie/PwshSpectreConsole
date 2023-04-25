@@ -1,0 +1,28 @@
+name: Pester Test
+on: pull_request
+
+jobs:
+  pester-test-windows:
+    name: Windows Latest
+    runs-on: windows-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Run tests
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          & ./PwshPaint/Build.ps1
+          & ./PwshPaint.Tests/Run.ps1
+  pester-test-linux:
+    name: Linux Latest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Run tests
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          & ./PwshPaint/Build.ps1
+          & ./PwshPaint.Tests/Run.ps1

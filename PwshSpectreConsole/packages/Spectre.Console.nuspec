@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Spectre.Console</id>
+    <version>0.46.0</version>
+    <authors>Patrik Svensson, Phil Scott, Nils Andresen</authors>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <icon>small-logo.png</icon>
+    <projectUrl>https://github.com/spectreconsole/spectre.console</projectUrl>
+    <description>A library that makes it easier to create beautiful console applications.</description>
+    <releaseNotes>https://github.com/spectreconsole/spectre.console/releases</releaseNotes>
+    <copyright>Patrik Svensson, Phil Scott, Nils Andresen</copyright>
+    <repository type="git" url="https://github.com/spectreconsole/spectre.console" commit="eba2a8cc766440f0b4b48bf5f98cfa33c9ab21d6" />
+    <dependencies>
+      <group targetFramework="net6.0">
+        <dependency id="System.Memory" version="4.5.5" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net7.0">
+        <dependency id="System.Memory" version="4.5.5" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="System.Memory" version="4.5.5" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>
