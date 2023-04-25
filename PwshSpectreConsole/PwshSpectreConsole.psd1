@@ -1,5 +1,5 @@
 @{
-    ModuleVersion = '0.1.1'
+    ModuleVersion = '0.1.2'
     GUID = '8c5ca00d-7f0f-4179-98bf-bdaebceaebc0'
     Author = 'Shaun Lawrie'
     CompanyName = 'Shaun Lawrie'
