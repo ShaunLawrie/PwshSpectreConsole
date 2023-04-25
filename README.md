@@ -1,6 +1,5 @@
 # PwshSpectreConsole
 
-[![Build](https://img.shields.io/github/actions/workflow/status/ShaunLawrie/PwshSpectreConsole/test.yml)](https://github.com/ShaunLawrie/PwshSpectreConsole/actions/workflows/test.yml)
 [![PowerShell Gallery](https://img.shields.io/powershellgallery/v/PwshSpectreConsole)](https://www.powershellgallery.com/packages/PwshSpectreConsole)
 [![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/PwshSpectreConsole)](https://www.powershellgallery.com/packages/PwshSpectreConsole)
 [![GitHub license](https://img.shields.io/github/license/ShaunLawrie/PwshSpectreConsole)](https://github.com/ShaunLawrie/PwshSpectreConsole/blob/main/LICENSE)
