@@ -17,4 +17,6 @@ jobs:
       - name: Deploy Package
         shell: pwsh
         run: |
-          Publish-Module -Path "./PwshPaint/" -NugetApiKey $env:PSGALLERY_API_KEY
+          $ErrorActionPreference = "Stop"
+          & ./PwshSpectreConsole/Build.ps1
+          Publish-Module -Path "./PwshSpectreConsole/" -NugetApiKey $env:PSGALLERY_API_KEY

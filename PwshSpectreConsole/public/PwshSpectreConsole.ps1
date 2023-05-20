@@ -376,9 +376,10 @@ function Format-SpectreTable {
     }
     process {
         if(!$headerProcessed) {
-            $Data | Get-Member -MemberType Properties | Foreach-Object {
-                $table.AddColumn($_.Name) | Out-Null
+            $data[0].psobject.Properties.Name | Foreach-Object {
+                $table.AddColumn($_) | Out-Null
             }
+            
             $headerProcessed = $true
         }
         $row = @()
