@@ -1,3 +1,5 @@
+using module "..\private\Attributes.psm1"
+
 function Start-SpectreDemo {
     Clear-Host
 
