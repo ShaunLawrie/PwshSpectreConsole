@@ -378,21 +378,25 @@ function Format-SpectreTable {
     }
     process {
         if(!$headerProcessed) {
-            $data[0].psobject.Properties.Name | Foreach-Object {
+            $Data[0].psobject.Properties.Name | Foreach-Object {
                 $table.AddColumn($_) | Out-Null
             }
             
             $headerProcessed = $true
         }
-        $row = @()
-        $Data | Get-Member -MemberType Properties | Foreach-Object {
-            if($null -eq $Data."$($_.Name)") {
-                $row += [Spectre.Console.Text]::new("")
-            } else {
-                $row += [Spectre.Console.Text]::new($Data."$($_.Name)".ToString())
+        $Data | Foreach-Object {
+            $row = @()
+            $_.psobject.Properties | ForEach-Object {
+                $cell = $_.Value
+                if ($null -eq $cell) {
+                    $row += [Spectre.Console.Text]::new("")
+                }
+                else {
+                    $row += [Spectre.Console.Text]::new($cell.ToString())
+                }
             }
+            $table = [Spectre.Console.TableExtensions]::AddRow($table, [Spectre.Console.Text[]]$row)
         }
-        $table = [Spectre.Console.TableExtensions]::AddRow($table, [Spectre.Console.Text[]]$row)
     }
     end {
         [Spectre.Console.AnsiConsole]::Write($table)
