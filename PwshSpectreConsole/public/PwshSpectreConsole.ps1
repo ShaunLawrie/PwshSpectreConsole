@@ -321,6 +321,14 @@ function Format-SpectreBarChart {
     }
 }
 
+function Get-SpectreEscapedText {
+    param (
+        [Parameter(ValueFromPipeline)]
+        [string] $Text
+    )
+    return [Spectre.Console.Markup]::Escape($Text)
+}
+
 function Format-SpectreBreakdownChart {
     param (
         [Parameter(ValueFromPipeline)]
