@@ -1,5 +1,5 @@
 @{
-    ModuleVersion = '0.2.3'
+    ModuleVersion = '0.2.4'
     GUID = '8c5ca00d-7f0f-4179-98bf-bdaebceaebc0'
     Author = 'Shaun Lawrie'
     CompanyName = 'Shaun Lawrie'
@@ -14,6 +14,7 @@
         'Format-SpectrePanel',
         'Format-SpectreTable',
         'Format-SpectreTree',
+        'Get-SpectreEscapedText',
         'Get-SpectreImage',
         'Get-SpectreImageExperimental',
         'Invoke-SpectreCommandWithProgress',
