@@ -29,12 +29,12 @@ This function takes an array of data and formats it into a breakdown chart using
 This example displays a breakdown chart with the title "Fruit Sales" and a width of 50 characters.
 
 ```powershell
-PS> $data = @(
+$data = @(
     @{ Label = "Apples"; Value = 10; Color = [Spectre.Console.Color]::Red },
     @{ Label = "Oranges"; Value = 20; Color = [Spectre.Console.Color]::Orange1 },
     @{ Label = "Bananas"; Value = 15; Color = [Spectre.Console.Color]::Yellow }
 )
-PS> Format-SpectreBreakdownChart -Data $data -Width 50
+Format-SpectreBreakdownChart -Data $data -Width 50
 ```
 
 

@@ -29,7 +29,7 @@ This function takes a string and formats it as a Spectre Console panel with opti
 This example displays a panel with the title "My Panel", a rounded border, and a red border color.
 
 ```powershell
-PS> Format-SpectrePanel -Data "Hello, world!" -Title "My Panel" -Border "Rounded" -Color "Red"
+Format-SpectrePanel -Data "Hello, world!" -Title "My Panel" -Border "Rounded" -Color "Red"
 ```
 
 

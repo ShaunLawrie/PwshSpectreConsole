@@ -29,12 +29,12 @@ This function sets the accent color and default value color for Spectre Console.
 Sets the accent color to Red and the default value color to Yellow.
 
 ```powershell
-PS> Set-SpectreColors -AccentColor Red -DefaultValueColor Yellow
+Set-SpectreColors -AccentColor Red -DefaultValueColor Yellow
 ```
 Sets the accent color to Green and keeps the default value color as Grey.
 
 ```powershell
-PS> Set-SpectreColors -AccentColor Green
+Set-SpectreColors -AccentColor Green
 ```
 
 

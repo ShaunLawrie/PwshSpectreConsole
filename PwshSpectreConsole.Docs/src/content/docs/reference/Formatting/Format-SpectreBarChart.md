@@ -29,12 +29,12 @@ This function takes an array of data and displays it as a bar chart using the Sp
 This example displays a bar chart with the title "Fruit Sales" and a width of 50 characters.
 
 ```powershell
-PS> $data = @(
+$data = @(
     @{ Label = "Apples"; Value = 10; Color = [Spectre.Console.Color]::Green },
     @{ Label = "Oranges"; Value = 5; Color = [Spectre.Console.Color]::Yellow },
     @{ Label = "Bananas"; Value = 3; Color = [Spectre.Console.Color]::Red }
 )
-PS> Format-SpectreBarChart -Data $data -Title "Fruit Sales" -Width 50
+Format-SpectreBarChart -Data $data -Title "Fruit Sales" -Width 50
 ```
 
 

@@ -29,11 +29,11 @@ This function takes an array of objects and formats them into a table using the 
 This example formats an array of objects into a table with a double border and the accent color of the script.
 
 ```powershell
-PS> $data = @(
+$data = @(
     [pscustomobject]@{Name="John"; Age=25; City="New York"},
     [pscustomobject]@{Name="Jane"; Age=30; City="Los Angeles"}
 )
-PS> Format-SpectreTable -Data $data
+Format-SpectreTable -Data $data
 ```
 
 

@@ -29,7 +29,7 @@ This function writes a Spectre Console Figlet text to the console. The text can 
 Displays the text "Hello Spectre!" in the center of the console, in red color.
 
 ```powershell
-PS> Write-SpectreFigletText -Text "Hello Spectre!" -Alignment "Centered" -Color "Red"
+Write-SpectreFigletText -Text "Hello Spectre!" -Alignment "Centered" -Color "Red"
 ```
 
 

@@ -31,8 +31,8 @@ See [https://spectreconsole.net/markup](https://spectreconsole.net/markup) for m
 This example shows some data that requires escaping being embedded in a string passed to Format-SpectrePanel.
 
 ```powershell
-PS> $data = "][[][]]][[][][]["
-PS> Format-SpectrePanel -Title "Unescaped data" -Data "I want escaped $($data | Get-SpectreEscapedText) [yellow]and[/] [red]unescaped[/] data"
+$data = "][[][]]][[][][]["
+Format-SpectrePanel -Title "Unescaped data" -Data "I want escaped $($data | Get-SpectreEscapedText) [yellow]and[/] [red]unescaped[/] data"
 ```
 
 

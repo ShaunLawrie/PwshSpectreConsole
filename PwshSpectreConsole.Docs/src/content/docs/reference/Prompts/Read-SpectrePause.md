@@ -29,7 +29,7 @@ The Read-SpectrePause function pauses the script execution and waits for user in
 This example pauses the script execution and displays the message "Press any key to continue...". The function waits for the user to press a key before continuing.
 
 ```powershell
-PS> Read-SpectrePause -Message "Press any key to continue..."
+Read-SpectrePause -Message "Press any key to continue..."
 ```
 
 

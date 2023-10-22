@@ -29,7 +29,7 @@ This function displays a selection prompt using Spectre Console. The user can se
 This command displays a selection prompt with the title "Select your favorite color" and the choices "Red", "Green", and "Blue". The active selection is colored in green.
 
 ```powershell
-PS> Read-SpectreSelection -Title "Select your favorite color" -Choices @("Red", "Green", "Blue") -Color "Green"
+Read-SpectreSelection -Title "Select your favorite color" -Choices @("Red", "Green", "Blue") -Color "Green"
 ```
 
 

@@ -29,7 +29,7 @@ Displays a multi-selection prompt with grouped choices and returns the selected 
 This example displays a multi-selection prompt with two groups of choices: "Primary Colors" and "Secondary Colors". The prompt uses the "Name" property of each choice as the label. The user can select one or more choices from each group.
 
 ```powershell
-PS> Read-SpectreMultiSelectionGrouped -Title "Select your favorite colors" -Choices @(
+Read-SpectreMultiSelectionGrouped -Title "Select your favorite colors" -Choices @(
     @{
         Name = "Primary Colors"
         Choices = @("Red", "Blue", "Yellow")

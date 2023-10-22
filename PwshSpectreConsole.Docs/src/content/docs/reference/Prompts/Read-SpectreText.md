@@ -32,7 +32,7 @@ This function uses Spectre Console to prompt the user with a question and return
 This will prompt the user with the question "What's your name?" and return the user's input. If the user does not provide any input, the function will return "Prefer not to say".
 
 ```powershell
-PS> Read-SpectreText -Question "What's your name?" -DefaultAnswer "Prefer not to say"
+Read-SpectreText -Question "What's your name?" -DefaultAnswer "Prefer not to say"
 ```
 
 
