@@ -37,11 +37,11 @@ function Set-SpectreColors {
 
     .EXAMPLE
     # Sets the accent color to Red and the default value color to Yellow.
-    PS> Set-SpectreColors -AccentColor Red -DefaultValueColor Yellow
+    Set-SpectreColors -AccentColor Red -DefaultValueColor Yellow
 
     .EXAMPLE
     # Sets the accent color to Green and keeps the default value color as Grey.
-    PS> Set-SpectreColors -AccentColor Green
+    Set-SpectreColors -AccentColor Green
     #>
     [Reflection.AssemblyMetadata("title", "Set-SpectreColors")]
     param (
@@ -110,7 +110,7 @@ function Write-SpectreFigletText {
 
     .EXAMPLE
     # Displays the text "Hello Spectre!" in the center of the console, in red color.
-    PS> Write-SpectreFigletText -Text "Hello Spectre!" -Alignment "Centered" -Color "Red"
+    Write-SpectreFigletText -Text "Hello Spectre!" -Alignment "Centered" -Color "Red"
     #>
     [Reflection.AssemblyMetadata("title", "Write-SpectreFigletText")]
     param (
@@ -156,7 +156,7 @@ function Read-SpectreSelection {
 
     .EXAMPLE
     # This command displays a selection prompt with the title "Select your favorite color" and the choices "Red", "Green", and "Blue". The active selection is colored in green.
-    PS> Read-SpectreSelection -Title "Select your favorite color" -Choices @("Red", "Green", "Blue") -Color "Green"
+    Read-SpectreSelection -Title "Select your favorite color" -Choices @("Red", "Green", "Blue") -Color "Green"
     #>
     [Reflection.AssemblyMetadata("title", "Read-SpectreSelection")]
     param (
@@ -221,7 +221,7 @@ function Read-SpectreMultiSelection {
 
     .EXAMPLE
     # Displays a multi-selection prompt with the title "Select your favourite fruits", the list of fruits, the "Name" property as the label for each fruit, the color green for highlighting the selected fruits, and 3 fruits per page.
-    PS> Read-SpectreMultiSelection -Title "Select your favourite fruits" -Choices @("apple", "banana", "orange", "pear", "strawberry") -Color "Green" -PageSize 3
+    Read-SpectreMultiSelection -Title "Select your favourite fruits" -Choices @("apple", "banana", "orange", "pear", "strawberry") -Color "Green" -PageSize 3
     #>
     [Reflection.AssemblyMetadata("title", "Read-SpectreMultiSelection")]
     param (
@@ -287,7 +287,7 @@ function Read-SpectreMultiSelectionGrouped {
 
     .EXAMPLE
     # This example displays a multi-selection prompt with two groups of choices: "Primary Colors" and "Secondary Colors". The prompt uses the "Name" property of each choice as the label. The user can select one or more choices from each group.
-    PS> Read-SpectreMultiSelectionGrouped -Title "Select your favorite colors" -Choices @(
+    Read-SpectreMultiSelectionGrouped -Title "Select your favorite colors" -Choices @(
         @{
             Name = "Primary Colors"
             Choices = @("Red", "Blue", "Yellow")
@@ -371,7 +371,7 @@ function Read-SpectreText {
 
     .EXAMPLE
     # This will prompt the user with the question "What's your name?" and return the user's input. If the user does not provide any input, the function will return "Prefer not to say".
-    PS> Read-SpectreText -Question "What's your name?" -DefaultAnswer "Prefer not to say"
+    Read-SpectreText -Question "What's your name?" -DefaultAnswer "Prefer not to say"
     #>
     [Reflection.AssemblyMetadata("title", "Read-SpectreText")]
     param (
@@ -642,12 +642,12 @@ function Format-SpectreBarChart {
 
     .EXAMPLE
     # This example displays a bar chart with the title "Fruit Sales" and a width of 50 characters.
-    PS> $data = @(
+    $data = @(
         @{ Label = "Apples"; Value = 10; Color = [Spectre.Console.Color]::Green },
         @{ Label = "Oranges"; Value = 5; Color = [Spectre.Console.Color]::Yellow },
         @{ Label = "Bananas"; Value = 3; Color = [Spectre.Console.Color]::Red }
     )
-    PS> Format-SpectreBarChart -Data $data -Title "Fruit Sales" -Width 50
+    Format-SpectreBarChart -Data $data -Title "Fruit Sales" -Width 50
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectreBarChart")]
     param (
@@ -692,8 +692,8 @@ function Get-SpectreEscapedText {
 
     .EXAMPLE
     # This example shows some data that requires escaping being embedded in a string passed to Format-SpectrePanel.
-    PS> $data = "][[][]]][[][][]["
-    PS> Format-SpectrePanel -Title "Unescaped data" -Data "I want escaped $($data | Get-SpectreEscapedText) [yellow]and[/] [red]unescaped[/] data"
+    $data = "][[][]]][[][][]["
+    Format-SpectrePanel -Title "Unescaped data" -Data "I want escaped $($data | Get-SpectreEscapedText) [yellow]and[/] [red]unescaped[/] data"
     #>
     [Reflection.AssemblyMetadata("title", "Get-SpectreEscapedText")]
     param (
@@ -719,12 +719,12 @@ function Format-SpectreBreakdownChart {
 
     .EXAMPLE
     # This example displays a breakdown chart with the title "Fruit Sales" and a width of 50 characters.
-    PS> $data = @(
+    $data = @(
         @{ Label = "Apples"; Value = 10; Color = [Spectre.Console.Color]::Red },
         @{ Label = "Oranges"; Value = 20; Color = [Spectre.Console.Color]::Orange1 },
         @{ Label = "Bananas"; Value = 15; Color = [Spectre.Console.Color]::Yellow }
     )
-    PS> Format-SpectreBreakdownChart -Data $data -Width 50
+    Format-SpectreBreakdownChart -Data $data -Width 50
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectreBreakdownChart")]
     param (
@@ -775,7 +775,7 @@ function Format-SpectrePanel {
 
     .EXAMPLE
     # This example displays a panel with the title "My Panel", a rounded border, and a red border color.
-    PS> Format-SpectrePanel -Data "Hello, world!" -Title "My Panel" -Border "Rounded" -Color "Red"
+    Format-SpectrePanel -Data "Hello, world!" -Title "My Panel" -Border "Rounded" -Color "Red"
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectrePanel")]
     param (
@@ -817,11 +817,11 @@ function Format-SpectreTable {
     
     .EXAMPLE
     # This example formats an array of objects into a table with a double border and the accent color of the script.
-    PS> $data = @(
+    $data = @(
         [pscustomobject]@{Name="John"; Age=25; City="New York"},
         [pscustomobject]@{Name="Jane"; Age=30; City="Los Angeles"}
     )
-    PS> Format-SpectreTable -Data $data
+    Format-SpectreTable -Data $data
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectreTable")]
     param (
@@ -957,7 +957,7 @@ function Read-SpectrePause {
 
     .EXAMPLE
     # This example pauses the script execution and displays the message "Press any key to continue...". The function waits for the user to press a key before continuing.
-    PS> Read-SpectrePause -Message "Press any key to continue..."
+    Read-SpectrePause -Message "Press any key to continue..."
     #>
     [Reflection.AssemblyMetadata("title", "Read-SpectrePause")]
     param (
