@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --sl-sidebar-width: 22rem;
+}
+
+@media (min-width: 50rem) {
+    .hero {
+        padding-block: clamp(2.5rem,calc(1rem + 10vmin),5rem);
+    }
+}

@@ -16,3 +16,11 @@ class ArgumentCompletionsSpectreColors : System.Management.Automation.ArgumentCo
         [Spectre.Console.Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
     }) { }
 }
+
+<#
+# Get all emoji codes
+
+[Spectre.Console.Emoji+Known].GetMembers().Name | ForEach-Object {
+  ":" + ($_ -creplace "([a-z])([A-Z0-9])", '$1_$2').ToLower().Trim() + ": " + [Spectre.Console.Emoji+Known]::$_
+}
+#>

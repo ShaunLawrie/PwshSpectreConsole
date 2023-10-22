@@ -1,5 +1,5 @@
 @{
-    ModuleVersion = '0.2.4'
+    ModuleVersion = '0.2.5'
     GUID = '8c5ca00d-7f0f-4179-98bf-bdaebceaebc0'
     Author = 'Shaun Lawrie'
     CompanyName = 'Shaun Lawrie'
@@ -17,9 +17,9 @@
         'Get-SpectreEscapedText',
         'Get-SpectreImage',
         'Get-SpectreImageExperimental',
+        'Get-SpectreEscapedText',
         'Invoke-SpectreCommandWithProgress',
         'Invoke-SpectreCommandWithStatus',
-        'Invoke-SpectrePromptAsync',
         'Read-SpectreMultiSelection',
         'Read-SpectreMultiSelectionGrouped',
         'Read-SpectrePause',

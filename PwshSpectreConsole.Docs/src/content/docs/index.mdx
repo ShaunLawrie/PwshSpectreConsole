@@ -1,0 +1,25 @@
+---
+title: PwshSpectreConsole
+description: A PowerShell module that provides a Spectre.Console wrapper for PowerShell.
+template: splash
+hero:
+  tagline: A module of convenience functions to make it easy to use <a class="text-slate-700 dark:text-slate-100" href="https://spectreconsole.net/">Spectre.Console</a> in PowerShell.
+  image:
+    file: ../../assets/logo.png
+  actions:
+    - text: Install
+      link: /guides/install/
+      icon: right-arrow
+      variant: primary
+    - text: Command Reference
+      link: /reference/config/set-spectrecolors/
+      icon: right-arrow
+---
+
+import TerminalPreview from '../../components/TerminalPreview.astro'
+
+```powershell
+PS> Set-SpectreColors -AccentColor HotPink
+PS> Read-SpectreSelection -Title "What's for [hot_pink]dinner[/]?" -Choices @("Sushi", "Pizza", "Burgers", "Tacos")
+```
+<TerminalPreview />
