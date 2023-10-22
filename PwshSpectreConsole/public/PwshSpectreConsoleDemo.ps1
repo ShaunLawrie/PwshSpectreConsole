@@ -1,6 +1,20 @@
 using module "..\private\Attributes.psm1"
 
 function Start-SpectreDemo {
+    <#
+    .SYNOPSIS
+    Runs a demo of the PwshSpectreConsole module.
+
+    .DESCRIPTION
+    This function runs a demo of the PwshSpectreConsole module, showcasing some of its features. It displays various examples of Spectre.Console functionality wrapped in PowerShell functions, such as text entry, select lists, multi-select lists, and panels.
+
+    .EXAMPLE
+    # Runs the PwshSpectreConsole demo.
+    PS C:\> Start-SpectreDemo
+    #>
+    [Reflection.AssemblyMetadata("title", "Start-SpectreDemo")]
+    param()
+
     Clear-Host
 
     function Write-SpectreExample {

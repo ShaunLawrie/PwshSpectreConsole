@@ -1,4 +1,32 @@
 function Get-SpectreImageExperimental {
+    <#
+    .SYNOPSIS
+    Displays an image in the console using block characters and ANSI escape codes.
+
+    .DESCRIPTION
+    This function loads an image from a file and displays it in the console using block characters and ANSI escape codes. The image is scaled to fit within the specified maximum width while maintaining its aspect ratio. If the image is an animated GIF, each frame is displayed in sequence with a configurable delay between frames.
+
+    .PARAMETER ImagePath
+    The path to the image file to display.
+
+    .PARAMETER MaxWidth
+    The maximum width of the image in characters. The image is scaled to fit within this width while maintaining its aspect ratio.
+
+    .PARAMETER Repeat
+    If specified, the animation will repeat indefinitely.
+
+    .PARAMETER Resampler
+    The resampling algorithm to use when scaling the image. Valid values are "Bicubic" and "NearestNeighbor". The default value is "Bicubic".
+
+    .EXAMPLE
+    # Displays the image "MyImage.png" in the console with a maximum width of 80 characters.
+    PS C:\> Get-SpectreImageExperimental -ImagePath "C:\Images\MyImage.png" -MaxWidth 80
+
+    .EXAMPLE
+    # Displays the animated GIF "MyAnimation.gif" in the console with a maximum width of 80 characters, repeating indefinitely.
+    PS C:\> Get-SpectreImageExperimental -ImagePath "C:\Images\MyAnimation.gif" -MaxWidth 80 -Repeat
+    #>
+    [Reflection.AssemblyMetadata("title", "Get-SpectreImageExperimental")]
     param (
         [string] $ImagePath,
         [int] $MaxWidth,
@@ -116,6 +144,24 @@ function Get-SpectreImageExperimental {
 }
 
 function Get-SpectreImage {
+    <#
+    .SYNOPSIS
+    Displays an image in the console using Spectre.Console.CanvasImage.
+
+    .DESCRIPTION
+    Displays an image in the console using Spectre.Console.CanvasImage. The image can be resized to a maximum width if desired.
+
+    .PARAMETER ImagePath
+    The path to the image file to be displayed.
+
+    .PARAMETER MaxWidth
+    The maximum width of the image. If not specified, the image will be displayed at its original size.
+
+    .EXAMPLE
+    # Displays the image located at "C:\Images\myimage.png" with a maximum width of 80 characters.
+    Get-SpectreImage -ImagePath "C:\Images\myimage.png" -MaxWidth 80
+    #>
+    [Reflection.AssemblyMetadata("title", "Get-SpectreImage")]
     param (
         [string] $ImagePath,
         [int] $MaxWidth

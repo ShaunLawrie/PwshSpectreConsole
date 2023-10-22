@@ -1,0 +1,84 @@
+---
+const { speed } = Astro.props;
+---
+
+<animated-terminal class="mt-0" data-speed={speed}>
+    <div class="mt-6" data-terminal-frame>
+        <pre class="font-mono bg-slate-50 dark:bg-slate-950">
+What's for <span class="text-pink-500">dinner</span>?
+&nbsp;
+<span class="text-pink-500">&gt; Sushi</span>
+&nbsp;&nbsp;Pizza
+&nbsp;&nbsp;Burgers</span>
+&nbsp;
+<span class="text-slate-600">(Move up and down to reveal more choices)</span></pre>
+    </div>
+    <div class="mt-6 hidden" data-terminal-frame>
+        <pre class="font-mono bg-slate-50 dark:bg-slate-950">
+What's for <span class="text-pink-500">dinner</span>?
+&nbsp;
+&nbsp;&nbsp;Sushi
+<span class="text-pink-500">&gt; Pizza</span>
+&nbsp;&nbsp;Burgers
+&nbsp;
+<span class="text-slate-600">(Move up and down to reveal more choices)</span></pre>
+    </div>
+    <div class="mt-6 hidden" data-terminal-frame>
+        <pre class="font-mono bg-slate-50 dark:bg-slate-950">
+What's for <span class="text-pink-500">dinner</span>?
+&nbsp;
+&nbsp;&nbsp;Pizza
+<span class="text-pink-500">&gt; Burgers</span>
+&nbsp;&nbsp;Tacos
+&nbsp;
+<span class="text-slate-600">(Move up and down to reveal more choices)</span></pre>
+    </div>
+    <div class="mt-6 hidden" data-terminal-frame>
+        <pre class="font-mono bg-slate-50 dark:bg-slate-950">
+What's for <span class="text-pink-500">dinner</span>?
+&nbsp;
+&nbsp;&nbsp;Pizza
+&nbsp;&nbsp;Burgers</span>
+<span class="text-pink-500">&gt; Tacos</span>
+&nbsp;
+<span class="text-slate-600">(Move up and down to reveal more choices)</span></pre>
+    </div>
+</animated-terminal>
+
+<script>
+    class AnimatedTerminal extends HTMLElement {
+        constructor() {
+            super();
+
+            // Get all frames in the terminal
+            const frames = document.querySelectorAll('[data-terminal-frame]');
+
+            // Get speed converted to a number
+            const speed = parseInt(this.getAttribute('data-speed') || '1000');
+
+            // Remember the current frame
+            let currentFrame = 0;
+            let totalFrames = 0;
+
+            // Every {speed} milliseconds show the next frame
+            setInterval(() => {
+                frames.forEach((frame, index) => {
+                    if (index === currentFrame) {
+                        console.log(`Showing frame ${index}`);
+                        frame.classList.remove('hidden');
+                    } else {
+                        console.log(`Hiding frame ${index}`);
+                        frame.classList.contains('hidden') || frame.classList.add('hidden');
+                    }
+                });
+
+                console.log(`Current frame: ${currentFrame}`);
+                currentFrame = (currentFrame + 1) % frames.length;
+                totalFrames++;
+            }, speed);
+
+        }
+    }
+
+    customElements.define('animated-terminal', AnimatedTerminal);
+</script>
