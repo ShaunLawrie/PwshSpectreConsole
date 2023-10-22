@@ -14,6 +14,7 @@
         'Format-SpectrePanel',
         'Format-SpectreTable',
         'Format-SpectreTree',
+        'Get-SpectreEscapedText',
         'Get-SpectreImage',
         'Get-SpectreImageExperimental',
         'Get-SpectreEscapedText',
