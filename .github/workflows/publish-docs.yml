@@ -1,0 +1,31 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build Docs
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          & .\PwshSpectreConsole\Build.ps1
+          Install-Module HelpOut -Scope CurrentUser -Force
+          & .\PwshSpectreConsole.Docs\UpdateDocs.ps1 -NonInteractive
+          git config --global user.name 'Shaun Lawrie (via GitHub Actions)'
+          git config --global user.email 'shaun.r.lawrie@gmail.com'
+          git add .\PwshSpectreConsole.Docs\src\content
+          git commit -m "[skip ci] Update docs"
+          git push
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          workingDirectory: "./PwshSpectreConsole.Docs/dist"
+          command: pages deploy --project-name pwshspectreconsole --commit-dirty=true --branch=main

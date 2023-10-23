@@ -1,10 +1,13 @@
 #requires -Modules HelpOut
+param(
+    [switch]$NonInteractive
+)
 
 $ErrorActionPreference = "Stop"
 
-Import-Module "..\PwshSpectreConsole\PwshSpectreConsole.psd1" -Force
-Remove-Item -Recurse -Path ".\src\content\docs\reference\*" -Force
-Get-Module PwshSpectreConsole | Save-MarkdownHelp -OutputPath ".\src\content\docs\reference\" -IncludeYamlHeader -YamlHeaderInformationType Metadata -ExcludeFile "*.gif", "*.png"
+Import-Module "$PSScriptRoot\..\PwshSpectreConsole\PwshSpectreConsole.psd1" -Force
+Remove-Item -Recurse -Path "$PSScriptRoot\src\content\docs\reference\*" -Force
+Get-Module PwshSpectreConsole | Save-MarkdownHelp -OutputPath "$PSScriptRoot\src\content\docs\reference\" -IncludeYamlHeader -YamlHeaderInformationType Metadata -ExcludeFile "*.gif", "*.png"
 
 # Post-processing for astro stuff
 $groups = @(
@@ -16,7 +19,7 @@ $groups = @(
     @{ Name = "Config"; Matches = @("set-") }
 )
 $remove = @("Start-SpectreDemo.md")
-$docs = Get-ChildItem ".\src\content\docs\reference\" -Filter "*.md" -Recurse
+$docs = Get-ChildItem "$PSScriptRoot\src\content\docs\reference\" -Filter "*.md" -Recurse
 foreach($doc in $docs) {
     if($remove -contains $doc.Name) {
         Remove-Item $doc.FullName
@@ -33,18 +36,22 @@ foreach($doc in $docs) {
         }
     }
 
-    $outLocation = ".\src\content\docs\reference\$($group.Name)\$($doc.Name)"
+    $outLocation = "$PSScriptRoot\src\content\docs\reference\$($group.Name)\$($doc.Name)"
     if($null -eq $group) {
         $outLocation = $doc.FullName
     }
-    New-Item -ItemType Directory -Path ".\src\content\docs\reference\$($group.Name)" -Force | Out-Null
+    New-Item -ItemType Directory -Path "$PSScriptRoot\src\content\docs\reference\$($group.Name)" -Force | Out-Null
     $content = Get-Content $doc.FullName -Raw
     Remove-Item $doc.FullName
     $content -replace '```PowerShell', '```powershell' -replace '(?m)^.+\n^[\-]{10,99}', '' | Out-File $outLocation
 }
 
 # Build the docs site
-npm run build --prefix .\
+npm run build --prefix $PSScriptRoot
+
+if($NonInteractive) {
+    return
+}
 
 # Yeet it to cloudflare
 $choice = Read-Host "`nDeploy to CF pages? (y/n)"
@@ -54,5 +61,5 @@ if($choice -eq "y") {
     } else {
         npx wrangler login
     }
-    npx wrangler pages deploy .\dist --project-name pwshspectreconsole --commit-dirty=true --branch=main
+    npx wrangler pages deploy "$PSScriptRoot\dist" --project-name pwshspectreconsole --commit-dirty=true --branch=main
 }
