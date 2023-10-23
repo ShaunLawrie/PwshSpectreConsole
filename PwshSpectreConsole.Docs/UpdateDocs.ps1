@@ -47,6 +47,7 @@ foreach($doc in $docs) {
 }
 
 # Build the docs site
+npm ci --prefix $PSScriptRoot
 npm run build --prefix $PSScriptRoot
 
 if($NonInteractive) {

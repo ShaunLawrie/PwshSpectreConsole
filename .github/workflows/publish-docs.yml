@@ -22,7 +22,7 @@ jobs:
           & .\PwshSpectreConsole.Docs\UpdateDocs.ps1 -NonInteractive
           git config --global user.name 'Shaun Lawrie (via GitHub Actions)'
           git config --global user.email 'shaun.r.lawrie@gmail.com'
-          git add .\PwshSpectreConsole.Docs\src\content
+          git add PwshSpectreConsole.Docs/src/content
           git commit -m "[skip ci] Update docs"
           git push
       - name: Deploy
