@@ -14,5 +14,5 @@ Install-Module PwshSpectreConsole -Scope CurrentUser
 To get the best experience, you should also follow the [instructions on the official Spectre Console site to configure Windows Terminal for full Unicode and Emoji support](https://spectreconsole.net/best-practices#configuring-the-windows-terminal-for-unicode-and-emoji-support).
 
 :::caution
-This requires PowerShell 7.0 or later. You can check your PowerShell version by running `$PSVersionTable.PSVersion` in yout terminal.
+This requires PowerShell 7.0 or later. You can check your PowerShell version by running `$PSVersionTable.PSVersion` in your terminal.
 :::
