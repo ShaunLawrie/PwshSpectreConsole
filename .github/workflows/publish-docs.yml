@@ -1,7 +1,10 @@
-name: Deploy
+name: Publish Doc Site
 
 on:
   workflow_dispatch:
+
+permissions:
+    contents: write
 
 jobs:
   deploy:
