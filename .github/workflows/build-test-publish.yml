@@ -3,9 +3,9 @@ env:
  PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
 on:
   workflow_dispatch:
-#  push:
-#    branches:
-#      - main
+  push:
+    branches:
+     - main
 
 jobs:
   publish-to-psgallery:
@@ -14,6 +14,18 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
+      - name: Version Bump
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $version = Get-Module PwshSpectreConsole -ListAvailable | Sort-Object -Property Version -Descending | Select-Object -First 1 -ExpandProperty Version
+          if($null -eq $version) { throw "Failed to load version" }
+          $newVersion = [version]::new($version.Major, $version.Minor, $version.Build + 1)
+          Write-Host "Bumping version from $version to $newVersion"
+          Update-ModuleManifest -Path .\PwshSpectreConsole\PwshSpectreConsole.psd1 -ModuleVersion $newVersion
+          git add PwshSpectreConsole/PwshSpectreConsole.psd1
+          git commit -m "Bump version to $newVersion"
+          git push
       - name: Deploy Package
         shell: pwsh
         run: |
