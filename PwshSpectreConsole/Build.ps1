@@ -8,7 +8,7 @@ function Install-SpectreConsole {
         [string] $Version
     )
 
-    New-Item -Path $libPath -ItemType "Directory" -Force | Out-Null
+    New-Item -Path $InstallLocation -ItemType "Directory" -Force | Out-Null
 
     $libPath = Join-Path $InstallLocation "Spectre.Console"
     New-Item -Path $libPath -ItemType "Directory" -Force | Out-Null

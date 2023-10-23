@@ -30,7 +30,7 @@ jobs:
           git config --global user.name 'Shaun Lawrie (via GitHub Actions)'
           git config --global user.email 'shaun.r.lawrie@gmail.com'
           git add PwshSpectreConsole/PwshSpectreConsole.psd1
-          git commit -m "Bump version to $newVersion"
+          git commit -m "[skip ci] Bump version to $newVersion"
           git push
       - name: Deploy Package
         shell: pwsh
