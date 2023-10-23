@@ -1,4 +1,4 @@
-name: PSGallery Publish
+name: Publish to PSGallery
 env:
  PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
 on:
