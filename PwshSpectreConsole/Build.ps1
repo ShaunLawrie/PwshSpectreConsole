@@ -7,6 +7,9 @@ function Install-SpectreConsole {
         [string] $InstallLocation,
         [string] $Version
     )
+
+    New-Item -Path $libPath -ItemType "Directory" -Force | Out-Null
+
     $libPath = Join-Path $InstallLocation "Spectre.Console"
     New-Item -Path $libPath -ItemType "Directory" -Force | Out-Null
     $downloadLocation = Join-Path $libPath "download.zip"
@@ -35,5 +38,7 @@ function Install-SpectreConsole {
 
 Write-Host "Downloading Spectre.Console version $Version"
 $installLocation = (Join-Path $PSScriptRoot "packages")
-Remove-Item $installLocation -Recurse -Force
+if(Test-Path $installLocation) {
+    Remove-Item $installLocation -Recurse -Force
+}
 Install-SpectreConsole -InstallLocation $installLocation -Version $Version
