@@ -7,6 +7,9 @@ on:
     branches:
      - main
 
+permissions:
+  contents: write
+
 jobs:
   publish-to-psgallery:
     name: Publish
@@ -24,6 +27,8 @@ jobs:
           $newVersion = [version]::new($version.Major, $version.Minor, $version.Build + 1)
           Write-Host "Bumping version from $version to $newVersion"
           Update-ModuleManifest -Path .\PwshSpectreConsole\PwshSpectreConsole.psd1 -ModuleVersion $newVersion
+          git config --global user.name 'Shaun Lawrie (via GitHub Actions)'
+          git config --global user.email 'shaun.r.lawrie@gmail.com'
           git add PwshSpectreConsole/PwshSpectreConsole.psd1
           git commit -m "Bump version to $newVersion"
           git push
