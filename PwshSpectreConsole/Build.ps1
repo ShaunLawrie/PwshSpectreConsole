@@ -34,4 +34,6 @@ function Install-SpectreConsole {
 }
 
 Write-Host "Downloading Spectre.Console version $Version"
-Install-SpectreConsole -InstallLocation (Join-Path $PSScriptRoot "packages") -Version $Version
+$installLocation = (Join-Path $PSScriptRoot "packages")
+Remove-Item $installLocation -Recurse -Force
+Install-SpectreConsole -InstallLocation $installLocation -Version $Version

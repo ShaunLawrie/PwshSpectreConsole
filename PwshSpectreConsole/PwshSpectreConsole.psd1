@@ -12,7 +12,7 @@
 RootModule = 'PwshSpectreConsole'
 
 # Version number of this module.
-ModuleVersion = '0.2.6'
+ModuleVersion = '0.3.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -78,7 +78,7 @@ FunctionsToExport = 'Add-SpectreJob', 'Format-SpectreBarChart',
                'Read-SpectreMultiSelectionGrouped', 'Read-SpectrePause', 
                'Read-SpectreSelection', 'Read-SpectreText', 'Set-SpectreColors', 
                'Start-SpectreDemo', 'Wait-SpectreJobs', 'Write-SpectreFigletText', 
-               'Write-SpectreHost', 'Write-SpectreParagraph', 'Write-SpectreRule'
+               'Write-SpectreHost', 'Write-SpectreRule'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()

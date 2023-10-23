@@ -34,7 +34,7 @@ function Start-SpectreDemo {
         Write-Host ""
 
         Write-SpectreRule $Title -Color ([Spectre.Console.Color]::SteelBlue1)
-        Write-SpectreParagraph $Description
+        Write-SpectreHost "`n$Description"
         if(!$HideHeader) {
             Write-CodeblockHeader
         }
@@ -52,9 +52,9 @@ function Start-SpectreDemo {
     Write-Host ""
 
     Write-SpectreRule "PwshSpectreConsole Intro" -Color ([Spectre.Console.Color]::SteelBlue1)
-    Write-SpectreParagraph "PwshSpectreConsole is an opinionated wrapper for the awesome Spectre.Console library. It's opinionated in that I have not just exposed the internals of Spectre Console to PowerShell but have wrapped them in a way that makes them work better in the PowerShell ecosystem (in my opinion 😜)."
-    Write-SpectreParagraph "Spectre Console is mostly an async library and it leans heavily on types and extension methods in C# which are very verbose to work with in PowerShell so this module hides away some of the complexity."
-    Write-SpectreParagraph "The module doesn't expose the full feature set of Spectre.Console because the scope of the library is huge and I've focused on the features that I use to enhance my scripts."
+    Write-SpectreHost "`nPwshSpectreConsole is an opinionated wrapper for the awesome Spectre.Console library. It's opinionated in that I have not just exposed the internals of Spectre Console to PowerShell but have wrapped them in a way that makes them work better in the PowerShell ecosystem (in my opinion 😜)."
+    Write-SpectreHost "`nSpectre Console is mostly an async library and it leans heavily on types and extension methods in C# which are very verbose to work with in PowerShell so this module hides away some of the complexity."
+    Write-SpectreHost "`nThe module doesn't expose the full feature set of Spectre.Console because the scope of the library is huge and I've focused on the features that I use to enhance my scripts."
     Write-Host ""
     if(![Spectre.Console.AnsiConsole]::Console.Profile.Capabilities.Unicode) {
         Write-Warning "To enable all features of Spectre.Console you need to enable Unicode support in your PowerShell profile by adding the following to your profile at $PROFILE. See https://spectreconsole.net/best-practices for more info.`n`n`$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding"
@@ -207,11 +207,11 @@ $(
 Invoke-SpectreCommandWithStatus -Spinner "Dots2" -Title "Showing a spinner..." -ScriptBlock {
     # Write updates tot the host using Write-SpectreHost
     Start-Sleep -Seconds 1
-    Write-SpectreHost "[grey]LOG:[/] Doing some work"
+    Write-SpectreHost "`n[grey]LOG:[/] Doing some work"
     Start-Sleep -Seconds 1
-    Write-SpectreHost "[grey]LOG:[/] Doing some more work"
+    Write-SpectreHost "`n[grey]LOG:[/] Doing some more work"
     Start-Sleep -Seconds 1
-    Write-SpectreHost "[grey]LOG:[/] Done"
+    Write-SpectreHost "`n[grey]LOG:[/] Done"
     Start-Sleep -Seconds 1
 }
 '@
