@@ -78,7 +78,7 @@ FunctionsToExport = 'Add-SpectreJob', 'Format-SpectreBarChart',
                'Read-SpectreMultiSelectionGrouped', 'Read-SpectrePause', 
                'Read-SpectreSelection', 'Read-SpectreText', 'Set-SpectreColors', 
                'Start-SpectreDemo', 'Wait-SpectreJobs', 'Write-SpectreFigletText', 
-               'Write-SpectreHost', 'Write-SpectreRule'
+               'Write-SpectreHost', 'Write-SpectreRule', 'Read-SpectreConfirm'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
