@@ -183,7 +183,10 @@ function Read-SpectreConfirm {
         [ValidateSet("y", "n")]
         [string] $DefaultAnswer = "y",
         [string] $ConfirmSuccess,
-        [string] $ConfirmFailure
+        [string] $ConfirmFailure,
+        [ValidateSpectreColor()]
+        [ArgumentCompletionsSpectreColors()]
+        [string] $Color = $script:AccentColor.ToMarkup()
     )
 
     # This is much fiddlier but it exposes the ability to set the color scheme. The confirmationprompt is just a textprompt with two choices hard coded to y/n:
@@ -195,7 +198,7 @@ function Read-SpectreConfirm {
 
     # This is how I added the default colors with Set-SpectreColors so you don't have to keep passing them through and get a consistent TUI color scheme
     $confirmationPrompt.DefaultValueStyle = [Spectre.Console.Style]::new($script:DefaultValueColor)
-    $confirmationPrompt.ChoicesStyle = [Spectre.Console.Style]::new($script:AccentColor)
+    $confirmationPrompt.ChoicesStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
     $confirmationPrompt.InvalidChoiceMessage = "[red]Please select one of the available options[/]"
 
     # Invoke-SpectrePromptAsync supports ctrl-c

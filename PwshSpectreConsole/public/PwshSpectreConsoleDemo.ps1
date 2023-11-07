@@ -71,6 +71,13 @@ $name = Read-SpectreText "What's your [blue]name[/]?"
     Clear-Host
 
     $example = @'
+$answer = Read-SpectreConfirm -Prompt "Do you like cute animals?" -DefaultAnswer "y"
+'@
+    $example | Write-SpectreExample -Title "Confirmation" -Description "Confirmation prompts are used to confirm an action or decision before it is executed. They help prevent users from making mistakes or taking actions they did not intend to, reducing the chances of errors and improving the overall user experience."
+    $example | Invoke-Expression
+    Clear-Host
+
+    $example = @'
 $choices = @("Sushi", "Tacos", "Pad Thai", "Lobster", "Falafel", "Chicken Parmesan", "Ramen", "Fish and Chips", "Biryani", "Croissants", "Enchiladas", "Shepherd's Pie", "Gyoza", "Fajitas", "Samosas", "Bruschetta", "Paella", "Hamburger", "Poutine", "Ceviche")
 
 $food = Read-SpectreSelection `
