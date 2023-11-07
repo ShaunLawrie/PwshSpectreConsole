@@ -2,6 +2,11 @@ class ValidateSpectreColor : System.Management.Automation.ValidateArgumentsAttri
 {
     ValidateSpectreColor() : base() { }
     [void]Validate([object] $Color, [System.Management.Automation.EngineIntrinsics]$EngineIntrinsics) {
+        # Handle hex colors
+        if($Color -match '^#[A-Fa-f0-9]{6}$') {
+            return
+        }
+
         $spectreColors = [Spectre.Console.Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
         $result = $spectreColors -contains $Color
         if($result -eq $false) {
@@ -13,7 +18,9 @@ class ValidateSpectreColor : System.Management.Automation.ValidateArgumentsAttri
 class ArgumentCompletionsSpectreColors : System.Management.Automation.ArgumentCompleterAttribute 
 {
     ArgumentCompletionsSpectreColors() : base({
-        [Spectre.Console.Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
+        param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)
+        $options = [Spectre.Console.Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
+        return $options | Where-Object { $_ -like "$wordToComplete*" }
     }) { }
 }
 

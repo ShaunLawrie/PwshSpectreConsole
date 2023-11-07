@@ -21,6 +21,23 @@ function Invoke-SpectrePromptAsync {
     }
 }
 
+function Convert-ToSpectreColor {
+    param (
+        [Parameter(ValueFromPipeline, Mandatory)]
+        [ValidateSpectreColor()]
+        [string] $Color
+    )
+    # Already validated in validation attribute
+    if($Color.StartsWith("#")) {
+        $hexString = $Color -replace '^#', ''
+        $hexBytes = [System.Convert]::FromHexString($hexString)
+        return [Spectre.Console.Color]::new($hexBytes[0], $hexBytes[1], $hexBytes[2])
+    }
+
+    # Validated in attribute as a real color already
+    return [Spectre.Console.Color]::$Color
+}
+
 function Set-SpectreColors {
     <#
     .SYNOPSIS
@@ -52,8 +69,8 @@ function Set-SpectreColors {
         [ArgumentCompletionsSpectreColors()]
         [string] $DefaultValueColor = "Grey"
     )
-    $script:AccentColor = [Spectre.Console.Color]::$AccentColor
-    $script:DefaultValueColor = [Spectre.Console.Color]::$DefaultValueColor
+    $script:AccentColor = $AccentColor | Convert-ToSpectreColor
+    $script:DefaultValueColor = $DefaultValueColor | Convert-ToSpectreColor
 }
 
 function Write-SpectreRule {
@@ -84,7 +101,7 @@ function Write-SpectreRule {
         [string] $Alignment = "Left",
         [ValidateSpectreColor()]
         [ArgumentCompletionsSpectreColors()]
-        [string] $Color = $script:AccentColor.ToString()
+        [string] $Color = $script:AccentColor.ToMarkup()
     )
     $rule = [Spectre.Console.Rule]::new("[$($Color)]$Title[/]")
     $rule.Justification = [Spectre.Console.Justify]::$Alignment
@@ -118,7 +135,7 @@ function Write-SpectreFigletText {
         [string] $Alignment = "Left",
         [ValidateSpectreColor()]
         [ArgumentCompletionsSpectreColors()]
-        [string] $Color = $script:AccentColor.ToString()
+        [string] $Color = $script:AccentColor.ToMarkup()
     )
     $figletText = [Spectre.Console.FigletText]::new($Text)
     $figletText.Justification = switch($Alignment) {
@@ -127,7 +144,7 @@ function Write-SpectreFigletText {
         "Centered" { [Spectre.Console.Justify]::Center }
         default { Write-Error "Invalid alignment $Alignment" }
     }
-    $figletText.Color = [Spectre.Console.Color]::$Color
+    $figletText.Color = ($Color | Convert-ToSpectreColor)
     [Spectre.Console.AnsiConsole]::Write($figletText)
 }
 
@@ -226,12 +243,12 @@ function Read-SpectreSelection {
     #>
     [Reflection.AssemblyMetadata("title", "Read-SpectreSelection")]
     param (
-        [string] $Title = "What's your favourite colour [$($script:AccentColor.ToString())]option[/]?",
+        [string] $Title = "What's your favourite colour [$($script:AccentColor.ToMarkup())]option[/]?",
         [array] $Choices = @("red", "green", "blue"),
         [string] $ChoiceLabelProperty,
         [ValidateSpectreColor()]
         [ArgumentCompletionsSpectreColors()]
-        [string] $Color = $script:AccentColor.ToString(),
+        [string] $Color = $script:AccentColor.ToMarkup(),
         [int] $PageSize = 5
     )
     $prompt = [Spectre.Console.SelectionPrompt[string]]::new()
@@ -251,8 +268,8 @@ function Read-SpectreSelection {
     $prompt.Title = $Title
     $prompt.PageSize = $PageSize
     $prompt.WrapAround = $true
-    $prompt.HighlightStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::$Color)
-    $prompt.MoreChoicesText = "[$($script:DefaultValueColor)](Move up and down to reveal more choices)[/]"
+    $prompt.HighlightStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
+    $prompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
     $selected = Invoke-SpectrePromptAsync -Prompt $prompt
 
     if($ChoiceLabelProperty) {
@@ -291,12 +308,12 @@ function Read-SpectreMultiSelection {
     #>
     [Reflection.AssemblyMetadata("title", "Read-SpectreMultiSelection")]
     param (
-        [string] $Title = "What are your favourite [$($script:AccentColor.ToString())]colors[/]?",
+        [string] $Title = "What are your favourite [$($script:AccentColor.ToMarkup())]colors[/]?",
         [array] $Choices = @("red", "orange", "yellow", "green", "blue", "indigo", "violet"),
         [string] $ChoiceLabelProperty,
         [ValidateSpectreColor()]
         [ArgumentCompletionsSpectreColors()]
-        [string] $Color = $script:AccentColor.ToString(),
+        [string] $Color = $script:AccentColor.ToMarkup(),
         [int] $PageSize = 5
     )
     $prompt = [Spectre.Console.MultiSelectionPrompt[string]]::new()
@@ -316,9 +333,9 @@ function Read-SpectreMultiSelection {
     $prompt.Title = $Title
     $prompt.PageSize = $PageSize
     $prompt.WrapAround = $true
-    $prompt.HighlightStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::$Color)
-    $prompt.InstructionsText = "[$($script:DefaultValueColor)](Press [$($script:AccentColor.ToString())]space[/] to toggle a choice and press [$($script:AccentColor.ToString())]<enter>[/] to submit your answer)[/]"
-    $prompt.MoreChoicesText = "[$($script:DefaultValueColor)](Move up and down to reveal more choices)[/]"
+    $prompt.HighlightStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
+    $prompt.InstructionsText = "[$($script:DefaultValueColor.ToMarkup())](Press [$($script:AccentColor.ToMarkup())]space[/] to toggle a choice and press [$($script:AccentColor.ToMarkup())]<enter>[/] to submit your answer)[/]"
+    $prompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
     $selected = Invoke-SpectrePromptAsync -Prompt $prompt
 
     if($ChoiceLabelProperty) {
@@ -366,7 +383,7 @@ function Read-SpectreMultiSelectionGrouped {
     #>
     [Reflection.AssemblyMetadata("title", "Read-SpectreMultiSelectionGrouped")]
     param (
-        [string] $Title = "What are your favourite [$($script:AccentColor.ToString())]colors[/]?",
+        [string] $Title = "What are your favourite [$($script:AccentColor.ToMarkup())]colors[/]?",
         [array] $Choices = @(
             @{
                 Name = "The rainbow"
@@ -380,7 +397,7 @@ function Read-SpectreMultiSelectionGrouped {
         [string] $ChoiceLabelProperty,
         [ValidateSpectreColor()]
         [ArgumentCompletionsSpectreColors()]
-        [string] $Color = $script:AccentColor.ToString(),
+        [string] $Color = $script:AccentColor.ToMarkup(),
         [int] $PageSize = 10
     )
     $prompt = [Spectre.Console.MultiSelectionPrompt[string]]::new()
@@ -406,9 +423,9 @@ function Read-SpectreMultiSelectionGrouped {
     $prompt.Title = $Title
     $prompt.PageSize = $PageSize
     $prompt.WrapAround = $true
-    $prompt.HighlightStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::$Color)
-    $prompt.InstructionsText = "[$($script:DefaultValueColor)](Press [$($script:AccentColor.ToString())]space[/] to toggle a choice and press [$($script:AccentColor.ToString())]<enter>[/] to submit your answer)[/]"
-    $prompt.MoreChoicesText = "[$($script:DefaultValueColor)](Move up and down to reveal more choices)[/]"
+    $prompt.HighlightStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
+    $prompt.InstructionsText = "[$($script:DefaultValueColor.ToMarkup())](Press [$($script:AccentColor.ToMarkup())]space[/] to toggle a choice and press [$($script:AccentColor.ToMarkup())]<enter>[/] to submit your answer)[/]"
+    $prompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
     $selected = Invoke-SpectrePromptAsync -Prompt $prompt
 
     if($ChoiceLabelProperty) {
@@ -484,14 +501,14 @@ function Invoke-SpectreCommandWithStatus {
         [string] $Title,
         [ValidateSpectreColor()]
         [ArgumentCompletionsSpectreColors()]
-        [string] $Color = $script:AccentColor.ToString()
+        [string] $Color = $script:AccentColor.ToMarkup()
     )
     [Spectre.Console.AnsiConsole]::Status().Start($Title, {
         param (
             $ctx
         )
         $ctx.Spinner = [Spectre.Console.Spinner+Known]::$Spinner
-        $ctx.SpinnerStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::$Color)
+        $ctx.SpinnerStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
         & $ScriptBlock $ctx
     })
 }
@@ -852,7 +869,7 @@ function Format-SpectrePanel {
         [switch] $Expand, 
         [ValidateSpectreColor()]
         [ArgumentCompletionsSpectreColors()]
-        [string] $Color = $script:AccentColor.ToString()
+        [string] $Color = $script:AccentColor.ToMarkup()
     )
     $panel = [Spectre.Console.Panel]::new($Data)
     if($Title) {
@@ -860,7 +877,7 @@ function Format-SpectrePanel {
     }
     $panel.Expand = $Expand
     $panel.Border = [Spectre.Console.BoxBorder]::$Border
-    $panel.BorderStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::$Color)
+    $panel.BorderStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
     [Spectre.Console.AnsiConsole]::Write($panel)
 }
 
@@ -896,12 +913,12 @@ function Format-SpectreTable {
         [string] $Border = "Double",
         [ValidateSpectreColor()]
         [ArgumentCompletionsSpectreColors()]
-        [string] $Color = $script:AccentColor.ToString()
+        [string] $Color = $script:AccentColor.ToMarkup()
     )
     begin {
         $table = [Spectre.Console.Table]::new()
         $table.Border = [Spectre.Console.TableBorder]::$Border
-        $table.BorderStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::$Color)
+        $table.BorderStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
         $headerProcessed = $false
     }
     process {
@@ -982,7 +999,7 @@ function Format-SpectreTree {
         [string] $Border = "Rounded",
         [ValidateSpectreColor()]
         [ArgumentCompletionsSpectreColors()]
-        [string] $Color = $script:AccentColor.ToString()
+        [string] $Color = $script:AccentColor.ToMarkup()
     )
 
     function Add-SpectreTreeNode {
@@ -1003,7 +1020,7 @@ function Format-SpectreTree {
 
     Add-SpectreTreeNode -Node $tree -Children $Data.Children
 
-    $tree.Style = [Spectre.Console.Style]::new([Spectre.Console.Color]::$Color)
+    $tree.Style = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
     [Spectre.Console.AnsiConsole]::Write($tree)
 }
 
@@ -1027,7 +1044,7 @@ function Read-SpectrePause {
     #>
     [Reflection.AssemblyMetadata("title", "Read-SpectrePause")]
     param (
-        [string] $Message = "[$script:DefaultValueColor]Press [$script:AccentColor]<enter>[/] to continue[/]",
+        [string] $Message = "[$($script:DefaultValueColor.ToMarkup())]Press [$($script:AccentColor.ToMarkup())]<enter>[/] to continue[/]",
         [switch] $NoNewline
     )
 
