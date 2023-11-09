@@ -52,9 +52,12 @@ PowerShellVersion = '7.0'
 
 # Modules that must be imported into the global environment prior to importing this module
 # RequiredModules = @()
-
 # Assemblies that must be loaded prior to importing this module
-# RequiredAssemblies = @()
+RequiredAssemblies = @(
+    ".\packages\Spectre.Console\lib\netstandard2.0\Spectre.Console.dll",
+    ".\packages\Spectre.Console.ImageSharp\lib\netstandard2.0\Spectre.Console.ImageSharp.dll",
+    ".\packages\SixLabors.ImageSharp\lib\netstandard2.0\SixLabors.ImageSharp.dll"
+)
 
 # Script files (.ps1) that are run in the caller's environment prior to importing this module.
 # ScriptsToProcess = @()

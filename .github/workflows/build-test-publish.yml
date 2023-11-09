@@ -37,4 +37,4 @@ jobs:
         run: |
           $ErrorActionPreference = "Stop"
           & ./PwshSpectreConsole/Build.ps1
-          Publish-Module -Path "./PwshSpectreConsole/" -NugetApiKey $env:PSGALLERY_API_KEY
+          Publish-Module -Path "./PwshSpectreConsole/" -Exclude "Build.ps1" -NugetApiKey $env:PSGALLERY_API_KEY

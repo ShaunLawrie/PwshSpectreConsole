@@ -1,16 +1,16 @@
 class ValidateSpectreColor : System.Management.Automation.ValidateArgumentsAttribute 
 {
     ValidateSpectreColor() : base() { }
-    [void]Validate([object] $Color, [System.Management.Automation.EngineIntrinsics]$EngineIntrinsics) {
+    [void]Validate([object] $Argument, [System.Management.Automation.EngineIntrinsics]$EngineIntrinsics) {
         # Handle hex colors
-        if($Color -match '^#[A-Fa-f0-9]{6}$') {
+        if($Argument -match '^#[A-Fa-f0-9]{6}$') {
             return
         }
 
-        $spectreColors = [Spectre.Console.Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
-        $result = $spectreColors -contains $Color
+        $options = [Spectre.Console.Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
+        $result = $options -contains $Argument
         if($result -eq $false) {
-            throw "'$Color' is not in the list of valid Spectre colors ['$($spectreColors -join ''', ''')']" 
+            throw "'$Argument' is not in the list of valid Spectre options ['$($options -join ''', ''')']" 
         }
     }
 }

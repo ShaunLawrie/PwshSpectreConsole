@@ -1,5 +1,3 @@
-using module "..\private\Attributes.psm1"
-
 function Start-SpectreDemo {
     <#
     .SYNOPSIS
@@ -57,7 +55,7 @@ function Start-SpectreDemo {
     Write-SpectreHost "`nThe module doesn't expose the full feature set of Spectre.Console because the scope of the library is huge and I've focused on the features that I use to enhance my scripts."
     Write-Host ""
     if(![Spectre.Console.AnsiConsole]::Console.Profile.Capabilities.Unicode) {
-        Write-Warning "To enable all features of Spectre.Console you need to enable Unicode support in your PowerShell profile by adding the following to your profile at $PROFILE. See https://spectreconsole.net/best-practices for more info.`n`n`$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding"
+        Write-Warning "To enable all features of Spectre.Console you need to enable Unicode support in your PowerShell profile by adding the following to your profile at $PROFILE. See https://spectreconsole.net/best-practices for more info.`n`n`$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding`n"
     }
 
     Read-SpectrePause -NoNewline
@@ -306,7 +304,7 @@ Invoke-SpectreCommandWithProgress -ScriptBlock {
     Clear-Host
 
     $example = @"
-Get-SpectreImage "$PSScriptRoot\..\private\hero.png"
+Get-SpectreImage "$PSScriptRoot\..\private\images\hero.png"
 "@
     $example | Write-SpectreExample -Title "View Images" -Description "Images can be rendered in the terminal, given a path to an image Spectre Console will downsample the image to a resolution that will fit within the terminal width or you can choose your own width setting."
     Invoke-Expression $example
