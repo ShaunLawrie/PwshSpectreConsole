@@ -27,15 +27,19 @@ function Convert-ToSpectreColor {
         [ValidateSpectreColor()]
         [string] $Color
     )
-    # Already validated in validation attribute
-    if($Color.StartsWith("#")) {
-        $hexString = $Color -replace '^#', ''
-        $hexBytes = [System.Convert]::FromHexString($hexString)
-        return [Spectre.Console.Color]::new($hexBytes[0], $hexBytes[1], $hexBytes[2])
-    }
+    try {
+        # Already validated in validation attribute
+        if($Color.StartsWith("#")) {
+            $hexString = $Color -replace '^#', ''
+            $hexBytes = [System.Convert]::FromHexString($hexString)
+            return [Spectre.Console.Color]::new($hexBytes[0], $hexBytes[1], $hexBytes[2])
+        }
 
-    # Validated in attribute as a real color already
-    return [Spectre.Console.Color]::$Color
+        # Validated in attribute as a real color already
+        return [Spectre.Console.Color]::$Color
+    } catch {
+        return $script:AccentColor
+    }
 }
 
 function Set-SpectreColors {
@@ -729,9 +733,9 @@ function Format-SpectreBarChart {
     .EXAMPLE
     # This example displays a bar chart with the title "Fruit Sales" and a width of 50 characters.
     $data = @(
-        @{ Label = "Apples"; Value = 10; Color = [Spectre.Console.Color]::Green },
-        @{ Label = "Oranges"; Value = 5; Color = [Spectre.Console.Color]::Yellow },
-        @{ Label = "Bananas"; Value = 3; Color = [Spectre.Console.Color]::Red }
+        @{ Label = "Apples"; Value = 10; Color = "Green" },
+        @{ Label = "Oranges"; Value = 5; Color = "Yellow" },
+        @{ Label = "Bananas"; Value = 3; Color = "Red" }
     )
     Format-SpectreBarChart -Data $data -Title "Fruit Sales" -Width 50
     #>
@@ -752,10 +756,10 @@ function Format-SpectreBarChart {
     process {
         if($Data -is [array]) {
             foreach($dataItem in $Data) {
-                $barChart = [Spectre.Console.BarChartExtensions]::AddItem($barChart, $dataItem.Label, $dataItem.Value, $dataItem.Color)
+                $barChart = [Spectre.Console.BarChartExtensions]::AddItem($barChart, $dataItem.Label, $dataItem.Value, ($dataItem.Color | Convert-ToSpectreColor))
             }
         } else {
-            $barChart = [Spectre.Console.BarChartExtensions]::AddItem($barChart, $Data.Label, $Data.Value, $Data.Color)
+            $barChart = [Spectre.Console.BarChartExtensions]::AddItem($barChart, $Data.Label, $Data.Value, ($Data.Color | Convert-ToSpectreColor))
         }
     }
     end {
@@ -806,9 +810,9 @@ function Format-SpectreBreakdownChart {
     .EXAMPLE
     # This example displays a breakdown chart with the title "Fruit Sales" and a width of 50 characters.
     $data = @(
-        @{ Label = "Apples"; Value = 10; Color = [Spectre.Console.Color]::Red },
-        @{ Label = "Oranges"; Value = 20; Color = [Spectre.Console.Color]::Orange1 },
-        @{ Label = "Bananas"; Value = 15; Color = [Spectre.Console.Color]::Yellow }
+        @{ Label = "Apples"; Value = 10; Color = "Red" },
+        @{ Label = "Oranges"; Value = 20; Color = "Orange1" },
+        @{ Label = "Bananas"; Value = 15; Color = "Yellow" }
     )
     Format-SpectreBreakdownChart -Data $data -Width 50
     #>
@@ -825,10 +829,10 @@ function Format-SpectreBreakdownChart {
     process {
         if($Data -is [array]) {
             foreach($dataItem in $Data) {
-                [Spectre.Console.BreakdownChartExtensions]::AddItem($chart, $dataItem.Label, $dataItem.Value, $dataItem.Color) | Out-Null
+                [Spectre.Console.BreakdownChartExtensions]::AddItem($chart, $dataItem.Label, $dataItem.Value, ($dataItem.Color | Convert-ToSpectreColor)) | Out-Null
             }
         } else {
-            [Spectre.Console.BreakdownChartExtensions]::AddItem($chart, $Data.Label, $Data.Value, $Data.Color) | Out-Null
+            [Spectre.Console.BreakdownChartExtensions]::AddItem($chart, $Data.Label, $Data.Value, ($Data.Color | Convert-ToSpectreColor)) | Out-Null
         }
     }
     end {
