@@ -65,7 +65,7 @@ jobs:
           git push
 
           # Mark as prerelease
-          Update-ModuleManifest -Path .\PwshSpectreConsole\PwshSpectreConsole.psd1 -ModuleVersion $newVersion -PrivateData @{ PSData = @{ Prerelease = 'prerelease' } }
+          Update-ModuleManifest -Path .\PwshSpectreConsole\PwshSpectreConsole.psd1 -PrivateData @{ Prerelease = 'prerelease' }
 
           # Publish pre-release version
           Import-Module .\PwshSpectreConsole\PwshSpectreConsole.psd1 -Force
