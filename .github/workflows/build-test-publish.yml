@@ -56,7 +56,7 @@ jobs:
           $version = Get-Module PwshSpectreConsole -ListAvailable | Sort-Object -Property Version -Descending | Select-Object -First 1 -ExpandProperty Version
           if($null -eq $version) { throw "Failed to load version" }
           $newVersion = [version]::new($version.Major, $version.Minor, $version.Build + 1)
-          Write-Host "Bumping version from $version to $newVersion
+          Write-Host "Bumping version from $version to $newVersion"
           Update-ModuleManifest -Path .\PwshSpectreConsole\PwshSpectreConsole.psd1 -ModuleVersion $newVersion
           git config --global user.name 'Shaun Lawrie (via GitHub Actions)'
           git config --global user.email 'shaun.r.lawrie@gmail.com'
