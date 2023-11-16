@@ -20,9 +20,9 @@ function Invoke-SpectreScriptBlockQuietly {
     param (
         # The script block to be invoked.
         [scriptblock] $Command,
-        # Suppresses the output completely if this switch is specified.
+        # Suppresses the output by varying amounts.
         [ValidateSet("Quiet", "Quieter")]
-        [switch] $Level = "Quiet"
+        [string] $Level = "Quiet"
     )
     try {
         $job = Start-Job $Command
