@@ -58,6 +58,14 @@ The alignment of the text in the rule. Valid values are Left, Center, and Right.
 
 
 
+Valid Values:
+
+* Left
+* Right
+* Center
+
+
+
 
 
 

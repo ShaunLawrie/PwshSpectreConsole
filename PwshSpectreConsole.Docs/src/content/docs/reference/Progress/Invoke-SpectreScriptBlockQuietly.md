@@ -14,6 +14,9 @@ title: Invoke-SpectreScriptBlockQuietly
 
 ### Synopsis
 A testing function for invoking a script block in a background job inside Invoke-SpectreCommandWithProgress to help with https://github.com/ShaunLawrie/PwshSpectreConsole/issues/7
+:::caution
+This is experimental.
+:::
 
 
 
@@ -63,7 +66,7 @@ The script block to be invoked.
 
 #### **Level**
 
-Suppresses the output completely if this switch is specified.
+Suppresses the output by varying amounts.
 
 
 
@@ -79,7 +82,7 @@ Valid Values:
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
-|`[Switch]`|false   |named   |false        |
+|`[String]`|false   |2       |false        |
 
 
 
@@ -90,6 +93,6 @@ Valid Values:
 
 ### Syntax
 ```powershell
-Invoke-SpectreScriptBlockQuietly [[-Command] <ScriptBlock>] [-Level] [<CommonParameters>]
+Invoke-SpectreScriptBlockQuietly [[-Command] <ScriptBlock>] [[-Level] <String>] [<CommonParameters>]
 ```
 

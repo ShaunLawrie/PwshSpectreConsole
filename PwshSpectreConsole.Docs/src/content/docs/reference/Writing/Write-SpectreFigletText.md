@@ -58,6 +58,14 @@ The alignment of the text. Valid values are "Left", "Right", and "Centered". The
 
 
 
+Valid Values:
+
+* Left
+* Right
+* Center
+
+
+
 
 
 

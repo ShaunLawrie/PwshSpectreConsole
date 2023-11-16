@@ -67,6 +67,7 @@ Valid Values:
 
 * y
 * n
+* none
 
 
 
