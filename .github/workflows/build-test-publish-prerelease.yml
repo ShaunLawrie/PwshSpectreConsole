@@ -4,7 +4,7 @@ env:
 on:
   push:
     branches:
-     - main
+     - prerelease
 
 permissions:
   contents: write
@@ -23,7 +23,7 @@ jobs:
           $env:PSModulePath = @($env:PSModulePath, ".\PwshSpectreConsole\") -join ":"
           $version = Get-Module PwshSpectreConsole -ListAvailable | Sort-Object -Property Version -Descending | Select-Object -First 1 -ExpandProperty Version
           if($null -eq $version) { throw "Failed to load version" }
-          $newVersion = [version]::new($version.Major, $version.Minor + 1, 0)
+          $newVersion = [version]::new($version.Major, $version.Minor, $version.Build + 1)
           Write-Host "Bumping version from $version to $newVersion"
           Update-ModuleManifest -Path .\PwshSpectreConsole\PwshSpectreConsole.psd1 -ModuleVersion $newVersion
           git config --global user.name 'Shaun Lawrie (via GitHub Actions)'
@@ -31,9 +31,7 @@ jobs:
           git add PwshSpectreConsole/PwshSpectreConsole.psd1
           git commit -m "[skip ci] Bump version to $newVersion"
           git push
-      - name: Deploy Package
-        shell: pwsh
-        run: |
-          $ErrorActionPreference = "Stop"
+
+          # Publish pre-release version
           & ./PwshSpectreConsole/Build.ps1
-          Publish-Module -Path "./PwshSpectreConsole/" -Exclude "Build.ps1" -NugetApiKey $env:PSGALLERY_API_KEY
+          Publish-Module -Path "./PwshSpectreConsole/" -Exclude "Build.ps1" -NugetApiKey $env:PSGALLERY_API_KEY -RequiredVersion "$newVersion-prerelease" -AllowPrerelease

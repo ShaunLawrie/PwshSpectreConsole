@@ -66,6 +66,6 @@ function Format-SpectreTable {
         }
     }
     end {
-        [Spectre.Console.AnsiConsole]::Write($table)
+        Write-AnsiConsole $table
     }
 }

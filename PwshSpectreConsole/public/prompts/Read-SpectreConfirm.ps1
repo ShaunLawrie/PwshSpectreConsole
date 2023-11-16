@@ -32,7 +32,7 @@ function Read-SpectreConfirm {
     [Reflection.AssemblyMetadata("title", "Read-SpectreConfirm")]
     param (
         [String] $Prompt = "Do you like cute animals?",
-        [ValidateSet("y", "n")]
+        [ValidateSet("y", "n", "none")]
         [string] $DefaultAnswer = "y",
         [string] $ConfirmSuccess,
         [string] $ConfirmFailure,
@@ -44,9 +44,11 @@ function Read-SpectreConfirm {
     # This is much fiddlier but it exposes the ability to set the color scheme. The confirmationprompt is just a textprompt with two choices hard coded to y/n:
     # https://github.com/spectreconsole/spectre.console/blob/63b940cf0eb127a8cd891a4fe338aa5892d502c5/src/Spectre.Console/Prompts/ConfirmationPrompt.cs#L71
     $confirmationPrompt = [Spectre.Console.TextPrompt[string]]::new($Prompt)
-    $confirmationPrompt = [Spectre.Console.TextPromptExtensions]::DefaultValue($confirmationPrompt, $DefaultAnswer)
     $confirmationPrompt = [Spectre.Console.TextPromptExtensions]::AddChoice($confirmationPrompt, "y")
     $confirmationPrompt = [Spectre.Console.TextPromptExtensions]::AddChoice($confirmationPrompt, "n")
+    if($DefaultAnswer -ne "none") {
+        $confirmationPrompt = [Spectre.Console.TextPromptExtensions]::DefaultValue($confirmationPrompt, $DefaultAnswer)
+    }
 
     # This is how I added the default colors with Set-SpectreColors so you don't have to keep passing them through and get a consistent TUI color scheme
     $confirmationPrompt.DefaultValueStyle = [Spectre.Console.Style]::new($script:DefaultValueColor)
@@ -54,17 +56,17 @@ function Read-SpectreConfirm {
     $confirmationPrompt.InvalidChoiceMessage = "[red]Please select one of the available options[/]"
 
     # Invoke-SpectrePromptAsync supports ctrl-c
-    $sprompt = (Invoke-SpectrePromptAsync -Prompt $confirmationPrompt) -eq "y"
+    $confirmed = (Invoke-SpectrePromptAsync -Prompt $confirmationPrompt) -eq "y"
 
-    if(!$sprompt){
-        if(![String]::IsNullOrWhiteSpace($ConfirmFailure)){
-            [Spectre.Console.AnsiConsole]::MarkupLine($ConfirmFailure)
+    if(!$confirmed) {
+        if(![String]::IsNullOrWhiteSpace($ConfirmFailure)) {
+            Write-SpectreHost $ConfirmFailure
         }
-    }else{
-        if(![String]::IsNullOrWhiteSpace($ConfirmSuccess)){
-            [Spectre.Console.AnsiConsole]::MarkupLine($ConfirmSuccess)
+    } else {
+        if(![String]::IsNullOrWhiteSpace($ConfirmSuccess)) {
+            Write-SpectreHost $ConfirmSuccess
         }
     }
 
-    return $sprompt
+    return $confirmed
 }

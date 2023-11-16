@@ -22,6 +22,7 @@ This is only used inside `Invoke-SpectreCommandWithProgress` where the Spectre P
 ### Description
 
 This function waits for Spectre jobs to complete by checking the progress of each job and updating the corresponding task value.
+Adapted from https://key2consulting.com/powershell-how-to-display-job-progress/
 
 
 

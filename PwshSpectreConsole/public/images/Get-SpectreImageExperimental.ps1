@@ -2,6 +2,9 @@ function Get-SpectreImageExperimental {
     <#
     .SYNOPSIS
     Displays an image in the console using block characters and ANSI escape codes.
+    :::caution
+    This is experimental.
+    :::
 
     .DESCRIPTION
     This function loads an image from a file and displays it in the console using block characters and ANSI escape codes. The image is scaled to fit within the specified maximum width while maintaining its aspect ratio. If the image is an animated GIF, each frame is displayed in sequence with a configurable delay between frames.

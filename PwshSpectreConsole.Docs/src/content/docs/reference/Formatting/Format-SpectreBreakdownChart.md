@@ -30,10 +30,20 @@ This example displays a breakdown chart with the title "Fruit Sales" and a width
 
 ```powershell
 $data = @(
-    @{ Label = "Apples"; Value = 10; Color = [Spectre.Console.Color]::Red },
-    @{ Label = "Oranges"; Value = 20; Color = [Spectre.Console.Color]::Orange1 },
-    @{ Label = "Bananas"; Value = 15; Color = [Spectre.Console.Color]::Yellow }
+    @{ Label = "Apples"; Value = 10; Color = "Red" },
+    @{ Label = "Oranges"; Value = 20; Color = "Orange1" },
+    @{ Label = "Bananas"; Value = 15; Color = "Yellow" }
 )
+Format-SpectreBreakdownChart -Data $data -Width 50
+```
+This example uses the new helper for generating chart items New-SpectreChartItem and the various ways of passing color values in.
+
+```powershell
+$data = @()
+$data += New-SpectreChartItem -Label "Apples" -Value 10 -Color [Spectre.Console.Color]::Green
+$data += New-SpectreChartItem -Label "Oranges" -Value 5 -Color "Orange"
+$data += New-SpectreChartItem -Label "Bananas" -Value 2.2 -Color "#FFFF00"
+
 Format-SpectreBreakdownChart -Data $data -Width 50
 ```
 

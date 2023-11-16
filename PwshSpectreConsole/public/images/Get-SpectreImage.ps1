@@ -25,5 +25,5 @@ function Get-SpectreImage {
     if($MaxWidth) {
         $image.MaxWidth = $MaxWidth
     }
-    [Spectre.Console.AnsiConsole]::Write($image)
+    Write-AnsiConsole $image
 }

@@ -38,12 +38,8 @@ function Invoke-SpectreCommandWithStatus {
         [ArgumentCompletionsSpectreColors()]
         [string] $Color = $script:AccentColor.ToMarkup()
     )
-    [Spectre.Console.AnsiConsole]::Status().Start($Title, {
-        param (
-            $ctx
-        )
-        $ctx.Spinner = [Spectre.Console.Spinner+Known]::$Spinner
-        $ctx.SpinnerStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
-        & $ScriptBlock $ctx
-    })
+    Start-AnsiConsoleStatus -Title $Title `
+        -Spinner ([Spectre.Console.Spinner+Known]::$Spinner) `
+        -SpinnerStyle ([Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))) `
+        -ScriptBlock $ScriptBlock
 }

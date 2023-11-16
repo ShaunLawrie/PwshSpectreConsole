@@ -53,7 +53,7 @@ function Write-Codeblock {
     #>
     param (
         # The text containing the code to write to the host
-        [Parameter(ValueFromPipeline=$true, Mandatory=$true)]
+        [Parameter(ValueFromPipeline=$true, Mandatory)]
         [string] $Text,
         # Show a gutter with line numbers
         [switch] $ShowLineNumbers,

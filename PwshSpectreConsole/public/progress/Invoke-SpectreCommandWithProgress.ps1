@@ -33,10 +33,5 @@ function Invoke-SpectreCommandWithProgress {
         [Parameter(Mandatory)]
         [scriptblock] $ScriptBlock
     )
-    [Spectre.Console.AnsiConsole]::Progress().Start({
-        param (
-            $ctx
-        )
-        & $ScriptBlock $ctx
-    })
+    Start-AnsiConsoleProgress $ScriptBlock
 }

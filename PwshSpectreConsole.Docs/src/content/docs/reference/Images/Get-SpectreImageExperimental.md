@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Experimental
+    variant: caution
 title: Get-SpectreImageExperimental
 ---
 
@@ -10,6 +14,9 @@ title: Get-SpectreImageExperimental
 
 ### Synopsis
 Displays an image in the console using block characters and ANSI escape codes.
+:::caution
+This is experimental.
+:::
 
 
 

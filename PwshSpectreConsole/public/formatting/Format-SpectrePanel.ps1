@@ -48,5 +48,5 @@ function Format-SpectrePanel {
     $panel.Expand = $Expand
     $panel.Border = [Spectre.Console.BoxBorder]::$Border
     $panel.BorderStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
-    [Spectre.Console.AnsiConsole]::Write($panel)
+    Write-AnsiConsole $panel
 }

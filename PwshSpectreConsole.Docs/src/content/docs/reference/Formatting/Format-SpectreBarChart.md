@@ -30,10 +30,20 @@ This example displays a bar chart with the title "Fruit Sales" and a width of 50
 
 ```powershell
 $data = @(
-    @{ Label = "Apples"; Value = 10; Color = [Spectre.Console.Color]::Green },
-    @{ Label = "Oranges"; Value = 5; Color = [Spectre.Console.Color]::Yellow },
-    @{ Label = "Bananas"; Value = 3; Color = [Spectre.Console.Color]::Red }
+    @{ Label = "Apples"; Value = 10; Color = "Green" },
+    @{ Label = "Oranges"; Value = 5; Color = "Yellow" },
+    @{ Label = "Bananas"; Value = 3; Color = "Red" }
 )
+Format-SpectreBarChart -Data $data -Title "Fruit Sales" -Width 50
+```
+This example uses the new helper for generating chart items New-SpectreChartItem and the various ways of passing color values in
+
+```powershell
+$data = @()
+$data += New-SpectreChartItem -Label "Apples" -Value 10 -Color [Spectre.Console.Color]::Green
+$data += New-SpectreChartItem -Label "Oranges" -Value 5 -Color "Orange"
+$data += New-SpectreChartItem -Label "Bananas" -Value 2.2 -Color "#FFFF00"
+
 Format-SpectreBarChart -Data $data -Title "Fruit Sales" -Width 50
 ```
 

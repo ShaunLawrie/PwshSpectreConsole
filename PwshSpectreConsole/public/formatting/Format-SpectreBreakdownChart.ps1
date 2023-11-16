@@ -15,10 +15,20 @@ function Format-SpectreBreakdownChart {
     .EXAMPLE
     # This example displays a breakdown chart with the title "Fruit Sales" and a width of 50 characters.
     $data = @(
-        @{ Label = "Apples"; Value = 10; Color = [Spectre.Console.Color]::Red },
-        @{ Label = "Oranges"; Value = 20; Color = [Spectre.Console.Color]::Orange1 },
-        @{ Label = "Bananas"; Value = 15; Color = [Spectre.Console.Color]::Yellow }
+        @{ Label = "Apples"; Value = 10; Color = "Red" },
+        @{ Label = "Oranges"; Value = 20; Color = "Orange1" },
+        @{ Label = "Bananas"; Value = 15; Color = "Yellow" }
     )
+    Format-SpectreBreakdownChart -Data $data -Width 50
+
+    .EXAMPLE
+    # This example uses the new helper for generating chart items New-SpectreChartItem and the various ways of passing color values in.
+    $data = @()
+
+    $data += New-SpectreChartItem -Label "Apples" -Value 10 -Color [Spectre.Console.Color]::Green
+    $data += New-SpectreChartItem -Label "Oranges" -Value 5 -Color "Orange"
+    $data += New-SpectreChartItem -Label "Bananas" -Value 2.2 -Color "#FFFF00"
+    
     Format-SpectreBreakdownChart -Data $data -Width 50
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectreBreakdownChart")]
@@ -34,13 +44,13 @@ function Format-SpectreBreakdownChart {
     process {
         if($Data -is [array]) {
             foreach($dataItem in $Data) {
-                [Spectre.Console.BreakdownChartExtensions]::AddItem($chart, $dataItem.Label, $dataItem.Value, $dataItem.Color) | Out-Null
+                [Spectre.Console.BreakdownChartExtensions]::AddItem($chart, $dataItem.Label, $dataItem.Value, ($dataItem.Color | Convert-ToSpectreColor)) | Out-Null
             }
         } else {
-            [Spectre.Console.BreakdownChartExtensions]::AddItem($chart, $Data.Label, $Data.Value, $Data.Color) | Out-Null
+            [Spectre.Console.BreakdownChartExtensions]::AddItem($chart, $Data.Label, $Data.Value, ($Data.Color | Convert-ToSpectreColor)) | Out-Null
         }
     }
     end {
-        [Spectre.Console.AnsiConsole]::Write($chart)
+        Write-AnsiConsole $chart
     }
 }
