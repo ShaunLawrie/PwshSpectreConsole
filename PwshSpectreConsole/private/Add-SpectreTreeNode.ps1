@@ -17,7 +17,7 @@ See Format-SpectreTree for usage.
 function Add-SpectreTreeNode {
     param (
         [Parameter(Mandatory)]
-        [IHasTreeNodes] $Node,
+        [Spectre.Console.IHasTreeNodes] $Node,
         [Parameter(Mandatory)]
         [array] $Children
     )
