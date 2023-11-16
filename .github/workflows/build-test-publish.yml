@@ -68,5 +68,5 @@ jobs:
           Update-ModuleManifest -Path .\PwshSpectreConsole\PwshSpectreConsole.psd1 -ModuleVersion $newVersion -PrivateData @{ PSData = @{ Prerelease = 'prerelease' } }
 
           # Publish pre-release version
-          Import-Module PwshSpectreConsole -Force
+          Import-Module .\PwshSpectreConsole\PwshSpectreConsole.psd1 -Force
           Publish-Module PwshSpectreConsole -Exclude "Build.ps1" -NugetApiKey $env:PSGALLERY_API_KEY -AllowPrerelease
