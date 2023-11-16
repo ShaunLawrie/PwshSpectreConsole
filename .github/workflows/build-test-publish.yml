@@ -22,6 +22,7 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
+          & .\PwshSpectreConsole\Build.ps1
           $env:PSModulePath = @($env:PSModulePath, ".\PwshSpectreConsole\") -join ":"
           $version = Get-Module PwshSpectreConsole -ListAvailable | Sort-Object -Property Version -Descending | Select-Object -First 1 -ExpandProperty Version
           if($null -eq $version) { throw "Failed to load version" }
@@ -37,7 +38,6 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
-          & ./PwshSpectreConsole/Build.ps1
           Publish-Module -Path "./PwshSpectreConsole/" -Exclude "Build.ps1" -NugetApiKey $env:PSGALLERY_API_KEY
   
   publish-prerelease-to-psgallery:
@@ -51,6 +51,7 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
+          & ./PwshSpectreConsole/Build.ps1
           $env:PSModulePath = @($env:PSModulePath, ".\PwshSpectreConsole\") -join ":"
           $version = Get-Module PwshSpectreConsole -ListAvailable | Sort-Object -Property Version -Descending | Select-Object -First 1 -ExpandProperty Version
           if($null -eq $version) { throw "Failed to load version" }
@@ -64,5 +65,4 @@ jobs:
           git push
 
           # Publish pre-release version
-          & ./PwshSpectreConsole/Build.ps1
           Publish-Module -Path "./PwshSpectreConsole/" -Exclude "Build.ps1" -NugetApiKey $env:PSGALLERY_API_KEY -RequiredVersion "$newVersion-prerelease" -AllowPrerelease
