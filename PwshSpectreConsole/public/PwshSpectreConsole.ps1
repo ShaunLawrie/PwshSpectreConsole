@@ -1,4 +1,4 @@
-using module "..\private\Attributes.psm1"
+using module "..\private\ClassIValidateSet.psm1"
 
 $script:AccentColor = [Spectre.Console.Color]::Blue
 $script:DefaultValueColor = [Spectre.Console.Color]::Grey
@@ -24,12 +24,12 @@ function Invoke-SpectrePromptAsync {
 function Convert-ToSpectreColor {
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
-        [ValidateSpectreColor()]
+        [ValidateSet([SpectreConsoleColor],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Color
     )
     try {
         # Already validated in validation attribute
-        if($Color.StartsWith("#")) {
+        if ($Color.StartsWith("#")) {
             $hexString = $Color -replace '^#', ''
             $hexBytes = [System.Convert]::FromHexString($hexString)
             return [Spectre.Console.Color]::new($hexBytes[0], $hexBytes[1], $hexBytes[2])
@@ -66,11 +66,9 @@ function Set-SpectreColors {
     #>
     [Reflection.AssemblyMetadata("title", "Set-SpectreColors")]
     param (
-        [ValidateSpectreColor()]
-        [ArgumentCompletionsSpectreColors()]
+        [ValidateSet([SpectreConsoleColor],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $AccentColor = "Blue",
-        [ValidateSpectreColor()]
-        [ArgumentCompletionsSpectreColors()]
+        [ValidateSet([SpectreConsoleColor],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $DefaultValueColor = "Grey"
     )
     $script:AccentColor = $AccentColor | Convert-ToSpectreColor
@@ -102,9 +100,9 @@ function Write-SpectreRule {
     param (
         [Parameter(Mandatory)]
         [string] $Title,
+        [ValidateSet([SpectreConsoleJustify],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Alignment = "Left",
-        [ValidateSpectreColor()]
-        [ArgumentCompletionsSpectreColors()]
+        [ValidateSet([SpectreConsoleColor],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Color = $script:AccentColor.ToMarkup()
     )
     $rule = [Spectre.Console.Rule]::new("[$($Color)]$Title[/]")
@@ -136,13 +134,13 @@ function Write-SpectreFigletText {
     [Reflection.AssemblyMetadata("title", "Write-SpectreFigletText")]
     param (
         [string] $Text = "Hello Spectre!",
+        [ValidateSet([SpectreConsoleJustify],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Alignment = "Left",
-        [ValidateSpectreColor()]
-        [ArgumentCompletionsSpectreColors()]
+        [ValidateSet([SpectreConsoleColor],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Color = $script:AccentColor.ToMarkup()
     )
     $figletText = [Spectre.Console.FigletText]::new($Text)
-    $figletText.Justification = switch($Alignment) {
+    $figletText.Justification = switch ($Alignment) {
         "Left" { [Spectre.Console.Justify]::Left }
         "Right" { [Spectre.Console.Justify]::Right }
         "Centered" { [Spectre.Console.Justify]::Center }
@@ -155,7 +153,7 @@ function Write-SpectreFigletText {
 function Read-SpectreConfirm {
     <#
     .SYNOPSIS
-    Displays a simple confirmation prompt with the option of selecting yes or no and returns a boolean representing the answer. 
+    Displays a simple confirmation prompt with the option of selecting yes or no and returns a boolean representing the answer.
 
     .DESCRIPTION
     Displays a simple confirmation prompt with the option of selecting yes or no. Additional options are provided to display either a success or failure response message in addition to the boolean return value.
@@ -173,7 +171,7 @@ function Read-SpectreConfirm {
     The text and markup to display if the user chooses no. If left undefined, nothing will display.
 
     .EXAMPLE
-    # This example displays a simple prompt. The user can select either yes or no [Y/n]. A different message is displayed based on the user's selection. The prompt uses the AnsiConsole.MarkupLine convenience method to support colored text and other supported markup. 
+    # This example displays a simple prompt. The user can select either yes or no [Y/n]. A different message is displayed based on the user's selection. The prompt uses the AnsiConsole.MarkupLine convenience method to support colored text and other supported markup.
     $readSpectreConfirmSplat = @{
         Prompt = "Would you like to continue the preview installation of [#7693FF]PowerShell 7?[/]"
         ConfirmSuccess = "Woohoo! The internet awaits your elite development contributions."
@@ -188,8 +186,7 @@ function Read-SpectreConfirm {
         [string] $DefaultAnswer = "y",
         [string] $ConfirmSuccess,
         [string] $ConfirmFailure,
-        [ValidateSpectreColor()]
-        [ArgumentCompletionsSpectreColors()]
+        [ValidateSet([SpectreConsoleColor],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Color = $script:AccentColor.ToMarkup()
     )
 
@@ -208,12 +205,12 @@ function Read-SpectreConfirm {
     # Invoke-SpectrePromptAsync supports ctrl-c
     $sprompt = (Invoke-SpectrePromptAsync -Prompt $confirmationPrompt) -eq "y"
 
-    if(!$sprompt){
-        if(![String]::IsNullOrWhiteSpace($ConfirmFailure)){
+    if (!$sprompt) {
+        if (![String]::IsNullOrWhiteSpace($ConfirmFailure)) {
             [Spectre.Console.AnsiConsole]::MarkupLine($ConfirmFailure)
         }
-    }else{
-        if(![String]::IsNullOrWhiteSpace($ConfirmSuccess)){
+    } else {
+        if (![String]::IsNullOrWhiteSpace($ConfirmSuccess)) {
             [Spectre.Console.AnsiConsole]::MarkupLine($ConfirmSuccess)
         }
     }
@@ -253,20 +250,19 @@ function Read-SpectreSelection {
         [string] $Title = "What's your favourite colour [$($script:AccentColor.ToMarkup())]option[/]?",
         [array] $Choices = @("red", "green", "blue"),
         [string] $ChoiceLabelProperty,
-        [ValidateSpectreColor()]
-        [ArgumentCompletionsSpectreColors()]
+        [ValidateSet([SpectreConsoleColor],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Color = $script:AccentColor.ToMarkup(),
         [int] $PageSize = 5
     )
     $prompt = [Spectre.Console.SelectionPrompt[string]]::new()
 
     $choiceLabels = $Choices
-    if($ChoiceLabelProperty) {
+    if ($ChoiceLabelProperty) {
         $choiceLabels = $Choices | Select-Object -ExpandProperty $ChoiceLabelProperty
     }
 
     $duplicateLabels = $choiceLabels | Group-Object | Where-Object { $_.Count -gt 1 }
-    if($duplicateLabels) {
+    if ($duplicateLabels) {
         Write-Error "You have duplicate labels in your select list, this is ambiguous so a selection cannot be made"
         exit 2
     }
@@ -279,8 +275,8 @@ function Read-SpectreSelection {
     $prompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
     $selected = Invoke-SpectrePromptAsync -Prompt $prompt
 
-    if($ChoiceLabelProperty) {
-        $selected = $Choices | Where-Object -Property $ChoiceLabelProperty -Eq $selected
+    if ($ChoiceLabelProperty) {
+        $selected = $Choices | Where-Object -Property $ChoiceLabelProperty -EQ $selected
     }
 
     return $selected
@@ -318,20 +314,19 @@ function Read-SpectreMultiSelection {
         [string] $Title = "What are your favourite [$($script:AccentColor.ToMarkup())]colors[/]?",
         [array] $Choices = @("red", "orange", "yellow", "green", "blue", "indigo", "violet"),
         [string] $ChoiceLabelProperty,
-        [ValidateSpectreColor()]
-        [ArgumentCompletionsSpectreColors()]
+        [ValidateSet([SpectreConsoleColor],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Color = $script:AccentColor.ToMarkup(),
         [int] $PageSize = 5
     )
     $prompt = [Spectre.Console.MultiSelectionPrompt[string]]::new()
 
     $choiceLabels = $Choices
-    if($ChoiceLabelProperty) {
+    if ($ChoiceLabelProperty) {
         $choiceLabels = $Choices | Select-Object -ExpandProperty $ChoiceLabelProperty
     }
 
     $duplicateLabels = $choiceLabels | Group-Object | Where-Object { $_.Count -gt 1 }
-    if($duplicateLabels) {
+    if ($duplicateLabels) {
         Write-Error "You have duplicate labels in your select list, this is ambiguous so a selection cannot be made"
         exit 2
     }
@@ -345,8 +340,8 @@ function Read-SpectreMultiSelection {
     $prompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
     $selected = Invoke-SpectrePromptAsync -Prompt $prompt
 
-    if($ChoiceLabelProperty) {
-        $selected = $Choices | Where-Object -Property $ChoiceLabelProperty -Eq $selected
+    if ($ChoiceLabelProperty) {
+        $selected = $Choices | Where-Object -Property $ChoiceLabelProperty -EQ $selected
     }
 
     return $selected
@@ -393,35 +388,34 @@ function Read-SpectreMultiSelectionGrouped {
         [string] $Title = "What are your favourite [$($script:AccentColor.ToMarkup())]colors[/]?",
         [array] $Choices = @(
             @{
-                Name = "The rainbow"
+                Name    = "The rainbow"
                 Choices = @("red", "orange", "yellow", "green", "blue", "indigo", "violet")
             },
             @{
-                Name = "The other colors"
+                Name    = "The other colors"
                 Choices = @("black", "grey", "white")
             }
         ),
         [string] $ChoiceLabelProperty,
-        [ValidateSpectreColor()]
-        [ArgumentCompletionsSpectreColors()]
+        [ValidateSet([SpectreConsoleColor],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Color = $script:AccentColor.ToMarkup(),
         [int] $PageSize = 10
     )
     $prompt = [Spectre.Console.MultiSelectionPrompt[string]]::new()
 
     $choiceLabels = $Choices.Choices
-    if($ChoiceLabelProperty) {
+    if ($ChoiceLabelProperty) {
         $choiceLabels = $Choices | Select-Object -ExpandProperty $ChoiceLabelProperty
     }
     $duplicateLabels = $choiceLabels | Group-Object | Where-Object { $_.Count -gt 1 }
-    if($duplicateLabels) {
+    if ($duplicateLabels) {
         Write-Error "You have duplicate labels in your select list, this is ambiguous so a selection cannot be made (even when using choice groups)"
         exit 2
     }
 
-    foreach($group in $Choices) {
+    foreach ($group in $Choices) {
         $choiceLabels = $group.Choices
-        if($ChoiceLabelProperty) {
+        if ($ChoiceLabelProperty) {
             $choiceLabels = $Choices | Select-Object -ExpandProperty $ChoiceLabelProperty
         }
         $prompt = [Spectre.Console.MultiSelectionPromptExtensions]::AddChoiceGroup($prompt, $group.Name, [string[]]$choiceLabels)
@@ -435,8 +429,8 @@ function Read-SpectreMultiSelectionGrouped {
     $prompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
     $selected = Invoke-SpectrePromptAsync -Prompt $prompt
 
-    if($ChoiceLabelProperty) {
-        $selected = $Choices | Where-Object -Property $ChoiceLabelProperty -Eq $selected
+    if ($ChoiceLabelProperty) {
+        $selected = $Choices | Where-Object -Property $ChoiceLabelProperty -EQ $selected
     }
 
     return $selected
@@ -487,7 +481,7 @@ function Invoke-SpectreCommandWithStatus {
 
     .PARAMETER Spinner
     The type of spinner to display. Valid values are "dots", "dots2", "dots3", "dots4", "dots5", "dots6", "dots7", "dots8", "dots9", "dots10", "dots11", "dots12", "line", "line2", "pipe", "simpleDots", "simpleDotsScrolling", "star", "star2", "flip", "hamburger", "growVertical", "growHorizontal", "balloon", "balloon2", "noise", "bounce", "boxBounce", "boxBounce2", "triangle", "arc", "circle", "squareCorners", "circleQuarters", "circleHalves", "squish", "toggle", "toggle2", "toggle3", "toggle4", "toggle5", "toggle6", "toggle7", "toggle8", "toggle9", "toggle10", "toggle11", "toggle12", "toggle13", "arrow", "arrow2", "arrow3", "bouncingBar", "bouncingBall", "smiley", "monkey", "hearts", "clock", "earth", "moon", "runner", "pong", "shark", "dqpb", "weather", "christmas", "grenade", "point", "layer", "betaWave", "pulse", "noise2", "gradient", "christmasTree", "santa", "box", "simpleDotsDown", "ballotBox", "checkbox", "radioButton", "spinner", "lineSpinner", "lineSpinner2", "pipeSpinner", "simpleDotsSpinner", "ballSpinner", "balloonSpinner", "noiseSpinner", "bouncingBarSpinner", "smileySpinner", "monkeySpinner", "heartsSpinner", "clockSpinner", "earthSpinner", "moonSpinner", "auto", "random".
-    
+
     .PARAMETER Title
     The title to display above the spinner.
 
@@ -502,22 +496,21 @@ function Invoke-SpectreCommandWithStatus {
     param (
         [Parameter(Mandatory)]
         [scriptblock] $ScriptBlock,
-        # TODO validate spinners
+        [ValidateSet([SpectreConsoleSpinner],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Spinner = "Dots",
         [Parameter(Mandatory)]
         [string] $Title,
-        [ValidateSpectreColor()]
-        [ArgumentCompletionsSpectreColors()]
+        [ValidateSet([SpectreConsoleColor],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Color = $script:AccentColor.ToMarkup()
     )
     [Spectre.Console.AnsiConsole]::Status().Start($Title, {
-        param (
-            $ctx
-        )
-        $ctx.Spinner = [Spectre.Console.Spinner+Known]::$Spinner
-        $ctx.SpinnerStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
-        & $ScriptBlock $ctx
-    })
+            param (
+                $ctx
+            )
+            $ctx.Spinner = [Spectre.Console.Spinner+Known]::$Spinner
+            $ctx.SpinnerStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
+            & $ScriptBlock $ctx
+        })
 }
 
 function Write-SpectreHost {
@@ -548,7 +541,7 @@ function Write-SpectreHost {
         [switch] $NoNewline
     )
 
-    if($NoNewline) {
+    if ($NoNewline) {
         [Spectre.Console.AnsiConsole]::Markup($Message)
     } else {
         [Spectre.Console.AnsiConsole]::MarkupLine($Message)
@@ -591,11 +584,11 @@ function Invoke-SpectreCommandWithProgress {
         [scriptblock] $ScriptBlock
     )
     [Spectre.Console.AnsiConsole]::Progress().Start({
-        param (
-            $ctx
-        )
-        & $ScriptBlock $ctx
-    })
+            param (
+                $ctx
+            )
+            & $ScriptBlock $ctx
+        })
 }
 
 function Add-SpectreJob {
@@ -642,7 +635,7 @@ function Add-SpectreJob {
     )
 
     return @{
-        Job = $Job
+        Job  = $Job
         Task = $Context.AddTask($JobName)
     }
 }
@@ -692,19 +685,19 @@ function Wait-SpectreJobs {
 
     $timeout = (Get-Date).AddSeconds($TimeoutSeconds)
 
-    while(!$Context.IsFinished) {
-        if((Get-Date) -gt $timeout) {
+    while (!$Context.IsFinished) {
+        if ((Get-Date) -gt $timeout) {
             throw "Timed out waiting for jobs after $TimeoutSeconds seconds"
         }
         $completedJobs = 0
-        foreach($job in $Jobs) {
-            if($job.Job.State -ne "Running") {
+        foreach ($job in $Jobs) {
+            if ($job.Job.State -ne "Running") {
                 $job.Task.Value = 100.0
                 $completedJobs++
                 continue
             }
             $progress = 0.0
-            if($null -ne $job.Job.ChildJobs[0].Progress) {
+            if ($null -ne $job.Job.ChildJobs[0].Progress) {
                 $progress = $job.Job.ChildJobs[0].Progress | Select-Object -Last 1 -ExpandProperty "PercentComplete"
             }
             $job.Task.Value = $progress
@@ -743,19 +736,19 @@ function Format-SpectreBarChart {
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
         [array] $Data,
-        $Title,
-        $Width = $Host.UI.RawUI.Width
+        [String] $Title,
+        [Int] $Width = $Host.UI.RawUI.Width
     )
     begin {
         $barChart = [Spectre.Console.BarChart]::new()
-        if($Title) {
+        if ($Title) {
             $barChart.Label = $Title
         }
         $barChart.Width = $Width
     }
     process {
-        if($Data -is [array]) {
-            foreach($dataItem in $Data) {
+        if ($Data -is [array]) {
+            foreach ($dataItem in $Data) {
                 $barChart = [Spectre.Console.BarChartExtensions]::AddItem($barChart, $dataItem.Label, $dataItem.Value, ($dataItem.Color | Convert-ToSpectreColor))
             }
         } else {
@@ -820,15 +813,15 @@ function Format-SpectreBreakdownChart {
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
         [array] $Data,
-        $Width = $Host.UI.RawUI.Width
+        [int] $Width = $Host.UI.RawUI.Width
     )
     begin {
         $chart = [Spectre.Console.BreakdownChart]::new()
         $chart.Width = $Width
     }
     process {
-        if($Data -is [array]) {
-            foreach($dataItem in $Data) {
+        if ($Data -is [array]) {
+            foreach ($dataItem in $Data) {
                 [Spectre.Console.BreakdownChartExtensions]::AddItem($chart, $dataItem.Label, $dataItem.Value, ($dataItem.Color | Convert-ToSpectreColor)) | Out-Null
             }
         } else {
@@ -872,14 +865,14 @@ function Format-SpectrePanel {
         [Parameter(ValueFromPipeline, Mandatory)]
         [string] $Data,
         [string] $Title,
+        [ValidateSet([SpectreConsoleBoxBorder],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Border = "Rounded",
-        [switch] $Expand, 
-        [ValidateSpectreColor()]
-        [ArgumentCompletionsSpectreColors()]
+        [switch] $Expand,
+        [ValidateSet([SpectreConsoleColor],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Color = $script:AccentColor.ToMarkup()
     )
     $panel = [Spectre.Console.Panel]::new($Data)
-    if($Title) {
+    if ($Title) {
         $panel.Header = [Spectre.Console.PanelHeader]::new($Title)
     }
     $panel.Expand = $Expand
@@ -892,19 +885,19 @@ function Format-SpectreTable {
     <#
     .SYNOPSIS
     Formats an array of objects into a Spectre Console table.
-    
+
     .DESCRIPTION
     This function takes an array of objects and formats them into a table using the Spectre Console library. The table can be customized with a border style and color.
-    
+
     .PARAMETER Data
     The array of objects to be formatted into a table.
-    
+
     .PARAMETER Border
     The border style of the table. Default is "Double".
-    
+
     .PARAMETER Color
     The color of the table border. Default is the accent color of the script.
-    
+
     .EXAMPLE
     # This example formats an array of objects into a table with a double border and the accent color of the script.
     $data = @(
@@ -917,9 +910,9 @@ function Format-SpectreTable {
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
         [array] $Data,
+        [ValidateSet([SpectreConsoleTableBorder],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Border = "Double",
-        [ValidateSpectreColor()]
-        [ArgumentCompletionsSpectreColors()]
+        [ValidateSet([SpectreConsoleColor],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Color = $script:AccentColor.ToMarkup()
     )
     begin {
@@ -929,21 +922,20 @@ function Format-SpectreTable {
         $headerProcessed = $false
     }
     process {
-        if(!$headerProcessed) {
-            $Data[0].psobject.Properties.Name | Foreach-Object {
+        if (!$headerProcessed) {
+            $Data[0].psobject.Properties.Name | ForEach-Object {
                 $table.AddColumn($_) | Out-Null
             }
-            
+
             $headerProcessed = $true
         }
-        $Data | Foreach-Object {
+        $Data | ForEach-Object {
             $row = @()
             $_.psobject.Properties | ForEach-Object {
                 $cell = $_.Value
                 if ($null -eq $cell) {
                     $row += [Spectre.Console.Text]::new("")
-                }
-                else {
+                } else {
                     $row += [Spectre.Console.Text]::new($cell.ToString())
                 }
             }
@@ -1003,9 +995,11 @@ function Format-SpectreTree {
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
         [hashtable] $Data,
+        # TODO: this value doesn't seem to be used ?
         [string] $Border = "Rounded",
-        [ValidateSpectreColor()]
-        [ArgumentCompletionsSpectreColors()]
+        [ValidateSet([SpectreConsoleTreeGuide],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
+        [String]$Tree,
+        [ValidateSet([SpectreConsoleColor],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Color = $script:AccentColor.ToMarkup()
     )
 
@@ -1014,10 +1008,10 @@ function Format-SpectreTree {
             $Node,
             $Children
         )
-    
-        foreach($child in $Children) {
+
+        foreach ($child in $Children) {
             $newNode = [Spectre.Console.HasTreeNodeExtensions]::AddNode($Node, $child.Label)
-            if($child.Children.Count -gt 0) {
+            if ($child.Children.Count -gt 0) {
                 Add-SpectreTreeNode -Node $newNode -Children $child.Children
             }
         }
@@ -1028,6 +1022,7 @@ function Format-SpectreTree {
     Add-SpectreTreeNode -Node $tree -Children $Data.Children
 
     $tree.Style = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
+    $tree.Guide = [Spectre.Console.TreeGuide]::$Tree
     [Spectre.Console.AnsiConsole]::Write($tree)
 }
 
@@ -1056,13 +1051,13 @@ function Read-SpectrePause {
     )
 
     $position = $Host.UI.RawUI.CursorPosition
-    if(!$NoNewline) {
+    if (!$NoNewline) {
         Write-Host ""
     }
     Write-SpectreHost $Message -NoNewline
     Read-Host
     $endPosition = $Host.UI.RawUI.CursorPosition
-    if($endPosition -eq $position) {
+    if ($endPosition -eq $position) {
         # Reached the end of the window
         [Console]::SetCursorPosition($position.X, $position.Y - 2)
         Write-Host (" " * $Message.Length)
