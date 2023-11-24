@@ -1,4 +1,4 @@
-using module "..\private\ClassIValidateSet.psm1"
+using module "..\private\Attributes.psm1"
 
 $script:AccentColor = [Spectre.Console.Color]::Blue
 $script:DefaultValueColor = [Spectre.Console.Color]::Grey
@@ -24,7 +24,8 @@ function Invoke-SpectrePromptAsync {
 function Convert-ToSpectreColor {
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
-        [ValidateSet([SpectreConsoleColor],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
+        [ValidateSpectreColor()]
+        [ArgumentCompletionsSpectreColors()]
         [string] $Color
     )
     try {
@@ -66,9 +67,11 @@ function Set-SpectreColors {
     #>
     [Reflection.AssemblyMetadata("title", "Set-SpectreColors")]
     param (
-        [ValidateSet([SpectreConsoleColor],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
+        [ValidateSpectreColor()]
+        [ArgumentCompletionsSpectreColors()]
         [string] $AccentColor = "Blue",
-        [ValidateSet([SpectreConsoleColor],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
+        [ValidateSpectreColor()]
+        [ArgumentCompletionsSpectreColors()]
         [string] $DefaultValueColor = "Grey"
     )
     $script:AccentColor = $AccentColor | Convert-ToSpectreColor
@@ -102,7 +105,8 @@ function Write-SpectreRule {
         [string] $Title,
         [ValidateSet([SpectreConsoleJustify],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Alignment = "Left",
-        [ValidateSet([SpectreConsoleColor],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
+        [ValidateSpectreColor()]
+        [ArgumentCompletionsSpectreColors()]
         [string] $Color = $script:AccentColor.ToMarkup()
     )
     $rule = [Spectre.Console.Rule]::new("[$($Color)]$Title[/]")
@@ -136,7 +140,8 @@ function Write-SpectreFigletText {
         [string] $Text = "Hello Spectre!",
         [ValidateSet([SpectreConsoleJustify],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Alignment = "Left",
-        [ValidateSet([SpectreConsoleColor],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
+        [ValidateSpectreColor()]
+        [ArgumentCompletionsSpectreColors()]
         [string] $Color = $script:AccentColor.ToMarkup()
     )
     $figletText = [Spectre.Console.FigletText]::new($Text)
@@ -186,7 +191,8 @@ function Read-SpectreConfirm {
         [string] $DefaultAnswer = "y",
         [string] $ConfirmSuccess,
         [string] $ConfirmFailure,
-        [ValidateSet([SpectreConsoleColor],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
+        [ValidateSpectreColor()]
+        [ArgumentCompletionsSpectreColors()]
         [string] $Color = $script:AccentColor.ToMarkup()
     )
 
@@ -250,7 +256,8 @@ function Read-SpectreSelection {
         [string] $Title = "What's your favourite colour [$($script:AccentColor.ToMarkup())]option[/]?",
         [array] $Choices = @("red", "green", "blue"),
         [string] $ChoiceLabelProperty,
-        [ValidateSet([SpectreConsoleColor],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
+        [ValidateSpectreColor()]
+        [ArgumentCompletionsSpectreColors()]
         [string] $Color = $script:AccentColor.ToMarkup(),
         [int] $PageSize = 5
     )
@@ -314,7 +321,8 @@ function Read-SpectreMultiSelection {
         [string] $Title = "What are your favourite [$($script:AccentColor.ToMarkup())]colors[/]?",
         [array] $Choices = @("red", "orange", "yellow", "green", "blue", "indigo", "violet"),
         [string] $ChoiceLabelProperty,
-        [ValidateSet([SpectreConsoleColor],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
+        [ValidateSpectreColor()]
+        [ArgumentCompletionsSpectreColors()]
         [string] $Color = $script:AccentColor.ToMarkup(),
         [int] $PageSize = 5
     )
@@ -397,7 +405,8 @@ function Read-SpectreMultiSelectionGrouped {
             }
         ),
         [string] $ChoiceLabelProperty,
-        [ValidateSet([SpectreConsoleColor],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
+        [ValidateSpectreColor()]
+        [ArgumentCompletionsSpectreColors()]
         [string] $Color = $script:AccentColor.ToMarkup(),
         [int] $PageSize = 10
     )
@@ -500,7 +509,8 @@ function Invoke-SpectreCommandWithStatus {
         [string] $Spinner = "Dots",
         [Parameter(Mandatory)]
         [string] $Title,
-        [ValidateSet([SpectreConsoleColor],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
+        [ValidateSpectreColor()]
+        [ArgumentCompletionsSpectreColors()]
         [string] $Color = $script:AccentColor.ToMarkup()
     )
     [Spectre.Console.AnsiConsole]::Status().Start($Title, {
@@ -868,7 +878,8 @@ function Format-SpectrePanel {
         [ValidateSet([SpectreConsoleBoxBorder],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Border = "Rounded",
         [switch] $Expand,
-        [ValidateSet([SpectreConsoleColor],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
+        [ValidateSpectreColor()]
+        [ArgumentCompletionsSpectreColors()]
         [string] $Color = $script:AccentColor.ToMarkup()
     )
     $panel = [Spectre.Console.Panel]::new($Data)
@@ -912,7 +923,8 @@ function Format-SpectreTable {
         [array] $Data,
         [ValidateSet([SpectreConsoleTableBorder],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Border = "Double",
-        [ValidateSet([SpectreConsoleColor],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
+        [ValidateSpectreColor()]
+        [ArgumentCompletionsSpectreColors()]
         [string] $Color = $script:AccentColor.ToMarkup()
     )
     begin {
@@ -999,7 +1011,8 @@ function Format-SpectreTree {
         [string] $Border = "Rounded",
         [ValidateSet([SpectreConsoleTreeGuide],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [String]$Tree,
-        [ValidateSet([SpectreConsoleColor],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
+        [ValidateSpectreColor()]
+        [ArgumentCompletionsSpectreColors()]
         [string] $Color = $script:AccentColor.ToMarkup()
     )
 
