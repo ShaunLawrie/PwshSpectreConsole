@@ -1,5 +1,4 @@
-using module "..\..\private\attributes\ColorAttributes.psm1"
-using module "..\..\private\attributes\BorderAttributes.psm1"
+using module "..\..\private\completions\Completers.psm1"
 
 function Format-SpectreTree {
     <#
@@ -49,15 +48,15 @@ function Format-SpectreTree {
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
         [hashtable] $Data,
-        [ValidateSpectreBorder()]
-        [ArgumentCompletionsSpectreBorders()]
-        [string] $Border = "Rounded",
+        [ValidateSet([SpectreConsoleTreeGuide],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
+        [string] $Guide = "Line",
         [ValidateSpectreColor()]
         [ArgumentCompletionsSpectreColors()]
         [string] $Color = $script:AccentColor.ToMarkup()
     )
 
     $tree = [Spectre.Console.Tree]::new($Data.Label)
+    $tree.Guide = [Spectre.Console.TreeGuide]::$Guide
 
     Add-SpectreTreeNode -Node $tree -Children $Data.Children
 

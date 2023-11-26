@@ -1,4 +1,4 @@
-using module "..\..\private\attributes\ColorAttributes.psm1"
+using module "..\..\private\completions\Completers.psm1"
 
 function Write-SpectreRule {
     <#
@@ -25,7 +25,7 @@ function Write-SpectreRule {
     param (
         [Parameter(Mandatory)]
         [string] $Title,
-        [ValidateSet("Left", "Right", "Center")]
+        [ValidateSet([SpectreConsoleJustify], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Alignment = "Left",
         [ValidateSpectreColor()]
         [ArgumentCompletionsSpectreColors()]

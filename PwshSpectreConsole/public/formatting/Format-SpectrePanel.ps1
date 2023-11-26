@@ -1,5 +1,4 @@
-using module "..\..\private\attributes\ColorAttributes.psm1"
-using module "..\..\private\attributes\BorderAttributes.psm1"
+using module "..\..\private\completions\Completers.psm1"
 
 function Format-SpectrePanel {
     <#
@@ -33,16 +32,15 @@ function Format-SpectrePanel {
         [Parameter(ValueFromPipeline, Mandatory)]
         [string] $Data,
         [string] $Title,
-        [ValidateSpectreBorder()]
-        [ArgumentCompletionsSpectreBorders()]
+        [ValidateSet([SpectreConsoleBoxBorder], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Border = "Rounded",
-        [switch] $Expand, 
+        [switch] $Expand,
         [ValidateSpectreColor()]
         [ArgumentCompletionsSpectreColors()]
         [string] $Color = $script:AccentColor.ToMarkup()
     )
     $panel = [Spectre.Console.Panel]::new($Data)
-    if($Title) {
+    if ($Title) {
         $panel.Header = [Spectre.Console.PanelHeader]::new($Title)
     }
     $panel.Expand = $Expand

@@ -1,5 +1,4 @@
-using module "..\..\private\attributes\ColorAttributes.psm1"
-using module "..\..\private\attributes\BorderAttributes.psm1"
+using module "..\..\private\completions\Completers.psm1"
 
 function Format-SpectreTable {
     <#
@@ -30,8 +29,7 @@ function Format-SpectreTable {
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
         [array] $Data,
-        [ValidateSpectreBorder()]
-        [ArgumentCompletionsSpectreBorders()]
+        [ValidateSet([SpectreConsoleTableBorder],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Border = "Double",
         [ValidateSpectreColor()]
         [ArgumentCompletionsSpectreColors()]

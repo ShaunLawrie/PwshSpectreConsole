@@ -1,4 +1,4 @@
-using module "..\..\private\attributes\ColorAttributes.psm1"
+using module "..\..\private\completions\Completers.psm1"
 
 function Read-SpectreMultiSelectionGrouped {
     <#

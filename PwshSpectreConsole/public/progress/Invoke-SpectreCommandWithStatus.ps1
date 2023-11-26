@@ -1,5 +1,4 @@
-using module "..\..\private\attributes\ColorAttributes.psm1"
-using module "..\..\private\attributes\SpinnerAttributes.psm1"
+using module "..\..\private\completions\Completers.psm1"
 
 function Invoke-SpectreCommandWithStatus {
     <#
@@ -19,7 +18,7 @@ function Invoke-SpectreCommandWithStatus {
     The title to display above the spinner.
 
     .PARAMETER Color
-    The color of the spinner. Valid values are "black", "red", "green", "yellow", "blue", "magenta", "cyan", "white", "gray", "brightRed", "brightGreen", "brightYellow", "brightBlue", "brightMagenta", "brightCyan", "brightWhite".
+    The color of the spinner. Valid values can be found with Get-SpectreColorDemo.
 
     .EXAMPLE
     # Starts a Spectre status spinner with the "dots" spinner type, a yellow color, and the title "Waiting for process to complete". The spinner will continue to spin for 5 seconds.
@@ -29,8 +28,7 @@ function Invoke-SpectreCommandWithStatus {
     param (
         [Parameter(Mandatory)]
         [scriptblock] $ScriptBlock,
-        [ValidateSpectreSpinner()]
-        [ArgumentCompletionsSpectreSpinners()]
+        [ValidateSet([SpectreConsoleSpinner],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Spinner = "Dots",
         [Parameter(Mandatory)]
         [string] $Title,

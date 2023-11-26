@@ -1,4 +1,4 @@
-using module ".\attributes\ColorAttributes.psm1"
+using module ".\completions\Completers.psm1"
 
 <#
 .SYNOPSIS
