@@ -74,9 +74,14 @@ The hashtable to format as a tree.
 
 
 
-#### **Border**
+#### **Guide**
 
-The type of border to use for the tree. Valid values are 'Rounded', 'Heavy', 'Light', 'Double', 'Solid', 'Ascii', and 'None'. Default is 'Rounded'.
+Valid Values:
+
+* Ascii
+* BoldLine
+* DoubleLine
+* Line
 
 
 
@@ -111,6 +116,6 @@ The color to use for the tree. This can be a Spectre Console color name or a hex
 
 ### Syntax
 ```powershell
-Format-SpectreTree [-Data] <Hashtable> [[-Border] <String>] [[-Color] <String>] [<CommonParameters>]
+Format-SpectreTree [-Data] <Hashtable> [[-Guide] <String>] [[-Color] <String>] [<CommonParameters>]
 ```
 

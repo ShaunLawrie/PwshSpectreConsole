@@ -1,6 +1,7 @@
 <#
 .SYNOPSIS
-    A testing function for invoking a script block in a background job inside Invoke-SpectreCommandWithProgress to help with https://github.com/ShaunLawrie/PwshSpectreConsole/issues/7
+    This is a test function for invoking a script block in a background job inside Invoke-SpectreCommandWithProgress to help with https://github.com/ShaunLawrie/PwshSpectreConsole/issues/7  
+    Some commands cause output that interferes with the progress bar, this function is an attempt to suppress that output when all other attempts have failed.
     :::caution
     This is experimental.
     :::

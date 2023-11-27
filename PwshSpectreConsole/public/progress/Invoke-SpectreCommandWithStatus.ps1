@@ -18,7 +18,7 @@ function Invoke-SpectreCommandWithStatus {
     The title to display above the spinner.
 
     .PARAMETER Color
-    The color of the spinner. Valid values can be found with Get-SpectreColorDemo.
+    The color of the spinner. Valid values can be found with Get-SpectreDemoColors.
 
     .EXAMPLE
     # Starts a Spectre status spinner with the "dots" spinner type, a yellow color, and the title "Waiting for process to complete". The spinner will continue to spin for 5 seconds.

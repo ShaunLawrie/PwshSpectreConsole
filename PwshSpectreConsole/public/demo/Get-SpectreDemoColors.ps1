@@ -1,7 +1,11 @@
-function Get-SpectreColorDemo {
-    [Reflection.AssemblyMetadata("title", "Start-SpectreDemo")]
+function Get-SpectreDemoColors {
+    [Reflection.AssemblyMetadata("title", "Get-SpectreDemoColors")]
     param ()
     
+    Write-Host ""
+    Write-SpectreRule "Colors"
+    Write-Host ""
+
     $colors = [Spectre.Console.Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
     $colors  = $colors | ForEach-Object {
         $prefix = ($_ -replace '[_0-9]+', '')
@@ -37,8 +41,12 @@ function Get-SpectreColorDemo {
         Write-SpectreHost ("[$color]$color[/]")
     }
 
-    Write-Host "`nThe colors can be passed as the -Color parameter for most commands or used in Spectre Console markup like so:`n"
-    Write-Host "  Input:  I am [Red]colored text[/] using [Yellow1 on Turquoise4]Spectre markdown[/]!"
-    Write-SpectreHost "  Output: I am [Red]colored text[/] using [Yellow1 on Turquoise4]Spectre markdown[/]!"
+    Write-Host ""
+    Write-SpectreRule "Help"
+    Write-Host ""
+
+    Write-Host "The colors can be passed as the `"-Color`" parameter for most commands or used in Spectre Console markup like so:`n"
+    Write-SpectreHost "  PS> [Yellow]Write-SpectreHost[/] [DeepSkyBlue1]`"$('I am [Red]colored text[/] using [Yellow1 on Turquoise4]Spectre markdown[/]!' | Get-SpectreEscapedText)`"[/]"
+    Write-SpectreHost "  [white on grey19]I am [Red]colored text[/] using [Yellow1 on Turquoise4]Spectre markdown[/]!                                                          [/]"
     Write-SpectreHost "`nFor more markdown hints see [link]https://spectreconsole.net/markup[/]`n"
 }

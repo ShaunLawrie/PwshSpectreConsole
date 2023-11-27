@@ -73,6 +73,17 @@ The type of border to be displayed around the panel. Valid values are "Rounded",
 
 
 
+Valid Values:
+
+* Ascii
+* Double
+* Heavy
+* None
+* Rounded
+* Square
+
+
+
 
 
 

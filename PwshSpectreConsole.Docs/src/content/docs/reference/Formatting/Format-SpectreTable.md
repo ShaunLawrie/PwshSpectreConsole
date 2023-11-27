@@ -62,6 +62,29 @@ The border style of the table. Default is "Double".
 
 
 
+Valid Values:
+
+* Ascii
+* Ascii2
+* AsciiDoubleHead
+* Double
+* DoubleEdge
+* Heavy
+* HeavyEdge
+* HeavyHead
+* Horizontal
+* Markdown
+* Minimal
+* MinimalDoubleHead
+* MinimalHeavyHead
+* None
+* Rounded
+* Simple
+* SimpleHeavy
+* Square
+
+
+
 
 
 

@@ -10,7 +10,7 @@ Import-Module "$PSScriptRoot\..\PwshSpectreConsole\PwshSpectreConsole.psd1" -For
 Remove-Item -Recurse -Path "$PSScriptRoot\src\content\docs\reference\*" -Force
 Get-Module PwshSpectreConsole | Save-MarkdownHelp -OutputPath "$PSScriptRoot\src\content\docs\reference\" -IncludeYamlHeader -YamlHeaderInformationType Metadata -ExcludeFile "*.gif", "*.png"
 
-$new = @("New-SpectreChartItem.md")
+$new = @("New-SpectreChartItem.md", "Get-SpectreDemoColors", "Get-SpectreDemoEmoji")
 $experimental = @("Get-SpectreImageExperimental.md", "Invoke-SpectreScriptBlockQuietly.md")
 
 $newTag = @"
@@ -30,13 +30,14 @@ sidebar:
 # Post-processing for astro stuff
 $groups = @(
     @{ Name = "Prompts"; Matches = @("read-") }
-    @{ Name = "Formatting"; Matches = @("format-") }
-    @{ Name = "Progress"; Matches = @("invoke-", "job", "chartitem") }
+    @{ Name = "Formatting"; Matches = @("format-", "chartitem") }
+    @{ Name = "Progress"; Matches = @("invoke-", "job", "spectrescriptblock") }
     @{ Name = "Images"; Matches = @("image") }
     @{ Name = "Writing"; Matches = @("write-", "escaped") }
     @{ Name = "Config"; Matches = @("set-") }
+    @{ Name = "Demo"; Matches = @("spectredemo") }
 )
-$remove = @("Start-SpectreDemo.md")
+
 $docs = Get-ChildItem "$PSScriptRoot\src\content\docs\reference\" -Filter "*.md" -Recurse
 foreach($doc in $docs) {
     if($remove -contains $doc.Name) {
