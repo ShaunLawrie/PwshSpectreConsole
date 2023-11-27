@@ -23,9 +23,6 @@ Describe "Format-SpectreBarChart" {
             }
 
             It "Should handle single item data correctly" {
-                Mock Write-AnsiConsole {
-                    Write-Host "FUUUCK1"
-                }
                 $data = @{ Label = "Apples"; Value = 10; Color = "Green" }
                 Format-SpectreBarChart -Data $data -Title "Fruit Sales" -Width 50
                 Assert-MockCalled Write-AnsiConsole -Times 1 -Exactly
