@@ -33,7 +33,7 @@ function Get-SpectreImageExperimental {
     param (
         [string] $ImagePath,
         [int] $MaxWidth,
-        [switch] $Repeat,
+        [int] $LoopCount = 0,
         [ValidateSet("Bicubic", "NearestNeighbor")]
         [string] $Resampler = "Bicubic"
     )
@@ -134,7 +134,12 @@ function Get-SpectreImageExperimental {
         }
     }
 
+    0..$scaledHeight | Foreach-Object {
+        Write-host
+    }
     $topLeft = $Host.UI.RawUI.CursorPosition
+    $topLeft.Y = $topLeft.Y - $scaledHeight
+    $loopIterations = 0
     [Console]::CursorVisible = $false
     do {
         foreach($frame in $frames) {
@@ -142,6 +147,7 @@ function Get-SpectreImageExperimental {
             Write-Host $frame.Frame
             Start-Sleep -Milliseconds $frame.FrameDelayMilliseconds
         }
-    } while ($Repeat)
+        $loopIterations++
+    } while ($loopIterations -lt $LoopCount)
     [Console]::CursorVisible = $true
 }
