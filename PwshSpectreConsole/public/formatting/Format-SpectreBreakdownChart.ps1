@@ -12,6 +12,12 @@ function Format-SpectreBreakdownChart {
     .PARAMETER Width
     The width of the chart. Defaults to the width of the console.
 
+    .PARAMETER HideTags
+    Hides the tags on the chart.
+
+    .PARAMETER HideTagValues
+    Hides the tag values on the chart.
+
     .EXAMPLE
     # This example displays a breakdown chart with the title "Fruit Sales" and a width of 50 characters.
     $data = @(
@@ -28,18 +34,26 @@ function Format-SpectreBreakdownChart {
     $data += New-SpectreChartItem -Label "Apples" -Value 10 -Color [Spectre.Console.Color]::Green
     $data += New-SpectreChartItem -Label "Oranges" -Value 5 -Color "Orange"
     $data += New-SpectreChartItem -Label "Bananas" -Value 2.2 -Color "#FFFF00"
-    
+
     Format-SpectreBreakdownChart -Data $data -Width 50
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectreBreakdownChart")]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
         [array] $Data,
-        $Width = $Host.UI.RawUI.Width
+        [int]$Width = $Host.UI.RawUI.Width,
+        [switch]$HideTags,
+        [Switch]$HideTagValues
     )
     begin {
         $chart = [Spectre.Console.BreakdownChart]::new()
         $chart.Width = $Width
+        if ($HideTags) {
+            $chart.ShowTags = $false
+        }
+        if ($HideTagValues) {
+            $chart.ShowTagValues = $false
+        }
     }
     process {
         if($Data -is [array]) {
