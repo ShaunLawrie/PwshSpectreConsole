@@ -20,10 +20,13 @@ function Start-AnsiConsoleProgress {
         [Parameter(Mandatory)]
         [scriptblock] $ScriptBlock
     )
+    $resultVariableName = "AnsiConsoleProgressResult-$([guid]::NewGuid())"
+    New-Variable -Name $resultVariableName -Scope "Script"
     [Spectre.Console.AnsiConsole]::Progress().Start({
         param (
             $ctx
         )
-        & $ScriptBlock $ctx
+        Set-Variable -Name $resultVariableName -Value (& $ScriptBlock $ctx) -Scope "Script"
     })
+    return Get-Variable -Name $resultVariableName -ValueOnly
 }
