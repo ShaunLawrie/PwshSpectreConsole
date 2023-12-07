@@ -134,11 +134,16 @@ function Get-SpectreImageExperimental {
         }
     }
 
-    0..$scaledHeight | Foreach-Object {
-        Write-host
-    }
+    $terminalHeight = $Host.UI.RawUI.WindowSize.Height
+    $imageRowHeight = [int]($scaledHeight / 2)
     $topLeft = $Host.UI.RawUI.CursorPosition
-    $topLeft.Y = $topLeft.Y - $scaledHeight
+    if($imageRowHeight -le $terminalHeight) {
+        1..$imageRowHeight | Foreach-Object {
+            Write-host
+        }
+        $topLeft = $Host.UI.RawUI.CursorPosition
+        $topLeft.Y = $topLeft.Y - $imageRowHeight
+    }
     $loopIterations = 0
     [Console]::CursorVisible = $false
     do {
