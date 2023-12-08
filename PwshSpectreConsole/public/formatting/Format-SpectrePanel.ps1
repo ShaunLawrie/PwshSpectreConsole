@@ -23,6 +23,12 @@ function Format-SpectrePanel {
     .PARAMETER Color
     The color of the panel border.
 
+    .PARAMETER Width
+    The width of the panel.
+
+    .PARAMETER Height
+    The height of the panel.
+
     .EXAMPLE
     # This example displays a panel with the title "My Panel", a rounded border, and a red border color.
     Format-SpectrePanel -Data "Hello, world!" -Title "My Panel" -Border "Rounded" -Color "Red"
@@ -37,11 +43,21 @@ function Format-SpectrePanel {
         [switch] $Expand,
         [ValidateSpectreColor()]
         [ArgumentCompletionsSpectreColors()]
-        [string] $Color = $script:AccentColor.ToMarkup()
+        [string] $Color = $script:AccentColor.ToMarkup(),
+        [ValidateSet([SpectreConsoleWidth],ErrorMessage = "Value '{0}' is invalid. Cannot exceed console width.")]
+        [int]$Width,
+        [ValidateSet([SpectreConsoleHeight],ErrorMessage = "Value '{0}' is invalid. Cannot exceed console height.")]
+        [int]$Height
     )
     $panel = [Spectre.Console.Panel]::new($Data)
     if ($Title) {
         $panel.Header = [Spectre.Console.PanelHeader]::new($Title)
+    }
+    if ($width) {
+        $panel.Width = $Width
+    }
+    if ($height) {
+        $panel.Height = $Height
     }
     $panel.Expand = $Expand
     $panel.Border = [Spectre.Console.BoxBorder]::$Border

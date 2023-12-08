@@ -55,7 +55,7 @@ function Read-SpectreMultiSelectionGrouped {
         [string] $Color = $script:AccentColor.ToMarkup(),
         [int] $PageSize = 10
     )
-    $prompt = [Spectre.Console.MultiSelectionPrompt[string]]::new()
+    $Spectreprompt = [Spectre.Console.MultiSelectionPrompt[string]]::new()
 
     $choiceLabels = $Choices.Choices
     if($ChoiceLabelProperty) {
@@ -72,16 +72,16 @@ function Read-SpectreMultiSelectionGrouped {
         if($ChoiceLabelProperty) {
             $choiceLabels = $Choices | Select-Object -ExpandProperty $ChoiceLabelProperty
         }
-        $prompt = [Spectre.Console.MultiSelectionPromptExtensions]::AddChoiceGroup($prompt, $group.Name, [string[]]$choiceLabels)
+        $Spectreprompt = [Spectre.Console.MultiSelectionPromptExtensions]::AddChoiceGroup($Spectreprompt, $group.Name, [string[]]$choiceLabels)
     }
 
-    $prompt.Title = $Title
-    $prompt.PageSize = $PageSize
-    $prompt.WrapAround = $true
-    $prompt.HighlightStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
-    $prompt.InstructionsText = "[$($script:DefaultValueColor.ToMarkup())](Press [$($script:AccentColor.ToMarkup())]space[/] to toggle a choice and press [$($script:AccentColor.ToMarkup())]<enter>[/] to submit your answer)[/]"
-    $prompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
-    $selected = Invoke-SpectrePromptAsync -Prompt $prompt
+    $Spectreprompt.Title = $Title
+    $Spectreprompt.PageSize = $PageSize
+    $Spectreprompt.WrapAround = $true
+    $Spectreprompt.HighlightStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
+    $Spectreprompt.InstructionsText = "[$($script:DefaultValueColor.ToMarkup())](Press [$($script:AccentColor.ToMarkup())]space[/] to toggle a choice and press [$($script:AccentColor.ToMarkup())]<enter>[/] to submit your answer)[/]"
+    $Spectreprompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
+    $selected = Invoke-SpectrePromptAsync -Prompt $Spectreprompt
 
     if($ChoiceLabelProperty) {
         $selected = $Choices | Where-Object -Property $ChoiceLabelProperty -Eq $selected
