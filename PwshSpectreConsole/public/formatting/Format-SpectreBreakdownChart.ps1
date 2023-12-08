@@ -1,3 +1,5 @@
+using module "..\..\private\completions\Completers.psm1"
+
 function Format-SpectreBreakdownChart {
     <#
     .SYNOPSIS
