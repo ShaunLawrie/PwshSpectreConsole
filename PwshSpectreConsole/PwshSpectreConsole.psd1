@@ -12,7 +12,7 @@
 RootModule = 'PwshSpectreConsole'
 
 # Version number of this module.
-ModuleVersion = '0.3.34'
+ModuleVersion = '0.3.35'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
