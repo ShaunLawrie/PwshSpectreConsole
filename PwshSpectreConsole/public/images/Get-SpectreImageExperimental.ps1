@@ -12,8 +12,8 @@ function Get-SpectreImageExperimental {
     .PARAMETER ImagePath
     The path to the image file to display.
 
-    .PARAMETER MaxWidth
-    The maximum width of the image in characters. The image is scaled to fit within this width while maintaining its aspect ratio.
+    .PARAMETER Width
+    The width of the image in characters. The image is scaled to fit within this width while maintaining its aspect ratio.
 
     .PARAMETER Repeat
     If specified, the animation will repeat indefinitely.
@@ -32,7 +32,7 @@ function Get-SpectreImageExperimental {
     [Reflection.AssemblyMetadata("title", "Get-SpectreImageExperimental")]
     param (
         [string] $ImagePath,
-        [int] $MaxWidth,
+        [int] $Width,
         [int] $LoopCount = 0,
         [ValidateSet("Bicubic", "NearestNeighbor")]
         [string] $Resampler = "Bicubic"
@@ -41,22 +41,50 @@ function Get-SpectreImageExperimental {
     $backgroundColor = [System.Drawing.Color]::FromName([Console]::BackgroundColor)
     
     $image = [SixLabors.ImageSharp.Image]::Load($ImagePath)
-    $scaledHeight = [int]($image.Height * ($MaxWidth / $image.Width))
-    
-    if($image.Width -gt $MaxWidth) {
-        [SixLabors.ImageSharp.Processing.ProcessingExtensions]::Mutate($image, {
-            param($context)
-            [SixLabors.ImageSharp.Processing.ResizeExtensions]::Resize(
-                $context,
-                $MaxWidth,
-                $scaledHeight,
-                [SixLabors.ImageSharp.Processing.KnownResamplers]::$Resampler
-            )
-        })
+
+    if(!$Width) {
+        $Width = $image.Width
     }
 
+    $maxWidth = $Host.UI.RawUI.WindowSize.Width
+    $maxHeight = ($Host.UI.RawUI.WindowSize.Height - 2) * 2
+    $scaledHeight = [int]($image.Height * ($Width / $image.Width))
+    if($scaledHeight -gt $maxHeight) {
+        $scaledHeight = $maxHeight
+    }
+
+    $scaledWidth = [int]($image.Width * ($scaledHeight / $image.Height))
+    if($scaledWidth -gt $maxWidth) {
+        $scaledWidth = $maxWidth
+        $scaledHeight = [int]($image.Height * ($scaledWidth / $image.Width))
+    }
+
+    $cursorPosition = $Host.UI.RawUI.CursorPosition
+    $remainingRows = $Host.UI.RawUI.WindowSize.Height - $cursorPosition.Y - 1
+    $rowsToClear = [int]($scaledHeight / 2) - 1
+    -1..$rowsToClear | ForEach-Object {
+        Write-Host ""
+    }
+    $newYPosition = 0
+    if($rowsToClear -ge $remainingRows) {
+        $newYPosition = $cursorPosition.Y + $remainingRows - $rowsToClear - 2
+    } else {
+        $newYPosition = $cursorPosition.Y
+    }
+    [Console]::SetCursorPosition($cursorPosition.X, $newYPosition)
+
+    [SixLabors.ImageSharp.Processing.ProcessingExtensions]::Mutate($image, {
+        param($Context)
+        [SixLabors.ImageSharp.Processing.ResizeExtensions]::Resize(
+            $Context,
+            $scaledWidth,
+            $scaledHeight,
+            [SixLabors.ImageSharp.Processing.KnownResamplers]::$Resampler
+        )
+    })
+
     $frames = @()
-    $buffer = [System.Text.StringBuilder]::new($MaxWidth * $scaledHeight * 2)
+    $buffer = [System.Text.StringBuilder]::new($scaledWidth * $scaledHeight * 2)
 
     foreach($frame in $image.Frames) {
         $frameDelayMilliseconds = 1000
@@ -134,17 +162,9 @@ function Get-SpectreImageExperimental {
         }
     }
 
-    $terminalHeight = $Host.UI.RawUI.WindowSize.Height
-    $imageRowHeight = [int]($scaledHeight / 2)
     $topLeft = $Host.UI.RawUI.CursorPosition
-    if($imageRowHeight -le $terminalHeight) {
-        1..$imageRowHeight | Foreach-Object {
-            Write-host
-        }
-        $topLeft = $Host.UI.RawUI.CursorPosition
-        $topLeft.Y = $topLeft.Y - $imageRowHeight
-    }
     $loopIterations = 0
+    [Console]::SetCursorPosition($topLeft.X, $topLeft.Y)
     [Console]::CursorVisible = $false
     do {
         foreach($frame in $frames) {
