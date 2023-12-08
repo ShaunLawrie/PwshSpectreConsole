@@ -37,7 +37,7 @@ function Read-SpectreMultiSelection {
         [string] $Color = $script:AccentColor.ToMarkup(),
         [int] $PageSize = 5
     )
-    $prompt = [Spectre.Console.MultiSelectionPrompt[string]]::new()
+    $Spectreprompt = [Spectre.Console.MultiSelectionPrompt[string]]::new()
 
     $choiceLabels = $Choices
     if($ChoiceLabelProperty) {
@@ -50,14 +50,14 @@ function Read-SpectreMultiSelection {
         exit 2
     }
 
-    $prompt = [Spectre.Console.MultiSelectionPromptExtensions]::AddChoices($prompt, [string[]]$choiceLabels)
-    $prompt.Title = $Title
-    $prompt.PageSize = $PageSize
-    $prompt.WrapAround = $true
-    $prompt.HighlightStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
-    $prompt.InstructionsText = "[$($script:DefaultValueColor.ToMarkup())](Press [$($script:AccentColor.ToMarkup())]space[/] to toggle a choice and press [$($script:AccentColor.ToMarkup())]<enter>[/] to submit your answer)[/]"
-    $prompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
-    $selected = Invoke-SpectrePromptAsync -Prompt $prompt
+    $Spectreprompt = [Spectre.Console.MultiSelectionPromptExtensions]::AddChoices($Spectreprompt, [string[]]$choiceLabels)
+    $Spectreprompt.Title = $Title
+    $Spectreprompt.PageSize = $PageSize
+    $Spectreprompt.WrapAround = $true
+    $Spectreprompt.HighlightStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
+    $Spectreprompt.InstructionsText = "[$($script:DefaultValueColor.ToMarkup())](Press [$($script:AccentColor.ToMarkup())]space[/] to toggle a choice and press [$($script:AccentColor.ToMarkup())]<enter>[/] to submit your answer)[/]"
+    $Spectreprompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
+    $selected = Invoke-SpectrePromptAsync -Prompt $Spectreprompt
 
     if($ChoiceLabelProperty) {
         $selected = $Choices | Where-Object -Property $ChoiceLabelProperty -Eq $selected

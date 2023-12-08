@@ -24,10 +24,10 @@ function Read-SpectreText {
         [string] $Question = "What's your name?",
         [string] $DefaultAnswer
     )
-    $prompt = [Spectre.Console.TextPrompt[string]]::new($Question)
-    $prompt.DefaultValueStyle = [Spectre.Console.Style]::new($script:DefaultValueColor)
+    $Spectreprompt = [Spectre.Console.TextPrompt[string]]::new($Question)
+    $Spectreprompt.DefaultValueStyle = [Spectre.Console.Style]::new($script:DefaultValueColor)
     if($DefaultAnswer) {
-        $prompt = [Spectre.Console.TextPromptExtensions]::DefaultValue($prompt, $DefaultAnswer)
+        $Spectreprompt = [Spectre.Console.TextPromptExtensions]::DefaultValue($Spectreprompt, $DefaultAnswer)
     }
-    return Invoke-SpectrePromptAsync -Prompt $prompt
+    return Invoke-SpectrePromptAsync -Prompt $Spectreprompt
 }

@@ -58,3 +58,15 @@ class SpectreConsoleTreeGuide : IValidateSetValuesGenerator {
         return $lookup
     }
 }
+class SpectreConsoleWidth : IValidateSetValuesGenerator {
+    [String[]] GetValidValues() {
+        $lookup = 1..[console]::BufferWidth
+        return $lookup
+    }
+}
+class SpectreConsoleHeight : IValidateSetValuesGenerator {
+    [String[]] GetValidValues() {
+        $lookup = 1..[console]::BufferHeight
+        return $lookup
+    }
+}

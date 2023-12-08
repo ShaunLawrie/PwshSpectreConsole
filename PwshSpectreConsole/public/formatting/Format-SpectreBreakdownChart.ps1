@@ -41,7 +41,8 @@ function Format-SpectreBreakdownChart {
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
         [array] $Data,
-        [int]$Width = $Host.UI.RawUI.Width,
+        [ValidateSet([SpectreConsoleWidth],ErrorMessage = "Value '{0}' is invalid. Cannot exceed console width.")]
+        [int]$Width = [console]::BufferWidth,
         [switch]$HideTags,
         [Switch]$HideTagValues
     )
