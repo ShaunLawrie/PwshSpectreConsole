@@ -38,7 +38,8 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
-          Publish-Module -Path "./PwshSpectreConsole/" -Exclude "Build.ps1" -NugetApiKey $env:PSGALLERY_API_KEY
+          Import-Module .\PwshSpectreConsole\PwshSpectreConsole.psd1 -Force
+          Publish-Module -Name "PwshSpectreConsole" -Exclude "Build.ps1" -NugetApiKey $env:PSGALLERY_API_KEY
   
   publish-prerelease-to-psgallery:
     name: Publish Prerelease
