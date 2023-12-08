@@ -1,7 +1,9 @@
 name: Publish Doc Site
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+     - main
 
 permissions:
     contents: write

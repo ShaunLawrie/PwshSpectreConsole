@@ -39,7 +39,6 @@ export default defineConfig({
           label: "Command Reference",
           autogenerate: {
             directory: "reference",
-            collapsed: true,
           },
         },
       ],

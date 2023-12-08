@@ -3,7 +3,8 @@ const { speed } = Astro.props;
 ---
 
 <animated-terminal class="mt-0" data-speed={speed}>
-    <div class="mt-6" data-terminal-frame>
+
+    <div class="mt-6 overflow-hidden" data-terminal-frame>
         <pre class="font-mono bg-slate-50 dark:bg-slate-950">
 What's for <span class="text-pink-500">dinner</span>?
 &nbsp;
@@ -13,7 +14,8 @@ What's for <span class="text-pink-500">dinner</span>?
 &nbsp;
 <span class="text-slate-600">(Move up and down to reveal more choices)</span></pre>
     </div>
-    <div class="mt-6 hidden" data-terminal-frame>
+    
+    <div class="mt-6 overflow-hidden hidden" data-terminal-frame>
         <pre class="font-mono bg-slate-50 dark:bg-slate-950">
 What's for <span class="text-pink-500">dinner</span>?
 &nbsp;
@@ -23,7 +25,8 @@ What's for <span class="text-pink-500">dinner</span>?
 &nbsp;
 <span class="text-slate-600">(Move up and down to reveal more choices)</span></pre>
     </div>
-    <div class="mt-6 hidden" data-terminal-frame>
+
+    <div class="mt-6 overflow-hidden hidden" data-terminal-frame>
         <pre class="font-mono bg-slate-50 dark:bg-slate-950">
 What's for <span class="text-pink-500">dinner</span>?
 &nbsp;
@@ -33,7 +36,8 @@ What's for <span class="text-pink-500">dinner</span>?
 &nbsp;
 <span class="text-slate-600">(Move up and down to reveal more choices)</span></pre>
     </div>
-    <div class="mt-6 hidden" data-terminal-frame>
+
+    <div class="mt-6 overflow-hidden hidden" data-terminal-frame>
         <pre class="font-mono bg-slate-50 dark:bg-slate-950">
 What's for <span class="text-pink-500">dinner</span>?
 &nbsp;
@@ -43,6 +47,7 @@ What's for <span class="text-pink-500">dinner</span>?
 &nbsp;
 <span class="text-slate-600">(Move up and down to reveal more choices)</span></pre>
     </div>
+    
 </animated-terminal>
 
 <script>
