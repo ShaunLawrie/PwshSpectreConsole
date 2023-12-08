@@ -53,9 +53,10 @@ function Read-SpectreMultiSelectionGrouped {
         [ValidateSpectreColor()]
         [ArgumentCompletionsSpectreColors()]
         [string] $Color = $script:AccentColor.ToMarkup(),
-        [int] $PageSize = 10
+        [int] $PageSize = 10,
+        [switch] $AllowEmpty
     )
-    $Spectreprompt = [Spectre.Console.MultiSelectionPrompt[string]]::new()
+    $spectrePrompt = [Spectre.Console.MultiSelectionPrompt[string]]::new()
 
     $choiceLabels = $Choices.Choices
     if($ChoiceLabelProperty) {
@@ -72,16 +73,17 @@ function Read-SpectreMultiSelectionGrouped {
         if($ChoiceLabelProperty) {
             $choiceLabels = $Choices | Select-Object -ExpandProperty $ChoiceLabelProperty
         }
-        $Spectreprompt = [Spectre.Console.MultiSelectionPromptExtensions]::AddChoiceGroup($Spectreprompt, $group.Name, [string[]]$choiceLabels)
+        $spectrePrompt = [Spectre.Console.MultiSelectionPromptExtensions]::AddChoiceGroup($spectrePrompt, $group.Name, [string[]]$choiceLabels)
     }
 
-    $Spectreprompt.Title = $Title
-    $Spectreprompt.PageSize = $PageSize
-    $Spectreprompt.WrapAround = $true
-    $Spectreprompt.HighlightStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
-    $Spectreprompt.InstructionsText = "[$($script:DefaultValueColor.ToMarkup())](Press [$($script:AccentColor.ToMarkup())]space[/] to toggle a choice and press [$($script:AccentColor.ToMarkup())]<enter>[/] to submit your answer)[/]"
-    $Spectreprompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
-    $selected = Invoke-SpectrePromptAsync -Prompt $Spectreprompt
+    $spectrePrompt.Title = $Title
+    $spectrePrompt.PageSize = $PageSize
+    $spectrePrompt.WrapAround = $true
+    $spectrePrompt.Required = !$AllowEmpty
+    $spectrePrompt.HighlightStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
+    $spectrePrompt.InstructionsText = "[$($script:DefaultValueColor.ToMarkup())](Press [$($script:AccentColor.ToMarkup())]space[/] to toggle a choice and press [$($script:AccentColor.ToMarkup())]<enter>[/] to submit your answer)[/]"
+    $spectrePrompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
+    $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt
 
     if($ChoiceLabelProperty) {
         $selected = $Choices | Where-Object -Property $ChoiceLabelProperty -Eq $selected

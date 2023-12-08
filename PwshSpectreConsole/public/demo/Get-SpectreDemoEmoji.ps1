@@ -1,3 +1,20 @@
+<#
+.SYNOPSIS
+    Retrieves a collection of emojis available in Spectre Console.
+    ![Example emojis](/emoji.png)
+
+.DESCRIPTION
+    The Get-SpectreDemoEmoji function retrieves a collection of emojis available in Spectre Console. It displays the general emojis, faces, and provides information on how to use emojis in Spectre Console markup.
+
+.EXAMPLE
+    # Retrieves and displays the collection of emojis available in Spectre Console.
+    Get-SpectreDemoEmoji
+
+.NOTES
+    Emoji support is dependent on the operating system, terminal, and font support. For more information on Spectre Console markup and emojis, refer to the following links:
+    - Spectre Console Markup: https://spectreconsole.net/markup
+    - Spectre Console Emojis: https://spectreconsole.net/appendix/emojis
+#>
 function Get-SpectreDemoEmoji {
     [Reflection.AssemblyMetadata("title", "Get-SpectreDemoEmoji")]
     param ()

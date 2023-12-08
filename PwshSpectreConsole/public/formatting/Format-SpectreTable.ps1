@@ -4,6 +4,7 @@ function Format-SpectreTable {
     <#
     .SYNOPSIS
     Formats an array of objects into a Spectre Console table.
+    ![Example table](/table.png)
 
     .DESCRIPTION
     This function takes an array of objects and formats them into a table using the Spectre Console library. The table can be customized with a border style and color.
@@ -43,7 +44,7 @@ function Format-SpectreTable {
         [ValidateSpectreColor()]
         [ArgumentCompletionsSpectreColors()]
         [string] $Color = $script:AccentColor.ToMarkup(),
-        [ValidateSet([SpectreConsoleWidth],ErrorMessage = "Value '{0}' is invalid. Cannot exceed console width.")]
+        [ValidateScript({ $_ -gt 0 -and $_ -le [console]::BufferWidth }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
         [int]$Width,
         [switch]$HideHeaders,
         [String]$Title

@@ -8,9 +8,15 @@ $ErrorActionPreference = "Stop"
 Remove-Module -Name PwshSpectreConsole -ErrorAction SilentlyContinue
 Import-Module "$PSScriptRoot\..\PwshSpectreConsole\PwshSpectreConsole.psd1" -Force
 Remove-Item -Recurse -Path "$PSScriptRoot\src\content\docs\reference\*" -Force
-Get-Module PwshSpectreConsole | Save-MarkdownHelp -OutputPath "$PSScriptRoot\src\content\docs\reference\" -IncludeYamlHeader -YamlHeaderInformationType Metadata -ExcludeFile "*.gif", "*.png"
+$module = Get-Module PwshSpectreConsole
 
-$new = @("New-SpectreChartItem.md", "Get-SpectreDemoColors", "Get-SpectreDemoEmoji")
+if($null -eq $module) {
+    throw "Failed to import PwshSpectreConsole module"
+}
+
+$module | Save-MarkdownHelp -OutputPath "$PSScriptRoot\src\content\docs\reference\" -IncludeYamlHeader -YamlHeaderInformationType Metadata -ExcludeFile "*.gif", "*.png"
+
+$new = @("New-SpectreChartItem.md", "Get-SpectreDemoColors.md", "Get-SpectreDemoEmoji.md")
 $experimental = @("Get-SpectreImageExperimental.md", "Invoke-SpectreScriptBlockQuietly.md")
 
 $newTag = @"

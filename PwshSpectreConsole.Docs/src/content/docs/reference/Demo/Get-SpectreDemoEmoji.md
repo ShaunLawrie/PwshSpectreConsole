@@ -1,62 +1,43 @@
 ---
+sidebar:
+  badge:
+    text: New
+    variant: tip
 title: Get-SpectreDemoEmoji
 ---
 
 
 
-
-
-
-
 ### Synopsis
-
-Get-SpectreDemoEmoji 
-
-
-
+Retrieves a collection of emojis available in Spectre Console.
+![Example emojis](/emoji.png)
 
 ---
-
 
 ### Description
 
+The Get-SpectreDemoEmoji function retrieves a collection of emojis available in Spectre Console. It displays the general emojis, faces, and provides information on how to use emojis in Spectre Console markup.
 
 ---
 
+### Examples
+Retrieves and displays the collection of emojis available in Spectre Console.
 
-### Parameters
-
-
----
-
-
-### Inputs
-None
-
-
-
+```powershell
+Get-SpectreDemoEmoji
+```
 
 ---
 
-
-### Outputs
-* [Object](https://learn.microsoft.com/en-us/dotnet/api/System.Object)
-
-
-
-
-
+### Notes
+Emoji support is dependent on the operating system, terminal, and font support. For more information on Spectre Console markup and emojis, refer to the following links:
+- Spectre Console Markup: https://spectreconsole.net/markup
+- Spectre Console Emojis: https://spectreconsole.net/appendix/emojis
 
 ---
-
 
 ### Syntax
 ```powershell
-syntaxItem
-```
-
-```
-```powershell
-{@{name=Get-SpectreDemoEmoji; CommonParameters=False; parameter=System.Object[]}}
+Get-SpectreDemoEmoji [<CommonParameters>]
 ```
 

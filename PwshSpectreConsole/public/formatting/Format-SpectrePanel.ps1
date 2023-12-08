@@ -4,6 +4,7 @@ function Format-SpectrePanel {
     <#
     .SYNOPSIS
     Formats a string as a Spectre Console panel with optional title, border, and color.
+    ![Spectre panel example](/panel.png)
 
     .DESCRIPTION
     This function takes a string and formats it as a Spectre Console panel with optional title, border, and color. The resulting panel can be displayed in the console using the Write-Host command.
@@ -15,7 +16,7 @@ function Format-SpectrePanel {
     The title to be displayed at the top of the panel.
 
     .PARAMETER Border
-    The type of border to be displayed around the panel. Valid values are "Rounded", "Heavy", "Double", "Single", "None".
+    The type of border to be displayed around the panel.
 
     .PARAMETER Expand
     Switch parameter that specifies whether the panel should be expanded to fill the available space.
@@ -44,9 +45,9 @@ function Format-SpectrePanel {
         [ValidateSpectreColor()]
         [ArgumentCompletionsSpectreColors()]
         [string] $Color = $script:AccentColor.ToMarkup(),
-        [ValidateSet([SpectreConsoleWidth],ErrorMessage = "Value '{0}' is invalid. Cannot exceed console width.")]
+        [ValidateScript({ $_ -gt 0 -and $_ -le [console]::BufferWidth }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
         [int]$Width,
-        [ValidateSet([SpectreConsoleHeight],ErrorMessage = "Value '{0}' is invalid. Cannot exceed console height.")]
+        [ValidateScript({ $_ -gt 0 -and $_ -le [console]::WindowHeight }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console height.")]
         [int]$Height
     )
     $panel = [Spectre.Console.Panel]::new($Data)

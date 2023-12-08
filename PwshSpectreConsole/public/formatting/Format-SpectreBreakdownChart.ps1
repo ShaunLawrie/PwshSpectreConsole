@@ -4,6 +4,7 @@ function Format-SpectreBreakdownChart {
     <#
     .SYNOPSIS
     Formats data into a breakdown chart.
+    ![Example breakdown chart](/breakdownchart.png)
 
     .DESCRIPTION
     This function takes an array of data and formats it into a breakdown chart using Spectre.Console.BreakdownChart. The chart can be customized with a specified width and color.
@@ -21,20 +22,11 @@ function Format-SpectreBreakdownChart {
     Hides the tag values on the chart.
 
     .EXAMPLE
-    # This example displays a breakdown chart with the title "Fruit Sales" and a width of 50 characters.
-    $data = @(
-        @{ Label = "Apples"; Value = 10; Color = "Red" },
-        @{ Label = "Oranges"; Value = 20; Color = "Orange1" },
-        @{ Label = "Bananas"; Value = 15; Color = "Yellow" }
-    )
-    Format-SpectreBreakdownChart -Data $data -Width 50
-
-    .EXAMPLE
     # This example uses the new helper for generating chart items New-SpectreChartItem and the various ways of passing color values in.
     $data = @()
 
-    $data += New-SpectreChartItem -Label "Apples" -Value 10 -Color [Spectre.Console.Color]::Green
-    $data += New-SpectreChartItem -Label "Oranges" -Value 5 -Color "Orange"
+    $data += New-SpectreChartItem -Label "Apples" -Value 10 -Color "Green"
+    $data += New-SpectreChartItem -Label "Oranges" -Value 5 -Color "Gold1"
     $data += New-SpectreChartItem -Label "Bananas" -Value 2.2 -Color "#FFFF00"
 
     Format-SpectreBreakdownChart -Data $data -Width 50
@@ -43,7 +35,7 @@ function Format-SpectreBreakdownChart {
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
         [array] $Data,
-        [ValidateSet([SpectreConsoleWidth],ErrorMessage = "Value '{0}' is invalid. Cannot exceed console width.")]
+        [ValidateScript({ $_ -gt 0 -and $_ -le [console]::BufferWidth }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
         [int]$Width = [console]::BufferWidth,
         [switch]$HideTags,
         [Switch]$HideTagValues
