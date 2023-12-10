@@ -36,9 +36,10 @@ function Format-SpectreTable {
     Format-SpectreTable -Data $data
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectreTable")]
+    [Alias('fst')]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
-        [array] $Data,
+        [object] $Data,
         [ValidateSet([SpectreConsoleTableBorder],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Border = "Double",
         [ValidateSpectreColor()]
@@ -54,6 +55,7 @@ function Format-SpectreTable {
         $table.Border = [Spectre.Console.TableBorder]::$Border
         $table.BorderStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
         $headerProcessed = $false
+        $TypeFound = $false
         if ($Width) {
             $table.Width = $Width
         }
@@ -63,29 +65,58 @@ function Format-SpectreTable {
         if ($Title) {
             $table.Title = [Spectre.Console.TableTitle]::new($Title, [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor)))
         }
+        $collector = [System.Collections.Generic.List[psobject]]::new()
     }
     process {
-        if(!$headerProcessed) {
-            $Data[0].psobject.Properties.Name | Foreach-Object {
-                $table.AddColumn($_) | Out-Null
+        if ($data -is [array]) {
+            # add array items individually to the collector
+            foreach ($entry in $data) {
+                $collector.add($entry)
             }
-            $headerProcessed = $true
         }
-        $Data | Foreach-Object {
-            $row = @()
-            $row = $_.psobject.Properties | ForEach-Object {
-                $cell = $_.Value
-                if ($null -eq $cell) {
-                    [Spectre.Console.Text]::new("")
+        else {
+            $collector.add($data)
+        }
+    }
+    end {
+        foreach ($item in $collector) {
+            if ($headerProcessed -eq $false) {
+                $standardMembers = Get-DefaultDisplayMembers $item
+                if ($item.gettype().Name -ne "PSCustomObject" -And $standardMembers) {
+                    $TypeFound = $true
+                    foreach ($member in $standardMembers) {
+                        $table.AddColumn($member.Label) | Out-Null
+                    }
                 }
                 else {
-                    [Spectre.Console.Text]::new($cell.ToString())
+                    foreach ($property in $item.psobject.Properties.Name) {
+                        if (-Not [String]::IsNullOrEmpty($property)) {
+                            $table.AddColumn($property) | Out-Null
+                        }
+                    }
+                }
+                $headerProcessed = $true
+            }
+            if ($TypeFound -eq $true) {
+                $item = $item | Select-Object $standardMembers.Property
+            }
+            $row = foreach ($cell in $item.psobject.Properties) {
+                if ([String]::IsNullOrEmpty($cell.Value)) {
+                    # null value
+                    [Spectre.Console.Text]::new(" ")
+                }
+                elseif (-Not [String]::IsNullOrEmpty($cell.Value.ToString())) {
+                    # value has a .ToString() method
+                    [Spectre.Console.Text]::new($cell.Value.ToString())
+                }
+                else {
+                    # value does not have a .ToString() method, need to test this more.
+                    Write-Debug "Cell value does not have a .ToString() method."
+                    [Spectre.Console.Text]::new($cell.Value)
                 }
             }
             $table = [Spectre.Console.TableExtensions]::AddRow($table, [Spectre.Console.Text[]]$row)
         }
-    }
-    end {
         Write-AnsiConsole $table
     }
 }
