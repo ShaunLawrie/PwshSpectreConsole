@@ -59,7 +59,7 @@ function Format-SpectreJson {
     [Reflection.AssemblyMetadata("title", "Format-SpectreJson")]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
-        [array] $Data,
+        [object] $Data,
         [string] $Title,
         [ValidateSet([SpectreConsoleBoxBorder], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Border = "Rounded",
