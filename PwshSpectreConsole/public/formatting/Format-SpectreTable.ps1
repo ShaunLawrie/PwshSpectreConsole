@@ -38,6 +38,8 @@ function Format-SpectreTable {
     [Reflection.AssemblyMetadata("title", "Format-SpectreTable")]
     [Alias('fst')]
     param (
+        [Parameter(Position = 0)]
+        [String[]]$Property,
         [Parameter(ValueFromPipeline, Mandatory)]
         [object] $Data,
         [ValidateSet([SpectreConsoleTableBorder],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
@@ -54,8 +56,6 @@ function Format-SpectreTable {
         $table = [Spectre.Console.Table]::new()
         $table.Border = [Spectre.Console.TableBorder]::$Border
         $table.BorderStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
-        $headerProcessed = $false
-        $TypeFound = $false
         if ($Width) {
             $table.Width = $Width
         }
@@ -73,46 +73,54 @@ function Format-SpectreTable {
             foreach ($entry in $data) {
                 $collector.add($entry)
             }
-        }
-        else {
+        } else {
             $collector.add($data)
         }
     }
     end {
+        if ($Property) {
+            $collector = $collector | Select-Object -Property $Property
+            $property | ForEach-Object {
+                $table.AddColumn($_) | Out-Null
+            }
+        }
+        elseif (($standardMembers = Get-DefaultDisplayMembers $collector[0])) {
+            foreach ($key in $standardMembers.keys) {
+                $std = $standardMembers[$key]
+                $table.AddColumn($std.Label) | Out-Null
+                # if($std.width -gt 0) {
+                    # width 0 is autosize.
+                #     $table.Columns[$table.Columns.Count - 1].Width($std.Width) | Out-Null
+                # }
+            }
+            $collector = $collector | Select-Object -Property $standardMembers.keys
+        } else {
+            foreach ($prop in $collector[0].psobject.Properties.Name) {
+                if (-Not [String]::IsNullOrEmpty($prop)) {
+                    $table.AddColumn($prop) | Out-Null
+                }
+            }
+        }
         foreach ($item in $collector) {
-            if ($headerProcessed -eq $false) {
-                $standardMembers = Get-DefaultDisplayMembers $item
-                if ($item.gettype().Name -ne "PSCustomObject" -And $standardMembers) {
-                    $TypeFound = $true
-                    foreach ($member in $standardMembers) {
-                        $table.AddColumn($member.Label) | Out-Null
+            $row = $item.psobject.Properties | ForEach-Object {
+                if ($standardMembers -and $standardMembers.Contains($_.Name)) {
+                    $member = $standardMembers[$_.Name]
+                    if ($member.type -eq 'ScriptBlock') {
+                        $cell = & {
+                            param($inside)
+                            . { $_ = $args[0]; . $member.Expression } $inside
+                        } $item
+                        [Spectre.Console.Text]::new($cell)
+                    } else {
+                        [Spectre.Console.Text]::new($_.Value)
                     }
-                }
-                else {
-                    foreach ($property in $item.psobject.Properties.Name) {
-                        if (-Not [String]::IsNullOrEmpty($property)) {
-                            $table.AddColumn($property) | Out-Null
-                        }
-                    }
-                }
-                $headerProcessed = $true
-            }
-            if ($TypeFound -eq $true) {
-                $item = $item | Select-Object $standardMembers.Property
-            }
-            $row = foreach ($cell in $item.psobject.Properties) {
-                if ([String]::IsNullOrEmpty($cell.Value)) {
-                    # null value
+                } elseif ($null -eq $_.Value) {
                     [Spectre.Console.Text]::new(" ")
                 }
-                elseif (-Not [String]::IsNullOrEmpty($cell.Value.ToString())) {
-                    # value has a .ToString() method
-                    [Spectre.Console.Text]::new($cell.Value.ToString())
-                }
-                else {
-                    # value does not have a .ToString() method, need to test this more.
-                    Write-Debug "Cell value does not have a .ToString() method."
-                    [Spectre.Console.Text]::new($cell.Value)
+                elseif (-Not [String]::IsNullOrEmpty($_.Value.ToString())) {
+                    [Spectre.Console.Text]::new($_.Value.ToString())
+                } else {
+                    [Spectre.Console.Text]::new([String]$_.Value)
                 }
             }
             $table = [Spectre.Console.TableExtensions]::AddRow($table, [Spectre.Console.Text[]]$row)

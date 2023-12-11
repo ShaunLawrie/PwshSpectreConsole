@@ -57,6 +57,7 @@ function Format-SpectreJson {
     Format-SpectreJson -Data $data -Title "Employee Data" -Border "Rounded" -Color "Green"
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectreJson")]
+    [Alias('fsj')]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
         [object] $Data,
