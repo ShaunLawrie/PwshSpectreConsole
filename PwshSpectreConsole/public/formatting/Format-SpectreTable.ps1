@@ -66,6 +66,7 @@ function Format-SpectreTable {
             $table.Title = [Spectre.Console.TableTitle]::new($Title, [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor)))
         }
         $collector = [System.Collections.Generic.List[psobject]]::new()
+        $strip = '\x1B\[[0-?]*[ -/]*[@-~]'
     }
     process {
         if ($data -is [array]) {
@@ -111,14 +112,10 @@ function Format-SpectreTable {
         }
         foreach ($item in $collector) {
             $row = foreach ($cell in $item.psobject.Properties) {
-                # testing with $standardMembers.Format instead.
-                # if ($standardMembers -and $standardMembers.Contains($cell.Name)) {
-                #     $member = $standardMembers[$cell.Name]
-                #     if ($member.type -eq 'ScriptBlock') {
-                #         # [string]$cell.Value = $member.Expression.InvokeWithContext($null, [psvariable]::new('_', $item), $null)
-                #         Write-Debug "Cell: $cell, $($member | Out-String)"
-                #     }
-                # }
+                if ($cell.value -match $strip) {
+                    Write-Debug "Cell: $cell stripping out ""$($PSStyle.Foreground.Red)$($matches.Values -replace '\x1b','[ESC]')$($PSStyle.Reset)"""
+                    $cell.value = $cell.value -replace $strip
+                }
                 Write-Debug "Cell: $cell"
                 if ($null -eq $cell.Value) {
                     Write-Debug "Cell: $($cell.Name) is null"
