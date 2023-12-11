@@ -73,7 +73,8 @@ function Format-SpectreTable {
             foreach ($entry in $data) {
                 $collector.add($entry)
             }
-        } else {
+        }
+        else {
             $collector.add($data)
         }
     }
@@ -85,16 +86,23 @@ function Format-SpectreTable {
             }
         }
         elseif (($standardMembers = Get-DefaultDisplayMembers $collector[0])) {
-            foreach ($key in $standardMembers.keys) {
-                $std = $standardMembers[$key]
-                $table.AddColumn($std.Label) | Out-Null
-                # if($std.width -gt 0) {
-                    # width 0 is autosize.
-                #     $table.Columns[$table.Columns.Count - 1].Width($std.Width) | Out-Null
-                # }
+            foreach ($key in $standardMembers.Properties.keys) {
+                $lookup = $standardMembers.Properties[$key]
+                $table.AddColumn($lookup.Label) | Out-Null
+                # $table.Columns[-1].Padding = [Spectre.Console.Padding]::new(0, 0, 0, 0)
+                if ($lookup.width -gt 0) {
+                    # width 0 is autosize, select the last entry in the column list
+                    Write-Debug "Label: $($lookup.Label) width to $($lookup.Width)"
+                    $table.Columns[-1].Width = $lookup.Width
+                }
+                if ($lookup.Alignment -ne 'undefined') {
+                    $table.Columns[-1].Alignment = [Spectre.Console.Justify]::$lookup.Alignment
+                }
             }
-            $collector = $collector | Select-Object -Property $standardMembers.keys
-        } else {
+            # this formats the values according to the formatdata so we dont have to do it in the foreach loop.
+            $collector = $collector | Select-Object $standardMembers.Format
+        }
+        else {
             foreach ($prop in $collector[0].psobject.Properties.Name) {
                 if (-Not [String]::IsNullOrEmpty($prop)) {
                     $table.AddColumn($prop) | Out-Null
@@ -102,25 +110,25 @@ function Format-SpectreTable {
             }
         }
         foreach ($item in $collector) {
-            $row = $item.psobject.Properties | ForEach-Object {
-                if ($standardMembers -and $standardMembers.Contains($_.Name)) {
-                    $member = $standardMembers[$_.Name]
-                    if ($member.type -eq 'ScriptBlock') {
-                        $cell = & {
-                            param($inside)
-                            . { $_ = $args[0]; . $member.Expression } $inside
-                        } $item
-                        [Spectre.Console.Text]::new($cell)
-                    } else {
-                        [Spectre.Console.Text]::new($_.Value)
-                    }
-                } elseif ($null -eq $_.Value) {
+            $row = foreach ($cell in $item.psobject.Properties) {
+                # testing with $standardMembers.Format instead.
+                # if ($standardMembers -and $standardMembers.Contains($cell.Name)) {
+                #     $member = $standardMembers[$cell.Name]
+                #     if ($member.type -eq 'ScriptBlock') {
+                #         # [string]$cell.Value = $member.Expression.InvokeWithContext($null, [psvariable]::new('_', $item), $null)
+                #         Write-Debug "Cell: $cell, $($member | Out-String)"
+                #     }
+                # }
+                Write-Debug "Cell: $cell"
+                if ($null -eq $cell.Value) {
+                    Write-Debug "Cell: $($cell.Name) is null"
                     [Spectre.Console.Text]::new(" ")
                 }
-                elseif (-Not [String]::IsNullOrEmpty($_.Value.ToString())) {
-                    [Spectre.Console.Text]::new($_.Value.ToString())
-                } else {
-                    [Spectre.Console.Text]::new([String]$_.Value)
+                elseif (-Not [String]::IsNullOrEmpty($cell.Value.ToString())) {
+                    [Spectre.Console.Text]::new($cell.Value.ToString())
+                }
+                else {
+                    [Spectre.Console.Text]::new([String]$cell.Value)
                 }
             }
             $table = [Spectre.Console.TableExtensions]::AddRow($table, [Spectre.Console.Text[]]$row)

@@ -61,6 +61,7 @@ function Format-SpectreJson {
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
         [object] $Data,
+        [int] $Depth,
         [string] $Title,
         [ValidateSet([SpectreConsoleBoxBorder], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Border = "Rounded",
@@ -74,12 +75,18 @@ function Format-SpectreJson {
     )
     begin {
         $collector = [System.Collections.Generic.List[psobject]]::new()
+        $splat = @{
+            WarningAction = "Ignore"
+        }
+        if ($Depth) {
+            $splat.Depth = $Depth
+        }
     }
     process {
         $collector.add($data)
     }
     end {
-        $json = [Spectre.Console.Json.JsonText]::new(($collector | ConvertTo-Json -WarningAction Ignore))
+        $json = [Spectre.Console.Json.JsonText]::new(($collector | ConvertTo-Json @splat))
         $json.BracesStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::Red)
         $json.BracketsStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::Green)
         $json.ColonStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::Blue)
