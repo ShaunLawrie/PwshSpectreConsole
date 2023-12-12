@@ -67,6 +67,7 @@ function Format-SpectreTable {
         }
         $collector = [System.Collections.Generic.List[psobject]]::new()
         $strip = '\x1B\[[0-?]*[ -/]*[@-~]'
+        # [Spectre.Console.AnsiConsole]::Profile.Capabilities.Ansi = false
     }
     process {
         if ($data -is [array]) {
@@ -80,20 +81,23 @@ function Format-SpectreTable {
         }
     }
     end {
+        if ($collector.count -eq 0) {
+            return
+        }
         if ($Property) {
             $collector = $collector | Select-Object -Property $Property
             $property | ForEach-Object {
                 $table.AddColumn($_) | Out-Null
             }
         }
-        elseif (($standardMembers = Get-DefaultDisplayMembers $collector[0])) {
+        elseif (($collector[0].PSTypeNames[0] -ne 'PSCustomObject') -And ($standardMembers = Get-DefaultDisplayMembers $collector[0])) {
             foreach ($key in $standardMembers.Properties.keys) {
                 $lookup = $standardMembers.Properties[$key]
                 $table.AddColumn($lookup.Label) | Out-Null
                 # $table.Columns[-1].Padding = [Spectre.Console.Padding]::new(0, 0, 0, 0)
                 if ($lookup.width -gt 0) {
                     # width 0 is autosize, select the last entry in the column list
-                    Write-Debug "Label: $($lookup.Label) width to $($lookup.Width)"
+                    # Write-Debug "Label: $($lookup.Label) width to $($lookup.Width)"
                     $table.Columns[-1].Width = $lookup.Width
                 }
                 if ($lookup.Alignment -ne 'undefined') {
@@ -112,13 +116,19 @@ function Format-SpectreTable {
         }
         foreach ($item in $collector) {
             $row = foreach ($cell in $item.psobject.Properties) {
-                if ($cell.value -match $strip) {
-                    Write-Debug "Cell: $cell stripping out ""$($PSStyle.Foreground.Red)$($matches.Values -replace '\x1b','[ESC]')$($PSStyle.Reset)"""
+                if ($standardMembers -And $cell.value -match $strip) {
+                    # Write-Debug "Cell: $cell strip ""$($matches.Values)$($matches.Values -replace '\x1b','[ESC]')$($PSStyle.Reset)"""
+                    $SpectreColor = ConvertFrom-AnsiColor $cell.value
                     $cell.value = $cell.value -replace $strip
+                    if (-Not [String]::IsNullOrWhiteSpace($cell.value)) {
+                        [Spectre.Console.Text]::new($cell.value, [Spectre.Console.Style]::new($SpectreColor))
+                    }
+                    else {
+                        [Spectre.Console.Text]::new(" ")
+                    }
+                    continue
                 }
-                Write-Debug "Cell: $cell"
                 if ($null -eq $cell.Value) {
-                    Write-Debug "Cell: $($cell.Name) is null"
                     [Spectre.Console.Text]::new(" ")
                 }
                 elseif (-Not [String]::IsNullOrEmpty($cell.Value.ToString())) {
