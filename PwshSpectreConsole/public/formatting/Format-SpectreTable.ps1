@@ -1,4 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
+using namespace Spectre.Console
 
 function Format-SpectreTable {
     <#
@@ -50,12 +51,13 @@ function Format-SpectreTable {
         [ValidateScript({ $_ -gt 0 -and $_ -le [console]::BufferWidth }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
         [int]$Width,
         [switch]$HideHeaders,
-        [String]$Title
+        [String]$Title,
+        [switch]$AllowMarkup
     )
     begin {
-        $table = [Spectre.Console.Table]::new()
-        $table.Border = [Spectre.Console.TableBorder]::$Border
-        $table.BorderStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
+        $table = [Table]::new()
+        $table.Border = [TableBorder]::$Border
+        $table.BorderStyle = [Style]::new(($Color | Convert-ToSpectreColor))
         if ($Width) {
             $table.Width = $Width
         }
@@ -63,7 +65,7 @@ function Format-SpectreTable {
             $table.ShowHeaders = $false
         }
         if ($Title) {
-            $table.Title = [Spectre.Console.TableTitle]::new($Title, [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor)))
+            $table.Title = [TableTitle]::new($Title, [Style]::new(($Color | Convert-ToSpectreColor)))
         }
         $collector = [System.Collections.Generic.List[psobject]]::new()
         $strip = '\x1B\[[0-?]*[ -/]*[@-~]'
@@ -101,7 +103,7 @@ function Format-SpectreTable {
                     $table.Columns[-1].Width = $lookup.Width
                 }
                 if ($lookup.Alignment -ne 'undefined') {
-                    $table.Columns[-1].Alignment = [Spectre.Console.Justify]::$lookup.Alignment
+                    $table.Columns[-1].Alignment = [Justify]::$lookup.Alignment
                 }
             }
             # this formats the values according to the formatdata so we dont have to do it in the foreach loop.
@@ -118,21 +120,37 @@ function Format-SpectreTable {
             $row = foreach ($cell in $item.psobject.Properties) {
                 if ($standardMembers -And $cell.value -match $strip) {
                     # we are dealing with an object that has VT codes and a formatdata entry.
-                    # this returns a spectre.console.text object with the VT codes applied.
-                    ConvertTo-SpectreDecoration $cell.value
+                    # this returns a spectre.console.text/markup object with the VT codes applied.
+                    ConvertTo-SpectreDecoration $cell.value -AllowMarkup:$AllowMarkup
                     continue
                 }
                 if ($null -eq $cell.Value) {
-                    [Spectre.Console.Text]::new(" ")
+                    if($AllowMarkup) {
+                        [Markup]::new(" ")
+                    } else {
+                        [Text]::new(" ")
+                    }
                 }
                 elseif (-Not [String]::IsNullOrEmpty($cell.Value.ToString())) {
-                    [Spectre.Console.Text]::new($cell.Value.ToString())
+                    if($AllowMarkup) {
+                        [Markup]::new($cell.Value.ToString())
+                    } else {
+                        [Text]::new($cell.Value.ToString())
+                    }
                 }
                 else {
-                    [Spectre.Console.Text]::new([String]$cell.Value)
+                    if($AllowMarkup) {
+                        [Markup]::new([String]$cell.Value)
+                    } else {
+                        [Text]::new($cell.Value.ToString())
+                    }
                 }
             }
-            $table = [Spectre.Console.TableExtensions]::AddRow($table, [Spectre.Console.Text[]]$row)
+            if($AllowMarkup) {
+                $table = [TableExtensions]::AddRow($table, [Markup[]]$row)
+            } else {
+                $table = [TableExtensions]::AddRow($table, [Text[]]$row)
+            }
         }
         Write-AnsiConsole $table
     }

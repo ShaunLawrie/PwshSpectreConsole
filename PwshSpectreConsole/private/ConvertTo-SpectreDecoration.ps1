@@ -1,7 +1,8 @@
 function ConvertTo-SpectreDecoration {
     param(
         [Parameter(Mandatory)]
-        [String]$String
+        [String]$String,
+        [switch]$AllowMarkup
     )
     if (-Not ('PwshSpectreConsole.VTCodes.Parser' -as [type])) {
         Add-PwshSpectreConsole.VTCodes
@@ -44,5 +45,8 @@ function ConvertTo-SpectreDecoration {
     }
     $String = $String -replace '\x1B\[[0-?]*[ -/]*[@-~]'
     Write-Debug "Clean: '$String' deco: '$($ht.decoration)' fg: '$($ht.fg)' bg: '$($ht.bg)'"
+    if($AllowMarkup) {
+        return [Spectre.Console.Markup]::new($String,[Spectre.Console.Style]::new($ht.fg,$ht.bg,$ht.decoration))
+    }
     [Spectre.Console.Text]::new($String,[Spectre.Console.Style]::new($ht.fg,$ht.bg,$ht.decoration))
 }
