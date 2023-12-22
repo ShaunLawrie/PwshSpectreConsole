@@ -1,4 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
+using namespace Spectre.Console
 
 function Format-SpectreTable {
     <#
@@ -50,9 +51,9 @@ function Format-SpectreTable {
         [String]$Title
     )
     begin {
-        $table = [Spectre.Console.Table]::new()
-        $table.Border = [Spectre.Console.TableBorder]::$Border
-        $table.BorderStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
+        $table = [Table]::new()
+        $table.Border = [TableBorder]::$Border
+        $table.BorderStyle = [Style]::new(($Color | Convert-ToSpectreColor))
         $headerProcessed = $false
         if ($Width) {
             $table.Width = $Width
@@ -61,7 +62,7 @@ function Format-SpectreTable {
             $table.ShowHeaders = $false
         }
         if ($Title) {
-            $table.Title = [Spectre.Console.TableTitle]::new($Title, [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor)))
+            $table.Title = [TableTitle]::new($Title, [Style]::new(($Color | Convert-ToSpectreColor)))
         }
     }
     process {
@@ -76,13 +77,13 @@ function Format-SpectreTable {
             $row = $_.psobject.Properties | ForEach-Object {
                 $cell = $_.Value
                 if ($null -eq $cell) {
-                    [Spectre.Console.Text]::new("")
+                    [Markup]::new("")
                 }
                 else {
-                    [Spectre.Console.Text]::new($cell.ToString())
+                    [Markup]::new($cell.ToString())
                 }
             }
-            $table = [Spectre.Console.TableExtensions]::AddRow($table, [Spectre.Console.Text[]]$row)
+            $table = [TableExtensions]::AddRow($table, [Markup[]]$row)
         }
     }
     end {
