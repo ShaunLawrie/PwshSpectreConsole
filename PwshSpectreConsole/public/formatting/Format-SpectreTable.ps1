@@ -117,15 +117,9 @@ function Format-SpectreTable {
         foreach ($item in $collector) {
             $row = foreach ($cell in $item.psobject.Properties) {
                 if ($standardMembers -And $cell.value -match $strip) {
-                    # Write-Debug "Cell: $cell strip ""$($matches.Values)$($matches.Values -replace '\x1b','[ESC]')$($PSStyle.Reset)"""
-                    $SpectreColor = ConvertFrom-AnsiColor $cell.value
-                    $cell.value = $cell.value -replace $strip
-                    if (-Not [String]::IsNullOrWhiteSpace($cell.value)) {
-                        [Spectre.Console.Text]::new($cell.value, [Spectre.Console.Style]::new($SpectreColor))
-                    }
-                    else {
-                        [Spectre.Console.Text]::new(" ")
-                    }
+                    # we are dealing with an object that has VT codes and a formatdata entry.
+                    # this returns a spectre.console.text object with the VT codes applied.
+                    ConvertTo-SpectreDecoration $cell.value
                     continue
                 }
                 if ($null -eq $cell.Value) {
