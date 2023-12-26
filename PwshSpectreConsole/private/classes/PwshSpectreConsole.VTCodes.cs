@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Management.Automation;
-// using Spectre.Console;
 
 namespace PwshSpectreConsole.VTCodes
 {
@@ -10,10 +9,10 @@ namespace PwshSpectreConsole.VTCodes
         // objects of this class are returned by the Parser
         public class VtCode
         {
-            public object Value { get; set; }
-            public string Type { get; set; }
-            public string Position { get; set; }
-            public int Placement { get; set; }
+            public object Value { get; set; } // color, decoration, etc.
+            public string Type { get; set; } // 4bit, 8bit, 24bit, decoration
+            public string Position { get; set; } // foreground, background
+            public int Placement { get; set; } // placement in the string
         }
         public class RGB
         {
@@ -66,7 +65,7 @@ namespace PwshSpectreConsole.VTCodes
     }
     public class Parser
     {
-        private static (string slice, int position) GetNextSlice(ref ReadOnlySpan<char> inputSpan)
+        private static (string slice, int placement) GetNextSlice(ref ReadOnlySpan<char> inputSpan)
         {
             var escIndex = inputSpan.IndexOf('\x1B');
             if (escIndex == -1)
@@ -86,11 +85,11 @@ namespace PwshSpectreConsole.VTCodes
                 return (null, 0);
             }
             var vtCode = slice.Slice(0, endIndex).ToString();
-            var position = sliceStart + endIndex - vtCode.Length;
-            inputSpan = inputSpan.Slice(position);
-            return (vtCode, position);
+            var placement = sliceStart + endIndex - vtCode.Length;
+            inputSpan = inputSpan.Slice(placement);
+            return (vtCode, placement);
         }
-        private static VT.VtCode New4BitVT(int firstCode, int position)
+        private static VT.VtCode New4BitVT(int firstCode, int placement)
         {
             string pos = (firstCode >= 30 && firstCode <= 37 || firstCode >= 90 && firstCode <= 97) ? "foreground" : "background";
             return new VT.VtCode
@@ -98,20 +97,20 @@ namespace PwshSpectreConsole.VTCodes
                 Value = firstCode,
                 Type = "4bit",
                 Position = pos,
-                Placement = position
+                Placement = placement
             };
         }
-        private static VT.VtCode New8BitVT(string[] codeParts, int position, string type)
+        private static VT.VtCode New8BitVT(string[] codeParts, int placement, string position)
         {
             return new VT.VtCode
             {
                 Value = int.Parse(codeParts[2]),
                 Type = "8bit",
-                Position = type,
-                Placement = position
+                Position = position,
+                Placement = placement
             };
         }
-        private static VT.VtCode New24BitVT(string[] codeParts, int position, string type)
+        private static VT.VtCode New24BitVT(string[] codeParts, int placement, string position)
         {
             return new VT.VtCode
             {
@@ -122,45 +121,45 @@ namespace PwshSpectreConsole.VTCodes
                     Blue = int.Parse(codeParts[4])
                 },
                 Type = "24bit",
-                Position = type,
-                Placement = position
+                Position = position,
+                Placement = placement
             };
         }
-        private static VT.VtCode NewDecoVT(int firstCode, int position)
+        private static VT.VtCode NewDecoVT(int firstCode, int placement)
         {
-            if (DecorationDictionary.TryGetValue(key: firstCode, value: out string strDeco))
+            if (DecorationDictionary.TryGetValue(firstCode, out string strDeco))
             {
                 return new VT.VtCode
                 {
                     Value = strDeco,
                     Type = "decoration",
                     Position = "",
-                    Placement = position
+                    Placement = placement
                 };
             }
             return null;
         }
-        private static VT.VtCode NewVT(int firstCode, string[] codeParts, int position)
+        private static VT.VtCode NewVT(int firstCode, string[] codeParts, int placement)
         {
             if (firstCode >= 30 && firstCode <= 37 || firstCode >= 40 && firstCode <= 47 || firstCode >= 90 && firstCode <= 97)
             {
-                return New4BitVT(firstCode: firstCode, position: position);
+                return New4BitVT(firstCode, placement);
             }
             else if (firstCode == 38 || firstCode == 48)
             {
-                string type = firstCode == 48 ? "background" : "foreground";
+                string position = firstCode == 48 ? "background" : "foreground";
                 if (codeParts.Length >= 3 && codeParts[1] == "5")
                 {
-                    return New8BitVT(codeParts: codeParts, position: position, type: type);
+                    return New8BitVT(codeParts, placement, position);
                 }
                 else if (codeParts.Length >= 5 && codeParts[1] == "2")
                 {
-                    return New24BitVT(codeParts: codeParts, position: position, type: type);
+                    return New24BitVT(codeParts, placement, position);
                 }
             }
             else
             {
-                return NewDecoVT(firstCode: firstCode, position: position);
+                return NewDecoVT(firstCode, placement);
             }
             return null;
         }
@@ -171,7 +170,7 @@ namespace PwshSpectreConsole.VTCodes
 
             while (!inputSpan.IsEmpty)
             {
-                var (slice, position) = GetNextSlice(inputSpan: ref inputSpan);
+                var (slice, placement) = GetNextSlice(inputSpan: ref inputSpan);
                 if (slice == null)
                 {
                     break;
@@ -183,7 +182,7 @@ namespace PwshSpectreConsole.VTCodes
                     try
                     {
                         int firstCode = int.Parse(codeParts[0]);
-                        VT.VtCode _vtCode = NewVT(firstCode: firstCode, codeParts: codeParts, position: position);
+                        VT.VtCode _vtCode = NewVT(firstCode, codeParts, placement);
                         if (_vtCode != null)
                         {
                             results.Add(_vtCode);
