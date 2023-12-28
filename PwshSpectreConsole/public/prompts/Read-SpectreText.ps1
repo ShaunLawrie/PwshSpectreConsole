@@ -15,6 +15,9 @@ function Read-SpectreText {
     .PARAMETER DefaultAnswer
     The default answer if the user does not provide any input.
 
+    .PARAMETER AllowEmpty
+    If specified, the user can provide an empty answer.
+
     .EXAMPLE
     # This will prompt the user with the question "What's your name?" and return the user's input. If the user does not provide any input, the function will return "Prefer not to say".
     Read-SpectreText -Question "What's your name?" -DefaultAnswer "Prefer not to say"
@@ -22,10 +25,14 @@ function Read-SpectreText {
     [Reflection.AssemblyMetadata("title", "Read-SpectreText")]
     param (
         [string] $Question = "What's your name?",
-        [string] $DefaultAnswer = "Prefer not to say"
+        [string] $DefaultAnswer,
+        [switch] $AllowEmpty
     )
-    $prompt = [Spectre.Console.TextPrompt[string]]::new($Question)
-    $prompt.DefaultValueStyle = [Spectre.Console.Style]::new($script:DefaultValueColor)
-    $prompt = [Spectre.Console.TextPromptExtensions]::DefaultValue($prompt, $DefaultAnswer)
-    return Invoke-SpectrePromptAsync -Prompt $prompt
+    $spectrePrompt = [Spectre.Console.TextPrompt[string]]::new($Question)
+    $spectrePrompt.DefaultValueStyle = [Spectre.Console.Style]::new($script:DefaultValueColor)
+    if ($DefaultAnswer) {
+        $spectrePrompt = [Spectre.Console.TextPromptExtensions]::DefaultValue($spectrePrompt, $DefaultAnswer)
+    }
+    $spectrePrompt.AllowEmpty = $AllowEmpty
+    return Invoke-SpectrePromptAsync -Prompt $spectrePrompt
 }

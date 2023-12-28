@@ -1,3 +1,19 @@
+<#
+.SYNOPSIS
+    Retrieves a list of Spectre Console colors and displays them with their corresponding markup.
+    ![Spectre color demo](/colors.png)
+
+.DESCRIPTION
+    The Get-SpectreDemoColors function retrieves a list of Spectre Console colors and displays them with their corresponding markup. 
+    It also provides information on how to use the colors as parameters for commands or in Spectre Console markup.
+
+.PARAMETER None
+    This function does not accept any parameters.
+
+.EXAMPLE
+    # Displays a list of Spectre Console colors and their corresponding markup.
+    PS> Get-SpectreDemoColors
+#>
 function Get-SpectreDemoColors {
     [Reflection.AssemblyMetadata("title", "Get-SpectreDemoColors")]
     param ()

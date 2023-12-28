@@ -2,6 +2,7 @@ function Start-SpectreDemo {
     <#
     .SYNOPSIS
     Runs a demo of the PwshSpectreConsole module.
+    ![Spectre demo animation](/demo.gif)
 
     .DESCRIPTION
     This function runs a demo of the PwshSpectreConsole module, showcasing some of its features. It displays various examples of Spectre.Console functionality wrapped in PowerShell functions, such as text entry, select lists, multi-select lists, and panels.
@@ -62,7 +63,7 @@ function Start-SpectreDemo {
     Clear-Host
 
     $example = @'
-$name = Read-SpectreText "What's your [blue]name[/]?"
+$name = Read-SpectreText "What's your [blue]name[/]?" -AllowEmpty
 '@
     $example | Write-SpectreExample -Title "Text Entry" -Description "Text entry is essential for user input and interaction in a terminal application. It allows users to enter commands, input data, or provide search queries, giving them the ability to interact with the application and perform tasks. The built-in PowerShell Read-Host has some additional functionality like auto-complete and history that the Spectre text entry doesn't have so Read-Host is usually a better option for text entry in your scripts."
     $example | Invoke-Expression
@@ -94,7 +95,8 @@ $choices = @(
 
 $colors = Read-SpectreMultiSelectionGrouped `
               -Title "What's your favourite [blue]color[/]?" `
-              -Choices $choices
+              -Choices $choices `
+              -AllowEmpty
 '@
     $example | Write-SpectreExample -Title "Multi-Select Lists" -Description "Multi-select lists allow users to choose multiple options from a list. This feature is useful when users need to perform operations on multiple items at once, such as selecting multiple files to delete or copy. The multi-select lists also allow categorizing items so you can select the whole category at once."
     $example | Invoke-Expression
@@ -104,8 +106,12 @@ $colors = Read-SpectreMultiSelectionGrouped `
 $message = "Hi $name, nice to meet you :waving_hand:`n"
 $message += "Your favourite food is $food :fork_and_knife:`n"
 $message += "And your favourite colors are:`n"
-foreach($color in $colors) {
-    $message += " - [$color]$color[/]`n"
+if($colors) {
+    foreach($color in $colors) {
+        $message += " - [$color]$color[/]`n"
+    }
+} else {
+    $message += "Nothing, you didn't select any colors :crying_face:"
 }
 $message += "Nice! :rainbow:"
 
@@ -304,7 +310,8 @@ Invoke-SpectreCommandWithProgress -ScriptBlock {
     Clear-Host
 
     $example = @"
-Get-SpectreImage "$PSScriptRoot\..\..\private\images\hero.png"
+Get-SpectreImageExperimental "$PSScriptRoot\..\..\private\images\harveyspecter.gif" -LoopCount 2
+Write-SpectreHost "I'm Harvey Specter. Are you after a Specter consult or a Spectre.Console..?"
 "@
     $example | Write-SpectreExample -Title "View Images" -Description "Images can be rendered in the terminal, given a path to an image Spectre Console will downsample the image to a resolution that will fit within the terminal width or you can choose your own width setting."
     Invoke-Expression $example
