@@ -34,11 +34,8 @@ jobs:
           git add PwshSpectreConsole/PwshSpectreConsole.psd1
           git commit -m "[skip ci] Bump version to $newVersion"
           git push
-      - name: Deploy Package
-        shell: pwsh
-        run: |
-          $ErrorActionPreference = "Stop"
-          Publish-Module -Path "./PwshSpectreConsole/" -Exclude "Build.ps1" -NugetApiKey $env:PSGALLERY_API_KEY
+          Import-Module .\PwshSpectreConsole\PwshSpectreConsole.psd1 -Force
+          Publish-Module -Name PwshSpectreConsole -Exclude "Build.ps1" -NugetApiKey $env:PSGALLERY_API_KEY
   
   publish-prerelease-to-psgallery:
     name: Publish Prerelease

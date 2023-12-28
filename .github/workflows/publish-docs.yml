@@ -24,9 +24,9 @@ jobs:
           & .\PwshSpectreConsole.Docs\UpdateDocs.ps1 -NonInteractive
           git config --global user.name 'Shaun Lawrie (via GitHub Actions)'
           git config --global user.email 'shaun.r.lawrie@gmail.com'
-          git add PwshSpectreConsole.Docs/src/content
-          git commit -m "[skip ci] Update docs"
-          git push
+          git add PwshSpectreConsole.Docs/src/content || true
+          git commit -m "[skip ci] Update docs" || true
+          git push || true
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
