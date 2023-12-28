@@ -26,9 +26,13 @@ function Convert-ToSpectreColor {
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
         [ValidateSpectreColor()]
-        [string] $Color
+        [object] $Color
     )
     try {
+        # Just return the console color object
+        if($Color -is [Spectre.Console.Color]) {
+            return $Color
+        }
         # Already validated in validation attribute
         if($Color.StartsWith("#")) {
             $hexString = $Color -replace '^#', ''
