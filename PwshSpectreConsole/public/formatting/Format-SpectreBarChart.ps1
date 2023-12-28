@@ -26,7 +26,7 @@ function Format-SpectreBarChart {
     $data = @()
 
     $data += New-SpectreChartItem -Label "Apples" -Value 10 -Color "Green"
-    $data += New-SpectreChartItem -Label "Oranges" -Value 5 -Color "Orange"
+    $data += New-SpectreChartItem -Label "Oranges" -Value 5 -Color "DarkOrange"
     $data += New-SpectreChartItem -Label "Bananas" -Value 2.2 -Color "#FFFF00"
     
     Format-SpectreBarChart -Data $data -Title "Fruit Sales" -Width 50

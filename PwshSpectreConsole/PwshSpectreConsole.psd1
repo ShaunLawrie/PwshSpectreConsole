@@ -12,7 +12,7 @@
 RootModule = 'PwshSpectreConsole'
 
 # Version number of this module.
-ModuleVersion = '1.2.2'
+ModuleVersion = '1.4.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -57,7 +57,8 @@ PowerShellVersion = '7.0'
 RequiredAssemblies = 
                '.\packages\Spectre.Console\lib\netstandard2.0\Spectre.Console.dll', 
                '.\packages\Spectre.Console.ImageSharp\lib\netstandard2.0\Spectre.Console.ImageSharp.dll', 
-               '.\packages\SixLabors.ImageSharp\lib\netstandard2.0\SixLabors.ImageSharp.dll'
+               '.\packages\SixLabors.ImageSharp\lib\netstandard2.0\SixLabors.ImageSharp.dll', 
+               '.\packages\Spectre.Console.Json\lib\netstandard2.0\Spectre.Console.Json.dll'
 
 # Script files (.ps1) that are run in the caller's environment prior to importing this module.
 # ScriptsToProcess = @()
@@ -83,7 +84,7 @@ FunctionsToExport = 'Add-SpectreJob', 'Format-SpectreBarChart',
                'Start-SpectreDemo', 'Wait-SpectreJobs', 'Write-SpectreFigletText', 
                'Write-SpectreHost', 'Write-SpectreRule', 'Read-SpectreConfirm', 
                'New-SpectreChartItem', 'Invoke-SpectreScriptBlockQuietly', 
-               'Get-SpectreDemoColors', 'Get-SpectreDemoEmoji'
+               'Get-SpectreDemoColors', 'Get-SpectreDemoEmoji', 'Format-SpectreJson'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
@@ -92,7 +93,7 @@ CmdletsToExport = @()
 VariablesToExport = '*'
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-AliasesToExport = @()
+AliasesToExport = 'fst', 'fsj'
 
 # DSC resources to export from this module
 # DscResourcesToExport = @()

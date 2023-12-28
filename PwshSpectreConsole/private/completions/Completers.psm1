@@ -8,6 +8,10 @@ class ValidateSpectreColor : ValidateArgumentsAttribute {
         if ($Color -match '^#[A-Fa-f0-9]{6}$') {
             return
         }
+        # Handle an explicitly defined spectre color object
+        if ($Color -is [Color]) {
+            return
+        }
         $spectreColors = [Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
         $result = $spectreColors -contains $Color
         if ($result -eq $false) {
