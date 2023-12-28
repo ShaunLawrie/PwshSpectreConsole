@@ -46,7 +46,7 @@ $groups = @(
 
 $docs = Get-ChildItem "$PSScriptRoot\src\content\docs\reference\" -Filter "*.md" -Recurse
 foreach($doc in $docs) {
-    if($remove -contains $doc.Name) {
+    if($remove -contains $doc.Name -or $doc.Name -notlike "*-*") {
         Remove-Item $doc.FullName
         continue
     }
@@ -68,13 +68,13 @@ foreach($doc in $docs) {
     New-Item -ItemType Directory -Path "$PSScriptRoot\src\content\docs\reference\$($group.Name)" -Force | Out-Null
     $content = Get-Content $doc.FullName -Raw
     Remove-Item $doc.FullName
-    $content = $content -replace '```PowerShell', '```powershell' -replace '(?m)^.+\n^[\-]{10,99}', ''
+    $content = $content -replace '```PowerShell', '```powershell' -replace '(?m)^.+\n^[\-]{10,99}', '' -replace "`r", ""
     if($experimental -contains $doc.Name) {
         $content = $content -replace '(?s)^---', "---`n$experimentalTag"
     } elseif($new -contains $doc.Name) {
         $content = $content -replace '(?s)^---', "---`n$newTag"
     }
-    $content | Out-File $outLocation
+    $content | Out-File $outLocation -NoNewline
 }
 
 # Build the docs site

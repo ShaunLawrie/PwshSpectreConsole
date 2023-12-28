@@ -4,11 +4,14 @@ using namespace Spectre.Console
 function Format-SpectreTable {
     <#
     .SYNOPSIS
-    Formats an array of objects into a Spectre Console table.
+    Formats an array of objects into a Spectre Console table. Thanks to [trackd](https://github.com/trackd) and [fmotion1](https://github.com/fmotion1) for the updates to support markdown and color in the table contents.
     ![Example table](/table.png)
 
     .DESCRIPTION
     This function takes an array of objects and formats them into a table using the Spectre Console library. The table can be customized with a border style and color.
+
+    .PARAMETER Property
+    The list of properties to select for the table from the input data.
 
     .PARAMETER Data
     The array of objects to be formatted into a table.
@@ -27,6 +30,9 @@ function Format-SpectreTable {
 
     .PARAMETER Title
     The title of the table.
+
+    .PARAMETER AllowMarkup
+    Allow Spectre markup in the table elements e.g. [green]message[/].
 
     .EXAMPLE
     # This example formats an array of objects into a table with a double border and the accent color of the script.

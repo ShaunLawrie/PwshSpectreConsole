@@ -3,7 +3,9 @@ using module "..\..\private\completions\Completers.psm1"
 function Format-SpectreJson {
     <#
     .SYNOPSIS
-    Formats an array of objects into a Spectre Console Json.
+    Formats an array of objects into a Spectre Console Json.  
+    Thanks to [trackd](https://github.com/trackd) for adding this.
+    ![Spectre json example](/json.png)
 
     .DESCRIPTION
     This function takes an array of objects and converts them into Json using the Spectre Console Json Library.
