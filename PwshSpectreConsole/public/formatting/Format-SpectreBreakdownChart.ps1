@@ -35,7 +35,7 @@ function Format-SpectreBreakdownChart {
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
         [array] $Data,
-        $Width = $Host.UI.RawUI.Width
+        $Width = (Get-HostWidth)
     )
     begin {
         $chart = [Spectre.Console.BreakdownChart]::new()

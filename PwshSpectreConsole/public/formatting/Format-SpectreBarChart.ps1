@@ -39,7 +39,7 @@ function Format-SpectreBarChart {
         [Parameter(ValueFromPipeline, Mandatory)]
         [array] $Data,
         $Title,
-        $Width = $Host.UI.RawUI.Width
+        $Width = (Get-HostWidth)
     )
     begin {
         $barChart = [Spectre.Console.BarChart]::new()
