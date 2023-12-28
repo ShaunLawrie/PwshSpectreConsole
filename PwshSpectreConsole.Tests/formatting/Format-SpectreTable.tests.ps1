@@ -13,7 +13,7 @@ Describe "Format-SpectreTable" {
 
             Mock Write-AnsiConsole -Verifiable -ParameterFilter {
                 $RenderableObject -is [Spectre.Console.Table] `
-                -and $RenderableObject.Border.GetType().Name -like "*$border*" `
+                -and ($border -eq "None" -or $RenderableObject.Border.GetType().Name -like "*$border*") `
                 -and $RenderableObject.BorderStyle.Foreground.ToMarkup() -eq $color `
                 -and $RenderableObject.Rows.Count -eq $data.Count
             }

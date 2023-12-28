@@ -12,7 +12,7 @@ Describe "Format-SpectrePanel" {
 
             Mock Write-AnsiConsole -Verifiable -ParameterFilter {
                 $RenderableObject -is [Spectre.Console.Panel] `
-                -and $RenderableObject.Border.GetType().Name -like "*$border*" `
+                -and ($border -eq "None" -or $RenderableObject.Border.GetType().Name -like "*$border*") `
                 -and $RenderableObject.Header.Text -eq $title `
                 -and $RenderableObject.Expand -eq $expand `
                 -and $RenderableObject.BorderStyle.Foreground.ToMarkup() -eq $color
