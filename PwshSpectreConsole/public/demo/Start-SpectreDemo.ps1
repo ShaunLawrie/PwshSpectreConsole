@@ -215,21 +215,29 @@ $(
     Clear-Host
 
     $example = @'
+Get-Module PwshSpectreConsole | Select-Object PrivateData | Format-SpectreJson -Expand
+'@
+    $example | Write-SpectreExample -Title "Json Data" -Description "Spectre Console can format JSON with syntax highlighting thanks to https://github.com/trackd"
+    Invoke-Expression $example
+    Read-SpectrePause
+    Clear-Host
+
+    $example = @'
 Invoke-SpectreCommandWithStatus -Spinner "Dots2" -Title "Showing a spinner..." -ScriptBlock {
     # Write updates tot the host using Write-SpectreHost
     Start-Sleep -Seconds 1
-    Write-SpectreHost "`n[grey]LOG:[/] Doing some work"
+    Write-SpectreHost "`n[grey]LOG:[/] Doing some work      "
     Start-Sleep -Seconds 1
-    Write-SpectreHost "`n[grey]LOG:[/] Doing some more work"
+    Write-SpectreHost "`n[grey]LOG:[/] Doing some more work "
     Start-Sleep -Seconds 1
-    Write-SpectreHost "`n[grey]LOG:[/] Done"
+    Write-SpectreHost "`n[grey]LOG:[/] Done                 "
     Start-Sleep -Seconds 1
 }
 '@
     $example | Write-SpectreExample -Title "Progress Spinners" -Description "Progress spinners provide visual feedback to users when an operation or task is in progress. They help indicate that the application is working on a request, preventing users from becoming frustrated or assuming the application has stalled."
     Invoke-Expression $example
 
-    Read-SpectrePause -NoNewline
+    Read-SpectrePause
     Clear-Host
 
     $example = @'

@@ -34,6 +34,13 @@ function Install-SpectreConsole {
     Invoke-WebRequest "https://www.nuget.org/api/v2/package/SixLabors.ImageSharp/$imageSharpVersion" -OutFile $downloadLocation -UseBasicParsing
     Expand-Archive $downloadLocation $libPath -Force
     Remove-Item $downloadLocation
+
+    $libPath = Join-Path $InstallLocation "Spectre.Console.Json"
+    New-Item -Path $libPath -ItemType "Directory" -Force | Out-Null
+    $downloadLocation = Join-Path $libPath "download.zip"
+    Invoke-WebRequest "https://www.nuget.org/api/v2/package/Spectre.Console.Json/$Version" -OutFile $downloadLocation -UseBasicParsing
+    Expand-Archive $downloadLocation $libPath -Force
+    Remove-Item $downloadLocation
 }
 
 Write-Host "Downloading Spectre.Console version $Version"

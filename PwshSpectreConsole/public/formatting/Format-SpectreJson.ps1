@@ -71,7 +71,8 @@ function Format-SpectreJson {
         [ValidateScript({ $_ -gt 0 -and $_ -le [console]::BufferWidth }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
         [int] $Width,
         [ValidateScript({ $_ -gt 0 -and $_ -le [console]::WindowHeight }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console height.")]
-        [int] $Height
+        [int] $Height,
+        [switch] $Expand
     )
     begin {
         $collector = [System.Collections.Generic.List[psobject]]::new()
@@ -106,6 +107,9 @@ function Format-SpectreJson {
         }
         if ($height) {
             $panel.Height = $Height
+        }
+        if($Expand) {
+            $panel.Expand = $Expand
         }
         Write-AnsiConsole $panel
     }
