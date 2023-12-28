@@ -2,23 +2,19 @@ Remove-Module PwshSpectreConsole -Force -ErrorAction SilentlyContinue
 Import-Module "$PSScriptRoot\..\..\PwshSpectreConsole\PwshSpectreConsole.psd1" -Force
 Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
 
-Describe "Format-SpectreBarChart" {
+Describe "Format-SpectreBreakdownChart" {
     InModuleScope "PwshSpectreConsole" {
-
         BeforeEach {
             $width = Get-Random -Minimum 10 -Maximum 100
-            $title = "Test Chart $([guid]::NewGuid())"
             $testData = @()
             for($i = 0; $i -lt (Get-Random -Minimum 3 -Maximum 10); $i++) {
-                $testData += New-SpectreChartItem -Label (Get-RandomString) -Value (Get-Random -Minimum -100 -Maximum 100) -Color (Get-RandomColor)
+                $testData += Get-RandomChartItem
             }
 
             Mock Write-AnsiConsole -ParameterFilter {
                 $RenderableObject -is [Spectre.Console.Rendering.Renderable] `
                 -and `
                 $RenderableObject.Width -eq $width `
-                -and `
-                $RenderableObject.Label -eq $title `
                 -and `
                 $RenderableObject.Data.Count -eq $testData.Count
             }
@@ -29,35 +25,20 @@ Describe "Format-SpectreBarChart" {
         }
 
         It "Should create a bar chart with correct width" {
-            Format-SpectreBarChart -Data $testData -Title $title -Width $width
+            Format-SpectreBreakdownChart -Data $testData -Width $width
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
             Should -InvokeVerifiable
         }
-
+        
         It "Should handle piped input correctly" {
-            $testData | Format-SpectreBarChart -Title $title -Width $width
+            $testData | Format-SpectreBreakdownChart -Width $width
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
             Should -InvokeVerifiable
         }
         
         It "Should handle single input correctly" {
             $testData = New-SpectreChartItem -Label (Get-RandomString) -Value (Get-Random -Minimum -100 -Maximum 100) -Color (Get-RandomColor)
-            Format-SpectreBarChart -Data $testData -Title $title -Width $width
-            Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
-            Should -InvokeVerifiable
-        }
-
-        It "Should handle no title" {
-            Mock Write-AnsiConsole -ParameterFilter {
-                $RenderableObject -is [Spectre.Console.Rendering.Renderable] `
-                -and `
-                $RenderableObject.Width -eq $width `
-                -and `
-                $RenderableObject.Label -eq $null `
-                -and `
-                $RenderableObject.Data.Count -eq $testData.Count
-            }
-            Format-SpectreBarChart -Data $testData -Width $width
+            Format-SpectreBreakdownChart -Data $testData -Width $width
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
             Should -InvokeVerifiable
         }
@@ -72,7 +53,7 @@ Describe "Format-SpectreBarChart" {
                 -and `
                 $RenderableObject.Data.Count -eq $testData.Count
             }
-            Format-SpectreBarChart -Data $testData
+            Format-SpectreBreakdownChart -Data $testData
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
             Should -InvokeVerifiable
         }

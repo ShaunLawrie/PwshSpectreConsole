@@ -35,8 +35,8 @@ function Format-SpectreBreakdownChart {
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
         [array] $Data,
-        [ValidateScript({ $_ -gt 0 -and $_ -le [console]::BufferWidth }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
-        [int]$Width = [console]::BufferWidth,
+        [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostWidth) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
+        [int]$Width = (Get-HostWidth),
         [switch]$HideTags,
         [Switch]$HideTagValues
     )
