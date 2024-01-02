@@ -36,7 +36,7 @@ function Read-SpectreMultiSelection {
         [ArgumentCompletionsSpectreColors()]
         [string] $Color = $script:AccentColor.ToMarkup(),
         [int] $PageSize = 5,
-        [switch] $AllowEmpty
+        [switch] $RequireChoice
     )
     $spectrePrompt = [Spectre.Console.MultiSelectionPrompt[string]]::new()
 
@@ -55,7 +55,7 @@ function Read-SpectreMultiSelection {
     $spectrePrompt.Title = $Title
     $spectrePrompt.PageSize = $PageSize
     $spectrePrompt.WrapAround = $true
-    $spectrePrompt.AllowEmpty = $AllowEmpty
+    $spectrePrompt.Required = $RequireChoice
     $spectrePrompt.HighlightStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
     $spectrePrompt.InstructionsText = "[$($script:DefaultValueColor.ToMarkup())](Press [$($script:AccentColor.ToMarkup())]space[/] to toggle a choice and press [$($script:AccentColor.ToMarkup())]<enter>[/] to submit your answer)[/]"
     $spectrePrompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
