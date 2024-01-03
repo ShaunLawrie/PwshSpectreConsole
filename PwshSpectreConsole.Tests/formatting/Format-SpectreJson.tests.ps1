@@ -5,37 +5,37 @@ Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
 Describe "Format-SpectreJson" {
     InModuleScope "PwshSpectreConsole" {
 
-        $data = @(
-            [pscustomobject]@{
-                Name = "John"
-                Age = 25
-                City = "New York"
-                IsEmployed = $true
-                Salary = 10
-                Hobbies = @("Reading", "Swimming")
-                Address = @{
-                    Street = "123 Main St"
+        BeforeEach {
+            $data = @(
+                [pscustomobject]@{
+                    Name = "John"
+                    Age = 25
                     City = "New York"
-                    Deep = @{
-                        Nested = @{
-                            Value = @{
-                                That = @{
-                                    Is = @{
-                                        Nested = @{
-                                            Again = "Hello"
+                    IsEmployed = $true
+                    Salary = 10
+                    Hobbies = @("Reading", "Swimming")
+                    Address = @{
+                        Street = "123 Main St"
+                        City = "New York"
+                        Deep = @{
+                            Nested = @{
+                                Value = @{
+                                    That = @{
+                                        Is = @{
+                                            Nested = @{
+                                                Again = "Hello"
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
+                        State = "NY"
+                        Zip = "10001"
                     }
-                    State = "NY"
-                    Zip = "10001"
                 }
-            }
-        )
-
-        BeforeEach {
+            )
+            $data | Out-Null
             $testBorder = Get-RandomBoxBorder
             $testColor = Get-RandomColor
             $testTitle = Get-RandomString
