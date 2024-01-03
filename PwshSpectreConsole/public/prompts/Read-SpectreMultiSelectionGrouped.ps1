@@ -62,19 +62,23 @@ function Read-SpectreMultiSelectionGrouped {
     $spectrePrompt = [Spectre.Console.MultiSelectionPrompt[string]]::new()
 
     $choiceLabels = $Choices.Choices
+    $flattenedChoices = $Choices.Choices
     if($ChoiceLabelProperty) {
-        $choiceLabels = $Choices | Select-Object -ExpandProperty $ChoiceLabelProperty
+        $choiceLabels = $choiceLabels | Select-Object -ExpandProperty $ChoiceLabelProperty
     }
     $duplicateLabels = $choiceLabels | Group-Object | Where-Object { $_.Count -gt 1 }
     if($duplicateLabels) {
-        Write-Error "You have duplicate labels in your select list, this is ambiguous so a selection cannot be made (even when using choice groups)"
-        exit 2
+        throw "You have duplicate labels in your select list, this is ambiguous so a selection cannot be made (even when using choice groups)"
     }
 
     foreach($group in $Choices) {
+        $choiceObjects = $group.Choices | Where-Object { $_ -isnot [string] }
+        if($null -ne $choiceObjects -and [string]::IsNullOrEmpty($ChoiceLabelProperty)) {
+            throw "You must specify the ChoiceLabelProperty parameter when using choice groups with complex objects"
+        }
         $choiceLabels = $group.Choices
         if($ChoiceLabelProperty) {
-            $choiceLabels = $Choices | Select-Object -ExpandProperty $ChoiceLabelProperty
+            $choiceLabels = $choiceLabels | Select-Object -ExpandProperty $ChoiceLabelProperty
         }
         $spectrePrompt = [Spectre.Console.MultiSelectionPromptExtensions]::AddChoiceGroup($spectrePrompt, $group.Name, [string[]]$choiceLabels)
     }
@@ -89,7 +93,7 @@ function Read-SpectreMultiSelectionGrouped {
     $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt
 
     if($ChoiceLabelProperty) {
-        $selected = $Choices | Where-Object -Property $ChoiceLabelProperty -Eq $selected
+        $selected = $flattenedChoices | Where-Object { $selected -contains $_.$ChoiceLabelProperty }
     }
 
     return $selected

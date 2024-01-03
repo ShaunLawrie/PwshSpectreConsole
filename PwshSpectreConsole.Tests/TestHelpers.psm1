@@ -18,6 +18,23 @@ function Get-RandomColor {
     }
 }
 
+function Get-RandomList {
+    param (
+        [int] $MinItems = 2,
+        [int] $MaxItems = 10,
+        [scriptblock] $Generator = {
+            Get-RandomString
+        }
+    )
+    $items = @()
+    $count = Get-Random -Minimum $MinItems -Maximum $MaxItems
+    for($i = 0; $i -lt $count; $i++) {
+        $items += $Generator.Invoke()
+    }
+    return $items
+
+}
+
 function Get-RandomString {
     $length = Get-Random -Minimum 1 -Maximum 20
     $chars = [char[]]([char]'a'..[char]'z' + [char]'A'..[char]'Z' + [char]'0'..[char]'9')
@@ -94,4 +111,11 @@ function Get-RandomTree {
 
 function Get-RandomBool {
     return [bool](Get-Random -Minimum 0 -Maximum 2)
+}
+
+function Get-RandomChoice {
+    param (
+        [string[]] $Choices
+    )
+    return $Choices[(Get-Random -Minimum 0 -Maximum $Choices.Count)]
 }
