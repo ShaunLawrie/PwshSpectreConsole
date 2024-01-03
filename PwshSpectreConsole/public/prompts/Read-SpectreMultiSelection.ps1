@@ -23,6 +23,9 @@ function Read-SpectreMultiSelection {
     .PARAMETER PageSize
     The number of choices to display per page. Defaults to 5.
 
+    .PARAMETER AllowEmpty
+    Allow the multi-selection to be submitted without any options chosen.
+
     .EXAMPLE
     # Displays a multi-selection prompt with the title "Select your favourite fruits", the list of fruits, the "Name" property as the label for each fruit, the color green for highlighting the selected fruits, and 3 fruits per page.
     Read-SpectreMultiSelection -Title "Select your favourite fruits" -Choices @("apple", "banana", "orange", "pear", "strawberry") -Color "Green" -PageSize 3
@@ -36,7 +39,7 @@ function Read-SpectreMultiSelection {
         [ArgumentCompletionsSpectreColors()]
         [string] $Color = $script:AccentColor.ToMarkup(),
         [int] $PageSize = 5,
-        [switch] $RequireChoice
+        [switch] $AllowEmpty
     )
     $spectrePrompt = [Spectre.Console.MultiSelectionPrompt[string]]::new()
 
@@ -55,7 +58,7 @@ function Read-SpectreMultiSelection {
     $spectrePrompt.Title = $Title
     $spectrePrompt.PageSize = $PageSize
     $spectrePrompt.WrapAround = $true
-    $spectrePrompt.Required = $RequireChoice
+    $spectrePrompt.Required = !$AllowEmpty
     $spectrePrompt.HighlightStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
     $spectrePrompt.InstructionsText = "[$($script:DefaultValueColor.ToMarkup())](Press [$($script:AccentColor.ToMarkup())]space[/] to toggle a choice and press [$($script:AccentColor.ToMarkup())]<enter>[/] to submit your answer)[/]"
     $spectrePrompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"

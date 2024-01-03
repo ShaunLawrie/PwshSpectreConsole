@@ -23,6 +23,9 @@ function Read-SpectreMultiSelectionGrouped {
     .PARAMETER PageSize
     The number of choices to display per page. The default value is 10.
 
+    .PARAMETER AllowEmpty
+    Allow the multi-selection to be submitted without any options chosen.
+
     .EXAMPLE
     # This example displays a multi-selection prompt with two groups of choices: "Primary Colors" and "Secondary Colors". The prompt uses the "Name" property of each choice as the label. The user can select one or more choices from each group.
     Read-SpectreMultiSelectionGrouped -Title "Select your favorite colors" -Choices @(
