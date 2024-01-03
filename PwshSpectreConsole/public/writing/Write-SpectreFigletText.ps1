@@ -12,7 +12,7 @@ function Write-SpectreFigletText {
     The text to display in the Figlet format.
 
     .PARAMETER Alignment
-    The alignment of the text. Valid values are "Left", "Right", and "Center". The default value is "Left".
+    The alignment of the text. The default value is "Left".
 
     .PARAMETER Color
     The color of the text. The default value is the accent color of the script.

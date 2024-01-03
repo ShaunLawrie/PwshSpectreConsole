@@ -5,6 +5,7 @@ Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
 Describe "Write-SpectreFigletText" {
     InModuleScope "PwshSpectreConsole" {
         BeforeEach {
+            $color = Get-RandomColor
             $justification = Get-RandomJustify
             Mock Write-AnsiConsole -Verifiable -ParameterFilter {
                 $RenderableObject -is [Spectre.Console.FigletText] `

@@ -10,7 +10,7 @@ function Add-SpectreJob {
     This function adds a Spectre job to the list of jobs you want to wait for with Wait-SpectreJobs.
 
     .PARAMETER Context
-    The Spectre context to add the job to. The context object is only available inside Wait-SpectreJobs.
+    The Spectre context to add the job to. The context object is only available inside Invoke-SpectreCommandWithProgress.
     [https://spectreconsole.net/api/spectre.console/progresscontext/](https://spectreconsole.net/api/spectre.console/progresscontext/)
 
     .PARAMETER JobName
@@ -34,7 +34,7 @@ function Add-SpectreJob {
     [Reflection.AssemblyMetadata("title", "Add-SpectreJob")]
     param (
         [Parameter(Mandatory)]
-        [object] $Context,
+        [Spectre.Console.ProgressContext] $Context,
         [Parameter(Mandatory)]
         [string] $JobName,
         [Parameter(Mandatory)]

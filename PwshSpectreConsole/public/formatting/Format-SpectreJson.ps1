@@ -13,6 +13,9 @@ function Format-SpectreJson {
     .PARAMETER Data
     The array of objects to be formatted into Json.
 
+    .PARAMETER NoBorder
+    If specified, the Json will not be surrounded by a border.
+
     .PARAMETER Border
     The border style of the Json. Default is "Rounded".
 
@@ -65,14 +68,15 @@ function Format-SpectreJson {
         [object] $Data,
         [int] $Depth,
         [string] $Title,
+        [switch] $NoBorder,
         [ValidateSet([SpectreConsoleBoxBorder], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Border = "Rounded",
         [ValidateSpectreColor()]
         [ArgumentCompletionsSpectreColors()]
         [string] $Color = $script:AccentColor.ToMarkup(),
-        [ValidateScript({ $_ -gt 0 -and $_ -le [console]::BufferWidth }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
+        [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostWidth) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
         [int] $Width,
-        [ValidateScript({ $_ -gt 0 -and $_ -le [console]::WindowHeight }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console height.")]
+        [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostHeight) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console height.")]
         [int] $Height,
         [switch] $Expand
     )
@@ -98,6 +102,12 @@ function Format-SpectreJson {
         $json.NumberStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::Cyan2)
         $json.BooleanStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::Teal)
         $json.NullStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::Plum1)
+
+        if($NoBorder) {
+            Write-AnsiConsole $json
+            return
+        }
+
         $panel = [Spectre.Console.Panel]::new($json)
         $panel.Border = [Spectre.Console.BoxBorder]::$Border
         $panel.BorderStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))

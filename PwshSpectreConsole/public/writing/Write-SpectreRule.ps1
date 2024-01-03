@@ -12,7 +12,7 @@ function Write-SpectreRule {
     The title of the rule.
 
     .PARAMETER Alignment
-    The alignment of the text in the rule. Valid values are Left, Center, and Right. The default value is Left.
+    The alignment of the text in the rule. The default value is Left.
 
     .PARAMETER Color
     The color of the rule. The default value is the accent color of the script.
