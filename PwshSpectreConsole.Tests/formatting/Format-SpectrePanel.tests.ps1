@@ -7,7 +7,7 @@ Describe "Format-SpectrePanel" {
         BeforeEach {
             $title = Get-RandomString
             $border = Get-RandomBoxBorder
-            $expand = Get-RandomBool
+            $expand = $false
             $color = Get-RandomColor
 
             Mock Write-AnsiConsole -Verifiable -ParameterFilter {
@@ -20,6 +20,13 @@ Describe "Format-SpectrePanel" {
         }
 
         It "Should create a panel" {
+            Format-SpectrePanel -Data (Get-RandomString) -Title $title -Border $border -Color $color
+            Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
+            Should -InvokeVerifiable
+        }
+
+        It "Should create an expanded panel" {
+            $expand = $true
             Format-SpectrePanel -Data (Get-RandomString) -Title $title -Border $border -Expand:$expand -Color $color
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
             Should -InvokeVerifiable
