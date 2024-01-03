@@ -78,14 +78,8 @@ function Format-SpectreTable {
         # [Spectre.Console.AnsiConsole]::Profile.Capabilities.Ansi = false
     }
     process {
-        if ($data -is [array]) {
-            # add array items individually to the collector
-            foreach ($entry in $data) {
-                $collector.add($entry)
-            }
-        }
-        else {
-            $collector.add($data)
+        foreach ($entry in $data) {
+            $collector.add($entry)
         }
     }
     end {
@@ -98,7 +92,7 @@ function Format-SpectreTable {
                 $table.AddColumn($_) | Out-Null
             }
         }
-        elseif (($collector[0].PSTypeNames[0] -ne 'PSCustomObject') -And ($standardMembers = Get-DefaultDisplayMembers $collector[0])) {
+        elseif (($collector[-1].PSTypeNames[0] -notmatch 'PSCustomObject') -And ($standardMembers = Get-DefaultDisplayMembers $collector[-1])) {
             foreach ($key in $standardMembers.Properties.keys) {
                 $lookup = $standardMembers.Properties[$key]
                 $table.AddColumn($lookup.Label) | Out-Null
@@ -112,10 +106,11 @@ function Format-SpectreTable {
                     $table.Columns[-1].Alignment = [Justify]::$lookup.Alignment
                 }
             }
-            # this formats the values according to the formatdata so we dont have to do it in the foreach loop.
+            # this formats the values according to the formatdata so we dont have to do it in the loop.
             $collector = $collector | Select-Object $standardMembers.Format
         }
         else {
+            Write-Debug 'no formatting found and no properties selected, enumerating psobject.properties.name'
             foreach ($prop in $collector[0].psobject.Properties.Name) {
                 if (-Not [String]::IsNullOrEmpty($prop)) {
                     $table.AddColumn($prop) | Out-Null
@@ -148,7 +143,7 @@ function Format-SpectreTable {
                     if($AllowMarkup) {
                         [Markup]::new([String]$cell.Value)
                     } else {
-                        [Text]::new($cell.Value.ToString())
+                        [Text]::new([String]$cell.Value)
                     }
                 }
             }
