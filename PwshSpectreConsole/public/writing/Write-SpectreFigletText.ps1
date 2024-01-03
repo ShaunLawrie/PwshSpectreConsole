@@ -6,20 +6,36 @@ function Write-SpectreFigletText {
     Writes a Spectre Console Figlet text to the console.
 
     .DESCRIPTION
-    This function writes a Spectre Console Figlet text to the console. The text can be aligned to the left, right, or centered, and can be displayed in a specified color.
+    This function writes a Spectre Console Figlet text to the console. The text can be aligned to the left, right, or center, and can be displayed in a specified color.
 
     .PARAMETER Text
     The text to display in the Figlet format.
 
     .PARAMETER Alignment
-    The alignment of the text. Valid values are "Left", "Right", and "Centered". The default value is "Left".
+    The alignment of the text. Valid values are "Left", "Right", and "Center". The default value is "Left".
 
     .PARAMETER Color
     The color of the text. The default value is the accent color of the script.
 
+    .PARAMETER FigletFontPath
+    The path to the Figlet font file to use. If this parameter is not specified, the default built-in Figlet font is used.
+    The figlet font format is usually *.flf, see https://spectreconsole.net/widgets/figlet for more.
+
     .EXAMPLE
     # Displays the text "Hello Spectre!" in the center of the console, in red color.
-    Write-SpectreFigletText -Text "Hello Spectre!" -Alignment "Centered" -Color "Red"
+    Write-SpectreFigletText -Text "Hello Spectre!" -Alignment "Center" -Color "Red"
+
+    .EXAMPLE
+    # Displays the text "Woah!" using a custom figlet font.
+    Write-SpectreFigletText -Text "Whoa?!" -FigletFontPath "C:\Users\shaun\Downloads\3d.flf"
+     ██       ██ ██                          ████  ██
+    ░██      ░██░██                         ██░░██░██
+    ░██   █  ░██░██       ██████   ██████  ░██ ░██░██
+    ░██  ███ ░██░██████  ██░░░░██ ░░░░░░██ ░░  ██ ░██
+    ░██ ██░██░██░██░░░██░██   ░██  ███████    ██  ░██
+    ░████ ░░████░██  ░██░██   ░██ ██░░░░██   ░░   ░░
+    ░██░   ░░░██░██  ░██░░██████ ░░████████   ██   ██
+    ░░       ░░ ░░   ░░  ░░░░░░   ░░░░░░░░   ░░   ░░ 
     #>
     [Reflection.AssemblyMetadata("title", "Write-SpectreFigletText")]
     param (
@@ -28,9 +44,11 @@ function Write-SpectreFigletText {
         [string] $Alignment = "Left",
         [ValidateSpectreColor()]
         [ArgumentCompletionsSpectreColors()]
-        [string] $Color = $script:AccentColor.ToMarkup()
+        [string] $Color = $script:AccentColor.ToMarkup(),
+        [string] $FigletFontPath
     )
-    $figletText = [Spectre.Console.FigletText]::new($Text)
+    $figletFont = Read-FigletFont -FigletFontPath $FigletFontPath
+    $figletText = [Spectre.Console.FigletText]::new($figletFont, $Text)
     $figletText.Justification = [Spectre.Console.Justify]::$Alignment
     $figletText.Color = ($Color | Convert-ToSpectreColor)
     Write-AnsiConsole $figletText

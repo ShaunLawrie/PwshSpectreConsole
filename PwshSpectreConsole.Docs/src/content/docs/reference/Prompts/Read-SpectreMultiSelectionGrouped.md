@@ -123,6 +123,10 @@ The number of choices to display per page. The default value is 10.
 
 #### **AllowEmpty**
 
+Allow the multi-selection to be submitted without any options chosen.
+
+
+
 
 
 

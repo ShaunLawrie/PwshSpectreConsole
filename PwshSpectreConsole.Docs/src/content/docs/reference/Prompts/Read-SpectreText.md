@@ -70,6 +70,21 @@ The default answer if the user does not provide any input.
 
 
 
+#### **AnswerColor**
+
+The color of the user's answer input. The default behaviour uses the standard terminal text color.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |3       |false        |
+
+
+
 #### **AllowEmpty**
 
 If specified, the user can provide an empty answer.
@@ -92,5 +107,5 @@ If specified, the user can provide an empty answer.
 
 ### Syntax
 ```powershell
-Read-SpectreText [[-Question] <String>] [[-DefaultAnswer] <String>] [-AllowEmpty] [<CommonParameters>]
+Read-SpectreText [[-Question] <String>] [[-DefaultAnswer] <String>] [[-AnswerColor] <String>] [-AllowEmpty] [<CommonParameters>]
 ```
