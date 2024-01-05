@@ -6,7 +6,7 @@ Describe "Write-SpectreRule" {
     InModuleScope "PwshSpectreConsole" {
         BeforeEach {
             $color = Get-RandomColor
-            $color | Out-Null
+            Write-Debug $color
             $justification = Get-RandomJustify
             Mock Write-AnsiConsole -Verifiable -ParameterFilter {
                 $RenderableObject -is [Spectre.Console.Rule] `

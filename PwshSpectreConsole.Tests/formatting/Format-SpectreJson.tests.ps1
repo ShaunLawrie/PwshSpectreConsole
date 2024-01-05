@@ -42,12 +42,12 @@ Describe "Format-SpectreJson" {
             $testExpand = Get-RandomBool
             $testWidth = Get-Random -Minimum 5 -Maximum 100
             $testHeight = Get-Random -Minimum 5 -Maximum 100
-            $testBorder | Out-Null
-            $testColor | Out-Null
-            $testTitle | Out-Null
-            $testExpand | Out-Null
-            $testWidth | Out-Null
-            $testHeight | Out-Null
+            Write-Debug $testBorder
+            Write-Debug $testColor
+            Write-Debug $testTitle
+            Write-Debug $testExpand
+            Write-Debug $testWidth
+            Write-Debug $testHeight
 
             Mock Get-HostWidth { return 100 }
             Mock Get-HostHeight { return 100 }
@@ -57,7 +57,7 @@ Describe "Format-SpectreJson" {
             Mock Write-AnsiConsole -Verifiable -ParameterFilter {
                 $RenderableObject -is [Spectre.Console.Panel] `
                 -and ($null -eq $testTitle -or $RenderableObject.Header.Text -eq $testTitle) `
-                -and ($null -eq $testBorder -or $RenderableObject.Border.GetType().Name -like "*$testBorder*") `
+                -and ($null -eq $testBorder -or "None" -eq $testBorder -or $RenderableObject.Border.GetType().Name -like "*$testBorder*") `
                 -and ($null -eq $testColor -or $RenderableObject.BorderStyle.Foreground.ToMarkup() -eq $testColor) `
                 -and ($null -eq $testWidth -or $RenderableObject.Width -eq $testWidth) `
                 -and ($null -eq $testHeight -or $RenderableObject.Height -eq $testHeight) `

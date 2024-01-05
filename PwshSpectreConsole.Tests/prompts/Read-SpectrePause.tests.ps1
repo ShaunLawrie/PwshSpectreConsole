@@ -23,7 +23,7 @@ Describe "Read-SpectrePause" {
 
         It "displays a custom message" {
             $customMessage = Get-RandomString
-            $customMessage | Out-Null
+            Write-Debug $customMessage
             Read-SpectrePause -Message $customMessage
             Assert-MockCalled -CommandName "Read-Host" -Times 1 -Exactly
             Should -InvokeVerifiable

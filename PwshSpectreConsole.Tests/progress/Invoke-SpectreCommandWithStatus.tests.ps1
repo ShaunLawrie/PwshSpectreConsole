@@ -9,9 +9,9 @@ Describe "Invoke-SpectreCommandWithStatus" -Tag "integration" {
             $testTitle = Get-RandomString
             $testSpinner = Get-RandomSpinner
             $testColor = Get-RandomColor
-            $testTitle | Out-Null
-            $testSpinner | Out-Null
-            $testColor | Out-Null
+            Write-Debug $testTitle
+            Write-Debug $testSpinner
+            Write-Debug $testColor
         }
 
         It "executes the scriptblock for the basic case" {
