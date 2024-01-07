@@ -64,6 +64,8 @@ function Format-SpectreTable {
         $table = [Table]::new()
         $table.Border = [TableBorder]::$Border
         $table.BorderStyle = [Style]::new(($Color | Convert-ToSpectreColor))
+        $tableoptions = @{}
+        $rowoptions = @{}
         if ($Width) {
             $table.Width = $Width
         }
@@ -72,14 +74,12 @@ function Format-SpectreTable {
         }
         if ($Title) {
             $table.Title = [TableTitle]::new($Title, [Style]::new(($Color | Convert-ToSpectreColor)))
-            $tablecolumns.Title = $Title # used if scalar type.
+            $tableoptions.Title = $Title # used if scalar type.
         }
         $collector = [System.Collections.Generic.List[psobject]]::new()
         $strip = '\x1B\[[0-?]*[ -/]*[@-~]'
-        $tableoptions = @{}
-        $splat = @{}
         if ($AllowMarkup) {
-            $splat.AllowMarkup = $true
+            $rowoptions.AllowMarkup = $true
         }
     }
     process {
@@ -102,11 +102,11 @@ function Format-SpectreTable {
         elseif ($standardMembers = Get-DefaultDisplayMembers $collector[0]) {
             $collector = $collector | Select-Object $standardMembers.Format
             $tableoptions.FormatData = $standardMembers.Properties
-            $splat.FormatFound = $true
+            $rowoptions.FormatFound = $true
         }
         $table = Add-TableColumns -Table $table -Object $collector[0] @tableoptions
         foreach ($item in $collector) {
-            $row = New-TableRow -Entry $item @splat
+            $row = New-TableRow -Entry $item @rowoptions
             if($AllowMarkup) {
                 $table = [TableExtensions]::AddRow($table, [Markup[]]$row)
             } else {
