@@ -4,6 +4,7 @@ function ConvertTo-SpectreDecoration {
         [String]$String,
         [switch]$AllowMarkup
     )
+    Write-Debug "Module: $($ExecutionContext.SessionState.Module.Name) Command: $($MyInvocation.MyCommand.Name) Param: $($PSBoundParameters.GetEnumerator())"
     if (-Not ('PwshSpectreConsole.VTCodes.Parser' -as [type])) {
         Add-PwshSpectreConsole.VTCodes
     }
@@ -18,8 +19,7 @@ function ConvertTo-SpectreDecoration {
             '4bit' {
                 if ($item.value -gt 0 -and $item.value -le 15) {
                     [Spectre.Console.Color]::FromConsoleColor($item.value)
-                }
-                else {
+                } else {
                     [Spectre.Console.Color]::FromInt32($item.value)
                 }
             }
@@ -38,15 +38,14 @@ function ConvertTo-SpectreDecoration {
         }
         if ($item.position -eq 'foreground') {
             $ht.fg = $conversion
-        }
-        elseif ($item.position -eq 'background') {
+        } elseif ($item.position -eq 'background') {
             $ht.bg = $conversion
         }
     }
     $String = $String -replace '\x1B\[[0-?]*[ -/]*[@-~]'
     Write-Debug "Clean: '$String' deco: '$($ht.decoration)' fg: '$($ht.fg)' bg: '$($ht.bg)'"
-    if($AllowMarkup) {
-        return [Spectre.Console.Markup]::new($String,[Spectre.Console.Style]::new($ht.fg,$ht.bg,$ht.decoration))
+    if ($AllowMarkup) {
+        return [Spectre.Console.Markup]::new($String, [Spectre.Console.Style]::new($ht.fg, $ht.bg, $ht.decoration))
     }
-    [Spectre.Console.Text]::new($String,[Spectre.Console.Style]::new($ht.fg,$ht.bg,$ht.decoration))
+    return [Spectre.Console.Text]::new($String, [Spectre.Console.Style]::new($ht.fg, $ht.bg, $ht.decoration))
 }

@@ -72,14 +72,23 @@ function Format-SpectreTable {
         }
         if ($Title) {
             $table.Title = [TableTitle]::new($Title, [Style]::new(($Color | Convert-ToSpectreColor)))
+            $tablecolumns.Title = $Title # used if scalar type.
         }
         $collector = [System.Collections.Generic.List[psobject]]::new()
         $strip = '\x1B\[[0-?]*[ -/]*[@-~]'
-        # [Spectre.Console.AnsiConsole]::Profile.Capabilities.Ansi = false
+        $tableoptions = @{}
+        $splat = @{}
+        if ($AllowMarkup) {
+            $splat.AllowMarkup = $true
+        }
     }
     process {
         foreach ($entry in $data) {
-            $collector.add($entry)
+            if($entry -is [hashtable]) {
+                $collector.add([pscustomobject]$entry)
+            } else {
+                $collector.add($entry)
+            }
         }
     }
     end {
@@ -88,65 +97,16 @@ function Format-SpectreTable {
         }
         if ($Property) {
             $collector = $collector | Select-Object -Property $Property
-            $property | ForEach-Object {
-                $table.AddColumn($_) | Out-Null
-            }
+            $tableoptions.Property = $Property
         }
-        elseif (($collector[-1].PSTypeNames[0] -notmatch 'PSCustomObject') -And ($standardMembers = Get-DefaultDisplayMembers $collector[-1])) {
-            foreach ($key in $standardMembers.Properties.keys) {
-                $lookup = $standardMembers.Properties[$key]
-                $table.AddColumn($lookup.Label) | Out-Null
-                # $table.Columns[-1].Padding = [Spectre.Console.Padding]::new(0, 0, 0, 0)
-                if ($lookup.width -gt 0) {
-                    # width 0 is autosize, select the last entry in the column list
-                    # Write-Debug "Label: $($lookup.Label) width to $($lookup.Width)"
-                    $table.Columns[-1].Width = $lookup.Width
-                }
-                if ($lookup.Alignment -ne 'undefined') {
-                    $table.Columns[-1].Alignment = [Justify]::$lookup.Alignment
-                }
-            }
-            # this formats the values according to the formatdata so we dont have to do it in the loop.
+        elseif ($standardMembers = Get-DefaultDisplayMembers $collector[0]) {
             $collector = $collector | Select-Object $standardMembers.Format
+            $tableoptions.FormatData = $standardMembers.Properties
+            $splat.FormatFound = $true
         }
-        else {
-            Write-Debug 'no formatting found and no properties selected, enumerating psobject.properties.name'
-            foreach ($prop in $collector[0].psobject.Properties.Name) {
-                if (-Not [String]::IsNullOrEmpty($prop)) {
-                    $table.AddColumn($prop) | Out-Null
-                }
-            }
-        }
+        $table = Add-TableColumns -Table $table -Object $collector[0] @tableoptions
         foreach ($item in $collector) {
-            $row = foreach ($cell in $item.psobject.Properties) {
-                if ($standardMembers -And $cell.value -match $strip) {
-                    # we are dealing with an object that has VT codes and a formatdata entry.
-                    # this returns a spectre.console.text/markup object with the VT codes applied.
-                    ConvertTo-SpectreDecoration $cell.value -AllowMarkup:$AllowMarkup
-                    continue
-                }
-                if ($null -eq $cell.Value) {
-                    if($AllowMarkup) {
-                        [Markup]::new(" ")
-                    } else {
-                        [Text]::new(" ")
-                    }
-                }
-                elseif (-Not [String]::IsNullOrEmpty($cell.Value.ToString())) {
-                    if($AllowMarkup) {
-                        [Markup]::new($cell.Value.ToString())
-                    } else {
-                        [Text]::new($cell.Value.ToString())
-                    }
-                }
-                else {
-                    if($AllowMarkup) {
-                        [Markup]::new([String]$cell.Value)
-                    } else {
-                        [Text]::new([String]$cell.Value)
-                    }
-                }
-            }
+            $row = New-TableRow -Entry $item @splat
             if($AllowMarkup) {
                 $table = [TableExtensions]::AddRow($table, [Markup[]]$row)
             } else {
