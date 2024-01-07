@@ -9,6 +9,7 @@ jobs:
   unit-test:
     name: Unit Test
     runs-on: ubuntu-latest
+    if: github.repository_owner != 'ShaunLawrie' || !(github.ref == 'refs/heads/main' && github.ref == 'refs/heads/prerelease')
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
