@@ -5,9 +5,7 @@ Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
 Describe "Format-SpectreTable" {
     InModuleScope "PwshSpectreConsole" {
         BeforeEach {
-            $data = 0..(Get-Random -Minimum 4 -Maximum 25) | Foreach-Object {
-                Get-RandomString
-            }
+            $data = $null
             $border = Get-RandomBoxBorder
             $color = Get-RandomColor
 
@@ -17,9 +15,11 @@ Describe "Format-SpectreTable" {
                 -and $RenderableObject.BorderStyle.Foreground.ToMarkup() -eq $color `
                 -and $RenderableObject.Rows.Count -eq $data.Count
             }
+            # -and $RenderableObject.Columns.Count -eq ($data | Get-DefaultDisplayMembers).Properties.Count
         }
 
-        It "Should create a Table" {
+        It "Should create a table when default display members for a command are required" {
+            $data = Get-ChildItem "$PSScriptRoot"
             Format-SpectreTable -Data $data -Border $border -Color $color
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
             Should -InvokeVerifiable

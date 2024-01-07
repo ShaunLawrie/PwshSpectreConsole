@@ -14,6 +14,8 @@ The module doesn't expose the full feature set of Spectre.Console because the sc
 
 Full documentation at [https://pwshspectreconsole.com/](https://pwshspectreconsole.com/)
 
+![image](https://github.com/ShaunLawrie/PwshSpectreConsole/assets/13159458/b7a544fc-ab30-43e7-acfa-1bf6d00ec49f)
+
 ## Installation
 
 ```pwsh

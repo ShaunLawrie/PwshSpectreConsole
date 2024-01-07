@@ -12,7 +12,7 @@ function Format-SpectreTree {
     The hashtable to format as a tree.
 
     .PARAMETER Border
-    The type of border to use for the tree. Valid values are 'Rounded', 'Heavy', 'Light', 'Double', 'Solid', 'Ascii', and 'None'. Default is 'Rounded'.
+    The type of border to use for the tree.
 
     .PARAMETER Color
     The color to use for the tree. This can be a Spectre Console color name or a hex color code. Default is the accent color defined in the script.
