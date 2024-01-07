@@ -100,4 +100,4 @@ jobs:
           Publish-Module -Name PwshSpectreConsole -Exclude "Build.ps1" -NugetApiKey $env:PSGALLERY_API_KEY -AllowPrerelease
 
           # Create a gh release for it
-          gh release create "v$newVersion-$newPrereleaseTag" --target prerelease --generate-notes
+          gh release create "v$newVersion-$newPrereleaseTag" --target prerelease --generate-notes --prerelease
