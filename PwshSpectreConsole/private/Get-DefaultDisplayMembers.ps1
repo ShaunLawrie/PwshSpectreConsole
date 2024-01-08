@@ -25,6 +25,7 @@
         # no formatdata, return null
         return $null
     }
+    # this needs to ordered to preserve table column order.
     $properties = [ordered]@{}
     $viewDefinition = $formatData.FormatViewDefinition | Where-Object { $_.Control -match 'TableControl' } | Select-Object -First 1
     Write-Debug "viewDefinition: $($viewDefinition.Name)"
@@ -35,12 +36,8 @@
             $name = $displayEntry.Value
         }
         $expression = switch ($displayEntry.ValueType) {
-            'Property' {
-                $displayEntry.Value
-            }
-            'ScriptBlock' {
-                [ScriptBlock]::Create($displayEntry.Value)
-            }
+            'Property' { $displayEntry.Value }
+            'ScriptBlock' { [ScriptBlock]::Create($displayEntry.Value) }
         }
         $properties[$name] = @{
             Label     = $name

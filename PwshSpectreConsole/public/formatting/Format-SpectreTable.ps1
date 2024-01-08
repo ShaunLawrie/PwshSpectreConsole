@@ -66,6 +66,8 @@ function Format-SpectreTable {
         $table.BorderStyle = [Style]::new(($Color | Convert-ToSpectreColor))
         $tableoptions = @{}
         $rowoptions = @{}
+        # maybe we could do this a bit nicer.. it's just to avoid checking for each row.
+        $script:scalarDetected = $false
         if ($Width) {
             $table.Width = $Width
         }
@@ -73,8 +75,8 @@ function Format-SpectreTable {
             $table.ShowHeaders = $false
         }
         if ($Title) {
-            $table.Title = [TableTitle]::new($Title, [Style]::new(($Color | Convert-ToSpectreColor)))
-            $tableoptions.Title = $Title # used if scalar type.
+            # used if scalar type as 'Value'
+            $tableoptions.Title = $Title
         }
         $collector = [System.Collections.Generic.List[psobject]]::new()
         $strip = '\x1B\[[0-?]*[ -/]*[@-~]'
@@ -84,7 +86,7 @@ function Format-SpectreTable {
     }
     process {
         foreach ($entry in $data) {
-            if($entry -is [hashtable]) {
+            if ($entry -is [hashtable]) {
                 $collector.add([pscustomobject]$entry)
             } else {
                 $collector.add($entry)
@@ -98,6 +100,7 @@ function Format-SpectreTable {
         if ($Property) {
             $collector = $collector | Select-Object -Property $Property
             $tableoptions.Property = $Property
+            $rowoptions.PropertiesSelected = $true
         }
         elseif ($standardMembers = Get-DefaultDisplayMembers $collector[0]) {
             $collector = $collector | Select-Object $standardMembers.Format
@@ -107,11 +110,14 @@ function Format-SpectreTable {
         $table = Add-TableColumns -Table $table -Object $collector[0] @tableoptions
         foreach ($item in $collector) {
             $row = New-TableRow -Entry $item @rowoptions
-            if($AllowMarkup) {
+            if ($AllowMarkup) {
                 $table = [TableExtensions]::AddRow($table, [Markup[]]$row)
             } else {
                 $table = [TableExtensions]::AddRow($table, [Text[]]$row)
             }
+        }
+        if ($Title -And $scalarDetected -eq $false) {
+            $table.Title = [TableTitle]::new($Title, [Style]::new(($Color | Convert-ToSpectreColor)))
         }
         Write-AnsiConsole $table
     }

@@ -37,6 +37,7 @@ function Add-TableColumns {
     } elseif (Test-IsScalar $Object) {
         # simple/scalar types show up wonky, we can detect them and just use a dummy header for the table
         Write-Debug 'simple/scalar type'
+        $script:scalarDetected = $true
         if ($Title) {
             $table.AddColumn($Title) | Out-Null
         } else {

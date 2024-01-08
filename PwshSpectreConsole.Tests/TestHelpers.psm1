@@ -88,10 +88,45 @@ function Get-RandomTree {
         $newTree = Get-RandomTree -Root $newChild -MaxChildren $MaxChildren -MaxDepth $MaxDepth -CurrentDepth $CurrentDepth
         $Root.Children += $newTree
     }
-    
     return $Root
 }
 
 function Get-RandomBool {
     return [bool](Get-Random -Minimum 0 -Maximum 2)
+}
+
+function Get-SpectreRenderable {
+    param(
+        [Parameter(Mandatory)]
+        [Spectre.Console.Rendering.Renderable] $RenderableObject
+    )
+    $writer = [System.IO.StringWriter]::new()
+    $output = [Spectre.Console.AnsiConsoleOutput]::new($writer)
+    $settings = [Spectre.Console.AnsiConsoleSettings]::new()
+    $settings.Out = $output
+    $console = [Spectre.Console.AnsiConsole]::Create($settings)
+    $console.Write($RenderableObject)
+    return $writer.ToString()
+}
+function Get-AnsiEscapeSequence {
+    <#
+        could be useful for debugging
+    #>
+    param(
+        [Parameter(Mandatory, ValueFromPipeline)]
+        $String
+    )
+    process {
+        $decoded = $String.EnumerateRunes() | ForEach-Object {
+            if ($_.Value -le 0x1f) {
+                [Text.Rune]::new($_.Value + 0x2400)
+            } else {
+                $_
+            }
+        } | Join-String
+        [PSCustomObject]@{
+            Decoded  = $decoded
+            Original = $String
+        }
+    }
 }

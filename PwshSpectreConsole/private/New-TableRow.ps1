@@ -2,6 +2,7 @@ function New-TableRow {
     param(
         $Entry,
         [Switch] $FormatFound,
+        [Switch] $PropertiesSelected,
         [Switch] $AllowMarkup
     )
     Write-Debug "Module: $($ExecutionContext.SessionState.Module.Name) Command: $($MyInvocation.MyCommand.Name) Param: $($PSBoundParameters.GetEnumerator())"
@@ -9,7 +10,7 @@ function New-TableRow {
     if ($AllowMarkup) {
         $opts.AllowMarkup = $true
     }
-    if ((-Not $FormatFound) -And (Test-IsScalar $Entry)) {
+    if ((-Not $FormatFound -or -Not $PropertiesSelected) -And ($scalarDetected -eq $true)) {
         New-TableCell -String $Entry @opts
     }
     else {
