@@ -153,6 +153,7 @@ function Get-AnsiEscapeSequence {
         [PSCustomObject]@{
             Decoded  = $decoded
             Original = $String
+            Clean =    $string -replace '\x1B\[[0-?]*[ -/]*[@-~]|\s+'
         }
     }
 }
