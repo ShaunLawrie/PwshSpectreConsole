@@ -13,10 +13,8 @@ Describe "Format-SpectreBreakdownChart" {
 
             Mock Write-AnsiConsole -ParameterFilter {
                 $RenderableObject -is [Spectre.Console.Rendering.Renderable] `
-                -and `
-                $RenderableObject.Width -eq $width `
-                -and `
-                $RenderableObject.Data.Count -eq $testData.Count
+                -and $RenderableObject.Width -eq $width `
+                -and $RenderableObject.Data.Count -eq $testData.Count
             }
 
             Mock Get-HostWidth {
@@ -46,12 +44,9 @@ Describe "Format-SpectreBreakdownChart" {
         It "Should handle no width and default to host width" {
             Mock Write-AnsiConsole -ParameterFilter {
                 $RenderableObject -is [Spectre.Console.Rendering.Renderable] `
-                -and `
-                $RenderableObject.Width -eq $width `
-                -and `
-                $RenderableObject.Label -eq $null `
-                -and `
-                $RenderableObject.Data.Count -eq $testData.Count
+                -and $RenderableObject.Width -eq $width `
+                -and $RenderableObject.Label -eq $null `
+                -and $RenderableObject.Data.Count -eq $testData.Count
             }
             Format-SpectreBreakdownChart -Data $testData
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly

@@ -37,7 +37,7 @@ function Format-SpectrePanel {
     [Reflection.AssemblyMetadata("title", "Format-SpectrePanel")]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
-        [string] $Data,
+        [object] $Data,
         [string] $Title,
         [ValidateSet([SpectreConsoleBoxBorder], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Border = "Rounded",
@@ -45,9 +45,9 @@ function Format-SpectrePanel {
         [ValidateSpectreColor()]
         [ArgumentCompletionsSpectreColors()]
         [string] $Color = $script:AccentColor.ToMarkup(),
-        [ValidateScript({ $_ -gt 0 -and $_ -le [console]::BufferWidth }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
+        [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostWidth) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
         [int]$Width,
-        [ValidateScript({ $_ -gt 0 -and $_ -le [console]::WindowHeight }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console height.")]
+        [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostHeight) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console height.")]
         [int]$Height
     )
     $panel = [Spectre.Console.Panel]::new($Data)

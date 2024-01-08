@@ -46,8 +46,7 @@ function Read-SpectreSelection {
 
     $duplicateLabels = $choiceLabels | Group-Object | Where-Object { $_.Count -gt 1 }
     if($duplicateLabels) {
-        Write-Error "You have duplicate labels in your select list, this is ambiguous so a selection cannot be made"
-        exit 2
+        throw "You have duplicate labels in your select list, this is ambiguous so a selection cannot be made"
     }
 
     $spectrePrompt = [Spectre.Console.SelectionPromptExtensions]::AddChoices($spectrePrompt, [string[]]$choiceLabels)

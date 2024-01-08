@@ -1,0 +1,23 @@
+name: Run Unit Tests
+on:
+  push:
+
+permissions:
+  contents: write
+
+jobs:
+  unit-test:
+    name: Unit Test
+    runs-on: ubuntu-latest
+    if: github.repository_owner != 'ShaunLawrie' || !(github.ref == 'refs/heads/main' && github.ref == 'refs/heads/prerelease')
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Unit Test
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          & .\PwshSpectreConsole\Build.ps1
+          $env:PSModulePath = @($env:PSModulePath, ".\PwshSpectreConsole\") -join ":"
+          Invoke-Pester -CI
+  

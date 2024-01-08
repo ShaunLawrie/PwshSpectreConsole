@@ -18,8 +18,25 @@ function Get-RandomColor {
     }
 }
 
+function Get-RandomList {
+    param(
+        [int] $MinItems = 2,
+        [int] $MaxItems = 10,
+        [scriptblock] $Generator = {
+            Get-RandomString
+        }
+    )
+    $items = @()
+    $count = Get-Random -Minimum $MinItems -Maximum $MaxItems
+    for($i = 0; $i -lt $count; $i++) {
+        $items += $Generator.Invoke()
+    }
+    return $items
+
+}
+
 function Get-RandomString {
-    $length = Get-Random -Minimum 1 -Maximum 20
+    $length = Get-Random -Minimum 10 -Maximum 20
     $chars = [char[]]([char]'a'..[char]'z' + [char]'A'..[char]'Z' + [char]'0'..[char]'9')
     $string = ""
     for($i = 0; $i -lt $length; $i++) {
@@ -58,7 +75,7 @@ function Get-RandomChartItem {
 }
 
 function Get-RandomTree {
-    param (
+    param(
         [hashtable] $Root,
         [int] $MinChildren = 1,
         [int] $MaxChildren = 3,
@@ -88,6 +105,7 @@ function Get-RandomTree {
         $newTree = Get-RandomTree -Root $newChild -MaxChildren $MaxChildren -MaxDepth $MaxDepth -CurrentDepth $CurrentDepth
         $Root.Children += $newTree
     }
+
     return $Root
 }
 
@@ -95,10 +113,17 @@ function Get-RandomBool {
     return [bool](Get-Random -Minimum 0 -Maximum 2)
 }
 
+function Get-RandomChoice {
+    param(
+        [string[]] $Choices
+    )
+    return $Choices[(Get-Random -Minimum 0 -Maximum $Choices.Count)]
+}
+
 function Get-SpectreRenderable {
     param(
         [Parameter(Mandatory)]
-        [Spectre.Console.Rendering.Renderable] $RenderableObject
+        [Spectre.Console.Rendering.Renderable]$RenderableObject
     )
     $writer = [System.IO.StringWriter]::new()
     $output = [Spectre.Console.AnsiConsoleOutput]::new($writer)
@@ -108,6 +133,7 @@ function Get-SpectreRenderable {
     $console.Write($RenderableObject)
     return $writer.ToString()
 }
+
 function Get-AnsiEscapeSequence {
     <#
         could be useful for debugging

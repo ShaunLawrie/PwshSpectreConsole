@@ -15,12 +15,9 @@ Describe "Format-SpectreBarChart" {
 
             Mock Write-AnsiConsole -ParameterFilter {
                 $RenderableObject -is [Spectre.Console.Rendering.Renderable] `
-                -and `
-                $RenderableObject.Width -eq $width `
-                -and `
-                $RenderableObject.Label -eq $title `
-                -and `
-                $RenderableObject.Data.Count -eq $testData.Count
+                -and $RenderableObject.Width -eq $width `
+                -and $RenderableObject.Label -eq $title `
+                -and $RenderableObject.Data.Count -eq $testData.Count
             }
 
             Mock Get-HostWidth {
@@ -50,12 +47,9 @@ Describe "Format-SpectreBarChart" {
         It "Should handle no title" {
             Mock Write-AnsiConsole -ParameterFilter {
                 $RenderableObject -is [Spectre.Console.Rendering.Renderable] `
-                -and `
-                $RenderableObject.Width -eq $width `
-                -and `
-                $RenderableObject.Label -eq $null `
-                -and `
-                $RenderableObject.Data.Count -eq $testData.Count
+                -and $RenderableObject.Width -eq $width `
+                -and $RenderableObject.Label -eq $null `
+                -and $RenderableObject.Data.Count -eq $testData.Count
             }
             Format-SpectreBarChart -Data $testData -Width $width
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
@@ -65,12 +59,9 @@ Describe "Format-SpectreBarChart" {
         It "Should handle no width and default to host width" {
             Mock Write-AnsiConsole -ParameterFilter {
                 $RenderableObject -is [Spectre.Console.Rendering.Renderable] `
-                -and `
-                $RenderableObject.Width -eq $width `
-                -and `
-                $RenderableObject.Label -eq $null `
-                -and `
-                $RenderableObject.Data.Count -eq $testData.Count
+                -and $RenderableObject.Width -eq $width `
+                -and $RenderableObject.Label -eq $null `
+                -and $RenderableObject.Data.Count -eq $testData.Count
             }
             Format-SpectreBarChart -Data $testData
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly

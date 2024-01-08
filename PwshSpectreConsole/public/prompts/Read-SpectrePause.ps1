@@ -23,9 +23,7 @@ function Read-SpectrePause {
     )
 
     # Drain input buffer so enter won't be pressed automatically
-    while ([System.Console]::KeyAvailable) {
-        $null = [System.Console]::ReadKey($true)
-    }
+    Clear-InputQueue
 
     $position = $Host.UI.RawUI.CursorPosition
     if(!$NoNewline) {
@@ -36,12 +34,12 @@ function Read-SpectrePause {
     $endPosition = $Host.UI.RawUI.CursorPosition
     if($endPosition -eq $position) {
         # Reached the end of the window
-        [Console]::SetCursorPosition($position.X, $position.Y - 2)
+        Set-CursorPosition -X $position.X -Y ($position.Y - 2)
         Write-Host (" " * $Message.Length)
-        [Console]::SetCursorPosition($position.X, $position.Y - 2)
+        Set-CursorPosition -X $position.X -Y ($position.Y - 2)
     } else {
-        [Console]::SetCursorPosition($position.X, $position.Y)
+        Set-CursorPosition -X $position.X -Y $position.Y
         Write-Host (" " * $Message.Length)
-        [Console]::SetCursorPosition($position.X, $position.Y)
+        Set-CursorPosition -X $position.X -Y $position.Y
     }
 }

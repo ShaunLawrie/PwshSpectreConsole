@@ -15,6 +15,9 @@ function Read-SpectreText {
     .PARAMETER DefaultAnswer
     The default answer if the user does not provide any input.
 
+    .PARAMETER AnswerColor
+    The color of the user's answer input. The default behaviour uses the standard terminal text color.
+
     .PARAMETER AllowEmpty
     If specified, the user can provide an empty answer.
 
@@ -26,12 +29,18 @@ function Read-SpectreText {
     param (
         [string] $Question = "What's your name?",
         [string] $DefaultAnswer,
+        [ValidateSpectreColor()]
+        [ArgumentCompletionsSpectreColors()]
+        [string] $AnswerColor,
         [switch] $AllowEmpty
     )
     $spectrePrompt = [Spectre.Console.TextPrompt[string]]::new($Question)
     $spectrePrompt.DefaultValueStyle = [Spectre.Console.Style]::new($script:DefaultValueColor)
     if ($DefaultAnswer) {
         $spectrePrompt = [Spectre.Console.TextPromptExtensions]::DefaultValue($spectrePrompt, $DefaultAnswer)
+    }
+    if($AnswerColor) {
+        $spectrePrompt.PromptStyle = [Spectre.Console.Style]::new(($AnswerColor | Convert-ToSpectreColor))
     }
     $spectrePrompt.AllowEmpty = $AllowEmpty
     return Invoke-SpectrePromptAsync -Prompt $spectrePrompt
