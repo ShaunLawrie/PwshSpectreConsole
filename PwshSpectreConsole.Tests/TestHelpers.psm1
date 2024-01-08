@@ -125,13 +125,18 @@ function Get-SpectreRenderable {
         [Parameter(Mandatory)]
         [Spectre.Console.Rendering.Renderable]$RenderableObject
     )
-    $writer = [System.IO.StringWriter]::new()
-    $output = [Spectre.Console.AnsiConsoleOutput]::new($writer)
-    $settings = [Spectre.Console.AnsiConsoleSettings]::new()
-    $settings.Out = $output
-    $console = [Spectre.Console.AnsiConsole]::Create($settings)
-    $console.Write($RenderableObject)
-    return $writer.ToString()
+    try {
+        $writer = [System.IO.StringWriter]::new()
+        $output = [Spectre.Console.AnsiConsoleOutput]::new($writer)
+        $settings = [Spectre.Console.AnsiConsoleSettings]::new()
+        $settings.Out = $output
+        $console = [Spectre.Console.AnsiConsole]::Create($settings)
+        $console.Write($RenderableObject)
+        $writer.ToString()
+    }
+    finally {
+        $writer.Dispose()
+    }
 }
 
 function Get-AnsiEscapeSequence {
