@@ -31,7 +31,7 @@ Describe "Format-SpectreTable" {
             $header = $rows[0]
             $properties = $header -split '\|' | Get-AnsiEscapeSequence | ForEach-Object {
                 if (-Not [String]::IsNullOrWhiteSpace($_.Clean)) {
-                    $_.Clean
+                    $_.Clean -replace '\s+'
                 }
             }
             $verification.Properties.keys | Should -Be $properties
