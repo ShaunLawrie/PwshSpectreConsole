@@ -162,3 +162,40 @@ function Get-AnsiEscapeSequence {
         }
     }
 }
+
+function Get-PSStyleRandom {
+    param(
+        [Switch]$Foreground,
+        [Switch]$Background,
+        [Switch]$Decoration,
+        [Switch]$RGBForeground,
+        [Switch]$RGBBackground
+    )
+    $Style = Switch ($PSBoundParameters.Keys) {
+        'Foreground' {
+            $fg = ($PSStyle.Foreground | Get-Member -MemberType Property | Get-Random).Name
+            $PSStyle.Foreground.$fg
+        }
+        'Background' {
+            $bg = ($PSStyle.Background | Get-Member -MemberType Property | Get-Random).Name
+            $PSStyle.Background.$bg
+        }
+        'Decoration' {
+            $deco = ($PSStyle | Get-Member -MemberType Property | Where-Object { $_.Definition -match '^string' -And $_.Name -notmatch 'off$' } | Get-Random).Name
+            $PSStyle.$deco
+        }
+        'RGBForeground' {
+            $r = Get-Random -min 0 -max 255
+            $g = Get-Random -min 0 -max 255
+            $b = Get-Random -min 0 -max 255
+            $PSStyle.Foreground.FromRgb($r, $g, $b)
+        }
+        'RGBBackground' {
+            $r = Get-Random -min 0 -max 255
+            $g = Get-Random -min 0 -max 255
+            $b = Get-Random -min 0 -max 255
+            $PSStyle.Background.FromRgb($r, $g, $b)
+        }
+    }
+    return $Style | Join-String
+}
