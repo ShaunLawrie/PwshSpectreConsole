@@ -10,7 +10,6 @@ Describe "Format-SpectreTable" {
             $testColor = Get-RandomColor
             Mock Write-AnsiConsole {
                 param(
-                    [Parameter(Mandatory)]
                     [Spectre.Console.Rendering.Renderable] $RenderableObject
                 )
                 try {

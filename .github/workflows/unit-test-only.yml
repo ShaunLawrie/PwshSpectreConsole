@@ -19,5 +19,6 @@ jobs:
           $ErrorActionPreference = "Stop"
           & .\PwshSpectreConsole\Build.ps1
           $env:PSModulePath = @($env:PSModulePath, ".\PwshSpectreConsole\") -join ":"
+          Get-Module Pester -ListAvailable | Out-Host
           Invoke-Pester -CI
   
