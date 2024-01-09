@@ -32,8 +32,7 @@ Describe "Format-SpectreTable" {
             $verification = Get-DefaultDisplayMembers $testData
             $testResult = Format-SpectreTable -Data $testData -Border $testBorder -Color $testColor
             $command = Get-Command "Select-Object"
-            $command.Parameters.Keys
-            $rows = $testResult -split "\r?\n" | Select-Object -Skip 1 -SkipLast 2
+            $rows = $testResult -split "\r?\n" | Select-Object -Skip 1 | Select-Object -SkipLast 2
             $header = $rows[0]
             $properties = $header -split '\|' | Get-AnsiEscapeSequence | ForEach-Object {
                 if (-Not [String]::IsNullOrWhiteSpace($_.Clean)) {
