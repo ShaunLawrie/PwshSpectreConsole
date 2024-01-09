@@ -40,27 +40,25 @@ namespace PwshSpectreConsole.VTCodes
         }
         internal static Dictionary<int, string> DecorationDict { get; } = new Dictionary<int, string>()
         {
-        { 0, "reset" },
-        { 1, "bold" },
-        { 2, "dim" },
-        { 3, "italic" },
-        { 4, "underline" },
-        { 5, "slowblink" },
-        { 6, "rapidblink" },
-        { 7, "invert" },
-        { 8, "conceal" },
-        { 9, "strikethrough" },
-        { 21, "boldOff" },
-        { 22, "normalIntensity" },
-        { 23, "italicOff" },
-        { 24, "underlineOff" },
-        { 25, "blinkOff" },
-        { 27, "invertOff" },
-        { 28, "concealOff" },
-        { 29, "strikethroughOff" },
-        { 39, "defaultForeground" },
-        { 49, "defaultBackground" }
-            // Add more entries as needed
+            { 0, "None" },
+            { 1, "Bold" },
+            { 2, "Dim" },
+            { 3, "Italic" },
+            { 4, "Underline" },
+            { 5, "SlowBlink" },
+            { 6, "RapidBlink" },
+            { 7, "Invert" },
+            { 8, "Conceal" },
+            { 9, "Strikethrough" },
+            { 21, "BoldOff" },
+            { 22, "NormalIntensity" },
+            { 23, "ItalicOff" },
+            { 24, "UnderlineOff" },
+            { 25, "BlinkOff" },
+            { 27, "InvertOff" },
+            { 28, "ConcealOff" },
+            { 29, "StrikethroughOff" }
+                // Add more entries as needed
         };
     }
     public class Parser
@@ -141,7 +139,7 @@ namespace PwshSpectreConsole.VTCodes
         }
         private static VT.VtCode NewVT(int firstCode, string[] codeParts, int placement)
         {
-            if (firstCode >= 30 && firstCode <= 37 || firstCode >= 40 && firstCode <= 47 || firstCode >= 90 && firstCode <= 97)
+            if (firstCode >= 30 && firstCode <= 37 || firstCode >= 40 && firstCode <= 47 || firstCode >= 90 && firstCode <= 97 || firstCode >= 100 && firstCode <= 107)
             {
                 return New4BitVT(firstCode, placement);
             }

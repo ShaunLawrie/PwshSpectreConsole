@@ -181,7 +181,7 @@ function Get-PSStyleRandom {
             $PSStyle.Background.$bg
         }
         'Decoration' {
-            $deco = ($PSStyle | Get-Member -MemberType Property | Where-Object { $_.Definition -match '^string' -And $_.Name -notmatch 'off$' } | Get-Random).Name
+            $deco = ($PSStyle | Get-Member -MemberType Property | Where-Object { $_.Definition -match '^string' -And $_.Name -notmatch 'off$|Reset' } | Get-Random).Name
             $PSStyle.$deco
         }
         'RGBForeground' {

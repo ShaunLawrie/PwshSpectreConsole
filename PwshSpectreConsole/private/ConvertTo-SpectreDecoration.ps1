@@ -12,7 +12,8 @@ function ConvertTo-SpectreDecoration {
     $lookup = [PwshSpectreConsole.VTCodes.Parser]::Parse($String)
     $ht = @{}
     foreach ($item in $lookup) {
-        if ($item.value -eq 'reset') {
+        Write-Debug "Type: $($item.type) Value: $($item.value) Position: $($item.position) Color: $($item.color)"
+        if ($item.value -eq 'None') {
             continue
         }
         $conversion = switch ($item.type) {
