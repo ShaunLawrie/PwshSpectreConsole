@@ -9,6 +9,10 @@ Describe "Format-SpectreTable" {
             $testBorder = 'Markdown'
             $testColor = Get-RandomColor
             Mock Write-AnsiConsole {
+                param(
+                    [Parameter(Mandatory)]
+                    [Spectre.Console.Rendering.Renderable] $RenderableObject
+                )
                 try {
                     $writer = [System.IO.StringWriter]::new()
                     $output = [Spectre.Console.AnsiConsoleOutput]::new($writer)
@@ -27,6 +31,8 @@ Describe "Format-SpectreTable" {
             $testData = Get-ChildItem "$PSScriptRoot"
             $verification = Get-DefaultDisplayMembers $testData
             $testResult = Format-SpectreTable -Data $testData -Border $testBorder -Color $testColor
+            $command = Get-Command "Select-Object"
+            $command.Parameters.Keys
             $rows = $testResult -split "\r?\n" | Select-Object -Skip 1 -SkipLast 2
             $header = $rows[0]
             $properties = $header -split '\|' | Get-AnsiEscapeSequence | ForEach-Object {
