@@ -9,9 +9,6 @@ Describe "Format-SpectreTable" {
             $testBorder = 'Markdown'
             $testColor = Get-RandomColor
             Mock Write-AnsiConsole {
-                param(
-                    [Spectre.Console.Rendering.Renderable] $RenderableObject
-                )
                 try {
                     $writer = [System.IO.StringWriter]::new()
                     $output = [Spectre.Console.AnsiConsoleOutput]::new($writer)
