@@ -199,3 +199,17 @@ function Get-PSStyleRandom {
     }
     return $Style | Join-String
 }
+Function Get-SpectreColorSample {
+    $spectreColors = [Spectre.Console.Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
+    foreach ($c in $spectreColors) {
+        $color = [Spectre.Console.Color]::$c
+        $renderable = [Spectre.Console.Text]::new('Hello, World!', [Spectre.Console.Style]::new($color))
+        $SpectreString = Get-SpectreRenderable $renderable
+        [PSCustomObject]@{
+            Color  = $c
+            String = $SpectreString
+            # Object = $color
+            # Debug = Get-AnsiEscapeSequence $SpectreString
+        }
+    }
+}

@@ -21,9 +21,9 @@ function Add-TableColumns {
             $table.AddColumn($prop) | Out-Null
         }
     } elseif ($FormatData) {
-        Write-Debug 'Adding column from formatdata'
         foreach ($key in $FormatData.keys) {
             $lookup = $FormatData[$key]
+            Write-Debug "Adding column from formatdata: $($lookup.GetEnumerator())"
             $table.AddColumn($lookup.Label) | Out-Null
             $table.Columns[-1].Padding = [Spectre.Console.Padding]::new(1, 0, 1, 0)
             if ($lookup.width -gt 0) {

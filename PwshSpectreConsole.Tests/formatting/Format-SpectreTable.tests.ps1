@@ -16,7 +16,7 @@ Describe "Format-SpectreTable" {
                 -and $RenderableObject.Rows.Count -eq $testData.Count
             }
         }
-        
+
         It "Should create a table when default display members for a command are required" {
             $testData = Get-ChildItem "$PSScriptRoot"
             Format-SpectreTable -Data $testData -Border $testBorder -Color $testColor
@@ -60,7 +60,7 @@ Describe "Format-SpectreTable" {
         It "Should be able to format PSStyle strings" {
             $rawString = ""
             $ansiString = ""
-            $PSStyle | Get-Member -MemberType Properties | ForEach-Object {
+            $PSStyle | Get-Member -MemberType Property | Where-Object { $_.Definition -match '^string' -And $_.Name -notmatch 'off$|Reset' } | ForEach-Object {
                 $name = $_.Name
                 $rawString += "$name "
                 $ansiString += "$($PSStyle.$name)$name "
