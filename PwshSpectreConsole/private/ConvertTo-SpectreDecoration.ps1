@@ -11,6 +11,7 @@ function ConvertTo-SpectreDecoration {
     Write-Debug "ANSI String: $String '$($String -replace '\x1B','e')'"
     $lookup = [PwshSpectreConsole.VTCodes.Parser]::Parse($String)
     $ht = @{}
+
     foreach ($item in $lookup) {
         Write-Debug "Type: $($item.type) Value: $($item.value) Position: $($item.position) Color: $($item.color)"
         if ($item.value -eq 'None') {
@@ -21,7 +22,10 @@ function ConvertTo-SpectreDecoration {
                 if ($item.value -gt 0 -and $item.value -le 15) {
                     [Spectre.Console.Color]::FromConsoleColor($item.value)
                 } else {
-                    [Spectre.Console.Color]::FromInt32($item.value)
+                    # spectre doesn't appear to have a way to convert from 4bit.
+                    # e.g all $PSStyle colors 30-37, 40-47 and 90-97, 100-107
+                    # this will return the closest color in 8bit.
+                    [Spectre.Console.Color]::FromConsoleColor((ConvertFrom-ConsoleColor $item.value))
                 }
             }
             '8bit' {
