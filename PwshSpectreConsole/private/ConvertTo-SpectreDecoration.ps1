@@ -21,7 +21,8 @@ function ConvertTo-SpectreDecoration {
             '4bit' {
                 if ($item.value -gt 0 -and $item.value -le 15) {
                     [Spectre.Console.Color]::FromConsoleColor($item.value)
-                } else {
+                }
+                else {
                     # spectre doesn't appear to have a way to convert from 4bit.
                     # e.g all $PSStyle colors 30-37, 40-47 and 90-97, 100-107
                     # this will return the closest color in 8bit.
@@ -43,11 +44,13 @@ function ConvertTo-SpectreDecoration {
         }
         if ($item.position -eq 'foreground') {
             $ht.fg = $conversion
-        } elseif ($item.position -eq 'background') {
+        }
+        elseif ($item.position -eq 'background') {
             $ht.bg = $conversion
         }
     }
-    $String = $String -replace '\x1B\[[0-?]*[ -/]*[@-~]'
+    # $String = $String -replace '\x1B\[[0-?]*[ -/]*[@-~]'
+    $String = [System.Management.Automation.Host.PSHostUserInterface]::GetOutputString($String, $false)
     Write-Debug "Clean: '$String' deco: '$($ht.decoration)' fg: '$($ht.fg)' bg: '$($ht.bg)'"
     if ($AllowMarkup) {
         return [Spectre.Console.Markup]::new($String, [Spectre.Console.Style]::new($ht.fg, $ht.bg, $ht.decoration))
