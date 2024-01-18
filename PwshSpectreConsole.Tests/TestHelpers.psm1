@@ -145,10 +145,10 @@ function Get-AnsiEscapeSequence {
     #>
     param(
         [Parameter(Mandatory, ValueFromPipeline)]
-        $String
+        [String] $String
     )
     process {
-        $decoded = $String.EnumerateRunes() | ForEach-Object {
+        $Escaped = $String.EnumerateRunes() | ForEach-Object {
             if ($_.Value -le 0x1f) {
                 [Text.Rune]::new($_.Value + 0x2400)
             } else {
@@ -156,20 +156,20 @@ function Get-AnsiEscapeSequence {
             }
         } | Join-String
         [PSCustomObject]@{
-            Decoded  = $decoded
+            Escaped  = $Escaped
             Original = $String
-            Clean    = $String -replace '\x1B\[[0-?]*[ -/]*[@-~]'
+            Clean    = [System.Management.Automation.Host.PSHostUserInterface]::GetOutputString($String, $false)
         }
     }
 }
 
 function Get-PSStyleRandom {
     param(
-        [Switch]$Foreground,
-        [Switch]$Background,
-        [Switch]$Decoration,
-        [Switch]$RGBForeground,
-        [Switch]$RGBBackground
+        [Switch] $Foreground,
+        [Switch] $Background,
+        [Switch] $Decoration,
+        [Switch] $RGBForeground,
+        [Switch] $RGBBackground
     )
     $Style = Switch ($PSBoundParameters.Keys) {
         'Foreground' {
@@ -203,7 +203,7 @@ Function Get-SpectreColorSample {
     $spectreColors = [Spectre.Console.Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
     foreach ($c in $spectreColors) {
         $color = [Spectre.Console.Color]::$c
-        $renderable = [Spectre.Console.Text]::new('Hello, World!', [Spectre.Console.Style]::new($color))
+        $renderable = [Spectre.Console.Text]::new("Hello, $c", [Spectre.Console.Style]::new($color))
         $SpectreString = Get-SpectreRenderable $renderable
         [PSCustomObject]@{
             Color  = $c

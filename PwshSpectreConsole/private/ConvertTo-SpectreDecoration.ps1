@@ -8,12 +8,14 @@ function ConvertTo-SpectreDecoration {
     if (-Not ('PwshSpectreConsole.VTCodes.Parser' -as [type])) {
         Add-PwshSpectreConsole.VTCodes
     }
-    Write-Debug "ANSI String: $String '$($String -replace '\x1B','e')'"
     $lookup = [PwshSpectreConsole.VTCodes.Parser]::Parse($String)
-    $ht = @{}
-
+    $ht = @{
+        decoration = [Spectre.Console.Decoration]::None
+        fg         = [Spectre.Console.Color]::Default
+        bg         = [Spectre.Console.Color]::Default
+    }
     foreach ($item in $lookup) {
-        Write-Debug "Type: $($item.type) Value: $($item.value) Position: $($item.position) Color: $($item.color)"
+        # Write-Debug "Type: $($item.type) Value: $($item.value) Position: $($item.position) Color: $($item.color)"
         if ($item.value -eq 'None') {
             continue
         }
@@ -49,7 +51,6 @@ function ConvertTo-SpectreDecoration {
             $ht.bg = $conversion
         }
     }
-    # $String = $String -replace '\x1B\[[0-?]*[ -/]*[@-~]'
     $String = [System.Management.Automation.Host.PSHostUserInterface]::GetOutputString($String, $false)
     Write-Debug "Clean: '$String' deco: '$($ht.decoration)' fg: '$($ht.fg)' bg: '$($ht.bg)'"
     if ($AllowMarkup) {
