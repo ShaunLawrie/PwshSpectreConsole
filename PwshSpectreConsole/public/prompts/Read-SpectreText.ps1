@@ -32,7 +32,8 @@ function Read-SpectreText {
         [ValidateSpectreColor()]
         [ArgumentCompletionsSpectreColors()]
         [string] $AnswerColor,
-        [switch] $AllowEmpty
+        [switch] $AllowEmpty,
+        [string[]] $Choices
     )
     $spectrePrompt = [Spectre.Console.TextPrompt[string]]::new($Question)
     $spectrePrompt.DefaultValueStyle = [Spectre.Console.Style]::new($script:DefaultValueColor)
@@ -43,5 +44,9 @@ function Read-SpectreText {
         $spectrePrompt.PromptStyle = [Spectre.Console.Style]::new(($AnswerColor | Convert-ToSpectreColor))
     }
     $spectrePrompt.AllowEmpty = $AllowEmpty
+    if ($null -ne $Choices)
+    {
+        $spectrePrompt = [Spectre.Console.TextPromptExtensions]::AddChoices($spectrePrompt, $Choices)
+    }
     return Invoke-SpectrePromptAsync -Prompt $spectrePrompt
 }
