@@ -39,14 +39,12 @@ Describe "Format-SpectreTable" {
                     $_.Clean -replace '\s+'
                 }
             }
-            $verification.Properties.keys | Should -Be $properties
-            <#
-            $i = 0
-            foreach ($row in $rows) {
-                "$i $row" | Out-String | Write-Debug -Debug
-                $i++
+            if ($IsLinux -or $IsMacOS) {
+                $verification.Properties.keys | Should -Match 'UnixMode|User|Group|LastWrite|Size|Name'
             }
-            #>
+            else {
+                $verification.Properties.keys | Should -Be $properties
+            }
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
             Should -InvokeVerifiable
         }
