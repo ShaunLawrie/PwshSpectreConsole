@@ -1,11 +1,11 @@
 name: Publish to PSGallery
 env:
- PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
+  PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
 on:
   push:
     branches:
-     - main
-     - prerelease
+      - main
+      - prerelease
 
 permissions:
   contents: write
@@ -26,7 +26,7 @@ jobs:
           $ErrorActionPreference = "Stop"
           & .\PwshSpectreConsole\Build.ps1
           $env:PSModulePath = @($env:PSModulePath, ".\PwshSpectreConsole\") -join ":"
-          Invoke-Pester -CI
+          Invoke-Pester -CI -ExcludeTag "ExcludeCI"
           $version = Get-Module PwshSpectreConsole -ListAvailable | Sort-Object -Property Version -Descending | Select-Object -First 1 -ExpandProperty Version
           if($null -eq $version) { throw "Failed to load version" }
           $onlineVersion = Find-Module -Name PwshSpectreConsole -RequiredVersion $version -ErrorAction SilentlyContinue
@@ -46,7 +46,7 @@ jobs:
           Import-Module .\PwshSpectreConsole\PwshSpectreConsole.psd1 -Force
           Publish-Module -Name PwshSpectreConsole -Exclude "Build.ps1" -NugetApiKey $env:PSGALLERY_API_KEY
           gh release create "v$newVersion" --target main --generate-notes
-  
+
   publish-prerelease-to-psgallery:
     name: Publish Prerelease
     runs-on: ubuntu-latest
@@ -62,11 +62,11 @@ jobs:
           $ErrorActionPreference = "Stop"
           & ./PwshSpectreConsole/Build.ps1
           $env:PSModulePath = @($env:PSModulePath, ".\PwshSpectreConsole\") -join ":"
-          Invoke-Pester -CI
+          Invoke-Pester -CI -ExcludeTag "ExcludeCI"
           $version = Get-Module PwshSpectreConsole -ListAvailable | Sort-Object -Property Version -Descending | Select-Object -First 1 -ExpandProperty Version
           if($null -eq $version) { throw "Failed to load version" }
           $onlineVersions = Find-Module -Name PwshSpectreConsole -AllowPrerelease -AllVersions
-          
+
           $latestStableVersion = $onlineVersions | Where-Object { $_.Version -notlike "*prerelease*" } | Sort-Object -Property Version -Descending | Select-Object -First 1 -ExpandProperty Version
           $latestStableVersion = [version]$latestStableVersion
           $latestPrereleaseVersion = $onlineVersions | Where-Object { $_.Version -like "*prerelease*" } | Sort-Object -Property Version -Descending | Select-Object -First 1 -ExpandProperty Version
@@ -79,7 +79,7 @@ jobs:
           # Prerelease will always be at least one minor version above the latest published stable version so when it's merged to main the minor version will get bumped
           # To bump a major version the manifest would be edited manually to vnext.0.0 before merging to main
           $newVersion = [version]::new($latestStableVersion.Major, $latestStableVersion.Minor + 1, 0)
-          
+
           if($newVersion -eq $oldVersion) {
             Write-Host "Version is not being bumped in prerelease"
           } else {

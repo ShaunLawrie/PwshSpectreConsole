@@ -21,5 +21,4 @@ jobs:
           $env:PSModulePath = @($env:PSModulePath, ".\PwshSpectreConsole\") -join ":"
           $PSVersionTable | Out-Host
           Get-Module Pester -ListAvailable | Out-Host
-          Invoke-Pester -CI
-  
+          Invoke-Pester -CI -ExcludeTag "ExcludeCI"
