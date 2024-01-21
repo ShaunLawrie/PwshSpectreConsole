@@ -64,6 +64,10 @@ function Format-SpectreTable {
         $table = [Table]::new()
         $table.Border = [TableBorder]::$Border
         $table.BorderStyle = [Style]::new(($Color | Convert-ToSpectreColor))
+        $tableoptions = @{}
+        $rowoptions = @{}
+        # maybe we could do this a bit nicer.. it's just to avoid checking for each row.
+        $script:scalarDetected = $false
         if ($Width) {
             $table.Width = $Width
         }
@@ -71,21 +75,22 @@ function Format-SpectreTable {
             $table.ShowHeaders = $false
         }
         if ($Title) {
-            $table.Title = [TableTitle]::new($Title, [Style]::new(($Color | Convert-ToSpectreColor)))
+            # used if scalar type as 'Value'
+            $tableoptions.Title = $Title
         }
         $collector = [System.Collections.Generic.List[psobject]]::new()
         $strip = '\x1B\[[0-?]*[ -/]*[@-~]'
-        # [Spectre.Console.AnsiConsole]::Profile.Capabilities.Ansi = false
+        if ($AllowMarkup) {
+            $rowoptions.AllowMarkup = $true
+        }
     }
     process {
-        if ($data -is [array]) {
-            # add array items individually to the collector
-            foreach ($entry in $data) {
+        foreach ($entry in $data) {
+            if ($entry -is [hashtable]) {
+                $collector.add([pscustomobject]$entry)
+            } else {
                 $collector.add($entry)
             }
-        }
-        else {
-            $collector.add($data)
         }
     }
     end {
@@ -94,69 +99,25 @@ function Format-SpectreTable {
         }
         if ($Property) {
             $collector = $collector | Select-Object -Property $Property
-            $property | ForEach-Object {
-                $table.AddColumn($_) | Out-Null
-            }
+            $tableoptions.Property = $Property
+            $rowoptions.PropertiesSelected = $true
         }
-        elseif (($collector[0].PSTypeNames[0] -ne 'PSCustomObject') -And ($standardMembers = Get-DefaultDisplayMembers $collector[0])) {
-            foreach ($key in $standardMembers.Properties.keys) {
-                $lookup = $standardMembers.Properties[$key]
-                $table.AddColumn($lookup.Label) | Out-Null
-                # $table.Columns[-1].Padding = [Spectre.Console.Padding]::new(0, 0, 0, 0)
-                if ($lookup.width -gt 0) {
-                    # width 0 is autosize, select the last entry in the column list
-                    # Write-Debug "Label: $($lookup.Label) width to $($lookup.Width)"
-                    $table.Columns[-1].Width = $lookup.Width
-                }
-                if ($lookup.Alignment -ne 'undefined') {
-                    $table.Columns[-1].Alignment = [Justify]::$lookup.Alignment
-                }
-            }
-            # this formats the values according to the formatdata so we dont have to do it in the foreach loop.
+        elseif ($standardMembers = Get-DefaultDisplayMembers $collector[0]) {
             $collector = $collector | Select-Object $standardMembers.Format
+            $tableoptions.FormatData = $standardMembers.Properties
+            $rowoptions.FormatFound = $true
         }
-        else {
-            foreach ($prop in $collector[0].psobject.Properties.Name) {
-                if (-Not [String]::IsNullOrEmpty($prop)) {
-                    $table.AddColumn($prop) | Out-Null
-                }
-            }
-        }
+        $table = Add-TableColumns -Table $table -Object $collector[0] @tableoptions
         foreach ($item in $collector) {
-            $row = foreach ($cell in $item.psobject.Properties) {
-                if ($standardMembers -And $cell.value -match $strip) {
-                    # we are dealing with an object that has VT codes and a formatdata entry.
-                    # this returns a spectre.console.text/markup object with the VT codes applied.
-                    ConvertTo-SpectreDecoration $cell.value -AllowMarkup:$AllowMarkup
-                    continue
-                }
-                if ($null -eq $cell.Value) {
-                    if($AllowMarkup) {
-                        [Markup]::new(" ")
-                    } else {
-                        [Text]::new(" ")
-                    }
-                }
-                elseif (-Not [String]::IsNullOrEmpty($cell.Value.ToString())) {
-                    if($AllowMarkup) {
-                        [Markup]::new($cell.Value.ToString())
-                    } else {
-                        [Text]::new($cell.Value.ToString())
-                    }
-                }
-                else {
-                    if($AllowMarkup) {
-                        [Markup]::new([String]$cell.Value)
-                    } else {
-                        [Text]::new($cell.Value.ToString())
-                    }
-                }
-            }
-            if($AllowMarkup) {
+            $row = New-TableRow -Entry $item @rowoptions
+            if ($AllowMarkup) {
                 $table = [TableExtensions]::AddRow($table, [Markup[]]$row)
             } else {
                 $table = [TableExtensions]::AddRow($table, [Text[]]$row)
             }
+        }
+        if ($Title -And $scalarDetected -eq $false) {
+            $table.Title = [TableTitle]::new($Title, [Style]::new(($Color | Convert-ToSpectreColor)))
         }
         Write-AnsiConsole $table
     }

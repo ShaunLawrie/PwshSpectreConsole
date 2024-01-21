@@ -19,7 +19,7 @@ function Get-RandomColor {
 }
 
 function Get-RandomList {
-    param (
+    param(
         [int] $MinItems = 2,
         [int] $MaxItems = 10,
         [scriptblock] $Generator = {
@@ -75,7 +75,7 @@ function Get-RandomChartItem {
 }
 
 function Get-RandomTree {
-    param (
+    param(
         [hashtable] $Root,
         [int] $MinChildren = 1,
         [int] $MaxChildren = 3,
@@ -105,7 +105,7 @@ function Get-RandomTree {
         $newTree = Get-RandomTree -Root $newChild -MaxChildren $MaxChildren -MaxDepth $MaxDepth -CurrentDepth $CurrentDepth
         $Root.Children += $newTree
     }
-    
+
     return $Root
 }
 
@@ -114,8 +114,102 @@ function Get-RandomBool {
 }
 
 function Get-RandomChoice {
-    param (
+    param(
         [string[]] $Choices
     )
     return $Choices[(Get-Random -Minimum 0 -Maximum $Choices.Count)]
+}
+
+function Get-SpectreRenderable {
+    param(
+        [Parameter(Mandatory)]
+        [Spectre.Console.Rendering.Renderable]$RenderableObject
+    )
+    try {
+        $writer = [System.IO.StringWriter]::new()
+        $output = [Spectre.Console.AnsiConsoleOutput]::new($writer)
+        $settings = [Spectre.Console.AnsiConsoleSettings]::new()
+        $settings.Out = $output
+        $console = [Spectre.Console.AnsiConsole]::Create($settings)
+        $console.Write($RenderableObject)
+        $writer.ToString()
+    }
+    finally {
+        $writer.Dispose()
+    }
+}
+
+function Get-AnsiEscapeSequence {
+    <#
+        could be useful for debugging
+    #>
+    param(
+        [Parameter(Mandatory, ValueFromPipeline)]
+        [String] $String
+    )
+    process {
+        $Escaped = $String.EnumerateRunes() | ForEach-Object {
+            if ($_.Value -le 0x1f) {
+                [Text.Rune]::new($_.Value + 0x2400)
+            } else {
+                $_
+            }
+        } | Join-String
+        [PSCustomObject]@{
+            Escaped  = $Escaped
+            Original = $String
+            Clean    = [System.Management.Automation.Host.PSHostUserInterface]::GetOutputString($String, $false)
+        }
+    }
+}
+
+function Get-PSStyleRandom {
+    param(
+        [Switch] $Foreground,
+        [Switch] $Background,
+        [Switch] $Decoration,
+        [Switch] $RGBForeground,
+        [Switch] $RGBBackground
+    )
+    $Style = Switch ($PSBoundParameters.Keys) {
+        'Foreground' {
+            $fg = ($PSStyle.Foreground | Get-Member -MemberType Property | Get-Random).Name
+            $PSStyle.Foreground.$fg
+        }
+        'Background' {
+            $bg = ($PSStyle.Background | Get-Member -MemberType Property | Get-Random).Name
+            $PSStyle.Background.$bg
+        }
+        'Decoration' {
+            $deco = ($PSStyle | Get-Member -MemberType Property | Where-Object { $_.Definition -match '^string' -And $_.Name -notmatch 'off$|Reset' } | Get-Random).Name
+            $PSStyle.$deco
+        }
+        'RGBForeground' {
+            $r = Get-Random -min 0 -max 255
+            $g = Get-Random -min 0 -max 255
+            $b = Get-Random -min 0 -max 255
+            $PSStyle.Foreground.FromRgb($r, $g, $b)
+        }
+        'RGBBackground' {
+            $r = Get-Random -min 0 -max 255
+            $g = Get-Random -min 0 -max 255
+            $b = Get-Random -min 0 -max 255
+            $PSStyle.Background.FromRgb($r, $g, $b)
+        }
+    }
+    return $Style | Join-String
+}
+Function Get-SpectreColorSample {
+    $spectreColors = [Spectre.Console.Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
+    foreach ($c in $spectreColors) {
+        $color = [Spectre.Console.Color]::$c
+        $renderable = [Spectre.Console.Text]::new("Hello, $c", [Spectre.Console.Style]::new($color))
+        $SpectreString = Get-SpectreRenderable $renderable
+        [PSCustomObject]@{
+            Color  = $c
+            String = $SpectreString
+            # Object = $color
+            # Debug = Get-AnsiEscapeSequence $SpectreString
+        }
+    }
 }
