@@ -65,9 +65,9 @@ function Format-SpectreTable {
         $table.Border = [TableBorder]::$Border
         $table.BorderStyle = [Style]::new(($Color | Convert-ToSpectreColor))
         $tableoptions = @{}
-        $rowoptions = @{}
+        # $rowoptions = @{}
         # maybe we could do this a bit nicer.. it's just to avoid checking for each row.
-        $script:scalarDetected = $false
+        $scalarDetected = $false
         if ($Width) {
             $table.Width = $Width
         }
@@ -88,7 +88,8 @@ function Format-SpectreTable {
         foreach ($entry in $data) {
             if ($entry -is [hashtable]) {
                 $collector.add([pscustomobject]$entry)
-            } else {
+            }
+            else {
                 $collector.add($entry)
             }
         }
@@ -98,21 +99,35 @@ function Format-SpectreTable {
             return
         }
         if ($Property) {
-            $collector = $collector | Select-Object -Property $Property
-            $tableoptions.Property = $Property
-            $rowoptions.PropertiesSelected = $true
+            $collector = $collector | Format-Table -Property $Property
         }
-        elseif ($standardMembers = Get-DefaultDisplayMembers $collector[0]) {
-            $collector = $collector | Select-Object $standardMembers.Format
-            $tableoptions.FormatData = $standardMembers.Properties
-            $rowoptions.FormatFound = $true
+        else {
+            $collector = $collector | Format-Table
         }
-        $table = Add-TableColumns -Table $table -Object $collector[0] @tableoptions
+        if ($collector[0].PSTypeNames[0] -eq 'Microsoft.PowerShell.Commands.Internal.Format.FormatEntryData') {
+            # scalar array
+            $scalarDetected = $true
+            $table = Add-TableColumns -Table $table -ScalarDetected @tableoptions
+        }
+        else {
+            # grab the FormatStartData
+            $standardMembers = Get-TableHeader $collector[0]
+            $table = Add-TableColumns -Table $table -formatData $standardMembers
+            # Remove the FormatStartData and FormatEndData [0] and [-1], Remove GroupStartData and GroupEndData [1] and [-2]
+            # collector should only contain FormatEntryData
+            $collector = $collector | Select-Object -Skip 2 -SkipLast 2
+        }
         foreach ($item in $collector) {
-            $row = New-TableRow -Entry $item @rowoptions
+            if ($scalarDetected -eq $true) {
+                $row = New-TableRow -Entry $item.FormatEntryInfo.Text
+            }
+            else {
+                $row = New-TableRow -Entry $item.FormatEntryInfo.FormatPropertyFieldList @rowoptions
+            }
             if ($AllowMarkup) {
                 $table = [TableExtensions]::AddRow($table, [Markup[]]$row)
-            } else {
+            }
+            else {
                 $table = [TableExtensions]::AddRow($table, [Text[]]$row)
             }
         }

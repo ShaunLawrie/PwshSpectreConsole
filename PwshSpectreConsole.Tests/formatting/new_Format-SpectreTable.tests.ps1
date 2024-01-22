@@ -31,7 +31,6 @@ Describe "Format-SpectreTable" {
             $testData = Get-ChildItem "$PSScriptRoot"
             $verification = Get-DefaultDisplayMembers $testData
             $testResult = Format-SpectreTable -Data $testData -Border $testBorder -Color $testColor
-            $command = Get-Command "Select-Object"
             $rows = $testResult -split "\r?\n" | Select-Object -Skip 1 | Select-Object -SkipLast 2
             $header = $rows[0]
             $properties = $header -split '\|' | Get-AnsiEscapeSequence | ForEach-Object {
@@ -45,6 +44,14 @@ Describe "Format-SpectreTable" {
             else {
                 $verification.Properties.keys | Should -Be $properties
             }
+            Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
+            Should -InvokeVerifiable
+        }
+        It "Should create a table and display ICollection results properly" {
+            $testData = 1 | Group-Object
+            $testResult = Format-SpectreTable -Data $testData -Border Markdown -HideHeaders -Property Group
+            $clean = $testResult -replace '\s+|\|'
+            ($clean | Get-AnsiEscapeSequence).Clean | should -Be '1'
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
             Should -InvokeVerifiable
         }

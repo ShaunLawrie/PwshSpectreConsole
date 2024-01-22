@@ -5,22 +5,22 @@ function Add-TableColumns {
     param(
         [Parameter(Mandatory)]
         $table,
-        [Parameter(Mandatory)]
-        $Object,
-        [Collections.Specialized.OrderedDictionary]
         $FormatData,
-        [String[]]
-        $Property,
-        [String]
-        $Title
+        [String] $Title,
+        [switch] $ScalarDetected
     )
     Write-Debug "Module: $($ExecutionContext.SessionState.Module.Name) Command: $($MyInvocation.MyCommand.Name) Param: $($PSBoundParameters.GetEnumerator())"
-    if ($Property) {
-        Write-Debug 'Adding column from property'
-        foreach ($prop in $Property) {
-            $table.AddColumn($prop) | Out-Null
+    if ($ScalarDetected -eq $true -or $Formatdata -eq 'Value') {
+        if ($Title) {
+            Write-Debug "Adding column with title: $Title"
+            $table.AddColumn($Title) | Out-Null
         }
-    } elseif ($FormatData) {
+        else {
+            Write-Debug "Adding column with title: Value"
+            $table.AddColumn("Value") | Out-Null
+        }
+    }
+    else {
         foreach ($key in $FormatData.keys) {
             $lookup = $FormatData[$key]
             Write-Debug "Adding column from formatdata: $($lookup.GetEnumerator())"
@@ -32,23 +32,6 @@ function Add-TableColumns {
             }
             if ($lookup.Alignment -ne 'undefined') {
                 $table.Columns[-1].Alignment = [Justify]::$lookup.Alignment
-            }
-        }
-    } elseif (Test-IsScalar $Object) {
-        # simple/scalar types show up wonky, we can detect them and just use a dummy header for the table
-        Write-Debug 'simple/scalar type'
-        $script:scalarDetected = $true
-        if ($Title) {
-            $table.AddColumn($Title) | Out-Null
-        } else {
-            $table.AddColumn("Value") | Out-Null
-        }
-    } else {
-        # no formatting found and no properties selected, enumerating psobject.properties.name
-        Write-Debug 'PSCustomObject/Properties switch detected'
-        foreach ($prop in $Object.psobject.Properties.Name) {
-            if (-Not [String]::IsNullOrEmpty($prop)) {
-                $table.AddColumn($prop) | Out-Null
             }
         }
     }
