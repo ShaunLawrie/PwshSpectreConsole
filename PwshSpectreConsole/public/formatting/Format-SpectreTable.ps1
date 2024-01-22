@@ -115,7 +115,9 @@ function Format-SpectreTable {
             $table = Add-TableColumns -Table $table -formatData $standardMembers
             # Remove the FormatStartData and FormatEndData [0] and [-1], Remove GroupStartData and GroupEndData [1] and [-2]
             # collector should only contain FormatEntryData
-            $collector = $collector | Select-Object -Skip 2 -SkipLast 2
+            # upgrade to 7.4 already..
+            # $collector = $collector | Select-Object -Skip 2 -SkipLast 2
+            $collector = $collector | Select-Object -Skip 2 | Select-Object -SkipLast 2
         }
         foreach ($item in $collector) {
             if ($scalarDetected -eq $true) {
