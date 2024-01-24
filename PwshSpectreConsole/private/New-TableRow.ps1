@@ -1,16 +1,15 @@
 function New-TableRow {
     param(
         $Entry,
-        # [Switch] $FormatFound,
-        # [Switch] $PropertiesSelected,
-        [Switch] $AllowMarkup
+        [Switch] $AllowMarkup,
+        [Switch] $Scalar
     )
     Write-Debug "Module: $($ExecutionContext.SessionState.Module.Name) Command: $($MyInvocation.MyCommand.Name) Param: $($PSBoundParameters.GetEnumerator())"
     $opts = @{}
     if ($AllowMarkup) {
         $opts.AllowMarkup = $true
     }
-    if ($scalarDetected -eq $true) {
+    if ($scalar) {
         New-TableCell -String $Entry @opts
     }
     else {

@@ -7,10 +7,10 @@ function Add-TableColumns {
         $table,
         $FormatData,
         [String] $Title,
-        [switch] $ScalarDetected
+        [switch] $Scalar
     )
     Write-Debug "Module: $($ExecutionContext.SessionState.Module.Name) Command: $($MyInvocation.MyCommand.Name) Param: $($PSBoundParameters.GetEnumerator())"
-    if ($ScalarDetected -eq $true -or $Formatdata -eq 'Value') {
+    if ($Scalar) {
         if ($Title) {
             Write-Debug "Adding column with title: $Title"
             $table.AddColumn($Title) | Out-Null

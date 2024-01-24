@@ -51,7 +51,7 @@ Describe "Format-SpectreTable" {
             $testData = 1 | Group-Object
             $testResult = Format-SpectreTable -Data $testData -Border Markdown -HideHeaders -Property Group
             $clean = $testResult -replace '\s+|\|'
-            ($clean | Get-AnsiEscapeSequence).Clean | should -Be '1'
+            ($clean | Get-AnsiEscapeSequence).Clean | should -Be '{1}'
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
             Should -InvokeVerifiable
         }

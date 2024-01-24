@@ -5,7 +5,6 @@ function New-TableCell {
         [Switch]$AllowMarkup
     )
     Write-Debug "Module: $($ExecutionContext.SessionState.Module.Name) Command: $($MyInvocation.MyCommand.Name) Param: $($PSBoundParameters.GetEnumerator())"
-    # $cell.propertyValue
     if ([String]::IsNullOrEmpty($String)) {
         if ($AllowMarkup) {
             return [Spectre.Console.Markup]::new(' ')

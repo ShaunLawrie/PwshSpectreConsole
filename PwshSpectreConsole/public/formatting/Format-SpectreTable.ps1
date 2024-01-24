@@ -46,7 +46,7 @@ function Format-SpectreTable {
     [Alias('fst')]
     param (
         [Parameter(Position = 0)]
-        [String[]]$Property,
+        [object[]]$Property,
         [Parameter(ValueFromPipeline, Mandatory)]
         [object] $Data,
         [ValidateSet([SpectreConsoleTableBorder],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
@@ -65,9 +65,7 @@ function Format-SpectreTable {
         $table.Border = [TableBorder]::$Border
         $table.BorderStyle = [Style]::new(($Color | Convert-ToSpectreColor))
         $tableoptions = @{}
-        # $rowoptions = @{}
-        # maybe we could do this a bit nicer.. it's just to avoid checking for each row.
-        $scalarDetected = $false
+        $rowoptions = @{}
         if ($Width) {
             $table.Width = $Width
         }
@@ -105,14 +103,14 @@ function Format-SpectreTable {
             $collector = $collector | Format-Table
         }
         if ($collector[0].PSTypeNames[0] -eq 'Microsoft.PowerShell.Commands.Internal.Format.FormatEntryData') {
-            # scalar array
-            $scalarDetected = $true
-            $table = Add-TableColumns -Table $table -ScalarDetected @tableoptions
+            # scalar array, no header
+            $rowoptions.scalar = $tableoptions.scalar = $true
+            $table = Add-TableColumns -Table $table @tableoptions
         }
         else {
             # grab the FormatStartData
-            $standardMembers = Get-TableHeader $collector[0]
-            $table = Add-TableColumns -Table $table -formatData $standardMembers
+            $Headers = Get-TableHeader $collector[0]
+            $table = Add-TableColumns -Table $table -formatData $Headers
             # Remove the FormatStartData and FormatEndData [0] and [-1], Remove GroupStartData and GroupEndData [1] and [-2]
             # collector should only contain FormatEntryData
             # upgrade to 7.4 already..
@@ -120,8 +118,8 @@ function Format-SpectreTable {
             $collector = $collector | Select-Object -Skip 2 | Select-Object -SkipLast 2
         }
         foreach ($item in $collector) {
-            if ($scalarDetected -eq $true) {
-                $row = New-TableRow -Entry $item.FormatEntryInfo.Text
+            if ($rowoptions.scalar) {
+                $row = New-TableRow -Entry $item.FormatEntryInfo.Text @rowoptions
             }
             else {
                 $row = New-TableRow -Entry $item.FormatEntryInfo.FormatPropertyFieldList @rowoptions

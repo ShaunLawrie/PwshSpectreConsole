@@ -19,8 +19,8 @@ function Get-TableHeader {
             }
         }
         if ($properties.Count -eq 0) {
-            Write-Debug "No properties found, $scalarDetected"
-            returm 'Scalar'
+            Write-Debug "No properties found"
+            returm $null
         }
         $properties
     }
