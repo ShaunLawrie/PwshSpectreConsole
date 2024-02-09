@@ -18,6 +18,6 @@ Start-SpectreDemo
 
 ## Documentation
 
-Full documentation at [https://pwshspectreconsole.com/](https://pwshspectreconsole.com/)
+Full documentation is at [https://pwshspectreconsole.com/](https://pwshspectreconsole.com/)
 
-![image](/PwshSpectreConsole/private/images/webpreview.png)
+[![image](/PwshSpectreConsole/private/images/webpreview.png)](https://pwshspectreconsole.com/)
