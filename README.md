@@ -20,4 +20,4 @@ Start-SpectreDemo
 
 Full documentation at [https://pwshspectreconsole.com/](https://pwshspectreconsole.com/)
 
-![image](/PwshSpectreConsole/private/webpreview.png)
+![image](/PwshSpectreConsole/private/images/webpreview.png)
