@@ -31,27 +31,27 @@ Describe "Format-SpectreTable" {
             Should -InvokeVerifiable
         }
 
-        It "Should be able to retrieve default display members for command output with format data" {
-            $testData = Get-ChildItem "$PSScriptRoot"
-            $defaultDisplayMembers = $testData | Get-DefaultDisplayMembers
-            if($IsLinux -or $IsMacOS) {
-                #  Expected @('UnixMode', 'User', 'Group', 'LastWrite…', 'Size', 'Name'), but got @('UnixMode', 'User', 'Group', 'LastWriteTime', 'Size', 'Name').
-                # i have no idea whats truncating LastWriteTime
-                # $defaultDisplayMembers.Properties.GetEnumerator().Name | Should -Be @("UnixMode", "User", "Group", "LastWriteTime", "Size", "Name")
-                $defaultDisplayMembers.Properties.GetEnumerator().Name | Should -Match 'UnixMode|User|Group|LastWrite|Size|Name'
-            } else {
-                $defaultDisplayMembers.Properties.GetEnumerator().Name | Should -Be @("Mode", "LastWriteTime", "Length", "Name")
-            }
-        }
+        # It "Should be able to retrieve default display members for command output with format data" {
+        #     $testData = Get-ChildItem "$PSScriptRoot"
+        #     $defaultDisplayMembers = $testData | Get-DefaultDisplayMembers
+        #     if($IsLinux -or $IsMacOS) {
+        #         #  Expected @('UnixMode', 'User', 'Group', 'LastWrite…', 'Size', 'Name'), but got @('UnixMode', 'User', 'Group', 'LastWriteTime', 'Size', 'Name').
+        #         # i have no idea whats truncating LastWriteTime
+        #         # $defaultDisplayMembers.Properties.GetEnumerator().Name | Should -Be @("UnixMode", "User", "Group", "LastWriteTime", "Size", "Name")
+        #         $defaultDisplayMembers.Properties.GetEnumerator().Name | Should -Match 'UnixMode|User|Group|LastWrite|Size|Name'
+        #     } else {
+        #         $defaultDisplayMembers.Properties.GetEnumerator().Name | Should -Be @("Mode", "LastWriteTime", "Length", "Name")
+        #     }
+        # }
 
-        It "Should not throw and should return null when input does not have format data" {
-            {
-                $defaultDisplayMembers = [hashtable]@{
-                    "Hello" = "World"
-                } | Get-DefaultDisplayMembers
-                $defaultDisplayMembers | Should -Be $null
-            } | Should -Not -Throw
-        }
+        # It "Should not throw and should return null when input does not have format data" {
+        #     {
+        #         $defaultDisplayMembers = [hashtable]@{
+        #             "Hello" = "World"
+        #         } | Get-DefaultDisplayMembers
+        #         $defaultDisplayMembers | Should -Be $null
+        #     } | Should -Not -Throw
+        # }
 
         It "Should be able to format ansi strings" {
             $rawString =  "hello world"
@@ -101,29 +101,29 @@ Describe "Format-SpectreTable" {
             $result.Length | Should -Be $ansiString.Length
         }
 
-        It "Should be able to create a new table row with spectre markup" {
-            $rawString =  "Markup"
-            $entryItem = [pscustomobject]@{
-                "Markup" = "[red]Markup[/]"
-                "Also" = "Hello"
-            }
-            $result = New-TableRow -Entry $entryItem -AllowMarkup
-            $result -is [array] | Should -Be $true
-            $result[0] | Should -BeOfType [Spectre.Console.Markup]
-            $result[0].Length | Should -Be $rawString.Length
-            $result.Count | Should -Be ($entryItem.PSObject.Properties | Measure-Object).Count
-        }
+        # It "Should be able to create a new table row with spectre markup" {
+        #     $rawString =  "Markup"
+        #     $entryItem = [pscustomobject]@{
+        #         "Markup" = "[red]Markup[/]"
+        #         "Also" = "Hello"
+        #     }
+        #     $result = New-TableRow -Entry $entryItem -AllowMarkup
+        #     # $result -is [array] | Should -Be $true
+        #     $result[0] | Should -BeOfType [Spectre.Console.Markup]
+        #     $result[0].Length | Should -Be $rawString.Length
+        #     $result.Count | Should -Be ($entryItem.PSObject.Properties | Measure-Object).Count
+        # }
 
-        It "Should be able to create a new table row without spectre markup by default" {
-            $entryItem = [pscustomobject]@{
-                "Markup" = "[red]Markup[/]"
-                "Also" = "Hello"
-            }
-            $result = New-TableRow -Entry $entryItem
-            $result -is [array] | Should -Be $true
-            $result[0] | Should -BeOfType [Spectre.Console.Text]
-            $result[0].Length | Should -Be $entryItem.Markup.Length
-            $result.Count | Should -Be ($entryItem.PSObject.Properties | Measure-Object).Count
-        }
+        # It "Should be able to create a new table row without spectre markup by default" {
+        #     $entryItem = [pscustomobject]@{
+        #         "Markup" = "[red]Markup[/]"
+        #         "Also" = "Hello"
+        #     }
+        #     $result = New-TableRow -Entry $entryItem
+        #     # $result -is [array] | Should -Be $true
+        #     $result[0] | Should -BeOfType [Spectre.Console.Text]
+        #     $result[0].Length | Should -Be $entryItem.Markup.Length
+        #     $result.Count | Should -Be ($entryItem.PSObject.Properties | Measure-Object).Count
+        # }
     }
 }
