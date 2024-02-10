@@ -18,10 +18,10 @@ function Get-TableHeader {
                 Alignment = $_.alignment
             }
         }
-        if ($properties.Count -eq 0) {
+        if ($properties.Keys.Count -eq 0) {
             Write-Debug "No properties found"
-            returm $null
+            return $null
         }
-        $properties
+        return $properties
     }
 }

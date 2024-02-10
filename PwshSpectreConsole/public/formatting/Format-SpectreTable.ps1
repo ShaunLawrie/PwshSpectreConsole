@@ -46,14 +46,18 @@ function Format-SpectreTable {
     [Alias('fst')]
     param (
         [Parameter(Position = 0)]
-        [object[]]$Property,
+        [object[]] $Property,
+        [Switch] $AutoSize,
+        [Switch] $Wrap,
+        [String] $View,
+        [String] $Expand,
         [Parameter(ValueFromPipeline, Mandatory)]
         [object] $Data,
         [ValidateSet([SpectreConsoleTableBorder],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Border = "Double",
-        [ValidateSpectreColor()]
+        [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [string] $Color = $script:AccentColor.ToMarkup(),
+        [Color] $Color = $script:AccentColor,
         [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostWidth) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
         [int]$Width,
         [switch]$HideHeaders,
@@ -63,7 +67,7 @@ function Format-SpectreTable {
     begin {
         $table = [Table]::new()
         $table.Border = [TableBorder]::$Border
-        $table.BorderStyle = [Style]::new(($Color | Convert-ToSpectreColor))
+        $table.BorderStyle = [Style]::new($Color)
         $tableoptions = @{}
         $rowoptions = @{}
         if ($Width) {
@@ -77,9 +81,14 @@ function Format-SpectreTable {
             $tableoptions.Title = $Title
         }
         $collector = [System.Collections.Generic.List[psobject]]::new()
-        $strip = '\x1B\[[0-?]*[ -/]*[@-~]'
         if ($AllowMarkup) {
             $rowoptions.AllowMarkup = $true
+        }
+        $FormatTableParams = @{}
+        foreach ($key in $PSBoundParameters.Keys) {
+            if ($key -in 'AutoSize', 'Wrap', 'View', 'Expand', 'Property') {
+                $FormatTableParams[$key] = $PSBoundParameters[$key]
+            }
         }
     }
     process {
@@ -96,8 +105,9 @@ function Format-SpectreTable {
         if ($collector.count -eq 0) {
             return
         }
-        if ($Property) {
-            $collector = $collector | Format-Table -Property $Property
+        if ($FormatTableParams.Keys.Count -gt 0) {
+            Write-Debug "Using Format-Table with parameters: $($FormatTableParams.Keys -join ', ')"
+            $collector = $collector | Format-Table @FormatTableParams
         }
         else {
             $collector = $collector | Format-Table
@@ -111,18 +121,13 @@ function Format-SpectreTable {
             # grab the FormatStartData
             $Headers = Get-TableHeader $collector[0]
             $table = Add-TableColumns -Table $table -formatData $Headers
-            # Remove the FormatStartData and FormatEndData [0] and [-1], Remove GroupStartData and GroupEndData [1] and [-2]
-            # collector should only contain FormatEntryData
-            # upgrade to 7.4 already..
-            # $collector = $collector | Select-Object -Skip 2 -SkipLast 2
-            $collector = $collector | Select-Object -Skip 2 | Select-Object -SkipLast 2
         }
-        foreach ($item in $collector) {
+        foreach ($item in $collector.FormatEntryInfo) {
             if ($rowoptions.scalar) {
-                $row = New-TableRow -Entry $item.FormatEntryInfo.Text @rowoptions
+                $row = New-TableRow -Entry $item.Text @rowoptions
             }
             else {
-                $row = New-TableRow -Entry $item.FormatEntryInfo.FormatPropertyFieldList @rowoptions
+                $row = New-TableRow -Entry $item.FormatPropertyFieldList @rowoptions
             }
             if ($AllowMarkup) {
                 $table = [TableExtensions]::AddRow($table, [Markup[]]$row)

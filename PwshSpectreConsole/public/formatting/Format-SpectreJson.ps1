@@ -1,4 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
+using namespace Spectre.Console
 
 function Format-SpectreJson {
     <#
@@ -63,7 +64,7 @@ function Format-SpectreJson {
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectreJson")]
     [Alias('fsj')]
-    param (
+    param(
         [Parameter(ValueFromPipeline, Mandatory)]
         [object] $Data,
         [int] $Depth,
@@ -71,15 +72,14 @@ function Format-SpectreJson {
         [switch] $NoBorder,
         [ValidateSet([SpectreConsoleBoxBorder], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Border = "Rounded",
-        [ValidateSpectreColor()]
+        [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [string] $Color = $script:AccentColor.ToMarkup(),
+        [Color] $Color = $script:AccentColor,
         [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostWidth) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
         [int] $Width,
         [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostHeight) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console height.")]
         [int] $Height,
-        [switch] $Expand,
-        [switch] $ShowSourceFile
+        [switch] $Expand
     )
     begin {
         $collector = [System.Collections.Generic.List[psobject]]::new()
@@ -106,19 +106,19 @@ function Format-SpectreJson {
                     return $collector.add($jsonObjects)
                 }
                 catch {
-                    # its probably a string and not json, will be added at the end to collector.
                     Write-Debug "Failed to convert string to object, $_"
                 }
             }
             if ($data -is [System.IO.FileSystemInfo]) {
                 if ($data.Extension -eq '.json') {
                     Write-Debug "json file found, reading $($data.FullName)"
-                    $jsonObjects = Get-Content -Raw $data | ConvertFrom-Json -AsHashtable
-                    # if ($ShowSourceFile.IsPresent) {
-                    # this breaks for strings that cant be converted to a hashtable
-                    #     $jsonObjects.add('_sourcefile',$($data.FullName))
-                    # }
-                    return $collector.add($jsonObjects)
+                    try {
+                        $jsonObjects = Get-Content -Raw $data.FullName| ConvertFrom-Json -AsHashtable -ErrorAction Stop
+                        return $collector.add($jsonObjects)
+                    }
+                    catch {
+                        Write-Debug "Failed to convert json to object, $_"
+                    }
                 }
                 return $collector.add(
                     [pscustomobject]@{
@@ -139,12 +139,14 @@ function Format-SpectreJson {
         if ($ht.keys.count -gt 0) {
             foreach ($key in $ht.Keys) {
                 Write-Debug "converting json stream to object, $key"
-                $jsonObject = $ht[$key].ToString() | ConvertFrom-Json -ErrorAction stop -AsHashtable
-                # if ($ShowSourceFile.IsPresent) {
-                #     # $jsonObject.'_sourcefile' = $key
-                #     $jsonObject.add('_sourcefile',$key)
-                # }
-                $collector.add($jsonObject)
+                try {
+                    $jsonObject = $ht[$key].ToString() | ConvertFrom-Json -AsHashtable -ErrorAction Stop
+                    $collector.add($jsonObject)
+                    continue
+                }
+                catch {
+                    Write-Debug "Failed to convert json to object: $key, $_"
+                }
             }
         }
         if ($collector.Count -eq 0) {
@@ -167,7 +169,7 @@ function Format-SpectreJson {
 
         $panel = [Spectre.Console.Panel]::new($json)
         $panel.Border = [Spectre.Console.BoxBorder]::$Border
-        $panel.BorderStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
+        $panel.BorderStyle = [Spectre.Console.Style]::new($Color)
         if ($Title) {
             $panel.Header = [Spectre.Console.PanelHeader]::new($Title)
         }

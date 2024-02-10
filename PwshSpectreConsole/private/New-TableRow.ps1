@@ -5,9 +5,8 @@ function New-TableRow {
         [Switch] $Scalar
     )
     Write-Debug "Module: $($ExecutionContext.SessionState.Module.Name) Command: $($MyInvocation.MyCommand.Name) Param: $($PSBoundParameters.GetEnumerator())"
-    $opts = @{}
-    if ($AllowMarkup) {
-        $opts.AllowMarkup = $true
+    $opts = @{
+        AllowMarkup = $AllowMarkup
     }
     if ($scalar) {
         New-TableCell -String $Entry @opts
