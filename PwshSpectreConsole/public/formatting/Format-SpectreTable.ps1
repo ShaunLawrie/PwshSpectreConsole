@@ -135,8 +135,7 @@ function Format-SpectreTable {
         foreach ($entry in $data) {
             if ($entry -is [hashtable]) {
                 $collector.add([pscustomobject]$entry)
-            }
-            else {
+            } else {
                 $collector.add($entry)
             }
         }
@@ -148,16 +147,14 @@ function Format-SpectreTable {
         if ($FormatTableParams.Keys.Count -gt 0) {
             Write-Debug "Using Format-Table with parameters: $($FormatTableParams.Keys -join ', ')"
             $collector = $collector | Format-Table @FormatTableParams
-        }
-        else {
+        } else {
             $collector = $collector | Format-Table
         }
         if (-Not $collector.shapeInfo) {
             # scalar array, no header
             $rowoptions.scalar = $tableoptions.scalar = $true
             $table = Add-TableColumns -Table $table @tableoptions
-        }
-        else {
+        } else {
             # grab the FormatStartData
             $Headers = Get-TableHeader $collector[0]
             $table = Add-TableColumns -Table $table -formatData $Headers
@@ -165,14 +162,15 @@ function Format-SpectreTable {
         foreach ($item in $collector.FormatEntryInfo) {
             if ($rowoptions.scalar) {
                 $row = New-TableRow -Entry $item.Text @rowoptions
-            }
-            else {
+            } else {
+                if ($null -eq $item.FormatPropertyFieldList) {
+                    continue
+                }
                 $row = New-TableRow -Entry $item.FormatPropertyFieldList @rowoptions
             }
             if ($AllowMarkup) {
                 $table = [TableExtensions]::AddRow($table, [Markup[]]$row)
-            }
-            else {
+            } else {
                 $table = [TableExtensions]::AddRow($table, [Text[]]$row)
             }
         }

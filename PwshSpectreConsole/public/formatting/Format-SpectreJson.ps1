@@ -102,7 +102,7 @@ function Format-SpectreJson {
                 }
                 # assume we get the entire json in one go a string (e.g -Raw or invoke-webrequest)
                 try {
-                    $jsonObjects = $data | ConvertFrom-Json -AsHashtable -ErrorAction Stop
+                    $jsonObjects = $data | Out-String | ConvertFrom-Json -ErrorAction Stop
                     return $collector.add($jsonObjects)
                 }
                 catch {
@@ -113,7 +113,7 @@ function Format-SpectreJson {
                 if ($data.Extension -eq '.json') {
                     Write-Debug "json file found, reading $($data.FullName)"
                     try {
-                        $jsonObjects = Get-Content -Raw $data.FullName| ConvertFrom-Json -AsHashtable -ErrorAction Stop
+                        $jsonObjects = Get-Content -Raw $data.FullName | ConvertFrom-Json -ErrorAction Stop
                         return $collector.add($jsonObjects)
                     }
                     catch {
@@ -140,7 +140,7 @@ function Format-SpectreJson {
             foreach ($key in $ht.Keys) {
                 Write-Debug "converting json stream to object, $key"
                 try {
-                    $jsonObject = $ht[$key].ToString() | ConvertFrom-Json -AsHashtable -ErrorAction Stop
+                    $jsonObject = $ht[$key].ToString() | Out-String | ConvertFrom-Json -ErrorAction Stop
                     $collector.add($jsonObject)
                     continue
                 }
