@@ -8,14 +8,24 @@ function Get-TableHeader {
         [Parameter(ValueFromPipeline)]
         $FormatStartData
     )
+    begin {
+        $alignment = @{
+            0 = 'undefined'
+            1 = 'Left'
+            2 = 'Center'
+            3 = 'Right'
+        }
+    }
     process {
         $properties = [ordered]@{}
-        @($FormatStartData.shapeInfo.tableColumnInfoList).Where{ $_ }.ForEach{
+        $FormatStartData.shapeinfo.tablecolumninfolist | ForEach-Object {
             $Name = $_.Label ? $_.Label : $_.propertyName
             $properties[$Name] = @{
-                Label     = $Name
-                Width     = $_.width
-                Alignment = $_.alignment
+                Label                 = $Name
+                Width                 = $_.width
+                Alignment             = $alignment.ContainsKey($_.alignment) ? $alignment[$_.alignment] : 'undefined'
+                HeaderMatchesProperty = $_.HeaderMatchesProperty
+                PropertyName          = $_.propertyName
             }
         }
         if ($properties.Keys.Count -eq 0) {

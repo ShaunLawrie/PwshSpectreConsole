@@ -11,10 +11,21 @@ function Format-SpectreTable {
     This function takes an array of objects and formats them into a table using the Spectre Console library. The table can be customized with a border style and color.
 
     .PARAMETER Property
-    The list of properties to select for the table from the input data.
+    Specifies the object properties that appear in the display and the order in which they appear.
+    Type one or more property names, separated by commas, or use a hash table to display a calculated property.
+    Wildcards are permitted.
+    The Property parameter is optional. You can't use the Property and View parameters in the same command.
+    The value of the Property parameter can be a new calculated property.
+    The calculated property can be a script block or a hash table. Valid key-value pairs are:
+    - Name (or Label) `<string>`
+    - Expression - `<string>` or `<script block>`
+    - FormatString - `<string>`
+    - Width - `<int32>` - must be greater than `0`
+    - Alignment - value can be `Left`, `Center`, or `Right`
 
     .PARAMETER Data
     The array of objects to be formatted into a table.
+    Takes pipeline input.
 
     .PARAMETER Border
     The border style of the table. Default is "Double".
@@ -34,6 +45,26 @@ function Format-SpectreTable {
     .PARAMETER AllowMarkup
     Allow Spectre markup in the table elements e.g. [green]message[/].
 
+    .PARAMETER AutoSize
+    Indicates that the cmdlet adjusts the column size and number of columns based on the width of the data.
+    By default, the column size and number are determined by the view.
+
+    .PARAMETER Wrap
+    Displays text that exceeds the column width on the next line. By default, text that exceeds the column width is truncated
+
+    .PARAMETER View
+    The View parameter lets you specify an alternate format or custom view for the table.
+    You can use the default PowerShell views or create custom views.
+
+    .PARAMETER Expand
+    Specifies the format of the collection object and the objects in the collection.
+    This parameter is designed to format objects that support the ICollection interface.
+    The default value is EnumOnly .
+    The acceptable values for this parameter are as follows:
+    - EnumOnly : Displays the properties of the objects in the collection.
+    - CoreOnly : Displays the properties of the collection object.
+    - Both : Displays the properties of the collection object and the properties of objects in the collection.
+
     .EXAMPLE
     # This example formats an array of objects into a table with a double border and the accent color of the script.
     $data = @(
@@ -41,28 +72,37 @@ function Format-SpectreTable {
         [pscustomobject]@{Name="Jane"; Age=30; City="Los Angeles"}
     )
     Format-SpectreTable -Data $data
+
+    .EXAMPLE
+    Get-ChildItem | Format-SpectreTable -Property Name, @{'Name'='Drive'; Expression={ "[blue on orange1]" + (Split-Path $_.Fullname -Qualifier) + "[/]" }} -AllowMarkup
+
+    .EXAMPLE
+    1..10 | Format-SpectreTable -Title Numbers
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectreTable")]
+    [cmdletbinding(DefaultParameterSetName = '__AllParameterSets')]
     [Alias('fst')]
-    param (
-        [Parameter(Position = 0)]
+    param(
+        [Parameter(ValueFromPipeline, Mandatory)]
+        [object] $Data,
+        [Parameter(Position = 0,ParameterSetName = 'Property')]
         [object[]] $Property,
         [Switch] $AutoSize,
         [Switch] $Wrap,
+        [Parameter(ParameterSetName = 'View')]
         [String] $View,
+        [ValidateSet('CoreOnly','EnumOnly','Both')]
         [String] $Expand,
-        [Parameter(ValueFromPipeline, Mandatory)]
-        [object] $Data,
         [ValidateSet([SpectreConsoleTableBorder],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Border = "Double",
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
         [Color] $Color = $script:AccentColor,
         [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostWidth) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
-        [int]$Width,
-        [switch]$HideHeaders,
-        [String]$Title,
-        [switch]$AllowMarkup
+        [int] $Width,
+        [switch] $HideHeaders,
+        [String] $Title,
+        [switch] $AllowMarkup
     )
     begin {
         $table = [Table]::new()
@@ -70,6 +110,13 @@ function Format-SpectreTable {
         $table.BorderStyle = [Style]::new($Color)
         $tableoptions = @{}
         $rowoptions = @{}
+        $collector = [System.Collections.Generic.List[psobject]]::new()
+        $FormatTableParams = @{}
+        foreach ($key in $PSBoundParameters.Keys) {
+            if ($key -in 'AutoSize', 'Wrap', 'View', 'Expand', 'Property') {
+                $FormatTableParams[$key] = $PSBoundParameters[$key]
+            }
+        }
         if ($Width) {
             $table.Width = $Width
         }
@@ -80,15 +127,8 @@ function Format-SpectreTable {
             # used if scalar type as 'Value'
             $tableoptions.Title = $Title
         }
-        $collector = [System.Collections.Generic.List[psobject]]::new()
         if ($AllowMarkup) {
             $rowoptions.AllowMarkup = $true
-        }
-        $FormatTableParams = @{}
-        foreach ($key in $PSBoundParameters.Keys) {
-            if ($key -in 'AutoSize', 'Wrap', 'View', 'Expand', 'Property') {
-                $FormatTableParams[$key] = $PSBoundParameters[$key]
-            }
         }
     }
     process {
@@ -112,7 +152,7 @@ function Format-SpectreTable {
         else {
             $collector = $collector | Format-Table
         }
-        if ($collector[0].PSTypeNames[0] -eq 'Microsoft.PowerShell.Commands.Internal.Format.FormatEntryData') {
+        if (-Not $collector.shapeInfo) {
             # scalar array, no header
             $rowoptions.scalar = $tableoptions.scalar = $true
             $table = Add-TableColumns -Table $table @tableoptions
@@ -136,8 +176,8 @@ function Format-SpectreTable {
                 $table = [TableExtensions]::AddRow($table, [Text[]]$row)
             }
         }
-        if ($Title -And $scalarDetected -eq $false) {
-            $table.Title = [TableTitle]::new($Title, [Style]::new(($Color | Convert-ToSpectreColor)))
+        if ($Title -And -Not $rowoptions.scalar) {
+            $table.Title = [TableTitle]::new($Title, [Style]::new($Color))
         }
         Write-AnsiConsole $table
     }
