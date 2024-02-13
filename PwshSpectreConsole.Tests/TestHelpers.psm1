@@ -213,3 +213,19 @@ Function Get-SpectreColorSample {
         }
     }
 }
+function Get-SpectreTableSample {
+    param(
+        [int]$Count,
+        [Switch]$Markup
+        )
+    1..$Count | ForEach-Object {
+        if ($Markup) {
+            return [PSCustomObject]@{
+                PropertyValue = '[{0}] {1} [/]' -f (Get-RandomColor), (Get-RandomString)
+            }
+        }
+        [PSCustomObject]@{
+            PropertyValue = Get-RandomString
+        }
+    }
+}

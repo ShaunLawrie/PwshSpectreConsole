@@ -18,16 +18,14 @@ function Get-TableHeader {
     }
     process {
         $properties = [ordered]@{}
-        $FormatStartData.shapeinfo.tablecolumninfolist | ForEach-Object {
+        $FormatStartData.shapeinfo.tablecolumninfolist | Where-Object { $_ } | ForEach-Object {
             $Name = $_.Label ? $_.Label : $_.propertyName
-            if ($Name) {
-                $properties[$Name] = @{
-                    Label                 = $Name
-                    Width                 = $_.width
-                    Alignment             = $alignment.ContainsKey($_.alignment) ? $alignment[$_.alignment] : 'undefined'
-                    HeaderMatchesProperty = $_.HeaderMatchesProperty
-                    PropertyName          = $_.propertyName
-                }
+            $properties[$Name] = @{
+                Label                 = $Name
+                Width                 = $_.width
+                Alignment             = $alignment.Contains($_.alignment) ? $alignment[$_.alignment] : 'undefined'
+                HeaderMatchesProperty = $_.HeaderMatchesProperty
+                # PropertyName          = $_.propertyName
             }
         }
         if ($properties.Keys.Count -eq 0) {

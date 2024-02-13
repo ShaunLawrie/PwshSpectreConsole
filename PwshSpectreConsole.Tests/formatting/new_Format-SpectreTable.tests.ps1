@@ -27,33 +27,33 @@ Describe "Format-SpectreTable" {
                 }
             }
         }
-        # It "Should create a table when default display members for a command are required" {
-        #     $testData = Get-ChildItem "$PSScriptRoot"
-        #     $verification = Get-DefaultDisplayMembers $testData
-        #     $testResult = Format-SpectreTable -Data $testData -Border $testBorder -Color $testColor
-        #     $rows = $testResult -split "\r?\n" | Select-Object -Skip 1 | Select-Object -SkipLast 2
-        #     $header = $rows[0]
-        #     $properties = $header -split '\|' | Get-AnsiEscapeSequence | ForEach-Object {
-        #         if (-Not [String]::IsNullOrWhiteSpace($_.Clean)) {
-        #             $_.Clean -replace '\s+'
-        #         }
-        #     }
-        #     if ($IsLinux -or $IsMacOS) {
-        #         $verification.Properties.keys | Should -Match 'UnixMode|User|Group|LastWrite|Size|Name'
-        #     }
-        #     else {
-        #         $verification.Properties.keys | Should -Be $properties
-        #     }
-        #     Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
-        #     Should -InvokeVerifiable
-        # }
-        # It "Should create a table and display ICollection results properly" {
-        #     $testData = 1 | Group-Object
-        #     $testResult = Format-SpectreTable -Data $testData -Border Markdown -HideHeaders -Property Group
-        #     $clean = $testResult -replace '\s+|\|'
-        #     ($clean | Get-AnsiEscapeSequence).Clean | should -Be '{1}'
-        #     Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
-        #     Should -InvokeVerifiable
-        # }
+        It "Should create a table and display results properly" {
+            $testData = Get-ChildItem "$PSScriptRoot"
+            $verification = $testdata | Format-Table | Get-TableHeader
+            $testResult = Format-SpectreTable -Data $testData -Border $testBorder -Color $testColor
+            $rows = $testResult -split "\r?\n" | Select-Object -Skip 1 -SkipLast 2
+            $header = $rows[0]
+            $properties = $header -split '\|' | Get-AnsiEscapeSequence | ForEach-Object {
+                if (-Not [String]::IsNullOrWhiteSpace($_.Clean)) {
+                    $_.Clean -replace '\s+'
+                }
+            }
+            if ($IsLinux -or $IsMacOS) {
+                $verification.keys | Should -Match 'UnixMode|User|Group|LastWrite|Size|Name'
+            }
+            else {
+                $verification.keys | Should -Be $properties
+            }
+            Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
+            Should -InvokeVerifiable
+        }
+        It "Should create a table and display ICollection results properly" {
+            $testData = 1 | Group-Object
+            $testResult = Format-SpectreTable -Data $testData -Border Markdown -HideHeaders -Property Group
+            $clean = $testResult -replace '\s+|\|'
+            ($clean | Get-AnsiEscapeSequence).Clean | should -Be '{1}'
+            Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
+            Should -InvokeVerifiable
+        }
     }
 }
