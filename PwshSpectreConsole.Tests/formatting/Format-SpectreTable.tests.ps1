@@ -11,9 +11,9 @@ Describe "Format-SpectreTable" {
 
             Mock Write-AnsiConsole -Verifiable -ParameterFilter {
                 $RenderableObject -is [Spectre.Console.Table] `
-                -and ($testBorder -eq "None" -or $RenderableObject.Border.GetType().Name -like "*$testBorder*") `
-                -and $RenderableObject.BorderStyle.Foreground.ToMarkup() -eq $testColor `
-                -and $RenderableObject.Rows.Count -eq $testData.Count
+                    -and ($testBorder -eq "None" -or $RenderableObject.Border.GetType().Name -like "*$testBorder*") `
+                    -and $RenderableObject.BorderStyle.Foreground.ToMarkup() -eq $testColor `
+                    -and $RenderableObject.Rows.Count -eq $testData.Count
             }
         }
 
@@ -34,12 +34,13 @@ Describe "Format-SpectreTable" {
         It "Should be able to retrieve default display members for command output with format data" {
             $testData = Get-ChildItem "$PSScriptRoot"
             $defaultDisplayMembers = $testData | Format-Table | Get-TableHeader
-            if($IsLinux -or $IsMacOS) {
+            if ($IsLinux -or $IsMacOS) {
                 #  Expected @('UnixMode', 'User', 'Group', 'LastWrite…', 'Size', 'Name'), but got @('UnixMode', 'User', 'Group', 'LastWriteTime', 'Size', 'Name').
                 # i have no idea whats truncating LastWriteTime
                 # $defaultDisplayMembers.Properties.GetEnumerator().Name | Should -Be @("UnixMode", "User", "Group", "LastWriteTime", "Size", "Name")
                 $defaultDisplayMembers.keys | Should -Match 'UnixMode|User|Group|LastWrite|Size|Name'
-            } else {
+            }
+            else {
                 $defaultDisplayMembers.keys | Should -Be @("Mode", "LastWriteTime", "Length", "Name")
             }
         }
@@ -54,8 +55,8 @@ Describe "Format-SpectreTable" {
         }
 
         It "Should be able to format ansi strings" {
-            $rawString =  "hello world"
-            $ansiString =  "`e[31mhello `e[46mworld`e[0m"
+            $rawString = "hello world"
+            $ansiString = "`e[31mhello `e[46mworld`e[0m"
             $result = ConvertTo-SpectreDecoration -String $ansiString
             $result.Length | Should -Be $rawString.Length
         }
@@ -74,50 +75,48 @@ Describe "Format-SpectreTable" {
         }
 
         It "Should be able to format strings with spectre markup when opted in" {
-            $rawString =  "hello spectremarkup world"
-            $ansiString =  "hello [red]spectremarkup[/] world"
+            $rawString = "hello spectremarkup world"
+            $ansiString = "hello [red]spectremarkup[/] world"
             $result = ConvertTo-SpectreDecoration -String $ansiString -AllowMarkup
             $result.Length | Should -Be $rawString.Length
         }
 
         It "Should leave spectre markup alone by default" {
-            $ansiString =  "hello [red]spectremarkup[/] world"
+            $ansiString = "hello [red]spectremarkup[/] world"
             $result = ConvertTo-SpectreDecoration -String $ansiString
             $result.Length | Should -Be $ansiString.Length
         }
 
         It "Should be able to create a new table cell with spectre markup" {
-            $rawString =  "hello spectremarkup world"
-            $ansiString =  "hello [red]spectremarkup[/] world"
+            $rawString = "hello spectremarkup world"
+            $ansiString = "hello [red]spectremarkup[/] world"
             $result = New-TableCell -String $ansiString -AllowMarkup
             $result | Should -BeOfType [Spectre.Console.Markup]
             $result.Length | Should -Be $rawString.Length
         }
 
         It "Should be able to create a new table cell without spectre markup by default" {
-            $ansiString =  "hello [red]spectremarkup[/] world"
+            $ansiString = "hello [red]spectremarkup[/] world"
             $result = New-TableCell -String $ansiString
             $result | Should -BeOfType [Spectre.Console.Text]
             $result.Length | Should -Be $ansiString.Length
         }
 
         It "Should be able to create a new table row with spectre markup" {
-            $count = 5
-            $entryitem = Get-SpectreTableSample -Count $count -Markup
+            $entryitem = Get-SpectreTableRowData -Markup
             $result = New-TableRow -Entry $entryItem -AllowMarkup
             $result -is [array] | Should -Be $true
             $result[0] | Should -BeOfType [Spectre.Console.Markup]
-            $result.Count | Should -Be $count
+            $result.Count | Should -Be $entryitem.Count
         }
 
         It "Should be able to create a new table row without spectre markup by default" {
-            $count = 5
-            $entryitem = Get-SpectreTableSample -Count $count -Markup
+            $entryitem = Get-SpectreTableRowData -Markup
             $result = New-TableRow -Entry $entryItem
             $result -is [array] | Should -Be $true
             $result[0] | Should -BeOfType [Spectre.Console.Text]
             $result[0].Length | Should -Be $entryItem[0].PropertyValue.Length
-            $result.Count | Should -Be $count
+            $result.Count | Should -Be $entryitem.Count
         }
     }
 }
