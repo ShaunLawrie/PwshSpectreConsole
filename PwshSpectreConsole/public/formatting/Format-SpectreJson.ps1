@@ -84,7 +84,8 @@ function Format-SpectreJson {
     begin {
         $collector = [System.Collections.Generic.List[psobject]]::new()
         $splat = @{
-            WarningAction = "Ignore"
+            WarningAction = 'Ignore'
+            ErrorAction  = 'Stop'
         }
         if ($Depth) {
             $splat.Depth = $Depth
@@ -102,7 +103,7 @@ function Format-SpectreJson {
                 }
                 # assume we get the entire json in one go a string (e.g -Raw or invoke-webrequest)
                 try {
-                    $jsonObjects = $data | Out-String | ConvertFrom-Json -ErrorAction Stop
+                    $jsonObjects = $data | Out-String | ConvertFrom-Json -AsHashtable @splat
                     return $collector.add($jsonObjects)
                 }
                 catch {
@@ -113,7 +114,7 @@ function Format-SpectreJson {
                 if ($data.Extension -eq '.json') {
                     Write-Debug "json file found, reading $($data.FullName)"
                     try {
-                        $jsonObjects = Get-Content -Raw $data.FullName | ConvertFrom-Json -ErrorAction Stop
+                        $jsonObjects = Get-Content -Raw $data.FullName | ConvertFrom-Json -AsHashtable @splat
                         return $collector.add($jsonObjects)
                     }
                     catch {
@@ -140,7 +141,7 @@ function Format-SpectreJson {
             foreach ($key in $ht.Keys) {
                 Write-Debug "converting json stream to object, $key"
                 try {
-                    $jsonObject = $ht[$key].ToString() | Out-String | ConvertFrom-Json -ErrorAction Stop
+                    $jsonObject = $ht[$key].ToString() | Out-String | ConvertFrom-Json -AsHashtable @splat
                     $collector.add($jsonObject)
                     continue
                 }
@@ -152,7 +153,13 @@ function Format-SpectreJson {
         if ($collector.Count -eq 0) {
             return
         }
-        $json = [Spectre.Console.Json.JsonText]::new(($collector | ConvertTo-Json @splat))
+        try {
+            $json = [Spectre.Console.Json.JsonText]::new(($collector | ConvertTo-Json @splat))
+        }
+        catch {
+            Write-Error "Failed to convert to json, $_"
+            return
+        }
         $json.BracesStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::Red)
         $json.BracketsStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::Green)
         $json.ColonStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::Blue)
