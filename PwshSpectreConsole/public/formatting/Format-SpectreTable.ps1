@@ -145,7 +145,7 @@ function Format-SpectreTable {
             if ($Headers) {
                 $table = Add-TableColumns -Table $table -formatData $Headers
             } else {
-                return 'no properties found'
+                return
             }
         }
         foreach ($item in $collector.FormatEntryInfo) {
