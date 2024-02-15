@@ -45,25 +45,12 @@ function Format-SpectreTable {
     .PARAMETER AllowMarkup
     Allow Spectre markup in the table elements e.g. [green]message[/].
 
-    .PARAMETER AutoSize
-    Indicates that the cmdlet adjusts the column size and number of columns based on the width of the data.
-    By default, the column size and number are determined by the view.
-
     .PARAMETER Wrap
     Displays text that exceeds the column width on the next line. By default, text that exceeds the column width is truncated
+    Currently there is a bug with this, spectre.console/issues/1185
 
     .PARAMETER View
     The View parameter lets you specify an alternate format or custom view for the table.
-    You can use the default PowerShell views or create custom views.
-
-    .PARAMETER Expand
-    Specifies the format of the collection object and the objects in the collection.
-    This parameter is designed to format objects that support the ICollection interface.
-    The default value is EnumOnly .
-    The acceptable values for this parameter are as follows:
-    - EnumOnly : Displays the properties of the objects in the collection.
-    - CoreOnly : Displays the properties of the collection object.
-    - Both : Displays the properties of the collection object and the properties of objects in the collection.
 
     .EXAMPLE
     # This example formats an array of objects into a table with a double border and the accent color of the script.
@@ -74,7 +61,15 @@ function Format-SpectreTable {
     Format-SpectreTable -Data $data
 
     .EXAMPLE
-    Get-ChildItem | Format-SpectreTable -Property Name, @{'Name'='Drive'; Expression={ "[blue on orange1]" + (Split-Path $_.Fullname -Qualifier) + "[/]" }} -AllowMarkup
+    $Properties = @(
+        # foreground + background
+        @{'Name'='FileName'; Expression={ "[orange1 on blue]" + $_.Name + "[/]" }},
+        # foreground
+        @{'Name'='Last Updated'; Expression={ "[DeepSkyBlue3_1]" + $_.LastWriteTime.ToString() + "[/]" }},
+        # background
+        @{'Name'='Drive'; Expression={ "[default on orange1]" + (Split-Path $_.Fullname -Qualifier) + "[/]" }}
+    )
+    Get-ChildItem | Format-SpectreTable -Property $Properties -AllowMarkup
 
     .EXAMPLE
     1..10 | Format-SpectreTable -Title Numbers
@@ -84,15 +79,13 @@ function Format-SpectreTable {
     [Alias('fst')]
     param(
         [Parameter(ValueFromPipeline, Mandatory)]
+        [Alias('InputObject')]
         [object] $Data,
         [Parameter(Position = 0,ParameterSetName = 'Property')]
         [object[]] $Property,
-        [Switch] $AutoSize,
         [Switch] $Wrap,
         [Parameter(ParameterSetName = 'View')]
         [String] $View,
-        [ValidateSet('CoreOnly','EnumOnly','Both')]
-        [String] $Expand,
         [ValidateSet([SpectreConsoleTableBorder],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Border = "Double",
         [ColorTransformationAttribute()]
@@ -105,30 +98,22 @@ function Format-SpectreTable {
         [switch] $AllowMarkup
     )
     begin {
+        Write-Debug "Module: $($ExecutionContext.SessionState.Module.Name) Command: $($MyInvocation.MyCommand.Name) Param: $($PSBoundParameters.GetEnumerator())"
+        $tableoptions = @{}
+        $rowoptions = @{}
+        $FormatTableParams = @{}
+        $collector = [System.Collections.Generic.List[psobject]]::new()
         $table = [Table]::new()
         $table.Border = [TableBorder]::$Border
         $table.BorderStyle = [Style]::new($Color)
-        $tableoptions = @{}
-        $rowoptions = @{}
-        $collector = [System.Collections.Generic.List[psobject]]::new()
-        $FormatTableParams = @{}
-        foreach ($key in $PSBoundParameters.Keys) {
-            if ($key -in 'AutoSize', 'Wrap', 'View', 'Expand', 'Property') {
-                $FormatTableParams[$key] = $PSBoundParameters[$key]
-            }
-        }
-        if ($Width) {
-            $table.Width = $Width
-        }
-        if ($HideHeaders) {
-            $table.ShowHeaders = $false
-        }
-        if ($Title) {
-            # used if scalar type as 'Value'
-            $tableoptions.Title = $Title
-        }
-        if ($AllowMarkup) {
-            $rowoptions.AllowMarkup = $true
+        switch ($PSBoundParameters.Keys) {
+            'Width' { $table.Width = $Width }
+            'HideHeaders' { $table.ShowHeaders = $false }
+            'Title' { $tableoptions.Title = $Title }
+            'AllowMarkup' { $rowoptions.AllowMarkup = $true }
+            'Wrap' { $tableoptions.Wrap = $true ; $FormatTableParams.Wrap = $true }
+            'View' { $FormatTableParams.View = $View }
+            'Property' { $FormatTableParams.Property = $Property }
         }
     }
     process {
@@ -157,16 +142,20 @@ function Format-SpectreTable {
         } else {
             # grab the FormatStartData
             $Headers = Get-TableHeader $collector[0]
-            $table = Add-TableColumns -Table $table -formatData $Headers
+            if ($Headers) {
+                $table = Add-TableColumns -Table $table -formatData $Headers
+            } else {
+                return 'no properties found'
+            }
         }
         foreach ($item in $collector.FormatEntryInfo) {
             if ($rowoptions.scalar) {
                 $row = New-TableRow -Entry $item.Text @rowoptions
             } else {
-                if ($null -eq $item.FormatPropertyFieldList) {
+                if ($null -eq $item.FormatPropertyFieldList.propertyValue) {
                     continue
                 }
-                $row = New-TableRow -Entry $item.FormatPropertyFieldList @rowoptions
+                $row = New-TableRow -Entry $item.FormatPropertyFieldList.propertyValue @rowoptions
             }
             if ($AllowMarkup) {
                 $table = [TableExtensions]::AddRow($table, [Markup[]]$row)

@@ -229,12 +229,8 @@ function Get-SpectreTableRowData {
     }
     1..$Count | ForEach-Object {
         if ($Markup) {
-            return [PSCustomObject]@{
-                PropertyValue = '[{0}] {1} [/]' -f (Get-RandomColor), (Get-RandomString)
+            return '[{0}] {1} [/]' -f (Get-RandomColor), (Get-RandomString)
             }
-        }
-        [PSCustomObject]@{
-            PropertyValue = Get-RandomString
-        }
+        Get-RandomString
     }
 }

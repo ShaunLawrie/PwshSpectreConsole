@@ -4,10 +4,11 @@ function Add-TableColumns {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
-        $table,
-        $FormatData,
+        [Table] $table,
+        [Collections.Specialized.OrderedDictionary] $FormatData,
         [String] $Title,
-        [switch] $Scalar
+        [Switch] $Scalar,
+        [Switch] $Wrap
     )
     Write-Debug "Module: $($ExecutionContext.SessionState.Module.Name) Command: $($MyInvocation.MyCommand.Name) Param: $($PSBoundParameters.GetEnumerator())"
     if ($Scalar) {
@@ -18,6 +19,9 @@ function Add-TableColumns {
         else {
             Write-Debug "Adding column with title: Value"
             $table.AddColumn("Value") | Out-Null
+        }
+        if (-Not $Wrap) {
+            $table.Columns[-1].NoWrap = $true
         }
     }
     else {
@@ -32,6 +36,11 @@ function Add-TableColumns {
             }
             if ($lookup.Alignment -ne 'undefined') {
                 $table.Columns[-1].Alignment = [Justify]::$lookup.Alignment
+            }
+            if (-Not $Wrap) {
+                # https://github.com/spectreconsole/spectre.console/issues/1185
+                # leaving it in as it will probably get fixed, has no effect on output yet.
+                $table.Columns[-1].NoWrap = $true
             }
         }
     }

@@ -1,6 +1,7 @@
 function New-TableRow {
     param(
-        $Entry,
+        [Parameter(Mandatory)]
+        [Object] $Entry,
         [Switch] $AllowMarkup,
         [Switch] $Scalar
     )
@@ -15,15 +16,15 @@ function New-TableRow {
         # simplified, should be faster.
         $detectVT = '\x1b'
         $rows = foreach ($cell in $Entry) {
-            if ([String]::IsNullOrEmpty($cell.propertyValue)) {
+            if ([String]::IsNullOrEmpty($cell)) {
                 New-TableCell @opts
                 continue
             }
-            if ($cell.propertyValue -match $detectVT) {
-                ConvertTo-SpectreDecoration -String $cell.propertyValue @opts
+            if ($cell -match $detectVT) {
+                ConvertTo-SpectreDecoration -String $cell @opts
                 continue
             }
-            New-TableCell -String $cell.propertyValue @opts
+            New-TableCell -String $cell @opts
         }
         return $rows
     }

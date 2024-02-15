@@ -9,6 +9,7 @@ function Get-TableHeader {
         $FormatStartData
     )
     begin {
+        Write-Debug "Module: $($ExecutionContext.SessionState.Module.Name) Command: $($MyInvocation.MyCommand.Name) Param: $($PSBoundParameters.GetEnumerator())"
         $alignment = @{
             0 = 'undefined'
             1 = 'Left'
@@ -17,21 +18,23 @@ function Get-TableHeader {
         }
     }
     process {
-        $properties = [ordered]@{}
-        $FormatStartData.shapeinfo.tablecolumninfolist | Where-Object { $_ } | ForEach-Object {
-            $Name = $_.Label ? $_.Label : $_.propertyName
-            $properties[$Name] = @{
-                Label                 = $Name
-                Width                 = $_.width
-                Alignment             = $alignment.Contains($_.alignment) ? $alignment[$_.alignment] : 'undefined'
-                HeaderMatchesProperty = $_.HeaderMatchesProperty
-                # PropertyName          = $_.propertyName
+        if ($FormatStartData.Gettype().Name -eq 'FormatStartData') {
+            $properties = [ordered]@{}
+            $FormatStartData.shapeinfo.tablecolumninfolist | Where-Object { $_ } | ForEach-Object {
+                $Name = $_.Label ? $_.Label : $_.propertyName
+                $properties[$Name] = @{
+                    Label                 = $Name
+                    Width                 = $_.width
+                    Alignment             = $alignment.Contains($_.alignment) ? $alignment[$_.alignment] : 'undefined'
+                    HeaderMatchesProperty = $_.HeaderMatchesProperty
+                    # PropertyName          = $_.propertyName
+                }
             }
+            if ($properties.Keys.Count -eq 0) {
+                Write-Debug "No properties found"
+                return $null
+            }
+            return $properties
         }
-        if ($properties.Keys.Count -eq 0) {
-            Write-Debug "No properties found"
-            return $null
-        }
-        return $properties
     }
 }

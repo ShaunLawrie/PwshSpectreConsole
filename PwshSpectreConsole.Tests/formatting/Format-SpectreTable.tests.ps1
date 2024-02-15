@@ -115,7 +115,7 @@ Describe "Format-SpectreTable" {
             $result = New-TableRow -Entry $entryItem
             $result -is [array] | Should -Be $true
             $result[0] | Should -BeOfType [Spectre.Console.Text]
-            $result[0].Length | Should -Be $entryItem[0].PropertyValue.Length
+            $result[0].Length | Should -Be $entryItem[0].Length
             $result.Count | Should -Be $entryitem.Count
         }
     }
