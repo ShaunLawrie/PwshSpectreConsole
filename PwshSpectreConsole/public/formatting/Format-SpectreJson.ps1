@@ -1,9 +1,10 @@
 using module "..\..\private\completions\Completers.psm1"
+using namespace Spectre.Console
 
 function Format-SpectreJson {
     <#
     .SYNOPSIS
-    Formats an array of objects into a Spectre Console Json.  
+    Formats an array of objects into a Spectre Console Json.
     Thanks to [trackd](https://github.com/trackd) for adding this.
     ![Spectre json example](/json.png)
 
@@ -63,7 +64,7 @@ function Format-SpectreJson {
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectreJson")]
     [Alias('fsj')]
-    param (
+    param(
         [Parameter(ValueFromPipeline, Mandatory)]
         [object] $Data,
         [int] $Depth,
@@ -71,9 +72,9 @@ function Format-SpectreJson {
         [switch] $NoBorder,
         [ValidateSet([SpectreConsoleBoxBorder], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Border = "Rounded",
-        [ValidateSpectreColor()]
+        [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [string] $Color = $script:AccentColor.ToMarkup(),
+        [Color] $Color = $script:AccentColor,
         [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostWidth) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
         [int] $Width,
         [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostHeight) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console height.")]
@@ -83,17 +84,82 @@ function Format-SpectreJson {
     begin {
         $collector = [System.Collections.Generic.List[psobject]]::new()
         $splat = @{
-            WarningAction = "Ignore"
+            WarningAction = 'Ignore'
+            ErrorAction  = 'Stop'
         }
         if ($Depth) {
             $splat.Depth = $Depth
         }
+        $ht = [ordered]@{}
     }
     process {
-        $collector.add($data)
+        if ($MyInvocation.ExpectingInput) {
+            if ($data -is [string]) {
+                if ($data.pschildname) {
+                    if (-Not $ht.contains($data.pschildname)) {
+                        $ht[$data.pschildname] = [System.Text.StringBuilder]::new()
+                    }
+                    return [void]$ht[$data.pschildname].AppendLine($data)
+                }
+                # assume we get the entire json in one go a string (e.g -Raw or invoke-webrequest)
+                try {
+                    $jsonObjects = $data | Out-String | ConvertFrom-Json -AsHashtable @splat
+                    return $collector.add($jsonObjects)
+                }
+                catch {
+                    Write-Debug "Failed to convert string to object, $_"
+                }
+            }
+            if ($data -is [System.IO.FileSystemInfo]) {
+                if ($data.Extension -eq '.json') {
+                    Write-Debug "json file found, reading $($data.FullName)"
+                    try {
+                        $jsonObjects = Get-Content -Raw $data.FullName | ConvertFrom-Json -AsHashtable @splat
+                        return $collector.add($jsonObjects)
+                    }
+                    catch {
+                        Write-Debug "Failed to convert json to object, $_"
+                    }
+                }
+                return $collector.add(
+                    [pscustomobject]@{
+                        Name     = $data.Name
+                        FullName = $data.FullName
+                        Type     = $data.GetType().Name.TrimEnd('Info')
+                    })
+            }
+            Write-Debug "adding item from pipeline"
+            return $collector.add($data)
+        }
+        foreach ($item in $data) {
+            Write-Debug "adding item from input"
+            $collector.add($item)
+        }
     }
     end {
-        $json = [Spectre.Console.Json.JsonText]::new(($collector | ConvertTo-Json @splat))
+        if ($ht.keys.count -gt 0) {
+            foreach ($key in $ht.Keys) {
+                Write-Debug "converting json stream to object, $key"
+                try {
+                    $jsonObject = $ht[$key].ToString() | Out-String | ConvertFrom-Json -AsHashtable @splat
+                    $collector.add($jsonObject)
+                    continue
+                }
+                catch {
+                    Write-Debug "Failed to convert json to object: $key, $_"
+                }
+            }
+        }
+        if ($collector.Count -eq 0) {
+            return
+        }
+        try {
+            $json = [Spectre.Console.Json.JsonText]::new(($collector | ConvertTo-Json @splat))
+        }
+        catch {
+            Write-Error "Failed to convert to json, $_"
+            return
+        }
         $json.BracesStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::Red)
         $json.BracketsStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::Green)
         $json.ColonStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::Blue)
@@ -103,14 +169,14 @@ function Format-SpectreJson {
         $json.BooleanStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::Teal)
         $json.NullStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::Plum1)
 
-        if($NoBorder) {
+        if ($NoBorder) {
             Write-AnsiConsole $json
             return
         }
 
         $panel = [Spectre.Console.Panel]::new($json)
         $panel.Border = [Spectre.Console.BoxBorder]::$Border
-        $panel.BorderStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
+        $panel.BorderStyle = [Spectre.Console.Style]::new($Color)
         if ($Title) {
             $panel.Header = [Spectre.Console.PanelHeader]::new($Title)
         }
@@ -120,7 +186,7 @@ function Format-SpectreJson {
         if ($height) {
             $panel.Height = $Height
         }
-        if($Expand) {
+        if ($Expand) {
             $panel.Expand = $Expand
         }
         Write-AnsiConsole $panel

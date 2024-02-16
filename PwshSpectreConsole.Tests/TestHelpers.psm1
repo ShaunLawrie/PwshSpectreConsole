@@ -2,14 +2,14 @@ using namespace Spectre.Console
 
 function Get-RandomColor {
     $type = 1 # Get-Random -Minimum 0 -Maximum 2
-    switch($type) {
+    switch ($type) {
         0 {
             $colors = [Spectre.Console.Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
             return $colors[$(Get-Random -Minimum 0 -Maximum $colors.Count)]
         }
         1 {
             $hex = @()
-            for($i = 0; $i -lt 3; $i++) {
+            for ($i = 0; $i -lt 3; $i++) {
                 $value = Get-Random -Minimum 0 -Maximum 255
                 $hex += [byte]$value
             }
@@ -28,7 +28,7 @@ function Get-RandomList {
     )
     $items = @()
     $count = Get-Random -Minimum $MinItems -Maximum $MaxItems
-    for($i = 0; $i -lt $count; $i++) {
+    for ($i = 0; $i -lt $count; $i++) {
         $items += $Generator.Invoke()
     }
     return $items
@@ -39,7 +39,7 @@ function Get-RandomString {
     $length = Get-Random -Minimum 10 -Maximum 20
     $chars = [char[]]([char]'a'..[char]'z' + [char]'A'..[char]'Z' + [char]'0'..[char]'9')
     $string = ""
-    for($i = 0; $i -lt $length; $i++) {
+    for ($i = 0; $i -lt $length; $i++) {
         $string += $chars[$(Get-Random -Minimum 0 -Maximum $chars.Count)]
     }
     return $string
@@ -83,23 +83,23 @@ function Get-RandomTree {
         [int] $CurrentDepth = 0
     )
 
-    if($CurrentDepth -gt $MaxDepth) {
+    if ($CurrentDepth -gt $MaxDepth) {
         return $Root
     }
 
     $CurrentDepth++
 
-    if($null -eq $Root) {
+    if ($null -eq $Root) {
         $Root = @{
-            Label = Get-RandomString
+            Label    = Get-RandomString
             Children = @()
         }
     }
 
     $children = Get-Random -Minimum $MinChildren -Maximum $MaxChildren
-    for($i = 0; $i -lt $children; $i++) {
+    for ($i = 0; $i -lt $children; $i++) {
         $newChild = @{
-            Label = Get-RandomString
+            Label    = Get-RandomString
             Children = @()
         }
         $newTree = Get-RandomTree -Root $newChild -MaxChildren $MaxChildren -MaxDepth $MaxDepth -CurrentDepth $CurrentDepth
@@ -151,7 +151,8 @@ function Get-AnsiEscapeSequence {
         $Escaped = $String.EnumerateRunes() | ForEach-Object {
             if ($_.Value -le 0x1f) {
                 [Text.Rune]::new($_.Value + 0x2400)
-            } else {
+            }
+            else {
                 $_
             }
         } | Join-String
@@ -160,6 +161,11 @@ function Get-AnsiEscapeSequence {
             Original = $String
             Clean    = [System.Management.Automation.Host.PSHostUserInterface]::GetOutputString($String, $false)
         }
+    }
+}
+function StripAnsi {
+    process {
+        [System.Management.Automation.Host.PSHostUserInterface]::GetOutputString($_, $false)
     }
 }
 
@@ -211,5 +217,20 @@ Function Get-SpectreColorSample {
             # Object = $color
             # Debug = Get-AnsiEscapeSequence $SpectreString
         }
+    }
+}
+function Get-SpectreTableRowData {
+    param(
+        [int]$Count = 5,
+        [Switch]$Markup
+    )
+    if ($null -eq $count) {
+        $count = 5
+    }
+    1..$Count | ForEach-Object {
+        if ($Markup) {
+            return '[{0}] {1} [/]' -f (Get-RandomColor), (Get-RandomString)
+            }
+        Get-RandomString
     }
 }

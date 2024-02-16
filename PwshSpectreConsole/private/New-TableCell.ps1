@@ -1,8 +1,8 @@
 function New-TableCell {
     [cmdletbinding()]
     param(
-        $String,
-        [Switch]$AllowMarkup
+        [Object] $String,
+        [Switch] $AllowMarkup
     )
     Write-Debug "Module: $($ExecutionContext.SessionState.Module.Name) Command: $($MyInvocation.MyCommand.Name) Param: $($PSBoundParameters.GetEnumerator())"
     if ([String]::IsNullOrEmpty($String)) {
