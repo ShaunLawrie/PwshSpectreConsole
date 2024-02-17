@@ -1,4 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
+using namespace Spectre.Console
 
 function Write-SpectreFigletText {
     <#
@@ -42,14 +43,14 @@ function Write-SpectreFigletText {
         [string] $Text = "Hello Spectre!",
         [ValidateSet([SpectreConsoleJustify], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Alignment = "Left",
-        [ValidateSpectreColor()]
+        [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [string] $Color = $script:AccentColor.ToMarkup(),
+        [Color] $Color = $script:AccentColor,
         [string] $FigletFontPath
     )
     $figletFont = Read-FigletFont -FigletFontPath $FigletFontPath
-    $figletText = [Spectre.Console.FigletText]::new($figletFont, $Text)
-    $figletText.Justification = [Spectre.Console.Justify]::$Alignment
-    $figletText.Color = ($Color | Convert-ToSpectreColor)
+    $figletText = [FigletText]::new($figletFont, $Text)
+    $figletText.Justification = [Justify]::$Alignment
+    $figletText.Color = $Color
     Write-AnsiConsole $figletText
 }

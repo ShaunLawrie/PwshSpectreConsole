@@ -1,4 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
+using namespace Spectre.Console
 
 function Read-SpectreMultiSelectionGrouped {
     <#
@@ -53,13 +54,13 @@ function Read-SpectreMultiSelectionGrouped {
             }
         ),
         [string] $ChoiceLabelProperty,
-        [ValidateSpectreColor()]
+        [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [string] $Color = $script:AccentColor.ToMarkup(),
+        [Color] $Color = $script:AccentColor,
         [int] $PageSize = 10,
         [switch] $AllowEmpty
     )
-    $spectrePrompt = [Spectre.Console.MultiSelectionPrompt[string]]::new()
+    $spectrePrompt = [MultiSelectionPrompt[string]]::new()
 
     $choiceLabels = $Choices.Choices
     $flattenedChoices = $Choices.Choices
@@ -80,14 +81,14 @@ function Read-SpectreMultiSelectionGrouped {
         if($ChoiceLabelProperty) {
             $choiceLabels = $choiceLabels | Select-Object -ExpandProperty $ChoiceLabelProperty
         }
-        $spectrePrompt = [Spectre.Console.MultiSelectionPromptExtensions]::AddChoiceGroup($spectrePrompt, $group.Name, [string[]]$choiceLabels)
+        $spectrePrompt = [MultiSelectionPromptExtensions]::AddChoiceGroup($spectrePrompt, $group.Name, [string[]]$choiceLabels)
     }
 
     $spectrePrompt.Title = $Title
     $spectrePrompt.PageSize = $PageSize
     $spectrePrompt.WrapAround = $true
     $spectrePrompt.Required = !$AllowEmpty
-    $spectrePrompt.HighlightStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
+    $spectrePrompt.HighlightStyle = [Style]::new($Color)
     $spectrePrompt.InstructionsText = "[$($script:DefaultValueColor.ToMarkup())](Press [$($script:AccentColor.ToMarkup())]space[/] to toggle a choice and press [$($script:AccentColor.ToMarkup())]<enter>[/] to submit your answer)[/]"
     $spectrePrompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
     $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt

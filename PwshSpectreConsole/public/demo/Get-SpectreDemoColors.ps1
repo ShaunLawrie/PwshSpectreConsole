@@ -1,3 +1,5 @@
+using namespace Spectre.Console
+
 <#
 .SYNOPSIS
     Retrieves a list of Spectre Console colors and displays them with their corresponding markup.
@@ -22,7 +24,7 @@ function Get-SpectreDemoColors {
     Write-SpectreRule "Colors"
     Write-Host ""
 
-    $colors = [Spectre.Console.Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
+    $colors = [Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
     $colors  = $colors | ForEach-Object {
         $prefix = ($_ -replace '[_0-9]+', '')
         $numeric = ($_ -replace '^[^0-9]+', '')
@@ -47,7 +49,7 @@ function Get-SpectreDemoColors {
     $maxLength = $colors | Measure-Object -Maximum -Property Length | Select-Object -ExpandProperty Maximum
 
     foreach($color in $colors) {
-        $total = [Spectre.Console.Color]::$color | Select-Object @{ Name = "Total"; Expression = {$_.R + $_.G + $_.B} } | Select-Object -ExpandProperty Total
+        $total = [Color]::$color | Select-Object @{ Name = "Total"; Expression = {$_.R + $_.G + $_.B} } | Select-Object -ExpandProperty Total
         $textColor = "white"
         if($total -gt 280) {
             $textColor = "black"

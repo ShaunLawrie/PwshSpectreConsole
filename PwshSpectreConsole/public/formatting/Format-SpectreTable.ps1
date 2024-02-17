@@ -33,6 +33,9 @@ function Format-SpectreTable {
     .PARAMETER Color
     The color of the table border. Default is the accent color of the script.
 
+    .PARAMETER HeaderColor
+    The color of the table header text. Default is the DefaultTableHeaderColor.
+
     .PARAMETER Width
     The width of the table.
 
@@ -91,6 +94,9 @@ function Format-SpectreTable {
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
         [Color] $Color = $script:AccentColor,
+        [ColorTransformationAttribute()]
+        [ArgumentCompletionsSpectreColors()]
+        [Color] $HeaderColor = $script:DefaultTableHeaderColor,
         [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostWidth) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
         [int] $Width,
         [switch] $HideHeaders,

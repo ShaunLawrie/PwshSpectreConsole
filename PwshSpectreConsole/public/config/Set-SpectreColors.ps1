@@ -1,4 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
+using namespace Spectre.Console
 
 function Set-SpectreColors {
     <#
@@ -30,13 +31,21 @@ function Set-SpectreColors {
     #>
     [Reflection.AssemblyMetadata("title", "Set-SpectreColors")]
     param (
-        [ValidateSpectreColor()]
+        [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [string] $AccentColor = "Blue",
-        [ValidateSpectreColor()]
+        [Color] $AccentColor = "Blue",
+        [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [string] $DefaultValueColor = "Grey"
+        [Color] $DefaultValueColor = "Grey",
+        [ColorTransformationAttribute()]
+        [ArgumentCompletionsSpectreColors()]
+        [Color] $DefaultTableHeaderColor = "Grey82",
+        [ColorTransformationAttribute()]
+        [ArgumentCompletionsSpectreColors()]
+        [Color] $DefaultTableTextColor = "Grey39"
     )
     $script:AccentColor = $AccentColor | Convert-ToSpectreColor
     $script:DefaultValueColor = $DefaultValueColor | Convert-ToSpectreColor
+    $script:DefaultTableHeaderColor = $DefaultTableHeaderColor | Convert-ToSpectreColor
+    $script:DefaultTableTextColor = $DefaultTableTextColor | Convert-ToSpectreColor
 }
