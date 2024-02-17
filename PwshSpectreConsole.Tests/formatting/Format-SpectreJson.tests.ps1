@@ -6,7 +6,7 @@ Describe "Format-SpectreJson" {
     InModuleScope "PwshSpectreConsole" {
 
         BeforeEach {
-            $data = @(
+            $testData = @(
                 [pscustomobject]@{
                     Name = "John"
                     Age = 25
@@ -64,7 +64,7 @@ Describe "Format-SpectreJson" {
                 -and ($null -eq $testExpand -or $RenderableObject.Expand -eq $testExpand)
             }
 
-            Format-SpectreJson -Title $testTitle -Border $testBorder -Color $testColor -Height $testHeight -Width $testWidth -Expand:$testExpand -Data $data
+            Format-SpectreJson -Title $testTitle -Border $testBorder -Color $testColor -Height $testHeight -Width $testWidth -Expand:$testExpand -Data $testData
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
             Should -InvokeVerifiable
         }
@@ -74,7 +74,7 @@ Describe "Format-SpectreJson" {
                 $RenderableObject -is [Spectre.Console.Json.JsonText]
             }
 
-            Format-SpectreJson -NoBorder -Data $data
+            Format-SpectreJson -NoBorder -Data $testData
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
             Should -InvokeVerifiable
         }

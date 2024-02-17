@@ -5,9 +5,6 @@ Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
 Describe "Format-SpectreJson" {
     InModuleScope "PwshSpectreConsole" {
         BeforeEach {
-            $testData = $null
-            $testBorder = 'Markdown'
-            $testColor = Get-RandomColor
             Mock Write-AnsiConsole {
                 param(
                     [Parameter(Mandatory)]

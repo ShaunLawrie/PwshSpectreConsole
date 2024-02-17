@@ -6,7 +6,6 @@ Describe "ConvertTo-SpectreDecoration" {
     InModuleScope "PwshSpectreConsole" {
         It "Test PSStyle Decorations" {
             $PSStyleColor = Get-PSStyleRandom -Decoration
-            $reset = $PSStyle.Reset
             $string = 'Hello, world!, hello universe!'
             $sample = "{0}{1}{2}" -f $PSStyleColor, $string, $PSStyle.Reset
             $test = Get-SpectreRenderable (ConvertTo-SpectreDecoration $sample)
@@ -15,7 +14,6 @@ Describe "ConvertTo-SpectreDecoration" {
         It "Test PSStyle Foreground RGB Colors" -Tag "ExcludeCI" {
             # testing something
             $PSStyleColor = Get-PSStyleRandom -RGBForeground
-            $reset = $PSStyle.Reset
             $string = 'Hello, world!, hello universe!'
             $sample = "{0}{1}{2}" -f $PSStyleColor, $string, $PSStyle.Reset
             $test = Get-SpectreRenderable (ConvertTo-SpectreDecoration $sample)
@@ -23,7 +21,6 @@ Describe "ConvertTo-SpectreDecoration" {
         }
         It "Test PSStyle Background RGB Colors" -Tag "ExcludeCI" {
             $PSStyleColor = Get-PSStyleRandom -RGBBackground
-            $reset = $PSStyle.Reset
             $string = 'Hello, world!, hello universe!'
             $sample = "{0}{1}{2}" -f $PSStyleColor, $string, $PSStyle.Reset
             $test = Get-SpectreRenderable (ConvertTo-SpectreDecoration $sample)

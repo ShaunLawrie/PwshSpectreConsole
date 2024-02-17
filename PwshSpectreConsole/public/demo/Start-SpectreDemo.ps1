@@ -62,6 +62,7 @@ function Start-SpectreDemo {
     }
 
     Read-SpectrePause -NoNewline
+    return
     Clear-Host
 
     $example = @'

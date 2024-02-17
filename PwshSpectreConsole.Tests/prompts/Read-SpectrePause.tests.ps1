@@ -5,9 +5,9 @@ Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
 Describe "Read-SpectrePause" {
     InModuleScope "PwshSpectreConsole" {
         BeforeEach {
-            $customMessage = $null
+            $testMessage = $null
             Mock Write-SpectreHost -Verifiable -ParameterFilter {
-                [string]::IsNullOrEmpty($customMessage) -or ($Message -eq $customMessage)
+                [string]::IsNullOrEmpty($testMessage) -or ($Message -eq $testMessage)
             }
             Mock Clear-InputQueue
             Mock Set-CursorPosition
@@ -22,9 +22,9 @@ Describe "Read-SpectrePause" {
         }
 
         It "displays a custom message" {
-            $customMessage = Get-RandomString
-            Write-Debug $customMessage
-            Read-SpectrePause -Message $customMessage
+            $testMessage = Get-RandomString
+            Write-Debug $testMessage
+            Read-SpectrePause -Message $testMessage
             Assert-MockCalled -CommandName "Read-Host" -Times 1 -Exactly
             Should -InvokeVerifiable
         }

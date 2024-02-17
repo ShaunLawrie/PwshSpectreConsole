@@ -5,29 +5,29 @@ Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
 Describe "Format-SpectrePanel" {
     InModuleScope "PwshSpectreConsole" {
         BeforeEach {
-            $title = Get-RandomString
-            $border = Get-RandomBoxBorder
-            $expand = $false
-            $color = Get-RandomColor
+            $testTitle = Get-RandomString
+            $testBorder = Get-RandomBoxBorder
+            $testExpand = $false
+            $testColor = Get-RandomColor
 
             Mock Write-AnsiConsole -Verifiable -ParameterFilter {
                 $RenderableObject -is [Spectre.Console.Panel] `
-                -and ($border -eq "None" -or $RenderableObject.Border.GetType().Name -like "*$border*") `
-                -and $RenderableObject.Header.Text -eq $title `
-                -and $RenderableObject.Expand -eq $expand `
-                -and $RenderableObject.BorderStyle.Foreground.ToMarkup() -eq $color
+                -and ($testBorder -eq "None" -or $RenderableObject.Border.GetType().Name -like "*$testBorder*") `
+                -and $RenderableObject.Header.Text -eq $testTitle `
+                -and $RenderableObject.Expand -eq $testExpand `
+                -and $RenderableObject.BorderStyle.Foreground.ToMarkup() -eq $testColor
             }
         }
 
         It "Should create a panel" {
-            Format-SpectrePanel -Data (Get-RandomString) -Title $title -Border $border -Color $color
+            Format-SpectrePanel -Data (Get-RandomString) -Title $testTitle -Border $testBorder -Color $testColor
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
             Should -InvokeVerifiable
         }
 
         It "Should create an expanded panel" {
-            $expand = $true
-            Format-SpectrePanel -Data (Get-RandomString) -Title $title -Border $border -Expand:$expand -Color $color
+            $testExpand = $true
+            Format-SpectrePanel -Data (Get-RandomString) -Title $testTitle -Border $testBorder -Expand:$testExpand -Color $testColor
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
             Should -InvokeVerifiable
         }

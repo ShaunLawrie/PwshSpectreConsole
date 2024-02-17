@@ -5,13 +5,13 @@ Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
 Describe "Read-SpectreConfirm" {
     InModuleScope "PwshSpectreConsole" {
         BeforeEach {
-            $color = Get-RandomColor
+            $testColor = Get-RandomColor
             $choices = @("y", "n")
             $answer = "y"
             Mock Invoke-SpectrePromptAsync -Verifiable -ParameterFilter {
                 $Prompt -is [Spectre.Console.TextPrompt[string]] `
                 -and $null -eq (Compare-Object -ReferenceObject $Prompt.Choices -DifferenceObject $choices) `
-                -and $Prompt.ChoicesStyle.Foreground.ToMarkup() -eq $color
+                -and (($testColor -eq $null -and $Prompt.Style.Foreground -eq $null) -or ($testColor -ne $null -and $Prompt.Style.Foreground.ToMarkup() -eq $testColor))
             } -MockWith {
                 return $answer
             }
@@ -24,9 +24,11 @@ Describe "Read-SpectreConfirm" {
         }
 
         It "prompts with a default answer" {
-            Read-SpectreConfirm -Prompt (Get-RandomString) -DefaultAnswer (Get-RandomChoice $choices)
+            $expectedAnswer = (Get-RandomChoice $choices)
+            $thisAnswer = Read-SpectreConfirm -Prompt (Get-RandomString) -DefaultAnswer $thisAnswer
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
             Should -InvokeVerifiable
+            $thisAnswer | Should -Be $expectedAnswer
         }
 
         It "writes success message" {
@@ -50,6 +52,12 @@ Describe "Read-SpectreConfirm" {
             Read-SpectreConfirm -Prompt (Get-RandomString) -ConfirmFailure $confirmFailure -DefaultAnswer (Get-RandomChoice $choices)
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
             Assert-MockCalled -CommandName "Write-SpectreHost" -Times 1 -Exactly
+            Should -InvokeVerifiable
+        }
+
+        It "accepts color" {
+            Read-SpectreConfirm -Prompt (Get-RandomString) -Color $testColor
+            Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
             Should -InvokeVerifiable
         }
     }
