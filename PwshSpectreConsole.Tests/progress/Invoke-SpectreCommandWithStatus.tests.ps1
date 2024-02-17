@@ -12,6 +12,18 @@ Describe "Invoke-SpectreCommandWithStatus" -Tag "integration" {
             Write-Debug $testTitle
             Write-Debug $testSpinner
             Write-Debug $testColor
+
+            $writer = [System.IO.StringWriter]::new()
+            $output = [Spectre.Console.AnsiConsoleOutput]::new($writer)
+            $settings = [Spectre.Console.AnsiConsoleSettings]::new()
+            $settings.Out = $output
+            [Spectre.Console.AnsiConsole]::Console = [Spectre.Console.AnsiConsole]::Create($settings)
+        }
+
+        AfterEach {
+            $settings = [Spectre.Console.AnsiConsoleSettings]::new()
+            $settings.Out = [Spectre.Console.AnsiConsoleOutput]::new([System.Console]::Out)
+            [Spectre.Console.AnsiConsole]::Console = [Spectre.Console.AnsiConsole]::Create($settings)
         }
 
         It "executes the scriptblock for the basic case" {
