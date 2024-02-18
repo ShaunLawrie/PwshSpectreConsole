@@ -7,6 +7,8 @@ Describe "Write-SpectreCalendar" {
         BeforeEach {
             $testBorder = 'Markdown'
             $testColor = Get-RandomColor
+            Write-Debug $testBorder
+            Write-Debug $testColor
             Mock Write-AnsiConsole {
                 param(
                     [Parameter(Mandatory)]

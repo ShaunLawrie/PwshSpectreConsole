@@ -36,7 +36,11 @@ function Get-RandomList {
 }
 
 function Get-RandomString {
-    $length = Get-Random -Minimum 10 -Maximum 20
+    param (
+        [int] $MinimumLength = 10,
+        [int] $MaximumLength = 20
+    )
+    $length = Get-Random -Minimum $MinimumLength -Maximum $MaximumLength
     $chars = [char[]]([char]'a'..[char]'z' + [char]'A'..[char]'Z' + [char]'0'..[char]'9')
     $string = ""
     for ($i = 0; $i -lt $length; $i++) {

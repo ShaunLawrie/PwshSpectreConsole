@@ -5,14 +5,17 @@ Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
 Describe "Format-SpectreTree" {
     InModuleScope "PwshSpectreConsole" {
         BeforeEach {
+            $testConsole = [Spectre.Console.Testing.TestConsole]::new()
             $testGuide = Get-RandomTreeGuide
             $testColor = Get-RandomColor
             
-            Mock Write-AnsiConsole -Verifiable -ParameterFilter {
-                $RenderableObject -is [Spectre.Console.Tree] `
-                -and $RenderableObject.Style.Foreground.ToMarkup() -eq $testColor `
-                -and $RenderableObject.Guide.GetType().ToString() -like "*$testGuide*" `
-                -and $RenderableObject.Nodes.Count -gt 0
+            Mock Write-AnsiConsole {
+                $RenderableObject | Should -BeOfType [Spectre.Console.Tree]
+                $RenderableObject.Style.Foreground.ToMarkup() | Should -Be $testColor
+                $RenderableObject.Guide.GetType().ToString() | Should -BeLike "*$testGuide*"
+                $RenderableObject.Nodes.Count | Should -BeGreaterThan 0
+
+                $testConsole.Write($RenderableObject)
             }
         }
 

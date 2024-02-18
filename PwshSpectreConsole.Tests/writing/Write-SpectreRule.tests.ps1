@@ -5,19 +5,23 @@ Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
 Describe "Write-SpectreRule" {
     InModuleScope "PwshSpectreConsole" {
         BeforeEach {
-            $color = Get-RandomColor
-            Write-Debug $color
+            $testConsole = [Spectre.Console.Testing.TestConsole]::new()
+            $testColor = Get-RandomColor
+            Write-Debug $testColor
             $justification = Get-RandomJustify
-            Mock Write-AnsiConsole -Verifiable -ParameterFilter {
-                $RenderableObject -is [Spectre.Console.Rule] `
-                -and $RenderableObject.Justification -eq $justification
+            Mock Write-AnsiConsole {
+                $RenderableObject | Should -BeOfType [Spectre.Console.Rule]
+                $RenderableObject.Justification | Should -Be $justification
+                
+                $testConsole.Write($RenderableObject)
             }
         }
 
         It "writes a rule" {
-            Write-SpectreRule -Title (Get-RandomString) -Alignment $justification -Color $color
+            $randomString = Get-RandomString
+            Write-SpectreRule -Title $randomString -Alignment $justification -Color $testColor
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
-            Should -InvokeVerifiable
+            $testConsole.Output | Should -BeLike "*$randomString*"
         }
     }
 }

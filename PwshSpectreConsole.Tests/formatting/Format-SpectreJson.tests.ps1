@@ -6,6 +6,7 @@ Describe "Format-SpectreJson" {
     InModuleScope "PwshSpectreConsole" {
 
         BeforeEach {
+            $testConsole = [Spectre.Console.Testing.TestConsole]::new()
             $testData = @(
                 [pscustomobject]@{
                     Name = "John"
@@ -35,7 +36,8 @@ Describe "Format-SpectreJson" {
                     }
                 }
             )
-            $data | Out-Null
+            $testData | Out-Null
+            $testConsole | Out-Null
             $testBorder = Get-RandomBoxBorder
             $testColor = Get-RandomColor
             $testTitle = Get-RandomString
@@ -54,29 +56,31 @@ Describe "Format-SpectreJson" {
         }
 
         It "tries to render a panel which somewhat implies that the json parsing worked" {
-            Mock Write-AnsiConsole -Verifiable -ParameterFilter {
-                $RenderableObject -is [Spectre.Console.Panel] `
-                -and ($null -eq $testTitle -or $RenderableObject.Header.Text -eq $testTitle) `
-                -and ($null -eq $testBorder -or "None" -eq $testBorder -or $RenderableObject.Border.GetType().Name -like "*$testBorder*") `
-                -and ($null -eq $testColor -or $RenderableObject.BorderStyle.Foreground.ToMarkup() -eq $testColor) `
-                -and ($null -eq $testWidth -or $RenderableObject.Width -eq $testWidth) `
-                -and ($null -eq $testHeight -or $RenderableObject.Height -eq $testHeight) `
-                -and ($null -eq $testExpand -or $RenderableObject.Expand -eq $testExpand)
+            Mock Write-AnsiConsole {
+                $RenderableObject | Should -BeOfType [Spectre.Console.Panel]
+                $RenderableObject.Header.Text | Should -Be $testTitle
+                if($testBorder -ne "None") {
+                    $RenderableObject.Border.GetType().Name | Should -BeLike "*$testBorder*"
+                }
+                $RenderableObject.BorderStyle.Foreground.ToMarkup() | Should -Be $testColor
+                $RenderableObject.Width | Should -Be $testWidth
+                $RenderableObject.Height | Should -Be $testHeight
+                $RenderableObject.Expand | Should -Be $testExpand
+
+                $testConsole.Write($RenderableObject)
             }
 
             Format-SpectreJson -Title $testTitle -Border $testBorder -Color $testColor -Height $testHeight -Width $testWidth -Expand:$testExpand -Data $testData
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
 
         It "tries to render json when noborder is specified" {
-            Mock Write-AnsiConsole -Verifiable -ParameterFilter {
-                $RenderableObject -is [Spectre.Console.Json.JsonText]
+            Mock Write-AnsiConsole {
+                $RenderableObject | Should -BeOfType [Spectre.Console.Json.JsonText]
             }
 
             Format-SpectreJson -NoBorder -Data $testData
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
     }
 }

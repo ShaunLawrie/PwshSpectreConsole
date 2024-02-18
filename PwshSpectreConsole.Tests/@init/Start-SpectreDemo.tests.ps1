@@ -19,8 +19,8 @@ Describe "Start-SpectreDemo" {
             #$settings = [Spectre.Console.AnsiConsoleSettings]::new()
             #$settings.Out = $output
             #[Spectre.Console.AnsiConsole]::Console = [Spectre.Console.AnsiConsole]::Create($settings)
-
-            $script:recorder = [Spectre.Console.AnsiConsoleExtensions]::CreateRecorder([Spectre.Console.AnsiConsole]::Console)
+            $script:testConsole = [Spectre.Console.Testing.TestConsole]::new()
+            $script:recorder = [Spectre.Console.AnsiConsoleExtensions]::CreateRecorder($script:testConsole)
 
             Mock Read-SpectrePause { }
             Mock Clear-Host { }

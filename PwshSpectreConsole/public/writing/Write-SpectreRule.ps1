@@ -32,7 +32,7 @@ function Write-SpectreRule {
         [ArgumentCompletionsSpectreColors()]
         [Color] $Color = $script:AccentColor
     )
-    $rule = [Rule]::new("[$($Color)]$Title[/]")
+    $rule = [Rule]::new("[$($Color.ToMarkup())]$Title[/]")
     $rule.Justification = [Justify]::$Alignment
     Write-AnsiConsole $rule
 }

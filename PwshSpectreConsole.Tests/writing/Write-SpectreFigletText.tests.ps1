@@ -5,12 +5,15 @@ Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
 Describe "Write-SpectreFigletText" {
     InModuleScope "PwshSpectreConsole" {
         BeforeEach {
+            $testConsole = [Spectre.Console.Testing.TestConsole]::new()
             $testColor = Get-RandomColor
             $testAlignment = Get-RandomJustify
-            Mock Write-AnsiConsole -Verifiable -ParameterFilter {
-                $RenderableObject -is [Spectre.Console.FigletText] `
-                -and $RenderableObject.Justification -eq $testAlignment `
-                -and $RenderableObject.Color.ToMarkup() -eq $testColor
+            Mock Write-AnsiConsole {
+                $RenderableObject | Should -BeOfType [Spectre.Console.FigletText]
+                $RenderableObject.Justification | Should -Be $testAlignment
+                $RenderableObject.Color.ToMarkup() | Should -Be $testColor
+                
+                $testConsole.Write($RenderableObject)
             }
         }
 

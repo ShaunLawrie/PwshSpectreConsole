@@ -5,16 +5,19 @@ Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
 Describe "Format-SpectreBreakdownChart" {
     InModuleScope "PwshSpectreConsole" {
         BeforeEach {
+            $testConsole = [Spectre.Console.Testing.TestConsole]::new()
             $testWidth = Get-Random -Minimum 10 -Maximum 100
             $testData = @()
             for($i = 0; $i -lt (Get-Random -Minimum 3 -Maximum 10); $i++) {
                 $testData += Get-RandomChartItem
             }
 
-            Mock Write-AnsiConsole -ParameterFilter {
-                $RenderableObject -is [Spectre.Console.Rendering.Renderable] `
-                -and $RenderableObject.Width -eq $testWidth `
-                -and $RenderableObject.Data.Count -eq $testData.Count
+            Mock Write-AnsiConsole {
+                $RenderableObject | Should -BeOfType [Spectre.Console.Rendering.Renderable]
+                $RenderableObject.Width | Should -Be $testWidth
+                $RenderableObject.Data.Count | Should -Be $testData.Count
+
+                $testConsole.Write($RenderableObject)
             }
 
             Mock Get-HostWidth {
@@ -42,11 +45,13 @@ Describe "Format-SpectreBreakdownChart" {
         }
 
         It "Should handle no width and default to host width" {
-            Mock Write-AnsiConsole -ParameterFilter {
-                $RenderableObject -is [Spectre.Console.Rendering.Renderable] `
-                -and $RenderableObject.Width -eq $testWidth `
-                -and $RenderableObject.Label -eq $null `
-                -and $RenderableObject.Data.Count -eq $testData.Count
+            Mock Write-AnsiConsole {
+                $RenderableObject | Should -BeOfType [Spectre.Console.Rendering.Renderable]
+                $RenderableObject.Width | Should -Be $testWidth
+                $RenderableObject.Label | Should -Be $null
+                $RenderableObject.Data.Count | Should -Be $testData.Count
+
+                $testConsole.Write($RenderableObject)
             }
             Format-SpectreBreakdownChart -Data $testData
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly

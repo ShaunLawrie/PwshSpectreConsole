@@ -5,15 +5,20 @@ Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
 Describe "Format-SpectreTable" {
     InModuleScope "PwshSpectreConsole" {
         BeforeEach {
+            $testConsole = [Spectre.Console.Testing.TestConsole]::new()
             $testData = $null
             $testBorder = Get-RandomBoxBorder
             $testColor = Get-RandomColor
 
-            Mock Write-AnsiConsole -Verifiable -ParameterFilter {
-                $RenderableObject -is [Spectre.Console.Table] `
-                    -and ($testBorder -eq "None" -or $RenderableObject.Border.GetType().Name -like "*$testBorder*") `
-                    -and $RenderableObject.BorderStyle.Foreground.ToMarkup() -eq $testColor `
-                    -and $RenderableObject.Rows.Count -eq $testData.Count
+            Mock Write-AnsiConsole {
+                $RenderableObject | Should -BeOfType [Spectre.Console.Table]
+                $RenderableObject.BorderStyle.Foreground.ToMarkup() | Should -Be $testColor
+                $RenderableObject.Rows.Count | Should -Be $testData.Count
+                if($testBorder -ne "None") {
+                    $RenderableObject.Border.GetType().Name | Should -BeLike "*$testBorder*"
+                }
+
+                $testConsole.Write($RenderableObject)
             }
         }
 
