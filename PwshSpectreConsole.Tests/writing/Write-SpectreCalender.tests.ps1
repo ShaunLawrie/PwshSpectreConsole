@@ -5,32 +5,21 @@ Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
 Describe "Write-SpectreCalendar" {
     InModuleScope "PwshSpectreConsole" {
         BeforeEach {
+            $testConsole = [Spectre.Console.Testing.TestConsole]::new()
+            $testConsole.EmitAnsiSequences = $true
+            
             $testBorder = 'Markdown'
             $testColor = Get-RandomColor
             Write-Debug $testBorder
             Write-Debug $testColor
             Mock Write-AnsiConsole {
-                param(
-                    [Parameter(Mandatory)]
-                    [Spectre.Console.Rendering.Renderable] $RenderableObject
-                )
-                try {
-                    $writer = [System.IO.StringWriter]::new()
-                    $output = [Spectre.Console.AnsiConsoleOutput]::new($writer)
-                    $settings = [Spectre.Console.AnsiConsoleSettings]::new()
-                    $settings.Out = $output
-                    $console = [Spectre.Console.AnsiConsole]::Create($settings)
-                    $console.Write($RenderableObject)
-                    $writer.ToString()
-                }
-                finally {
-                    $writer.Dispose()
-                }
+                $testConsole.Write($RenderableObject)
             }
         }
 
         It "writes calendar for a date" {
-            $sample = Write-SpectreCalendar -Date "2024-01-01" -Culture "en-us" -Border $testBorder -Color $testColor
+            Write-SpectreCalendar -Date "2024-01-01" -Culture "en-us" -Border $testBorder -Color $testColor
+            $sample = $testConsole.Output
             $object = $sample -split '\r?\n'
             $object[0] | Should -Match 'January\s+2024'
             $rawdays = $object[2]
@@ -50,14 +39,16 @@ Describe "Write-SpectreCalendar" {
                 '2022-03-10' = 'Event 1'
                 '2022-03-20' = 'Event 2'
             }
-            $sample = Write-SpectreCalendar -Date "2024-03-01" -Events $events -Culture "en-us" -Border Markdown -Color $testColor
-            $sample.count | Should -Be 2
-            $sample[0] | Should -Match 'March\s+2024'
-            $sample[1] | Should -Match 'Event 1'
+            Write-SpectreCalendar -Date "2024-03-01" -Events $events -Culture "en-us" -Border Markdown -Color $testColor
+            $sample = $testConsole.Output
+            $sample | Should -Match 'March\s+2024'
+            $sample | Should -Match 'Event 1'
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 2 -Exactly
         }
+
         It "writes calendar for a date with something else going on" {
-            $sample = Write-SpectreCalendar -Date 2024-07-01 -HideHeader -Border Markdown -Color $testColor
+            Write-SpectreCalendar -Date 2024-07-01 -HideHeader -Border Markdown -Color $testColor
+            $sample = $testConsole.Output
             $object = $sample -split '\r?\n' | Select-Object -Skip 1 -SkipLast 3
             $object.count | Should -Be 7
             [string[]]$results = 1..31
@@ -69,6 +60,29 @@ Describe "Write-SpectreCalendar" {
                 }
             }
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
+        }
+
+        It "Should match the snapshot" {
+            Mock Write-AnsiConsole {
+                $testConsole.Write($RenderableObject)
+            }
+            $events = @{
+                '2022-03-10' = 'Event 1'
+                '2022-03-20' = 'Event 2'
+            }
+            Write-SpectreCalendar -Date 2024-07-01 -Events $events -Border "Rounded" -Color "SpringGreen3"
+            $snapshotComparison = "$PSScriptRoot\..\@snapshots\Write-SpectreCalendar.snapshot.compare.txt"
+            Set-Content -Path $snapShotComparison -Value ($testConsole.Output -replace "`r", "") -NoNewline
+            $compare = Get-Content -Path $snapshotComparison -AsByteStream
+            $snapshot = Get-Content -Path "$PSScriptRoot\..\@snapshots\Write-SpectreCalendar.snapshot.txt" -AsByteStream
+            try {
+                $snapshot | Should -Be $compare
+            } catch {
+                # byte array to string
+                Write-Host "Expected:`n`n$([System.Text.Encoding]::UTF8.GetString($snapshot))"
+                Write-Host "Got:`n`n$([System.Text.Encoding]::UTF8.GetString($compare))"
+                throw
+            }
         }
     }
 }

@@ -6,16 +6,20 @@ Describe "Format-SpectreTable" {
     InModuleScope "PwshSpectreConsole" {
         BeforeEach {
             $testConsole = [Spectre.Console.Testing.TestConsole]::new()
+            $testConsole.EmitAnsiSequences = $true
+            [Spectre.Console.Testing.TestConsoleExtensions]::Width($testConsole, 140)
             $testData = $null
             $testBorder = Get-RandomBoxBorder
             $testColor = Get-RandomColor
 
             Mock Write-AnsiConsole {
                 $RenderableObject | Should -BeOfType [Spectre.Console.Table]
-                $RenderableObject.BorderStyle.Foreground.ToMarkup() | Should -Be $testColor
                 $RenderableObject.Rows.Count | Should -Be $testData.Count
                 if($testBorder -ne "None") {
                     $RenderableObject.Border.GetType().Name | Should -BeLike "*$testBorder*"
+                }
+                if($testColor) {
+                    $RenderableObject.BorderStyle.Foreground.ToMarkup() | Should -Be $testColor
                 }
 
                 $testConsole.Write($RenderableObject)
@@ -120,6 +124,91 @@ Describe "Format-SpectreTable" {
             $result[0] | Should -BeOfType [Spectre.Console.Text]
             $result[0].Length | Should -Be $entryItem[0].Length
             $result.Count | Should -Be $entryitem.Count
+        }
+
+        It "Should create a table and display results properly" {
+            $testBorder = 'Markdown'
+            $testData = Get-ChildItem "$PSScriptRoot"
+            $verification = $testdata | Format-Table | Get-TableHeader
+            Format-SpectreTable -Data $testData -Border $testBorder -Color $testColor
+            $testResult = $testConsole.Output
+            $rows = $testResult -split "\r?\n" | Select-Object -Skip 1 -SkipLast 2
+            $header = $rows[0]
+            $properties = $header -split '\|' | StripAnsi | ForEach-Object {
+                if (-Not [String]::IsNullOrWhiteSpace($_)) {
+                    $_.Trim()
+                }
+            }
+            if ($IsLinux -or $IsMacOS) {
+                $verification.keys | Should -Match 'UnixMode|User|Group|LastWrite|Size|Name'
+            }
+            else {
+                $verification.keys | Should -Be $properties
+            }
+            Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
+        }
+
+        It "Should create a table and display ICollection results properly" {
+            $testData = 1 | Group-Object
+            $testBorder = 'Markdown'
+            $testColor = $null
+            Write-Debug "Setting testcolor to $testColor"
+            Format-SpectreTable -Data $testData -Border $testBorder -HideHeaders -Property Group
+            $testResult = $testConsole.Output | StripAnsi
+            $clean = $testResult -replace '\s+|\|'
+            $clean | Should -Be '{1}'
+            Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
+        }
+        
+        It "Should be able to use calculated properties" {
+            $testData = Get-Process -Id $pid
+            $testBorder = 'Markdown'
+            $testColor = $null
+            Write-Debug "Setting testcolor to $testColor"
+            $testData | Format-SpectreTable ProcessName, @{Label="TotalRunningTime"; Expression={(Get-Date) - $_.StartTime}} -Border $testBorder
+            $testResult = $testConsole.Output
+            $obj = $testResult -split "\r?\n" | Select-Object -Skip 1 -SkipLast 2
+            $deconstructed = $obj -split '\|' | StripAnsi | ForEach-Object {
+                if (-Not [String]::IsNullOrEmpty($_)) {
+                    $_.Trim()
+                }
+            }
+            $deconstructed[0] | Should -Be 'ProcessName'
+            $deconstructed[1] | Should -Be 'TotalRunningTime'
+            $deconstructed[4] | Should -Be 'pwsh'
+            Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
+        }
+
+        It "Should match the snapshot" {
+            Mock Write-AnsiConsole {
+                $testConsole.Write($RenderableObject)
+            }
+            @{
+                "Name" = "Test 1"
+                "Value" = 10
+                "Color" = "Turquoise2"
+            }, @{
+                "Name" = "Test 2"
+                "Value" = 20
+                "Color" = "#ff0000"
+            }, @{
+                "Name" = "Test 3"
+                "Value" = 30
+                "Color" = "Turquoise2"
+            } | Format-SpectreTable -Border "Rounded" -Color "Turquoise2"
+
+            $snapshotComparison = "$PSScriptRoot\..\@snapshots\Format-SpectreTable.snapshot.compare.txt"
+            Set-Content -Path $snapshotComparison -Value ($testConsole.Output -replace "`r", "") -NoNewline
+            $compare = Get-Content -Path $snapshotComparison -AsByteStream
+            $snapshot = Get-Content -Path "$PSScriptRoot\..\@snapshots\Format-SpectreTable.snapshot.txt" -AsByteStream
+            try {
+                $snapshot | Should -Be $compare
+            } catch {
+                # byte array to string
+                Write-Host "Expected:`n`n$([System.Text.Encoding]::UTF8.GetString($snapshot))"
+                Write-Host "Got:`n`n$([System.Text.Encoding]::UTF8.GetString($compare))"
+                throw
+            }
         }
     }
 }

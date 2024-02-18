@@ -6,6 +6,7 @@ Describe "Format-SpectreBreakdownChart" {
     InModuleScope "PwshSpectreConsole" {
         BeforeEach {
             $testConsole = [Spectre.Console.Testing.TestConsole]::new()
+            $testConsole.EmitAnsiSequences = $true
             $testWidth = Get-Random -Minimum 10 -Maximum 100
             $testData = @()
             for($i = 0; $i -lt (Get-Random -Minimum 3 -Maximum 10); $i++) {
@@ -52,6 +53,32 @@ Describe "Format-SpectreBreakdownChart" {
             }
             Format-SpectreBreakdownChart -Data $testData
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
+        }
+
+        It "Should match the snapshot" {
+            Mock Write-AnsiConsole {
+                $testConsole.Write($RenderableObject)
+            }
+            $testWidth = 120
+            Write-Debug "Setting test width to $testWidth"
+            $testData = @(
+                (New-SpectreChartItem -Label "Test 1" -Value 10 -Color "Turquoise2"),
+                (New-SpectreChartItem -Label "Test 2" -Value 20 -Color "Turquoise2"),
+                (New-SpectreChartItem -Label "Test 3" -Value 30 -Color "Turquoise2")
+            )
+            Format-SpectreBreakdownChart -Data $testData
+            $snapShotComparison = "$PSScriptRoot\..\@snapshots\Format-SpectreBreakdownChart.snapshot.compare.txt"
+            Set-Content -Path $snapShotComparison -Value ($testConsole.Output -replace "`r", "") -NoNewline
+            $compare = Get-Content -Path $snapShotComparison -AsByteStream
+            $snapShot = Get-Content -Path "$PSScriptRoot\..\@snapshots\Format-SpectreBreakdownChart.snapshot.txt" -AsByteStream
+            try {
+                $snapshot | Should -Be $compare
+            } catch {
+                # byte array to string
+                Write-Host "Expected:`n`n$([System.Text.Encoding]::UTF8.GetString($snapshot))"
+                Write-Host "Got:`n`n$([System.Text.Encoding]::UTF8.GetString($compare))"
+                throw
+            }
         }
     }
 }

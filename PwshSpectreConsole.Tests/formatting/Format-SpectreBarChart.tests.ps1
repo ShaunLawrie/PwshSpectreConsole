@@ -7,6 +7,7 @@ Describe "Format-SpectreBarChart" {
 
         BeforeEach {
             $testConsole = [Spectre.Console.Testing.TestConsole]::new()
+            $testConsole.EmitAnsiSequences = $true
             $testWidth = Get-Random -Minimum 10 -Maximum 100
             $testTitle = "Test Chart $([guid]::NewGuid())"
             $testData = @()
@@ -68,6 +69,25 @@ Describe "Format-SpectreBarChart" {
             }
             Format-SpectreBarChart -Data $testData
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
+        }
+
+        It "Should match the snapshot" {
+            Mock Write-AnsiConsole {
+                $testConsole.Write($RenderableObject)
+            }
+            $testWidth = 120
+            Write-Debug "Setting test width to $testWidth"
+            $testData = @(
+                (New-SpectreChartItem -Label "Test 1" -Value 10 -Color "Turquoise2"),
+                (New-SpectreChartItem -Label "Test 2" -Value 20 -Color "#ff0000"),
+                (New-SpectreChartItem -Label "Test 3" -Value 30 -Color "Turquoise2")
+            )
+            Format-SpectreBarChart -Data $testData
+            $snapShotComparison = "$PSScriptRoot\..\@snapshots\Format-SpectreBarChart.snapshot.compare.txt"
+            Set-Content -Path $snapShotComparison -Value ($testConsole.Output -replace "`r", "") -NoNewline
+            $compare = Get-Content -Path $snapShotComparison -AsByteStream
+            $snapshot = Get-Content -Path "$PSScriptRoot\..\@snapshots\Format-SpectreBarChart.snapshot.txt" -AsByteStream
+            $snapshot | Should -Be $compare
         }
     }
 }

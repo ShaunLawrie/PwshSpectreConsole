@@ -27,8 +27,8 @@ function Write-SpectreHost {
     )
 
     if($NoNewline) {
-        Write-SpectreHostInternalMarkup -Message $Message
+        Write-SpectreHostInternalMarkup $Message
     } else {
-        Write-SpectreHostInternalMarkupLine -Message $Message
+        Write-SpectreHostInternalMarkupLine $Message
     }
 }

@@ -37,5 +37,5 @@ function New-SpectreChartItem {
         [Color]$Color
     )
 
-    return [SpectreChartItem]::new($Label, $Value, $Color.ToMarkup())
+    return [SpectreChartItem]::new($Label, $Value, $Color)
 }

@@ -6,7 +6,7 @@ function Write-SpectreHostInternalMarkup {
         [Parameter(Mandatory)]
         [string] $Message
     )
-    [AnsiConsole]::Markup($Message)
+    [AnsiConsoleExtensions]::Markup([AnsiConsole]::Console, $Message)
 }
 
 function Write-SpectreHostInternalMarkupLine {
@@ -14,5 +14,5 @@ function Write-SpectreHostInternalMarkupLine {
         [Parameter(Mandatory)]
         [string] $Message
     )
-    [AnsiConsole]::MarkupLine($Message)
+    [AnsiConsoleExtensions]::MarkupLine([AnsiConsole]::Console, $Message)
 }

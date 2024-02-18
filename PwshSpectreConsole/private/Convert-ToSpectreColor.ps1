@@ -1,4 +1,3 @@
-using module ".\completions\Completers.psm1"
 using namespace Spectre.Console
 
 <#
@@ -26,7 +25,6 @@ The color to convert. This parameter is mandatory and accepts input from the pip
 function Convert-ToSpectreColor {
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
-        [ValidateSpectreColor()]
         [object] $Color
     )
     try {

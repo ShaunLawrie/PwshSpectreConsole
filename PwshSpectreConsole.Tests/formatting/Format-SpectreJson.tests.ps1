@@ -7,6 +7,7 @@ Describe "Format-SpectreJson" {
 
         BeforeEach {
             $testConsole = [Spectre.Console.Testing.TestConsole]::new()
+            $testConsole.EmitAnsiSequences = $true
             $testData = @(
                 [pscustomobject]@{
                     Name = "John"
@@ -53,6 +54,9 @@ Describe "Format-SpectreJson" {
 
             Mock Get-HostWidth { return 100 }
             Mock Get-HostHeight { return 100 }
+            Mock Write-AnsiConsole {
+                $testConsole.Write($RenderableObject)
+            }
         }
 
         It "tries to render a panel which somewhat implies that the json parsing worked" {
@@ -83,15 +87,63 @@ Describe "Format-SpectreJson" {
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
         }
 
+        It "Simple scalar array test" {
+            {
+                $numbers = Get-Random -Minimum 30 -Maximum 50
+                1..$numbers | Format-SpectreJson -Border None
+                $json = $testConsole.Output | StripAnsi
+                ($json.trim() -split "\r?\n").count | Should -Be ($numbers + 2) # 10 items + 2 braces
+            } | Should -Not -Throw
+        }
+
+        It "Simple String test" {
+            {
+                $numbers = Get-Random -Minimum 30 -Maximum 50
+                1..$numbers | ConvertTo-Json | Format-SpectreJson -Border None
+                $json = $testConsole.Output | StripAnsi
+                ($json.trim() -split "\r?\n").count | Should -Be ($numbers + 2) # 10 items + 2 braces
+            } | Should -Not -Throw
+        }
+
+        It "Should take json string input" {
+            $data = @(
+                [pscustomobject]@{Name = "John"; Age = 25; City = "New York" },
+                [pscustomobject]@{Name = "Jane"; Age = $null; City = "Los Angeles" }
+            )
+            $data | ConvertTo-Json | Format-SpectreJson -Border None
+            $roundtrip = $testConsole.Output | StripAnsi | ConvertFrom-Json
+            (Compare-Object -ReferenceObject $data -DifferenceObject $roundtrip -Property Name, Age, City -CaseSensitive -IncludeEqual).SideIndicator | Should -Be @('==','==')
+        }
+        
+        It "Should roundtrip json string input" {
+            $ht = @{}
+            Get-RandomList -MinItems 30 -MaxItems 50 | ForEach-Object {
+                $ht[$_] = Get-RandomString
+            }
+            $data = [pscustomobject]$ht
+            $data | ConvertTo-Json | Format-SpectreJson -Border None
+            $roundtrip = $testConsole.Output | StripAnsi | ConvertFrom-Json
+            $roundtrip.psobject.properties.name | Should -Be $data.psobject.properties.name
+            $roundtrip.psobject.properties.value | Should -Be $data.psobject.properties.value
+        }
+
         It "Should match the snapshot" {
             Mock Write-AnsiConsole {
                 $testConsole.Write($RenderableObject)
             }
             Format-SpectreJson -Title "Test title" -Border "Double" -Color "SpringGreen3" -Height 25 -Width 78 -Data $testData
-            Set-Content -Path "$PSScriptRoot\..\@snapshots\Format-SpectreJson.snapshot.compare.txt" -Value ($testConsole.Output -replace "`r", "") -NoNewline
-            $snapshot = Get-Content -Path "$PSScriptRoot\..\@snapshots\Format-SpectreJson.snapshot.txt"
-            $compare = Get-Content -Path "$PSScriptRoot\..\@snapshots\Format-SpectreJson.snapshot.txt"
-            $snapshot | Should -Be $compare
+            $snapshotComparison = "$PSScriptRoot\..\@snapshots\Format-SpectreJson.snapshot.compare.txt"
+            Set-Content -Path $snapShotComparison -Value ($testConsole.Output -replace "`r", "") -NoNewline
+            $compare = Get-Content -Path $snapshotComparison -AsByteStream
+            $snapshot = Get-Content -Path "$PSScriptRoot\..\@snapshots\Format-SpectreJson.snapshot.txt" -AsByteStream
+            try {
+                $snapshot | Should -Be $compare
+            } catch {
+                # byte array to string
+                Write-Host "Expected:`n`n$([System.Text.Encoding]::UTF8.GetString($snapshot))"
+                Write-Host "Got:`n`n$([System.Text.Encoding]::UTF8.GetString($compare))"
+                throw
+            }
         }
     }
 }

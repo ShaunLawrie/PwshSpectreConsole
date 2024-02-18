@@ -322,7 +322,7 @@ Invoke-SpectreCommandWithProgress -ScriptBlock {
 
     $example = @"
 Get-SpectreImageExperimental "$PSScriptRoot\..\..\private\images\harveyspecter.gif" -LoopCount 2
-Write-SpectreHost "I'm Harvey Specter. Are you after a Specter consult or a .?"
+Write-SpectreHost "I'm Harvey Specter. Are you after a Specter consult or a Spectre.Console?"
 "@
     $example | Write-SpectreExample -Title "View Images" -Description "Images can be rendered in the terminal, given a path to an image Spectre Console will downsample the image to a resolution that will fit within the terminal width or you can choose your own width setting."
     Invoke-Expression $example
