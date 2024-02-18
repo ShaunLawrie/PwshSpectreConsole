@@ -1,5 +1,32 @@
 using namespace Spectre.Console
 
+function Write-SpectreExample {
+    param (
+        [Parameter(ValueFromPipeline)]
+        [string] $Codeblock,
+        [string] $Title,
+        [string] $Description,
+        [switch] $HideHeader,
+        [switch] $NoNewline
+    )
+    if($host.UI.RawUI.WindowSize.Width -lt 120) {
+        Write-SpectreFigletText "Pwsh + Spectre!"
+    } else {
+        Write-SpectreFigletText "Welcome to PwshSpectreConsole!"
+    }
+    Write-Host ""
+
+    Write-SpectreRule $Title -Color ([Color]::SteelBlue1)
+    Write-SpectreHost "`n$Description"
+    if(!$HideHeader) {
+        Write-CodeblockHeader
+    }
+    $Codeblock | Write-Codeblock -SyntaxHighlight -ShowLineNumbers
+    if(!$NoNewline) {
+        Write-Host ""
+    }
+}
+
 function Start-SpectreDemo {
     <#
     .SYNOPSIS
@@ -18,33 +45,6 @@ function Start-SpectreDemo {
 
     Clear-Host
 
-    function Write-SpectreExample {
-        param (
-            [Parameter(ValueFromPipeline)]
-            [string] $Codeblock,
-            [string] $Title,
-            [string] $Description,
-            [switch] $HideHeader,
-            [switch] $NoNewline
-        )
-        if($host.UI.RawUI.WindowSize.Width -lt 120) {
-            Write-SpectreFigletText "Pwsh + Spectre!"
-        } else {
-            Write-SpectreFigletText "Welcome to PwshSpectreConsole!"
-        }
-        Write-Host ""
-
-        Write-SpectreRule $Title -Color ([Color]::SteelBlue1)
-        Write-SpectreHost "`n$Description"
-        if(!$HideHeader) {
-            Write-CodeblockHeader
-        }
-        $Codeblock | Write-Codeblock -SyntaxHighlight -ShowLineNumbers
-        if(!$NoNewline) {
-            Write-Host ""
-        }
-    }
-
     if($host.UI.RawUI.WindowSize.Width -lt 120) {
         Write-SpectreFigletText "Pwsh + Spectre!"
     } else {
@@ -62,7 +62,7 @@ function Start-SpectreDemo {
     }
 
     Read-SpectrePause -NoNewline
-    return
+    
     Clear-Host
 
     $example = @'

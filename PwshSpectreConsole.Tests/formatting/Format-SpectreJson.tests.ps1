@@ -82,5 +82,16 @@ Describe "Format-SpectreJson" {
             Format-SpectreJson -NoBorder -Data $testData
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
         }
+
+        It "Should match the snapshot" {
+            Mock Write-AnsiConsole {
+                $testConsole.Write($RenderableObject)
+            }
+            Format-SpectreJson -Title "Test title" -Border "Double" -Color "SpringGreen3" -Height 25 -Width 78 -Data $testData
+            Set-Content -Path "$PSScriptRoot\..\@snapshots\Format-SpectreJson.snapshot.compare.txt" -Value ($testConsole.Output -replace "`r", "") -NoNewline
+            $snapshot = Get-Content -Path "$PSScriptRoot\..\@snapshots\Format-SpectreJson.snapshot.txt"
+            $compare = Get-Content -Path "$PSScriptRoot\..\@snapshots\Format-SpectreJson.snapshot.txt"
+            $snapshot | Should -Be $compare
+        }
     }
 }

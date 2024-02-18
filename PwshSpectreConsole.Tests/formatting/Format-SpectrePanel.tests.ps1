@@ -41,5 +41,16 @@ Describe "Format-SpectrePanel" {
             $testConsole.Output | Should -BeLike "*$randomString*"
             $testConsole.Output | Should -BeLike "*$testTitle*"
         }
+
+        It "Should match the snapshot" {
+            Mock Write-AnsiConsole {
+                $testConsole.Write($RenderableObject)
+            }
+            Format-SpectrePanel -Data "This is a test panel" -Title "Test title" -Border "Rounded" -Color "Turquoise2" | Out-Null
+            Set-Content -Path "$PSScriptRoot\..\@snapshots\Format-SpectrePanel.snapshot.compare.txt" -Value ($testConsole.Output -replace "`r", "") -NoNewline
+            $snapshot = Get-Content -Path "$PSScriptRoot\..\@snapshots\Format-SpectrePanel.snapshot.txt"
+            $compare = Get-Content -Path "$PSScriptRoot\..\@snapshots\Format-SpectrePanel.snapshot.txt"
+            $snapshot | Should -Be $compare
+        }
     }
 }

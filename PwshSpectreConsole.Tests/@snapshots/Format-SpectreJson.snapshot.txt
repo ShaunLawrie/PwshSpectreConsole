@@ -1,0 +1,25 @@
+╔═Test title═════════════════════════════════════════════════════════════════╗
+║ {                                                                          ║
+║    "Name": "John",                                                         ║
+║    "Age": 25,                                                              ║
+║    "City": "New York",                                                     ║
+║    "IsEmployed": true,                                                     ║
+║    "Salary": 10,                                                           ║
+║    "Hobbies": [                                                            ║
+║       "Reading",                                                           ║
+║       "Swimming"                                                           ║
+║    ],                                                                      ║
+║    "Address": {                                                            ║
+║       "Street": "123 Main St",                                             ║
+║       "City": "New York",                                                  ║
+║       "State": "NY",                                                       ║
+║       "Deep": {                                                            ║
+║          "Nested": "System.Collections.Hashtable"                          ║
+║       },                                                                   ║
+║       "Zip": "10001"                                                       ║
+║    }                                                                       ║
+║ }                                                                          ║
+║                                                                            ║
+║                                                                            ║
+║                                                                            ║
+╚════════════════════════════════════════════════════════════════════════════╝

@@ -22,7 +22,7 @@ Describe "Read-SpectreConfirm" {
         }
 
         It "prompts with a default answer" {
-            $testDefaultAnswer = "n"# (Get-RandomChoice $choices)
+            $testDefaultAnswer = Get-RandomChoice $choices
             $expectedAnswer = ($testDefaultAnswer -eq "y") ? $true : $false
             $thisAnswer = Read-SpectreConfirm -Prompt (Get-RandomString) -DefaultAnswer $testDefaultAnswer
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
