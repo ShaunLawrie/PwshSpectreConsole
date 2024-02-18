@@ -54,9 +54,9 @@ Describe "Write-SpectreCalendar" {
             $sample[1] | Should -Match 'Event 1'
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 2 -Exactly
         }
-        It "writes calendar for a date with events" {
+        It "writes calendar for a date with something else going on" {
             $sample = Write-SpectreCalendar -Date 2024-07-01 -HideHeader -Border Markdown -Color $testColor
-            $object = $sample -split '\r?\n' | Select-Object -Skip 1 | Select-Object -SkipLast 3
+            $object = $sample -split '\r?\n' | Select-Object -Skip 1 -SkipLast 3
             $object.count | Should -Be 7
             [string[]]$results = 1..31
             $object | Select-Object -Skip 2 | ForEach-Object {

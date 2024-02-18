@@ -5,6 +5,11 @@ Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
 Describe "Format-SpectreTable" {
     InModuleScope "PwshSpectreConsole" {
         BeforeEach {
+            $testBorder = 'Markdown'
+            $testColor = Get-RandomColor
+            Write-Debug $testBorder
+            Write-Debug $testColor
+
             Mock Write-AnsiConsole {
                 param(
                     [Parameter(Mandatory)]
@@ -28,7 +33,7 @@ Describe "Format-SpectreTable" {
             $testData = Get-ChildItem "$PSScriptRoot"
             $verification = $testdata | Format-Table | Get-TableHeader
             $testResult = Format-SpectreTable -Data $testData -Border $testBorder -Color $testColor
-            $rows = $testResult -split "\r?\n" | Select-Object -Skip 1 | Select-Object -SkipLast 2
+            $rows = $testResult -split "\r?\n" | Select-Object -Skip 1 -SkipLast 2
             $header = $rows[0]
             $properties = $header -split '\|' | StripAnsi | ForEach-Object {
                 if (-Not [String]::IsNullOrWhiteSpace($_)) {
@@ -55,7 +60,7 @@ Describe "Format-SpectreTable" {
         It "Should be able to use calculated properties" {
             $Data = Get-Process -Id $pid
             $Format = $data | Format-SpectreTable ProcessName, @{Label="TotalRunningTime"; Expression={(Get-Date) - $_.StartTime}} -Border Markdown
-            $obj = $Format -split "\r?\n" | Select-Object -Skip 1 | Select-Object -SkipLast 2
+            $obj = $Format -split "\r?\n" | Select-Object -Skip 1 -SkipLast 2
             $deconstructed = $obj -split '\|' | StripAnsi | ForEach-Object {
                 if (-Not [String]::IsNullOrEmpty($_)) {
                     $_.Trim()

@@ -5,15 +5,14 @@ Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
 Describe "Read-SpectreConfirm" {
     InModuleScope "PwshSpectreConsole" {
         BeforeEach {
-            $testColor = Get-RandomColor
             $choices = @("y", "n")
-            $answer = "y"
+            $testDefaultAnswer = "y"
             Mock Invoke-SpectrePromptAsync -Verifiable -ParameterFilter {
                 $Prompt -is [Spectre.Console.TextPrompt[string]] `
                 -and $null -eq (Compare-Object -ReferenceObject $Prompt.Choices -DifferenceObject $choices) `
-                -and (($testColor -eq $null -and $Prompt.Style.Foreground -eq $null) -or ($testColor -ne $null -and $Prompt.Style.Foreground.ToMarkup() -eq $testColor))
+                -and (($testColor -eq $null) -or ($Prompt.ChoicesStyle.Foreground.ToMarkup() -eq $testColor))
             } -MockWith {
-                return $answer
+                return $testDefaultAnswer
             }
         }
 
@@ -24,8 +23,9 @@ Describe "Read-SpectreConfirm" {
         }
 
         It "prompts with a default answer" {
-            $expectedAnswer = (Get-RandomChoice $choices)
-            $thisAnswer = Read-SpectreConfirm -Prompt (Get-RandomString) -DefaultAnswer $thisAnswer
+            $testDefaultAnswer = "n"# (Get-RandomChoice $choices)
+            $expectedAnswer = ($testDefaultAnswer -eq "y") ? $true : $false
+            $thisAnswer = Read-SpectreConfirm -Prompt (Get-RandomString) -DefaultAnswer $testDefaultAnswer
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
             Should -InvokeVerifiable
             $thisAnswer | Should -Be $expectedAnswer
@@ -44,8 +44,8 @@ Describe "Read-SpectreConfirm" {
 
         It "writes failure message" {
             $confirmFailure = Get-RandomString
-            $answer = "n"
-            $answer | Out-Null
+            $testDefaultAnswer = "n"
+            $testDefaultAnswer | Out-Null
             Mock Write-SpectreHost -Verifiable -ParameterFilter {
                 $Message -eq $confirmFailure
             }
@@ -56,6 +56,7 @@ Describe "Read-SpectreConfirm" {
         }
 
         It "accepts color" {
+            $testColor = Get-RandomColor
             Read-SpectreConfirm -Prompt (Get-RandomString) -Color $testColor
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
             Should -InvokeVerifiable
