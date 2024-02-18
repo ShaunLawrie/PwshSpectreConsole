@@ -70,7 +70,7 @@ Describe "Write-SpectreCalendar" {
                 '2022-03-10' = 'Event 1'
                 '2022-03-20' = 'Event 2'
             }
-            Write-SpectreCalendar -Date 2024-07-01 -Events $events -Border "Rounded" -Color "SpringGreen3"
+            Write-SpectreCalendar -Date 2024-07-01 -HideHeader -Events $events -Border "Rounded" -Color "SpringGreen3"
             $snapshotComparison = "$PSScriptRoot\..\@snapshots\Write-SpectreCalendar.snapshot.compare.txt"
             Set-Content -Path $snapShotComparison -Value ($testConsole.Output -replace "`r", "") -NoNewline
             $compare = Get-Content -Path $snapshotComparison -AsByteStream
