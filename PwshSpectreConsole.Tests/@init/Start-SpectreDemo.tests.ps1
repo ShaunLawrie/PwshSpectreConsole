@@ -28,11 +28,11 @@ Describe "Start-SpectreDemo" {
 
         AfterEach {
             $html = [Spectre.Console.RecorderExtensions]::ExportHtml($script:recorder)
-            Set-Content -Path "$PSScriptRoot\..\@snapshots\$($____Pester.CurrentTest.Name).html" -Value ($html -replace "`r", "") -NoNewline
+            #Set-Content -Path "$PSScriptRoot\..\@snapshots\$($____Pester.CurrentTest.Name).html" -Value ($html -replace "`r", "") -NoNewline
 
-            $settings = [Spectre.Console.AnsiConsoleSettings]::new()
-            $settings.Out = [Spectre.Console.AnsiConsoleOutput]::new([System.Console]::Out)
-            [Spectre.Console.AnsiConsole]::Console = [Spectre.Console.AnsiConsole]::Create($settings)
+            #$settings = [Spectre.Console.AnsiConsoleSettings]::new()
+            #$settings.Out = [Spectre.Console.AnsiConsoleOutput]::new([System.Console]::Out)
+            #[Spectre.Console.AnsiConsole]::Console = [Spectre.Console.AnsiConsole]::Create($settings)
         }
 
         It "Should have a demo function available, we're just testing the module was loaded correctly" {
