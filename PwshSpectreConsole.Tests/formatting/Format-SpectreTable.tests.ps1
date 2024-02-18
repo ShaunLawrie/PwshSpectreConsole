@@ -183,15 +183,15 @@ Describe "Format-SpectreTable" {
             Mock Write-AnsiConsole {
                 $testConsole.Write($RenderableObject)
             }
-            @{
+            [pscustomobject]@{
                 "Name" = "Test 1"
                 "Value" = 10
                 "Color" = "Turquoise2"
-            }, @{
+            }, [pscustomobject]@{
                 "Name" = "Test 2"
                 "Value" = 20
                 "Color" = "#ff0000"
-            }, @{
+            }, [pscustomobject]@{
                 "Name" = "Test 3"
                 "Value" = 30
                 "Color" = "Turquoise2"
