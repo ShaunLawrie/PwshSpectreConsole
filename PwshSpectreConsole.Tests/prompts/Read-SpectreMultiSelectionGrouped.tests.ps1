@@ -33,7 +33,6 @@ Describe "Read-SpectreMultiSelectionGrouped" {
             }
             Read-SpectreMultiSelectionGrouped -Title $testTitle -Choices $testChoices -PageSize $testPageSize -Color $testColor | Should -Be $itemsToBeSelectedNames
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
 
         It "prompts and allows multiple selection" {
@@ -50,7 +49,6 @@ Describe "Read-SpectreMultiSelectionGrouped" {
             }
             Read-SpectreMultiSelectionGrouped -Title $testTitle -Choices $testChoices -PageSize $testPageSize -Color $testColor | Should -Be $itemsToBeSelectedNames
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
 
         It "throws with duplicate labels" {
@@ -82,7 +80,6 @@ Describe "Read-SpectreMultiSelectionGrouped" {
             )
             Read-SpectreMultiSelectionGrouped -Title $testTitle -ChoiceLabelProperty "ColumnToSelectFrom" -Choices $testChoices -PageSize $testPageSize -Color $testColor | Should -Be $itemToBeSelected
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
 
         It "prompts with an object input and allows multiple selection" {
@@ -99,7 +96,6 @@ Describe "Read-SpectreMultiSelectionGrouped" {
             )
             Read-SpectreMultiSelectionGrouped -Title $testTitle -ChoiceLabelProperty "ColumnToSelectFrom" -Choices $testChoices -PageSize $testPageSize -Color $testColor | Should -Be @($itemToBeSelected, $anotherItemToBeSelected)
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
     }
 }

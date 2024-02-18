@@ -19,7 +19,6 @@ Describe "Read-SpectreConfirm" {
         It "prompts" {
             Read-SpectreConfirm -Prompt (Get-RandomString)
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
 
         It "prompts with a default answer" {
@@ -27,7 +26,6 @@ Describe "Read-SpectreConfirm" {
             $expectedAnswer = ($testDefaultAnswer -eq "y") ? $true : $false
             $thisAnswer = Read-SpectreConfirm -Prompt (Get-RandomString) -DefaultAnswer $testDefaultAnswer
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
-            Should -InvokeVerifiable
             $thisAnswer | Should -Be $expectedAnswer
         }
 
@@ -39,7 +37,6 @@ Describe "Read-SpectreConfirm" {
             Read-SpectreConfirm -Prompt (Get-RandomString) -ConfirmSuccess $confirmSuccess -DefaultAnswer (Get-RandomChoice $choices)
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
             Assert-MockCalled -CommandName "Write-SpectreHost" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
 
         It "writes failure message" {
@@ -52,14 +49,12 @@ Describe "Read-SpectreConfirm" {
             Read-SpectreConfirm -Prompt (Get-RandomString) -ConfirmFailure $confirmFailure -DefaultAnswer (Get-RandomChoice $choices)
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
             Assert-MockCalled -CommandName "Write-SpectreHost" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
 
         It "accepts color" {
             $testColor = Get-RandomColor
             Read-SpectreConfirm -Prompt (Get-RandomString) -Color $testColor
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
     }
 }

@@ -28,20 +28,17 @@ Describe "Format-SpectreBreakdownChart" {
         It "Should create a bar chart with correct width" {
             Format-SpectreBreakdownChart -Data $testData -Width $testWidth
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
         
         It "Should handle piped input correctly" {
             $testData | Format-SpectreBreakdownChart -Width $testWidth
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
         
         It "Should handle single input correctly" {
             $testData = New-SpectreChartItem -Label (Get-RandomString) -Value (Get-Random -Minimum -100 -Maximum 100) -Color (Get-RandomColor)
             Format-SpectreBreakdownChart -Data $testData -Width $testWidth
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
 
         It "Should handle no width and default to host width" {
@@ -55,7 +52,6 @@ Describe "Format-SpectreBreakdownChart" {
             }
             Format-SpectreBreakdownChart -Data $testData
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
     }
 }

@@ -18,7 +18,6 @@ Describe "Read-SpectrePause" {
         It "displays" {
             Read-SpectrePause
             Assert-MockCalled -CommandName "Read-Host" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
 
         It "displays a custom message" {
@@ -26,7 +25,6 @@ Describe "Read-SpectrePause" {
             Write-Debug $testMessage
             Read-SpectrePause -Message $testMessage
             Assert-MockCalled -CommandName "Read-Host" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
     }
 }

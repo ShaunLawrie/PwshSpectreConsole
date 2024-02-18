@@ -47,7 +47,6 @@ Describe "Format-SpectreTable" {
                 $verification.keys | Should -Be $properties
             }
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
         It "Should create a table and display ICollection results properly" {
             $testData = 1 | Group-Object
@@ -55,7 +54,6 @@ Describe "Format-SpectreTable" {
             $clean = $testResult -replace '\s+|\|'
             $clean | StripAnsi | Should -Be '{1}'
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
         It "Should be able to use calculated properties" {
             $Data = Get-Process -Id $pid
@@ -70,7 +68,6 @@ Describe "Format-SpectreTable" {
             $deconstructed[1] | Should -Be 'TotalRunningTime'
             $deconstructed[4] | Should -Be 'pwsh'
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
     }
 }

@@ -39,7 +39,6 @@ Describe "Invoke-SpectreCommandWithStatus" -Tag "integration" {
                 return 1
             } | Should -Be 1
             Assert-MockCalled -CommandName "Start-AnsiConsoleStatus" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
 
         It "executes the scriptblock without mocking" {

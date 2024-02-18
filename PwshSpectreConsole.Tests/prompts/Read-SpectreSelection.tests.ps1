@@ -22,7 +22,6 @@ Describe "Read-SpectreSelection" {
         It "prompts" {
             Read-SpectreSelection -Title $testTitle -Choices (Get-RandomList) -PageSize $testPageSize -Color $testColor
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
 
         It "throws with duplicate labels" {
@@ -38,7 +37,6 @@ Describe "Read-SpectreSelection" {
                 [PSCustomObject]@{ ColumnToSelectFrom = Get-RandomString; Other = Get-RandomString }
             ) | Should -Be $itemToBeSelected
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
     }
 }

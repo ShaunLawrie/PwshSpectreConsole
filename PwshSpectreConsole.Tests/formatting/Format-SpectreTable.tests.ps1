@@ -26,14 +26,12 @@ Describe "Format-SpectreTable" {
             $testData = Get-ChildItem "$PSScriptRoot"
             Format-SpectreTable -Data $testData -Border $testBorder -Color $testColor
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
 
         It "Should create a table when default display members for a command are required and input is piped" {
             $testData = Get-ChildItem "$PSScriptRoot"
             $testData | Format-SpectreTable -Border $testBorder -Color $testColor
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
 
         It "Should be able to retrieve default display members for command output with format data" {

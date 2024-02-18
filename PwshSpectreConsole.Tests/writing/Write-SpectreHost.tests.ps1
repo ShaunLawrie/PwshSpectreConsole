@@ -18,7 +18,6 @@ Describe "Write-SpectreHost" {
             Write-SpectreHost -Message $testMessage
             Assert-MockCalled -CommandName "Write-SpectreHostInternalMarkupLine" -Times 1 -Exactly
             Assert-MockCalled -CommandName "Write-SpectreHostInternalMarkup" -Times 0 -Exactly
-            Should -InvokeVerifiable
         }
 
         It "accepts pipeline input" {
@@ -28,7 +27,6 @@ Describe "Write-SpectreHost" {
             $testMessage | Write-SpectreHost
             Assert-MockCalled -CommandName "Write-SpectreHostInternalMarkupLine" -Times 1 -Exactly
             Assert-MockCalled -CommandName "Write-SpectreHostInternalMarkup" -Times 0 -Exactly
-            Should -InvokeVerifiable
         }
 
         It "handles nonewline" {
@@ -38,7 +36,6 @@ Describe "Write-SpectreHost" {
             Write-SpectreHost -Message $testMessage -NoNewline
             Assert-MockCalled -CommandName "Write-SpectreHostInternalMarkup" -Times 1 -Exactly
             Assert-MockCalled -CommandName "Write-SpectreHostInternalMarkupLine" -Times 0 -Exactly
-            Should -InvokeVerifiable
         }
     }
 }

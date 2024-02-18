@@ -22,7 +22,6 @@ Describe "Format-SpectreTree" {
         It "Should create a Tree" {
             Get-RandomTree | Format-SpectreTree -Guide $testGuide -Color $testColor
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
     }
 }

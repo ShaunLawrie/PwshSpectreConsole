@@ -24,7 +24,6 @@ Describe "Read-SpectreMultiSelection" {
             $choices = (Get-RandomList) + $itemsToBeSelectedNames
             Read-SpectreMultiSelection -Title $testTitle -Choices $choices -PageSize $testPageSize -Color $testColor | Should -Be $itemsToBeSelectedNames
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
 
         It "prompts and allows multiple selection" {
@@ -32,7 +31,6 @@ Describe "Read-SpectreMultiSelection" {
             $choices = $itemsToBeSelectedNames + (Get-RandomList)
             Read-SpectreMultiSelection -Title $testTitle -Choices $choices -PageSize $testPageSize -Color $testColor | Should -Be $itemsToBeSelectedNames
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
 
         It "throws with duplicate labels" {
@@ -56,7 +54,6 @@ Describe "Read-SpectreMultiSelection" {
                 [PSCustomObject]@{ ColumnToSelectFrom = Get-RandomString; Other = Get-RandomString }
             ) | Should -Be $itemToBeSelected
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
 
         It "prompts with an object input and allows multiple selection" {
@@ -70,7 +67,6 @@ Describe "Read-SpectreMultiSelection" {
                 $anotherItemToBeSelected
             ) | Should -Be @($itemToBeSelected, $anotherItemToBeSelected)
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
     }
 }

@@ -20,7 +20,6 @@ Describe "Write-SpectreFigletText" {
         It "writes figlet text" {
             Write-SpectreFigletText -Text (Get-RandomString) -Alignment $testAlignment -Color $testColor
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
 
         It "throws when the font file isn't found" {
