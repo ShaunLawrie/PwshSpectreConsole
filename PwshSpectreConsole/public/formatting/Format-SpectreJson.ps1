@@ -14,6 +14,9 @@ function Format-SpectreJson {
     .PARAMETER Data
     The array of objects to be formatted into Json.
 
+    .PARAMETER Depth
+    The maximum depth of the Json. Default is defined by the version of powershell.
+
     .PARAMETER NoBorder
     If specified, the Json will not be surrounded by a border.
 

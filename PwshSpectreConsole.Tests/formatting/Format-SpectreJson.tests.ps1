@@ -16,7 +16,7 @@ Describe "Format-SpectreJson" {
                     IsEmployed = $true
                     Salary = 10
                     Hobbies = @("Reading", "Swimming")
-                    Address = @{
+                    Address = [pscustomobject]@{
                         Street = "123 Main St"
                         City = "New York"
                         Deep = @{
