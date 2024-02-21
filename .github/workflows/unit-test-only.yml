@@ -27,4 +27,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Snapshots
-          path: .\PwshSpectreConsole.Tests\@snapshots\*.txt
+          path: PwshSpectreConsole.Tests/@snapshots/*.txt
