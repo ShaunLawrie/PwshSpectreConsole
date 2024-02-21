@@ -83,11 +83,7 @@ Describe "Format-SpectreBarChart" {
                 (New-SpectreChartItem -Label "Test 3" -Value 30 -Color "Turquoise2")
             )
             Format-SpectreBarChart -Data $testData
-            $snapShotComparison = "$PSScriptRoot\..\@snapshots\Format-SpectreBarChart.snapshot.compare.txt"
-            Set-Content -Path $snapShotComparison -Value ($testConsole.Output -replace "`r", "") -NoNewline
-            $compare = Get-Content -Path $snapShotComparison -AsByteStream
-            $snapshot = Get-Content -Path "$PSScriptRoot\..\@snapshots\Format-SpectreBarChart.snapshot.txt" -AsByteStream
-            $snapshot | Should -Be $compare
+            { Assert-OutputMatchesSnapshot -SnapshotName "Format-SpectreBarChart" -Output $testConsole.Output } | Should -Not -Throw
         }
     }
 }

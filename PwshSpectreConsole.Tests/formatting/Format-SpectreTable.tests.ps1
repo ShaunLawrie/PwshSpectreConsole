@@ -197,18 +197,7 @@ Describe "Format-SpectreTable" {
                 "Color" = "Turquoise2"
             } | Format-SpectreTable -Border "Rounded" -Color "Turquoise2"
 
-            $snapshotComparison = "$PSScriptRoot\..\@snapshots\Format-SpectreTable.snapshot.compare.txt"
-            Set-Content -Path $snapshotComparison -Value ($testConsole.Output -replace "`r", "") -NoNewline
-            $compare = Get-Content -Path $snapshotComparison -AsByteStream
-            $snapshot = Get-Content -Path "$PSScriptRoot\..\@snapshots\Format-SpectreTable.snapshot.txt" -AsByteStream
-            try {
-                $snapshot | Should -Be $compare
-            } catch {
-                # byte array to string
-                Write-Host "Expected:`n`n$([System.Text.Encoding]::UTF8.GetString($snapshot))"
-                Write-Host "Got:`n`n$([System.Text.Encoding]::UTF8.GetString($compare))"
-                throw
-            }
+            { Assert-OutputMatchesSnapshot -SnapshotName "Format-SpectreTable" -Output $testConsole.Output } | Should -Not -Throw
         }
     }
 }

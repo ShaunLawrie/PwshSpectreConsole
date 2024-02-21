@@ -72,18 +72,7 @@ Describe "Write-SpectreCalendar" {
             }
             $culture = Get-Culture -Name "en-US"
             Write-SpectreCalendar -Date 2024-07-01 -Culture $culture -Events $events -Border "Rounded" -Color "SpringGreen3"
-            $snapshotComparison = "$PSScriptRoot\..\@snapshots\Write-SpectreCalendar.snapshot.compare.txt"
-            Set-Content -Path $snapShotComparison -Value ($testConsole.Output -replace "`r", "") -NoNewline
-            $compare = Get-Content -Path $snapshotComparison -AsByteStream
-            $snapshot = Get-Content -Path "$PSScriptRoot\..\@snapshots\Write-SpectreCalendar.snapshot.txt" -AsByteStream
-            try {
-                $snapshot | Should -Be $compare
-            } catch {
-                # byte array to string
-                Write-Host "Expected:`n`n$([System.Text.Encoding]::UTF8.GetString($snapshot))"
-                Write-Host "Got:`n`n$([System.Text.Encoding]::UTF8.GetString($compare))"
-                throw
-            }
+            { Assert-OutputMatchesSnapshot -SnapshotName "Write-SpectreCalendar" -Output $testConsole.Output } | Should -Not -Throw
         }
     }
 }

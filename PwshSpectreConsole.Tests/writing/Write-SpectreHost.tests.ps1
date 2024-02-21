@@ -40,18 +40,7 @@ Describe "Write-SpectreHost" {
         It "Should match the snapshot" {
             $testMessage = "[#00ff00]Hello[/], [DeepSkyBlue3_1]World![/] :smiling_face_with_sunglasses: Yay!"
             Write-SpectreHost $testMessage
-            $snapshotComparison = "$PSScriptRoot\..\@snapshots\Write-SpectreHost.snapshot.compare.txt"
-            Set-Content -Path $snapShotComparison -Value ($testConsole.Output -replace "`r", "") -NoNewline
-            $compare = Get-Content -Path $snapshotComparison -AsByteStream
-            $snapshot = Get-Content -Path "$PSScriptRoot\..\@snapshots\Write-SpectreHost.snapshot.txt" -AsByteStream
-            try {
-                $snapshot | Should -Be $compare
-            } catch {
-                # byte array to string
-                Write-Host "Expected:`n`n$([System.Text.Encoding]::UTF8.GetString($snapshot))"
-                Write-Host "Got:`n`n$([System.Text.Encoding]::UTF8.GetString($compare))"
-                throw
-            }
+            { Assert-OutputMatchesSnapshot -SnapshotName "Write-SpectreHost" -Output $testConsole.Output } | Should -Not -Throw
         }
     }
 }

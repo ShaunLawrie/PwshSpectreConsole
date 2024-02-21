@@ -132,18 +132,7 @@ Describe "Format-SpectreJson" {
                 $testConsole.Write($RenderableObject)
             }
             Format-SpectreJson -Title "Test title" -Border "Double" -Color "SpringGreen3" -Height 25 -Width 78 -Data $testData
-            $snapshotComparison = "$PSScriptRoot\..\@snapshots\Format-SpectreJson.snapshot.compare.txt"
-            Set-Content -Path $snapShotComparison -Value ($testConsole.Output -replace "`r", "") -NoNewline
-            $compare = Get-Content -Path $snapshotComparison -AsByteStream
-            $snapshot = Get-Content -Path "$PSScriptRoot\..\@snapshots\Format-SpectreJson.snapshot.txt" -AsByteStream
-            try {
-                $snapshot | Should -Be $compare
-            } catch {
-                # byte array to string
-                Write-Host "Expected:`n`n$([System.Text.Encoding]::UTF8.GetString($snapshot))"
-                Write-Host "Got:`n`n$([System.Text.Encoding]::UTF8.GetString($compare))"
-                throw
-            }
+            { Assert-OutputMatchesSnapshot -SnapshotName "Format-SpectreJson" -Output $testConsole.Output } | Should -Not -Throw
         }
     }
 }

@@ -48,18 +48,7 @@ Describe "Format-SpectrePanel" {
                 $testConsole.Write($RenderableObject)
             }
             Format-SpectrePanel -Data "This is a test panel" -Title "Test title" -Border "Rounded" -Color "Turquoise2" | Out-Null
-            $snapshotComparison = "$PSScriptRoot\..\@snapshots\Format-SpectrePanel.snapshot.compare.txt"
-            Set-Content -Path $snapshotComparison -Value ($testConsole.Output -replace "`r", "") -NoNewline
-            $compare = Get-Content -Path $snapshotComparison -AsByteStream
-            $snapshot = Get-Content -Path "$PSScriptRoot\..\@snapshots\Format-SpectrePanel.snapshot.txt" -AsByteStream
-            try {
-                $snapshot | Should -Be $compare
-            } catch {
-                # byte array to string
-                Write-Host "Expected:`n`n$([System.Text.Encoding]::UTF8.GetString($snapshot))"
-                Write-Host "Got:`n`n$([System.Text.Encoding]::UTF8.GetString($compare))"
-                throw
-            }
+            { Assert-OutputMatchesSnapshot -SnapshotName "Format-SpectrePanel" -Output $testConsole.Output } | Should -Not -Throw
         }
     }
 }

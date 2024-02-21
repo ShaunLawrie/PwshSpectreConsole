@@ -238,3 +238,21 @@ function Get-SpectreTableRowData {
         Get-RandomString
     }
 }
+
+function Assert-OutputMatchesSnapshot {
+    param (
+        [string] $SnapshotName,
+        [string] $Output
+    )
+    $snapShotComparisonPath = "$PSScriptRoot\@snapshots\$SnapshotName.snapshot.compare.txt"
+    $snapShotPath = "$PSScriptRoot\@snapshots\$SnapshotName.snapshot.txt"
+    $compare = $Output -replace "`r", ""
+    Set-Content -Path $snapShotComparisonPath -Value $compare -NoNewline
+    $snapshot = Get-Content -Path $snapShotPath -Raw
+    if($compare -ne $snapshot) {
+        Write-Host "Expected to match snapshot:`n`n$snapshot"
+        Write-Host "But the output was:`n`n$compare"
+        Write-Host "You can diff the snapshot files at:`n - $snapShotPath`n - $snapShotComparisonPath"
+        throw "Snapshot comparison failed"
+    }
+}

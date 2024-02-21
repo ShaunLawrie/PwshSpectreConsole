@@ -63,22 +63,11 @@ Describe "Format-SpectreBreakdownChart" {
             Write-Debug "Setting test width to $testWidth"
             $testData = @(
                 (New-SpectreChartItem -Label "Test 1" -Value 10 -Color "Turquoise2"),
-                (New-SpectreChartItem -Label "Test 2" -Value 20 -Color "Turquoise2"),
+                (New-SpectreChartItem -Label "Test 2" -Value 20 -Color "Red"),
                 (New-SpectreChartItem -Label "Test 3" -Value 30 -Color "Turquoise2")
             )
             Format-SpectreBreakdownChart -Data $testData
-            $snapShotComparison = "$PSScriptRoot\..\@snapshots\Format-SpectreBreakdownChart.snapshot.compare.txt"
-            Set-Content -Path $snapShotComparison -Value ($testConsole.Output -replace "`r", "") -NoNewline
-            $compare = Get-Content -Path $snapShotComparison -AsByteStream
-            $snapShot = Get-Content -Path "$PSScriptRoot\..\@snapshots\Format-SpectreBreakdownChart.snapshot.txt" -AsByteStream
-            try {
-                $snapshot | Should -Be $compare
-            } catch {
-                # byte array to string
-                Write-Host "Expected:`n`n$([System.Text.Encoding]::UTF8.GetString($snapshot))"
-                Write-Host "Got:`n`n$([System.Text.Encoding]::UTF8.GetString($compare))"
-                throw
-            }
+            { Assert-OutputMatchesSnapshot -SnapshotName "Format-SpectreBreakdownChart" -Output $testConsole.Output } | Should -Not -Throw
         }
     }
 }

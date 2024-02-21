@@ -61,18 +61,7 @@ Describe "Format-SpectreTree" {
             $testGuide = "BoldLine"
             $testColor = "DeepPink2"
             $testData | Format-SpectreTree -Guide $testGuide -Color $testColor
-            $snapshotComparison = "$PSScriptRoot\..\@snapshots\Format-SpectreTree.snapshot.compare.txt"
-            Set-Content -Path $snapshotComparison -Value ($testConsole.Output -replace "`r", "") -NoNewline
-            $compare = Get-Content -Path $snapshotComparison -AsByteStream
-            $snapshot = Get-Content -Path "$PSScriptRoot\..\@snapshots\Format-SpectreTree.snapshot.txt" -AsByteStream
-            try {
-                $snapshot | Should -Be $compare
-            } catch {
-                # byte array to string
-                Write-Host "Expected:`n`n$([System.Text.Encoding]::UTF8.GetString($snapshot))"
-                Write-Host "Got:`n`n$([System.Text.Encoding]::UTF8.GetString($compare))"
-                throw
-            }
+            { Assert-OutputMatchesSnapshot -SnapshotName "Format-SpectreTree" -Output $testConsole.Output } | Should -Not -Throw
         }
     }
 }
