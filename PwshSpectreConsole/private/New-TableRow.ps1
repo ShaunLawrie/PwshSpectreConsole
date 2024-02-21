@@ -2,6 +2,7 @@ function New-TableRow {
     param(
         [Parameter(Mandatory)]
         [Object] $Entry,
+        [Color] $Color = [Color]::Default,
         [Switch] $AllowMarkup,
         [Switch] $Scalar
     )
@@ -10,21 +11,21 @@ function New-TableRow {
         AllowMarkup = $AllowMarkup
     }
     if ($scalar) {
-        New-TableCell -String $Entry @opts
+        New-TableCell -String $Entry -Color $Color @opts
     }
     else {
         # simplified, should be faster.
         $detectVT = '\x1b'
         $rows = foreach ($cell in $Entry) {
             if ([String]::IsNullOrEmpty($cell)) {
-                New-TableCell @opts
+                New-TableCell -Color $Color @opts
                 continue
             }
             if ($cell -match $detectVT) {
                 ConvertTo-SpectreDecoration -String $cell @opts
                 continue
             }
-            New-TableCell -String $cell @opts
+            New-TableCell -String $cell -Color $Color @opts
         }
         return $rows
     }

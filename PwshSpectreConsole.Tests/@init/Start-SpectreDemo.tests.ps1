@@ -8,6 +8,10 @@ try {
 
 Import-Module "$PSScriptRoot\..\..\PwshSpectreConsole\PwshSpectreConsole.psd1" -Force
 
+if (-not ([System.AppDomain]::CurrentDomain.GetAssemblies().FullName | Where-Object { $_ -like "*Spectre.Console.Testing*" })) {
+    Add-Type -Path "$PSScriptRoot\..\packages\Spectre.Console.Testing\lib\netstandard2.0\Spectre.Console.Testing.dll"
+}
+
 Describe "Start-SpectreDemo" {
     InModuleScope "PwshSpectreConsole" {
 

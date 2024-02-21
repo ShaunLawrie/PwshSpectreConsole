@@ -58,8 +58,7 @@ RequiredAssemblies =
                '.\packages\Spectre.Console\lib\netstandard2.0\Spectre.Console.dll', 
                '.\packages\Spectre.Console.ImageSharp\lib\netstandard2.0\Spectre.Console.ImageSharp.dll', 
                '.\packages\SixLabors.ImageSharp\lib\netstandard2.0\SixLabors.ImageSharp.dll', 
-               '.\packages\Spectre.Console.Json\lib\netstandard2.0\Spectre.Console.Json.dll',
-               '.\packages\Spectre.Console.Testing\lib\netstandard2.0\Spectre.Console.Testing.dll'
+               '.\packages\Spectre.Console.Json\lib\netstandard2.0\Spectre.Console.Json.dll'
 
 # Script files (.ps1) that are run in the caller's environment prior to importing this module.
 # ScriptsToProcess = @()

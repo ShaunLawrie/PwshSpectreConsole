@@ -39,10 +39,10 @@ function Set-SpectreColors {
         [Color] $DefaultValueColor = "Grey",
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $DefaultTableHeaderColor = "Grey82",
+        [Color] $DefaultTableHeaderColor = [Color]::Default,
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $DefaultTableTextColor = "Grey39"
+        [Color] $DefaultTableTextColor = [Color]::Default
     )
     $script:AccentColor = $AccentColor
     $script:DefaultValueColor = $DefaultValueColor
