@@ -14,6 +14,9 @@ function Format-SpectreJson {
     .PARAMETER Data
     The array of objects to be formatted into Json.
 
+    .PARAMETER Depth
+    The maximum depth of the Json. Default is defined by the version of powershell.
+
     .PARAMETER NoBorder
     If specified, the Json will not be surrounded by a border.
 
@@ -154,31 +157,31 @@ function Format-SpectreJson {
             return
         }
         try {
-            $json = [Spectre.Console.Json.JsonText]::new(($collector | ConvertTo-Json @splat))
+            $json = [Json.JsonText]::new(($collector | ConvertTo-Json @splat))
         }
         catch {
             Write-Error "Failed to convert to json, $_"
             return
         }
-        $json.BracesStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::Red)
-        $json.BracketsStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::Green)
-        $json.ColonStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::Blue)
-        $json.CommaStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::CadetBlue)
-        $json.StringStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::Yellow)
-        $json.NumberStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::Cyan2)
-        $json.BooleanStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::Teal)
-        $json.NullStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::Plum1)
+        $json.BracesStyle = [Style]::new([Color]::Red)
+        $json.BracketsStyle = [Style]::new([Color]::Green)
+        $json.ColonStyle = [Style]::new([Color]::Blue)
+        $json.CommaStyle = [Style]::new([Color]::CadetBlue)
+        $json.StringStyle = [Style]::new([Color]::Yellow)
+        $json.NumberStyle = [Style]::new([Color]::Cyan2)
+        $json.BooleanStyle = [Style]::new([Color]::Teal)
+        $json.NullStyle = [Style]::new([Color]::Plum1)
 
         if ($NoBorder) {
             Write-AnsiConsole $json
             return
         }
 
-        $panel = [Spectre.Console.Panel]::new($json)
-        $panel.Border = [Spectre.Console.BoxBorder]::$Border
-        $panel.BorderStyle = [Spectre.Console.Style]::new($Color)
+        $panel = [Panel]::new($json)
+        $panel.Border = [BoxBorder]::$Border
+        $panel.BorderStyle = [Style]::new($Color)
         if ($Title) {
-            $panel.Header = [Spectre.Console.PanelHeader]::new($Title)
+            $panel.Header = [PanelHeader]::new($Title)
         }
         if ($width) {
             $panel.Width = $Width

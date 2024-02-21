@@ -5,30 +5,21 @@ Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
 Describe "Write-SpectreCalendar" {
     InModuleScope "PwshSpectreConsole" {
         BeforeEach {
+            $testConsole = [Spectre.Console.Testing.TestConsole]::new()
+            $testConsole.EmitAnsiSequences = $true
+            
             $testBorder = 'Markdown'
             $testColor = Get-RandomColor
+            Write-Debug $testBorder
+            Write-Debug $testColor
             Mock Write-AnsiConsole {
-                param(
-                    [Parameter(Mandatory)]
-                    [Spectre.Console.Rendering.Renderable] $RenderableObject
-                )
-                try {
-                    $writer = [System.IO.StringWriter]::new()
-                    $output = [Spectre.Console.AnsiConsoleOutput]::new($writer)
-                    $settings = [Spectre.Console.AnsiConsoleSettings]::new()
-                    $settings.Out = $output
-                    $console = [Spectre.Console.AnsiConsole]::Create($settings)
-                    $console.Write($RenderableObject)
-                    $writer.ToString()
-                }
-                finally {
-                    $writer.Dispose()
-                }
+                $testConsole.Write($RenderableObject)
             }
         }
 
         It "writes calendar for a date" {
-            $sample = Write-SpectreCalendar -Date "2024-01-01" -Culture "en-us" -Border $testBorder -Color $testColor
+            Write-SpectreCalendar -Date "2024-01-01" -Culture "en-us" -Border $testBorder -Color $testColor
+            $sample = $testConsole.Output
             $object = $sample -split '\r?\n'
             $object[0] | Should -Match 'January\s+2024'
             $rawdays = $object[2]
@@ -48,15 +39,17 @@ Describe "Write-SpectreCalendar" {
                 '2022-03-10' = 'Event 1'
                 '2022-03-20' = 'Event 2'
             }
-            $sample = Write-SpectreCalendar -Date "2024-03-01" -Events $events -Culture "en-us" -Border Markdown -Color $testColor
-            $sample.count | Should -Be 2
-            $sample[0] | Should -Match 'March\s+2024'
-            $sample[1] | Should -Match 'Event 1'
+            Write-SpectreCalendar -Date "2024-03-01" -Events $events -Culture "en-us" -Border Markdown -Color $testColor
+            $sample = $testConsole.Output
+            $sample | Should -Match 'March\s+2024'
+            $sample | Should -Match 'Event 1'
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 2 -Exactly
         }
-        It "writes calendar for a date with events" {
-            $sample = Write-SpectreCalendar -Date 2024-07-01 -HideHeader -Border Markdown -Color $testColor
-            $object = $sample -split '\r?\n' | Select-Object -Skip 1 | Select-Object -SkipLast 3
+
+        It "writes calendar for a date with something else going on" {
+            Write-SpectreCalendar -Date 2024-07-01 -HideHeader -Border Markdown -Color $testColor
+            $sample = $testConsole.Output
+            $object = $sample -split '\r?\n' | Select-Object -Skip 1 -SkipLast 3
             $object.count | Should -Be 7
             [string[]]$results = 1..31
             $object | Select-Object -Skip 2 | ForEach-Object {
@@ -67,6 +60,19 @@ Describe "Write-SpectreCalendar" {
                 }
             }
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
+        }
+
+        It "Should match the snapshot" {
+            Mock Write-AnsiConsole {
+                $testConsole.Write($RenderableObject)
+            }
+            $events = @{
+                '2022-03-10' = 'Event 1'
+                '2022-03-20' = 'Event 2'
+            }
+            $culture = Get-Culture -Name "en-US"
+            Write-SpectreCalendar -Date 2024-07-01 -Culture $culture -Events $events -Border "Rounded" -Color "SpringGreen3"
+            { Assert-OutputMatchesSnapshot -SnapshotName "Write-SpectreCalendar" -Output $testConsole.Output } | Should -Not -Throw
         }
     }
 }

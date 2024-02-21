@@ -33,6 +33,12 @@ function Format-SpectreTable {
     .PARAMETER Color
     The color of the table border. Default is the accent color of the script.
 
+    .PARAMETER HeaderColor
+    The color of the table header text. Default is the DefaultTableHeaderColor.
+
+    .PARAMETER TextColor
+    The color of the table text. Default is the DefaultTableTextColor.
+
     .PARAMETER Width
     The width of the table.
 
@@ -91,6 +97,12 @@ function Format-SpectreTable {
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
         [Color] $Color = $script:AccentColor,
+        [ColorTransformationAttribute()]
+        [ArgumentCompletionsSpectreColors()]
+        [Color] $HeaderColor = $script:DefaultTableHeaderColor,
+        [ColorTransformationAttribute()]
+        [ArgumentCompletionsSpectreColors()]
+        [Color] $TextColor = $script:DefaultTableTextColor,
         [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostWidth) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
         [int] $Width,
         [switch] $HideHeaders,
@@ -138,24 +150,24 @@ function Format-SpectreTable {
         if (-Not $collector.shapeInfo) {
             # scalar array, no header
             $rowoptions.scalar = $tableoptions.scalar = $true
-            $table = Add-TableColumns -Table $table @tableoptions
+            $table = Add-TableColumns -Table $table @tableoptions -Color $HeaderColor
         } else {
             # grab the FormatStartData
             $Headers = Get-TableHeader $collector[0]
             if ($Headers) {
-                $table = Add-TableColumns -Table $table -formatData $Headers
+                $table = Add-TableColumns -Table $table -formatData $Headers -Color $HeaderColor
             } else {
                 return
             }
         }
         foreach ($item in $collector.FormatEntryInfo) {
             if ($rowoptions.scalar) {
-                $row = New-TableRow -Entry $item.Text @rowoptions
+                $row = New-TableRow -Entry $item.Text -Color $TextColor @rowoptions
             } else {
                 if ($null -eq $item.FormatPropertyFieldList.propertyValue) {
                     continue
                 }
-                $row = New-TableRow -Entry $item.FormatPropertyFieldList.propertyValue @rowoptions
+                $row = New-TableRow -Entry $item.FormatPropertyFieldList.propertyValue -Color $TextColor @rowoptions
             }
             if ($AllowMarkup) {
                 $table = [TableExtensions]::AddRow($table, [Markup[]]$row)

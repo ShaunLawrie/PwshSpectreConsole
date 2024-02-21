@@ -1,3 +1,5 @@
+using namespace Spectre.Console
+
 <#
 .SYNOPSIS
     Retrieves a collection of emojis available in Spectre Console.
@@ -23,7 +25,7 @@ function Get-SpectreDemoEmoji {
     Write-SpectreRule "`nGeneral"
     Write-Host ""
     
-    $emojiCollection = [Spectre.Console.Emoji+Known] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
+    $emojiCollection = [Emoji+Known] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
     $faces = @()
     foreach($emoji in $emojiCollection) {
         $id = ($emoji -creplace '([A-Z])', '_$1' -replace '^_', '').ToLower()

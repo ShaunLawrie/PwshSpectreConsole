@@ -1,29 +1,32 @@
+using namespace Spectre.Console
+
 function New-TableCell {
     [cmdletbinding()]
     param(
         [Object] $String,
+        [Color] $Color = [Color]::Default,
         [Switch] $AllowMarkup
     )
     Write-Debug "Module: $($ExecutionContext.SessionState.Module.Name) Command: $($MyInvocation.MyCommand.Name) Param: $($PSBoundParameters.GetEnumerator())"
     if ([String]::IsNullOrEmpty($String)) {
         if ($AllowMarkup) {
-            return [Spectre.Console.Markup]::new(' ')
+            return [Markup]::new(' ', [Style]::new($Color))
         }
-        return [Spectre.Console.Text]::new(' ')
+        return [Text]::new(' ', [Style]::new($Color))
     }
     if (-Not [String]::IsNullOrEmpty($String.ToString())) {
         if ($AllowMarkup) {
             Write-Debug "New-TableCell ToString(), Markup, $($String.ToString())"
-            return [Spectre.Console.Markup]::new($String.ToString())
+            return [Markup]::new($String.ToString(), [Style]::new($Color))
         }
         Write-Debug "New-TableCell ToString(), Text, $($String.ToString())"
-        return [Spectre.Console.Text]::new($String.ToString())
+        return [Text]::new($String.ToString(), [Style]::new($Color))
     }
     # just coerce to string.
     if ($AllowMarkup) {
         Write-Debug "New-TableCell [String], markup, $([String]$String)"
-        return [Spectre.Console.Markup]::new([String]$String)
+        return [Markup]::new([String]$String, [Style]::new($Color))
     }
     Write-Debug "New-TableCell [String], Text, $([String]$String)"
-    return [Spectre.Console.Text]::new([String]$String)
+    return [Text]::new([String]$String, [Style]::new($Color))
 }

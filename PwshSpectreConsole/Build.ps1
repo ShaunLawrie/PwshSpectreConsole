@@ -5,10 +5,18 @@ param (
 function Install-SpectreConsole {
     param (
         [string] $InstallLocation,
+        [string] $TestingInstallLocation,
         [string] $Version
     )
 
     New-Item -Path $InstallLocation -ItemType "Directory" -Force | Out-Null
+
+    $libPath = Join-Path $TestingInstallLocation "Spectre.Console.Testing"
+    New-Item -Path $libPath -ItemType "Directory" -Force | Out-Null
+    $downloadLocation = Join-Path $libPath "download.zip"
+    Invoke-WebRequest "https://www.nuget.org/api/v2/package/Spectre.Console.Testing/$Version" -OutFile $downloadLocation -UseBasicParsing
+    Expand-Archive $downloadLocation $libPath -Force
+    Remove-Item $downloadLocation
 
     $libPath = Join-Path $InstallLocation "Spectre.Console"
     New-Item -Path $libPath -ItemType "Directory" -Force | Out-Null
@@ -45,7 +53,11 @@ function Install-SpectreConsole {
 
 Write-Host "Downloading Spectre.Console version $Version"
 $installLocation = (Join-Path $PSScriptRoot "packages")
+$testingInstallLocation = (Join-Path $PSScriptRoot ".." "PwshSpectreConsole.Tests" "packages")
 if(Test-Path $installLocation) {
     Remove-Item $installLocation -Recurse -Force
 }
-Install-SpectreConsole -InstallLocation $installLocation -Version $Version
+if(Test-Path $testingInstallLocation) {
+    Remove-Item $testingInstallLocation -Recurse -Force
+}
+Install-SpectreConsole -InstallLocation $installLocation -TestingInstallLocation $testingInstallLocation -Version $Version

@@ -36,7 +36,11 @@ function Get-RandomList {
 }
 
 function Get-RandomString {
-    $length = Get-Random -Minimum 10 -Maximum 20
+    param (
+        [int] $MinimumLength = 10,
+        [int] $MaximumLength = 20
+    )
+    $length = Get-Random -Minimum $MinimumLength -Maximum $MaximumLength
     $chars = [char[]]([char]'a'..[char]'z' + [char]'A'..[char]'Z' + [char]'0'..[char]'9')
     $string = ""
     for ($i = 0; $i -lt $length; $i++) {
@@ -232,5 +236,23 @@ function Get-SpectreTableRowData {
             return '[{0}] {1} [/]' -f (Get-RandomColor), (Get-RandomString)
             }
         Get-RandomString
+    }
+}
+
+function Assert-OutputMatchesSnapshot {
+    param (
+        [string] $SnapshotName,
+        [string] $Output
+    )
+    $snapShotComparisonPath = "$PSScriptRoot\@snapshots\$SnapshotName.snapshot.compare.txt"
+    $snapShotPath = "$PSScriptRoot\@snapshots\$SnapshotName.snapshot.txt"
+    $compare = $Output -replace "`r", ""
+    Set-Content -Path $snapShotComparisonPath -Value $compare -NoNewline
+    $snapshot = Get-Content -Path $snapShotPath -Raw
+    if($compare -ne $snapshot) {
+        Write-Host "Expected to match snapshot:`n`n$snapshot"
+        Write-Host "But the output was:`n`n$compare"
+        Write-Host "You can diff the snapshot files at:`n - $snapShotPath`n - $snapShotComparisonPath"
+        throw "Snapshot comparison failed"
     }
 }

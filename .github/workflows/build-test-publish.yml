@@ -46,6 +46,12 @@ jobs:
           Import-Module .\PwshSpectreConsole\PwshSpectreConsole.psd1 -Force
           Publish-Module -Name PwshSpectreConsole -Exclude "Build.ps1" -NugetApiKey $env:PSGALLERY_API_KEY
           gh release create "v$newVersion" --target main --generate-notes
+      - name: Upload Snapshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Snapshots
+          path: PwshSpectreConsole.Tests/@snapshots/*.txt
 
   publish-prerelease-to-psgallery:
     name: Publish Prerelease
@@ -101,3 +107,9 @@ jobs:
 
           # Create a gh release for it
           gh release create "v$newVersion-$newPrereleaseTag" --target prerelease --generate-notes --prerelease
+      - name: Upload Snapshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Snapshots
+          path: PwshSpectreConsole.Tests/@snapshots/*.txt

@@ -1,3 +1,6 @@
+using module "..\..\private\completions\Completers.psm1"
+using namespace Spectre.Console
+
 function Read-SpectreText {
     <#
     .SYNOPSIS
@@ -37,23 +40,23 @@ function Read-SpectreText {
     param (
         [string] $Question = "What's your name?",
         [string] $DefaultAnswer,
-        [ValidateSpectreColor()]
+        [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [string] $AnswerColor,
+        [Color] $AnswerColor,
         [switch] $AllowEmpty,
         [string[]] $Choices
     )
-    $spectrePrompt = [Spectre.Console.TextPrompt[string]]::new($Question)
-    $spectrePrompt.DefaultValueStyle = [Spectre.Console.Style]::new($script:DefaultValueColor)
+    $spectrePrompt = [TextPrompt[string]]::new($Question)
+    $spectrePrompt.DefaultValueStyle = [Style]::new($script:DefaultValueColor)
     if ($DefaultAnswer) {
-        $spectrePrompt = [Spectre.Console.TextPromptExtensions]::DefaultValue($spectrePrompt, $DefaultAnswer)
+        $spectrePrompt = [TextPromptExtensions]::DefaultValue($spectrePrompt, $DefaultAnswer)
     }
     if ($AnswerColor) {
-        $spectrePrompt.PromptStyle = [Spectre.Console.Style]::new(($AnswerColor | Convert-ToSpectreColor))
+        $spectrePrompt.PromptStyle = [Style]::new($AnswerColor)
     }
     $spectrePrompt.AllowEmpty = $AllowEmpty
     if ($null -ne $Choices) {
-        $spectrePrompt = [Spectre.Console.TextPromptExtensions]::AddChoices($spectrePrompt, $Choices)
+        $spectrePrompt = [TextPromptExtensions]::AddChoices($spectrePrompt, $Choices)
     }
     return Invoke-SpectrePromptAsync -Prompt $spectrePrompt
 }

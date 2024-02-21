@@ -1,4 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
+using namespace Spectre.Console
 
 function Read-SpectreMultiSelection {
     <#
@@ -35,13 +36,13 @@ function Read-SpectreMultiSelection {
         [string] $Title = "What are your favourite [$($script:AccentColor.ToMarkup())]colors[/]?",
         [array] $Choices = @("red", "orange", "yellow", "green", "blue", "indigo", "violet"),
         [string] $ChoiceLabelProperty,
-        [ValidateSpectreColor()]
+        [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [string] $Color = $script:AccentColor.ToMarkup(),
+        [Color] $Color = $script:AccentColor,
         [int] $PageSize = 5,
         [switch] $AllowEmpty
     )
-    $spectrePrompt = [Spectre.Console.MultiSelectionPrompt[string]]::new()
+    $spectrePrompt = [MultiSelectionPrompt[string]]::new()
 
     $choiceLabels = $Choices
     $choiceObjects = $Choices | Where-Object { $_ -isnot [string] }
@@ -57,12 +58,12 @@ function Read-SpectreMultiSelection {
         throw "You have duplicate labels in your select list, this is ambiguous so a selection cannot be made"
     }
 
-    $spectrePrompt = [Spectre.Console.MultiSelectionPromptExtensions]::AddChoices($spectrePrompt, [string[]]$choiceLabels)
+    $spectrePrompt = [MultiSelectionPromptExtensions]::AddChoices($spectrePrompt, [string[]]$choiceLabels)
     $spectrePrompt.Title = $Title
     $spectrePrompt.PageSize = $PageSize
     $spectrePrompt.WrapAround = $true
     $spectrePrompt.Required = !$AllowEmpty
-    $spectrePrompt.HighlightStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
+    $spectrePrompt.HighlightStyle = [Style]::new($Color)
     $spectrePrompt.InstructionsText = "[$($script:DefaultValueColor.ToMarkup())](Press [$($script:AccentColor.ToMarkup())]space[/] to toggle a choice and press [$($script:AccentColor.ToMarkup())]<enter>[/] to submit your answer)[/]"
     $spectrePrompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
     $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt

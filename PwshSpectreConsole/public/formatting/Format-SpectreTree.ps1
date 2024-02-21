@@ -1,4 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
+using namespace Spectre.Console
 
 function Format-SpectreTree {
     <#
@@ -50,16 +51,16 @@ function Format-SpectreTree {
         [hashtable] $Data,
         [ValidateSet([SpectreConsoleTreeGuide],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Guide = "Line",
-        [ValidateSpectreColor()]
+        [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [string] $Color = $script:AccentColor.ToMarkup()
+        [Color] $Color = $script:AccentColor
     )
 
-    $tree = [Spectre.Console.Tree]::new($Data.Label)
-    $tree.Guide = [Spectre.Console.TreeGuide]::$Guide
+    $tree = [Tree]::new($Data.Label)
+    $tree.Guide = [TreeGuide]::$Guide
 
     Add-SpectreTreeNode -Node $tree -Children $Data.Children
 
-    $tree.Style = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
+    $tree.Style = [Style]::new($Color)
     Write-AnsiConsole $tree
 }

@@ -1,3 +1,32 @@
+using namespace Spectre.Console
+
+function Write-SpectreExample {
+    param (
+        [Parameter(ValueFromPipeline)]
+        [string] $Codeblock,
+        [string] $Title,
+        [string] $Description,
+        [switch] $HideHeader,
+        [switch] $NoNewline
+    )
+    if($host.UI.RawUI.WindowSize.Width -lt 120) {
+        Write-SpectreFigletText "Pwsh + Spectre!"
+    } else {
+        Write-SpectreFigletText "Welcome to PwshSpectreConsole!"
+    }
+    Write-Host ""
+
+    Write-SpectreRule $Title -Color ([Color]::SteelBlue1)
+    Write-SpectreHost "`n$Description"
+    if(!$HideHeader) {
+        Write-CodeblockHeader
+    }
+    $Codeblock | Write-Codeblock -SyntaxHighlight -ShowLineNumbers
+    if(!$NoNewline) {
+        Write-Host ""
+    }
+}
+
 function Start-SpectreDemo {
     <#
     .SYNOPSIS
@@ -16,33 +45,6 @@ function Start-SpectreDemo {
 
     Clear-Host
 
-    function Write-SpectreExample {
-        param (
-            [Parameter(ValueFromPipeline)]
-            [string] $Codeblock,
-            [string] $Title,
-            [string] $Description,
-            [switch] $HideHeader,
-            [switch] $NoNewline
-        )
-        if($host.UI.RawUI.WindowSize.Width -lt 120) {
-            Write-SpectreFigletText "Pwsh + Spectre!"
-        } else {
-            Write-SpectreFigletText "Welcome to PwshSpectreConsole!"
-        }
-        Write-Host ""
-
-        Write-SpectreRule $Title -Color ([Spectre.Console.Color]::SteelBlue1)
-        Write-SpectreHost "`n$Description"
-        if(!$HideHeader) {
-            Write-CodeblockHeader
-        }
-        $Codeblock | Write-Codeblock -SyntaxHighlight -ShowLineNumbers
-        if(!$NoNewline) {
-            Write-Host ""
-        }
-    }
-
     if($host.UI.RawUI.WindowSize.Width -lt 120) {
         Write-SpectreFigletText "Pwsh + Spectre!"
     } else {
@@ -50,16 +52,17 @@ function Start-SpectreDemo {
     }
     Write-Host ""
 
-    Write-SpectreRule "PwshSpectreConsole Intro" -Color ([Spectre.Console.Color]::SteelBlue1)
+    Write-SpectreRule "PwshSpectreConsole Intro" -Color ([Color]::SteelBlue1)
     Write-SpectreHost "`nPwshSpectreConsole is an opinionated wrapper for the awesome Spectre.Console library. It's opinionated in that I have not just exposed the internals of Spectre Console to PowerShell but have wrapped them in a way that makes them work better in the PowerShell ecosystem (in my opinion 😜)."
     Write-SpectreHost "`nSpectre Console is mostly an async library and it leans heavily on types and extension methods in C# which are very verbose to work with in PowerShell so this module hides away some of the complexity."
     Write-SpectreHost "`nThe module doesn't expose the full feature set of Spectre.Console because the scope of the library is huge and I've focused on the features that I use to enhance my scripts."
     Write-Host ""
-    if(![Spectre.Console.AnsiConsole]::Console.Profile.Capabilities.Unicode) {
+    if(![AnsiConsole]::Console.Profile.Capabilities.Unicode) {
         Write-Warning "To enable all features of Spectre.Console you need to enable Unicode support in your PowerShell profile by adding the following to your profile at $PROFILE. See https://spectreconsole.net/best-practices for more info.`n`n`$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding`n"
     }
 
     Read-SpectrePause -NoNewline
+    
     Clear-Host
 
     $example = @'
@@ -160,22 +163,22 @@ $(
     @{
         Label = "Apple"
         Value = 12
-        Color = [Spectre.Console.Color]::Green
+        Color = [Color]::Green
     },
     @{
         Label = "Orange"
         Value = 54
-        Color = [Spectre.Console.Color]::Orange1
+        Color = [Color]::Orange1
     },
     @{
         Label = "Strawberry"
         Value = 51
-        Color = [Spectre.Console.Color]::Red
+        Color = [Color]::Red
     },
     @{
         Label = "Banana"
         Value = 33
-        Color = [Spectre.Console.Color]::Yellow
+        Color = [Color]::Yellow
     }
 ) | Format-SpectreBarChart
 '@
@@ -190,22 +193,22 @@ $(
     @{
         Label = "Apple"
         Value = 12
-        Color = [Spectre.Console.Color]::Green
+        Color = [Color]::Green
     },
     @{
         Label = "Strawberry"
         Value = 15
-        Color = [Spectre.Console.Color]::Red
+        Color = [Color]::Red
     },
     @{
         Label = "Orange"
         Value = 54
-        Color = [Spectre.Console.Color]::Orange1
+        Color = [Color]::Orange1
     },
     @{
         Label = "Plum"
         Value = 75
-        Color = [Spectre.Console.Color]::Fuchsia
+        Color = [Color]::Fuchsia
     }
 ) | Format-SpectreBreakdownChart
 '@
@@ -319,7 +322,7 @@ Invoke-SpectreCommandWithProgress -ScriptBlock {
 
     $example = @"
 Get-SpectreImageExperimental "$PSScriptRoot\..\..\private\images\harveyspecter.gif" -LoopCount 2
-Write-SpectreHost "I'm Harvey Specter. Are you after a Specter consult or a Spectre.Console..?"
+Write-SpectreHost "I'm Harvey Specter. Are you after a Specter consult or a Spectre.Console?"
 "@
     $example | Write-SpectreExample -Title "View Images" -Description "Images can be rendered in the terminal, given a path to an image Spectre Console will downsample the image to a resolution that will fit within the terminal width or you can choose your own width setting."
     Invoke-Expression $example

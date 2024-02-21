@@ -1,3 +1,5 @@
+using namespace Spectre.Console
+
 <#
 .SYNOPSIS
 Recursively adds child nodes to a parent node in a Spectre.Console tree.
@@ -17,13 +19,13 @@ See Format-SpectreTree for usage.
 function Add-SpectreTreeNode {
     param (
         [Parameter(Mandatory)]
-        [Spectre.Console.IHasTreeNodes] $Node,
+        [IHasTreeNodes] $Node,
         [Parameter(Mandatory)]
         [array] $Children
     )
 
     foreach($child in $Children) {
-        $newNode = [Spectre.Console.HasTreeNodeExtensions]::AddNode($Node, $child.Label)
+        $newNode = [HasTreeNodeExtensions]::AddNode($Node, $child.Label)
         if($child.Children.Count -gt 0) {
             Add-SpectreTreeNode -Node $newNode -Children $child.Children
         }

@@ -5,24 +5,41 @@ Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
 Describe "Write-SpectreFigletText" {
     InModuleScope "PwshSpectreConsole" {
         BeforeEach {
-            $color = Get-RandomColor
-            $justification = Get-RandomJustify
-            Mock Write-AnsiConsole -Verifiable -ParameterFilter {
-                $RenderableObject -is [Spectre.Console.FigletText] `
-                -and $RenderableObject.Justification -eq $justification `
-                -and $RenderableObject.Color.ToMarkup() -eq $color
+            $testConsole = [Spectre.Console.Testing.TestConsole]::new()
+            $testConsole.EmitAnsiSequences = $true
+            [Spectre.Console.Testing.TestConsoleExtensions]::Width($testConsole, 180)
+            $testColor = Get-RandomColor
+            $testAlignment = Get-RandomJustify
+            Mock Write-AnsiConsole {
+                $RenderableObject | Should -BeOfType [Spectre.Console.FigletText]
+                $RenderableObject.Justification | Should -Be $testAlignment
+                $RenderableObject.Color.ToMarkup() | Should -Be $testColor
+                
+                $testConsole.Write($RenderableObject)
             }
         }
 
         It "writes figlet text" {
-            Write-SpectreFigletText -Text (Get-RandomString) -Alignment $justification -Color $color
+            Write-SpectreFigletText -Text (Get-RandomString) -Alignment $testAlignment -Color $testColor
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
 
         It "throws when the font file isn't found" {
             { Write-SpectreFigletText -FigletFontPath "notfound.flf" } | Should -Throw
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 0 -Exactly
+        }
+
+        It "Should match the snapshot" {
+            Mock Write-AnsiConsole {
+                $testConsole.Write($RenderableObject)
+            }
+            $testTitle = "f i glett"
+            $testAlignment = "Center"
+            $testColor = "DarkSeaGreen1_1"
+
+            Write-SpectreFigletText -Text $testTitle -Alignment $testAlignment -Color $testColor
+
+            { Assert-OutputMatchesSnapshot -SnapshotName "Write-SpectreFigletText" -Output $testConsole.Output } | Should -Not -Throw
         }
     }
 }

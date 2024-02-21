@@ -5,31 +5,50 @@ Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
 Describe "Format-SpectrePanel" {
     InModuleScope "PwshSpectreConsole" {
         BeforeEach {
-            $title = Get-RandomString
-            $border = Get-RandomBoxBorder
-            $expand = $false
-            $color = Get-RandomColor
+            $testConsole = [Spectre.Console.Testing.TestConsole]::new()
+            $testConsole.EmitAnsiSequences = $true
+            [Spectre.Console.Testing.TestConsoleExtensions]::Width($testConsole, 80)
+            $testTitle = Get-RandomString -MinimumLength 5 -MaximumLength 10
+            $testBorder = Get-RandomBoxBorder
+            $testExpand = $false
+            $testColor = Get-RandomColor
 
-            Mock Write-AnsiConsole -Verifiable -ParameterFilter {
-                $RenderableObject -is [Spectre.Console.Panel] `
-                -and ($border -eq "None" -or $RenderableObject.Border.GetType().Name -like "*$border*") `
-                -and $RenderableObject.Header.Text -eq $title `
-                -and $RenderableObject.Expand -eq $expand `
-                -and $RenderableObject.BorderStyle.Foreground.ToMarkup() -eq $color
+            Mock Write-AnsiConsole {
+                $RenderableObject | Should -BeOfType [Spectre.Console.Panel]
+                $RenderableObject.Header.Text | Should -Be $testTitle
+                $RenderableObject.Expand | Should -Be $testExpand
+                $RenderableObject.BorderStyle.Foreground.ToMarkup() | Should -Be $testColor
+                if($testBorder -ne "None") {
+                    $RenderableObject.Border.GetType().Name | Should -BeLike "*$testBorder*"
+                }
+
+                $testConsole.Write($RenderableObject)
             }
         }
 
         It "Should create a panel" {
-            Format-SpectrePanel -Data (Get-RandomString) -Title $title -Border $border -Color $color
+            $randomString = Get-RandomString
+            Format-SpectrePanel -Data $randomString -Title $testTitle -Border $testBorder -Color $testColor
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
-            Should -InvokeVerifiable
+            $testConsole.Output | Should -BeLike "*$randomString*"
+            $testConsole.Output | Should -BeLike "*$testTitle*"
         }
 
         It "Should create an expanded panel" {
-            $expand = $true
-            Format-SpectrePanel -Data (Get-RandomString) -Title $title -Border $border -Expand:$expand -Color $color
+            $testExpand = $true
+            $randomString = Get-RandomString
+            Format-SpectrePanel -Data $randomString -Title $testTitle -Border $testBorder -Expand:$testExpand -Color $testColor
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
-            Should -InvokeVerifiable
+            $testConsole.Output | Should -BeLike "*$randomString*"
+            $testConsole.Output | Should -BeLike "*$testTitle*"
+        }
+
+        It "Should match the snapshot" {
+            Mock Write-AnsiConsole {
+                $testConsole.Write($RenderableObject)
+            }
+            Format-SpectrePanel -Data "This is a test panel" -Title "Test title" -Border "Rounded" -Color "Turquoise2" | Out-Null
+            { Assert-OutputMatchesSnapshot -SnapshotName "Format-SpectrePanel" -Output $testConsole.Output } | Should -Not -Throw
         }
     }
 }

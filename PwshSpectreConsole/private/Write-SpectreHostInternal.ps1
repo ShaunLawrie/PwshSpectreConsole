@@ -1,10 +1,12 @@
+using namespace Spectre.Console
+
 # Functions required for unit testing write-spectrehost
 function Write-SpectreHostInternalMarkup {
     param (
         [Parameter(Mandatory)]
         [string] $Message
     )
-    [Spectre.Console.AnsiConsole]::Markup($Message)
+    [AnsiConsoleExtensions]::Markup([AnsiConsole]::Console, $Message)
 }
 
 function Write-SpectreHostInternalMarkupLine {
@@ -12,5 +14,5 @@ function Write-SpectreHostInternalMarkupLine {
         [Parameter(Mandatory)]
         [string] $Message
     )
-    [Spectre.Console.AnsiConsole]::MarkupLine($Message)
+    [AnsiConsoleExtensions]::MarkupLine([AnsiConsole]::Console, $Message)
 }

@@ -5,40 +5,38 @@ Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
 Describe "Read-SpectreSelection" {
     InModuleScope "PwshSpectreConsole" {
         BeforeEach {
-            $title = Get-RandomString
-            $pageSize = Get-Random -Minimum 1 -Maximum 10
-            $color = Get-RandomColor
+            $testTitle = Get-RandomString
+            $testPageSize = Get-Random -Minimum 1 -Maximum 10
+            $testColor = Get-RandomColor
             $itemToBeSelectedName = $null
-            Mock Invoke-SpectrePromptAsync -Verifiable -ParameterFilter {
-                $Prompt -is [Spectre.Console.SelectionPrompt[string]] `
-                -and $Prompt.Title -eq $title `
-                -and $Prompt.PageSize -eq $pageSize `
-                -and $Prompt.HighlightStyle.Foreground.ToMarkup() -eq $color 
-            } -MockWith {
+            Mock Invoke-SpectrePromptAsync {
+                $Prompt | Should -BeOfType [Spectre.Console.SelectionPrompt[string]]
+                $Prompt.Title | Should -Be $testTitle
+                $Prompt.PageSize | Should -Be $testPageSize
+                $Prompt.HighlightStyle.Foreground.ToMarkup() | Should -Be $testColor
+
                 return $itemToBeSelectedName
             }
         }
 
         It "prompts" {
-            Read-SpectreSelection -Title $title -Choices (Get-RandomList) -PageSize $pageSize -Color $color
+            Read-SpectreSelection -Title $testTitle -Choices (Get-RandomList) -PageSize $testPageSize -Color $testColor
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
 
         It "throws with duplicate labels" {
-            { Read-SpectreSelection -Title $title -Choices @("same", "same") -PageSize $pageSize -Color $color } | Should -Throw
+            { Read-SpectreSelection -Title $testTitle -Choices @("same", "same") -PageSize $testPageSize -Color $testColor } | Should -Throw
         }
 
         It "prompts with an object input" {
             $itemToBeSelectedName = Get-RandomString
             $itemToBeSelected = [PSCustomObject]@{ ColumnToSelectFrom = $itemToBeSelectedName; Other = Get-RandomString }
-            Read-SpectreSelection -Title $title -ChoiceLabelProperty "ColumnToSelectFrom" -PageSize $pageSize -Color $color -Choices @(
+            Read-SpectreSelection -Title $testTitle -ChoiceLabelProperty "ColumnToSelectFrom" -PageSize $testPageSize -Color $testColor -Choices @(
                 [PSCustomObject]@{ ColumnToSelectFrom = Get-RandomString; Other = Get-RandomString },
                 $itemToBeSelected,
                 [PSCustomObject]@{ ColumnToSelectFrom = Get-RandomString; Other = Get-RandomString }
             ) | Should -Be $itemToBeSelected
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
-            Should -InvokeVerifiable
         }
     }
 }

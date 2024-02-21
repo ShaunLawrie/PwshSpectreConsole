@@ -12,7 +12,7 @@ jobs:
     if: github.repository_owner != 'ShaunLawrie' || !(github.ref == 'refs/heads/main' && github.ref == 'refs/heads/prerelease')
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Unit Test
         shell: pwsh
         run: |
@@ -22,3 +22,9 @@ jobs:
           $PSVersionTable | Out-Host
           Get-Module Pester -ListAvailable | Out-Host
           Invoke-Pester -CI -ExcludeTag "ExcludeCI"
+      - name: Upload Snapshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Snapshots
+          path: PwshSpectreConsole.Tests/@snapshots/*.txt

@@ -1,4 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
+using namespace Spectre.Console
 
 function Format-SpectreBarChart {
     <#
@@ -41,7 +42,7 @@ function Format-SpectreBarChart {
         [switch] $HideValues
     )
     begin {
-        $barChart = [Spectre.Console.BarChart]::new()
+        $barChart = [BarChart]::new()
         if ($Title) {
             $barChart.Label = $Title
         }
@@ -53,10 +54,10 @@ function Format-SpectreBarChart {
     process {
         if ($Data -is [array]) {
             foreach ($dataItem in $Data) {
-                $barChart = [Spectre.Console.BarChartExtensions]::AddItem($barChart, $dataItem.Label, $dataItem.Value, ($dataItem.Color | Convert-ToSpectreColor))
+                $barChart = [BarChartExtensions]::AddItem($barChart, $dataItem.Label, $dataItem.Value, ($dataItem.Color | Convert-ToSpectreColor))
             }
         } else {
-            $barChart = [Spectre.Console.BarChartExtensions]::AddItem($barChart, $Data.Label, $Data.Value, ($Data.Color | Convert-ToSpectreColor))
+            $barChart = [BarChartExtensions]::AddItem($barChart, $Data.Label, $Data.Value, ($Data.Color | Convert-ToSpectreColor))
         }
     }
     end {

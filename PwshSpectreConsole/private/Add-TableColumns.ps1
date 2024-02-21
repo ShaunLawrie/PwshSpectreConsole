@@ -7,6 +7,7 @@ function Add-TableColumns {
         [Table] $table,
         [Collections.Specialized.OrderedDictionary] $FormatData,
         [String] $Title,
+        [Color] $Color = [Color]::Default,
         [Switch] $Scalar,
         [Switch] $Wrap
     )
@@ -14,11 +15,11 @@ function Add-TableColumns {
     if ($Scalar) {
         if ($Title) {
             Write-Debug "Adding column with title: $Title"
-            $table.AddColumn($Title) | Out-Null
+            $table.AddColumn("[$($Color.ToMarkup())]$Title[/]") | Out-Null
         }
         else {
             Write-Debug "Adding column with title: Value"
-            $table.AddColumn("Value") | Out-Null
+            $table.AddColumn("[$($Color.ToMarkup())]Value[/]") | Out-Null
         }
         if (-Not $Wrap) {
             $table.Columns[-1].NoWrap = $true
@@ -28,8 +29,8 @@ function Add-TableColumns {
         foreach ($key in $FormatData.keys) {
             $lookup = $FormatData[$key]
             Write-Debug "Adding column from formatdata: $($lookup.GetEnumerator())"
-            $table.AddColumn($lookup.Label) | Out-Null
-            $table.Columns[-1].Padding = [Spectre.Console.Padding]::new(1, 0, 1, 0)
+            $table.AddColumn("[$($Color.ToMarkup())]$($lookup.Label)[/]") | Out-Null
+            $table.Columns[-1].Padding = [Padding]::new(1, 0, 1, 0)
             if ($lookup.width -gt 0) {
                 # width 0 is autosize, select the last entry in the column list
                 $table.Columns[-1].Width = $lookup.Width
