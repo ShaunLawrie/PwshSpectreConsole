@@ -63,7 +63,7 @@ Describe "Format-SpectreBreakdownChart" {
             Write-Debug "Setting test width to $testWidth"
             $testData = @(
                 (New-SpectreChartItem -Label "Test 1" -Value 10 -Color "Turquoise2"),
-                (New-SpectreChartItem -Label "Test 2" -Value 20 -Color "Red"),
+                (New-SpectreChartItem -Label "Test 2" -Value 20 -Color "Turquoise2"),
                 (New-SpectreChartItem -Label "Test 3" -Value 30 -Color "Turquoise2")
             )
             Format-SpectreBreakdownChart -Data $testData
