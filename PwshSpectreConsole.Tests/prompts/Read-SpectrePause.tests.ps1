@@ -6,8 +6,10 @@ Describe "Read-SpectrePause" {
     InModuleScope "PwshSpectreConsole" {
         BeforeEach {
             $testMessage = $null
-            Mock Write-SpectreHost -Verifiable -ParameterFilter {
-                [string]::IsNullOrEmpty($testMessage) -or ($Message -eq $testMessage)
+            Mock Write-SpectreHost {
+                if($testMessage) {
+                    $Message | Should -Be $testMessage
+                }
             }
             Mock Clear-InputQueue
             Mock Set-CursorPosition

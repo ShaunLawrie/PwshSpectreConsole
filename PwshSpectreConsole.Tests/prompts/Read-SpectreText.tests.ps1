@@ -6,9 +6,11 @@ Describe "Read-SpectreText" {
     InModuleScope "PwshSpectreConsole" {
         BeforeEach {
             $testAnswerColor = $null
-            Mock Invoke-SpectrePromptAsync -Verifiable -ParameterFilter {
-                $Prompt -is [Spectre.Console.TextPrompt[string]] `
-                -and ($null -eq $Prompt.PromptStyle.Foreground -or $Prompt.PromptStyle.Foreground.ToMarkup() -eq $testAnswerColor)
+            Mock Invoke-SpectrePromptAsync {
+                $Prompt | Should -BeOfType [Spectre.Console.TextPrompt[string]]
+                if($Prompt.PromptStyle.Foreground) {
+                    $Prompt.PromptStyle.Foreground.ToMarkup() | Should -Be $testAnswerColor
+                }
             }
         }
 

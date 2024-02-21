@@ -7,11 +7,12 @@ Describe "Read-SpectreConfirm" {
         BeforeEach {
             $choices = @("y", "n")
             $testDefaultAnswer = "y"
-            Mock Invoke-SpectrePromptAsync -Verifiable -ParameterFilter {
-                $Prompt -is [Spectre.Console.TextPrompt[string]] `
-                -and $null -eq (Compare-Object -ReferenceObject $Prompt.Choices -DifferenceObject $choices) `
-                -and (($testColor -eq $null) -or ($Prompt.ChoicesStyle.Foreground.ToMarkup() -eq $testColor))
-            } -MockWith {
+            Mock Invoke-SpectrePromptAsync {
+                $Prompt | Should -BeOfType [Spectre.Console.TextPrompt[string]]
+                (Compare-Object -ReferenceObject $Prompt.Choices -DifferenceObject $choices) | Should -BeNullOrEmpty
+                if($testColor) {
+                    $Prompt.ChoicesStyle.Foreground.ToMarkup() | Should -Be $testColor
+                }
                 return $testDefaultAnswer
             }
         }
@@ -31,8 +32,8 @@ Describe "Read-SpectreConfirm" {
 
         It "writes success message" {
             $confirmSuccess = Get-RandomString
-            Mock Write-SpectreHost -Verifiable -ParameterFilter {
-                $Message -eq $confirmSuccess
+            Mock Write-SpectreHost {
+                $Message | Should -Be $confirmSuccess
             }
             Read-SpectreConfirm -Prompt (Get-RandomString) -ConfirmSuccess $confirmSuccess -DefaultAnswer (Get-RandomChoice $choices)
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
@@ -43,8 +44,8 @@ Describe "Read-SpectreConfirm" {
             $confirmFailure = Get-RandomString
             $testDefaultAnswer = "n"
             $testDefaultAnswer | Out-Null
-            Mock Write-SpectreHost -Verifiable -ParameterFilter {
-                $Message -eq $confirmFailure
+            Mock Write-SpectreHost {
+                $Message | Should -Be $confirmFailure
             }
             Read-SpectreConfirm -Prompt (Get-RandomString) -ConfirmFailure $confirmFailure -DefaultAnswer (Get-RandomChoice $choices)
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly

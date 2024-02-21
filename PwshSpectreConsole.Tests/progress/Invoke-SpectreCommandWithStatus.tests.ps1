@@ -27,12 +27,12 @@ Describe "Invoke-SpectreCommandWithStatus" -Tag "integration" {
         }
 
         It "executes the scriptblock for the basic case" {
-            Mock Start-AnsiConsoleStatus -Verifiable -ParameterFilter {
-                $Title -eq $testTitle `
-                -and $Spinner.GetType().Name -like "*$testSpinner*" `
-                -and $SpinnerStyle.Foreground.ToMarkup() -eq $testColor `
-                -and $ScriptBlock -is [scriptblock]
-            } -MockWith {
+            Mock Start-AnsiConsoleStatus {
+                $Title | Should -Be $testTitle
+                $Spinner.GetType().Name | Should -BeLike "*$testSpinner*"
+                $SpinnerStyle.Foreground.ToMarkup() | Should -Be $testColor
+                $ScriptBlock | Should -BeOfType [scriptblock]
+
                 & $ScriptBlock
             }
             Invoke-SpectreCommandWithStatus -Title $testTitle -Spinner $testSpinner -Color $testColor -ScriptBlock {

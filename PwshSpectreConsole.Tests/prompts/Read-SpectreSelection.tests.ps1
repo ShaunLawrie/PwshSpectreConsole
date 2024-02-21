@@ -9,12 +9,12 @@ Describe "Read-SpectreSelection" {
             $testPageSize = Get-Random -Minimum 1 -Maximum 10
             $testColor = Get-RandomColor
             $itemToBeSelectedName = $null
-            Mock Invoke-SpectrePromptAsync -Verifiable -ParameterFilter {
-                $Prompt -is [Spectre.Console.SelectionPrompt[string]] `
-                -and $Prompt.Title -eq $testTitle `
-                -and $Prompt.PageSize -eq $testPageSize `
-                -and $Prompt.HighlightStyle.Foreground.ToMarkup() -eq $testColor 
-            } -MockWith {
+            Mock Invoke-SpectrePromptAsync {
+                $Prompt | Should -BeOfType [Spectre.Console.SelectionPrompt[string]]
+                $Prompt.Title | Should -Be $testTitle
+                $Prompt.PageSize | Should -Be $testPageSize
+                $Prompt.HighlightStyle.Foreground.ToMarkup() | Should -Be $testColor
+
                 return $itemToBeSelectedName
             }
         }
