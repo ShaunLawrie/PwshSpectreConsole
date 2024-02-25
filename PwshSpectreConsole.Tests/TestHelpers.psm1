@@ -249,6 +249,7 @@ function Assert-OutputMatchesSnapshot {
     $compare = $Output -replace "`r", ""
     Set-Content -Path $snapShotComparisonPath -Value $compare -NoNewline
     $snapshot = Get-Content -Path $snapShotPath -Raw
+    $snapshot = $snapshot -replace "`r", ""
     if($compare -ne $snapshot) {
         Write-Host "Expected to match snapshot:`n`n$snapshot"
         Write-Host "But the output was:`n`n$compare"
