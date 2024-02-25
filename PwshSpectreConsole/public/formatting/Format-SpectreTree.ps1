@@ -43,7 +43,7 @@ function Format-SpectreTree {
         )
     }
 
-    Format-SpectreTree -Data $data -Border "Heavy" -Color "Green"
+    Format-SpectreTree -Data $data -Guide BoldLine -Color "Green"
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectreTree")]
     param (

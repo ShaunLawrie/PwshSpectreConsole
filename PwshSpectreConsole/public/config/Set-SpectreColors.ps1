@@ -21,6 +21,12 @@ function Set-SpectreColors {
     .PARAMETER DefaultValueColor
     The default value color to set. Must be a valid Spectre Console color name. Defaults to "Grey".
 
+    .PARAMETER DefaultTableHeaderColor
+    The default table header color to set. Must be a valid Spectre Console color name. Defaults to "Default" which will be the standard console foreground color.
+
+    .PARAMETER DefaultTableTextColor
+    The default table text color to set. Must be a valid Spectre Console color name. Defaults to "Default" which will be the standard console foreground color.
+
     .EXAMPLE
     # Sets the accent color to Red and the default value color to Yellow.
     Set-SpectreColors -AccentColor Red -DefaultValueColor Yellow
