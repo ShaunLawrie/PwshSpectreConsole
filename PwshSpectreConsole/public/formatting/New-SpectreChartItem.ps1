@@ -19,9 +19,11 @@ The value for the chart item.
 The color for the chart item. Must be a valid Spectre color as name, hex or a Spectre.Console.Color object.
 
 .EXAMPLE
-New-SpectreChartItem -Label "Sales" -Value 1000 -Color "green"
-
-This example creates a new SpectreChartItem object with a label of "Sales", a value of 1000, and a green color.
+# This example creates an array of new SpectreChartItem objects you can pass into the chart functions.
+$data = @()
+$data += New-SpectreChartItem -Label "Sales" -Value 1000 -Color "green"
+$data += New-SpectreChartItem -Label "Expenses" -Value 500 -Color "#ff0000"
+$data += New-SpectreChartItem -Label "Profit" -Value 500 -Color ([Spectre.Console.Color]::Blue)
 
 #>
 function New-SpectreChartItem {
