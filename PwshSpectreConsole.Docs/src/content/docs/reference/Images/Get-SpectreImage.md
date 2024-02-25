@@ -9,7 +9,7 @@ title: Get-SpectreImage
 
 
 ### Synopsis
-Displays an image in the console using Spectre.Console.CanvasImage.
+Displays an image in the console using CanvasImage.
 
 
 
@@ -18,7 +18,7 @@ Displays an image in the console using Spectre.Console.CanvasImage.
 
 ### Description
 
-Displays an image in the console using Spectre.Console.CanvasImage. The image can be resized to a maximum width if desired.
+Displays an image in the console using CanvasImage. The image can be resized to a maximum width if desired.
 
 
 

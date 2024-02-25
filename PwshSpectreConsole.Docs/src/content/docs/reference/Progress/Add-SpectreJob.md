@@ -29,10 +29,10 @@ This function adds a Spectre job to the list of jobs you want to wait for with W
 
 
 ### Examples
-This is an example of how to use the Add-SpectreJob function to add two jobs to a jobs list that can be passed to Wait-SpectreJobs.
+This is an example of how to use the Add-SpectreJob function to add two jobs to a jobs list that can be passed to Wait-SpectreJobs when you're inside Invoke-SpectreCommandWithProgress.
 
 ```powershell
-Invoke-SpectreCommandWithProgress -Title "Waiting" -ScriptBlock {
+Invoke-SpectreCommandWithProgress -ScriptBlock {
     param (
         $Context
     )
@@ -50,7 +50,7 @@ Invoke-SpectreCommandWithProgress -Title "Waiting" -ScriptBlock {
 ### Parameters
 #### **Context**
 
-The Spectre context to add the job to. The context object is only available inside Wait-SpectreJobs.
+The Spectre context to add the job to. The context object is only available inside Invoke-SpectreCommandWithProgress.
 [https://spectreconsole.net/api/spectre.console/progresscontext/](https://spectreconsole.net/api/spectre.console/progresscontext/)
 
 
@@ -58,9 +58,9 @@ The Spectre context to add the job to. The context object is only available insi
 
 
 
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[Object]`|true    |1       |false        |
+|Type               |Required|Position|PipelineInput|
+|-------------------|--------|--------|-------------|
+|`[ProgressContext]`|true    |1       |false        |
 
 
 
@@ -101,5 +101,5 @@ The PowerShell job to add to the context.
 
 ### Syntax
 ```powershell
-Add-SpectreJob [-Context] <Object> [-JobName] <String> [-Job] <Job> [<CommonParameters>]
+Add-SpectreJob [-Context] <ProgressContext> [-JobName] <String> [-Job] <Job> [<CommonParameters>]
 ```

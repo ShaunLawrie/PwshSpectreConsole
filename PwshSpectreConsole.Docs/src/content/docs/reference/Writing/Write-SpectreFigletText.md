@@ -18,7 +18,7 @@ Writes a Spectre Console Figlet text to the console.
 
 ### Description
 
-This function writes a Spectre Console Figlet text to the console. The text can be aligned to the left, right, or centered, and can be displayed in a specified color.
+This function writes a Spectre Console Figlet text to the console. The text can be aligned to the left, right, or center, and can be displayed in a specified color.
 
 
 
@@ -29,7 +29,7 @@ This function writes a Spectre Console Figlet text to the console. The text can 
 Displays the text "Hello Spectre!" in the center of the console, in red color.
 
 ```powershell
-Write-SpectreFigletText -Text "Hello Spectre!" -Alignment "Centered" -Color "Red"
+Write-SpectreFigletText -Text "Hello Spectre!" -Alignment "Center" -Color "Red"
 ```
 Displays the text "Woah!" using a custom figlet font.
 
@@ -67,7 +67,7 @@ The text to display in the Figlet format.
 
 #### **Alignment**
 
-The alignment of the text. Valid values are "Left", "Right", and "Centered". The default value is "Left".
+The alignment of the text. The default value is "Left".
 
 
 
@@ -97,9 +97,9 @@ The color of the text. The default value is the accent color of the script.
 
 
 
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[String]`|false   |3       |false        |
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Color]`|false   |3       |false        |
 
 
 
@@ -126,5 +126,5 @@ The figlet font format is usually *.flf, see https://spectreconsole.net/widgets/
 
 ### Syntax
 ```powershell
-Write-SpectreFigletText [[-Text] <String>] [[-Alignment] <String>] [[-Color] <String>] [[-FigletFontPath] <String>] [<CommonParameters>]
+Write-SpectreFigletText [[-Text] <String>] [[-Alignment] <String>] [[-Color] <Color>] [[-FigletFontPath] <String>] [<CommonParameters>]
 ```

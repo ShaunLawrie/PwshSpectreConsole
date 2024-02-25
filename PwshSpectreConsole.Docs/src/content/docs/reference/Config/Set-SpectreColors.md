@@ -57,9 +57,9 @@ The accent color to set. Must be a valid Spectre Console color name. Defaults to
 
 
 
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[String]`|false   |1       |false        |
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Color]`|false   |1       |false        |
 
 
 
@@ -72,9 +72,39 @@ The default value color to set. Must be a valid Spectre Console color name. Defa
 
 
 
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[String]`|false   |2       |false        |
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Color]`|false   |2       |false        |
+
+
+
+#### **DefaultTableHeaderColor**
+
+The default table header color to set. Must be a valid Spectre Console color name. Defaults to "Default" which will be the standard console foreground color.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Color]`|false   |3       |false        |
+
+
+
+#### **DefaultTableTextColor**
+
+The default table text color to set. Must be a valid Spectre Console color name. Defaults to "Default" which will be the standard console foreground color.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Color]`|false   |4       |false        |
 
 
 
@@ -85,5 +115,5 @@ The default value color to set. Must be a valid Spectre Console color name. Defa
 
 ### Syntax
 ```powershell
-Set-SpectreColors [[-AccentColor] <String>] [[-DefaultValueColor] <String>] [<CommonParameters>]
+Set-SpectreColors [[-AccentColor] <Color>] [[-DefaultValueColor] <Color>] [[-DefaultTableHeaderColor] <Color>] [[-DefaultTableTextColor] <Color>] [<CommonParameters>]
 ```

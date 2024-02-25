@@ -49,7 +49,7 @@ The string to be formatted as a panel.
 
 |Type      |Required|Position|PipelineInput |
 |----------|--------|--------|--------------|
-|`[String]`|true    |1       |true (ByValue)|
+|`[Object]`|true    |1       |true (ByValue)|
 
 
 
@@ -118,9 +118,9 @@ The color of the panel border.
 
 
 
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[String]`|false   |4       |false        |
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Color]`|false   |4       |false        |
 
 
 
@@ -161,5 +161,5 @@ The height of the panel.
 
 ### Syntax
 ```powershell
-Format-SpectrePanel [-Data] <String> [[-Title] <String>] [[-Border] <String>] [-Expand] [[-Color] <String>] [[-Width] <Int32>] [[-Height] <Int32>] [<CommonParameters>]
+Format-SpectrePanel [-Data] <Object> [[-Title] <String>] [[-Border] <String>] [-Expand] [[-Color] <Color>] [[-Width] <Int32>] [[-Height] <Int32>] [<CommonParameters>]
 ```

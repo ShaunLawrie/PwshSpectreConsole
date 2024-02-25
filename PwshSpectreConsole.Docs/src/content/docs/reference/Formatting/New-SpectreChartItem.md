@@ -30,11 +30,13 @@ The New-SpectreChartItem function creates a new SpectreChartItem object with the
 
 
 ### Examples
-> EXAMPLE 1
+This example creates an array of new SpectreChartItem objects you can pass into the chart functions.
 
 ```powershell
-New-SpectreChartItem -Label "Sales" -Value 1000 -Color "green"
-This example creates a new SpectreChartItem object with a label of "Sales", a value of 1000, and a green color.
+$data = @()
+$data += New-SpectreChartItem -Label "Sales" -Value 1000 -Color "green"
+$data += New-SpectreChartItem -Label "Expenses" -Value 500 -Color "#ff0000"
+$data += New-SpectreChartItem -Label "Profit" -Value 500 -Color ([Spectre.Console.Color]::Blue)
 ```
 
 
@@ -81,9 +83,9 @@ The color for the chart item. Must be a valid Spectre color as name, hex or a Sp
 
 
 
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[String]`|true    |3       |false        |
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Color]`|true    |3       |false        |
 
 
 
@@ -94,5 +96,5 @@ The color for the chart item. Must be a valid Spectre color as name, hex or a Sp
 
 ### Syntax
 ```powershell
-New-SpectreChartItem [-Label] <String> [-Value] <Double> [-Color] <String> [<CommonParameters>]
+New-SpectreChartItem [-Label] <String> [-Value] <Double> [-Color] <Color> [<CommonParameters>]
 ```

@@ -54,7 +54,7 @@ The title of the rule.
 
 #### **Alignment**
 
-The alignment of the text in the rule. Valid values are Left, Center, and Right. The default value is Left.
+The alignment of the text in the rule. The default value is Left.
 
 
 
@@ -84,9 +84,9 @@ The color of the rule. The default value is the accent color of the script.
 
 
 
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[String]`|false   |3       |false        |
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Color]`|false   |3       |false        |
 
 
 
@@ -97,5 +97,5 @@ The color of the rule. The default value is the accent color of the script.
 
 ### Syntax
 ```powershell
-Write-SpectreRule [-Title] <String> [[-Alignment] <String>] [[-Color] <String>] [<CommonParameters>]
+Write-SpectreRule [-Title] <String> [[-Alignment] <String>] [[-Color] <Color>] [<CommonParameters>]
 ```

@@ -21,7 +21,7 @@ I would advise against this and instead use `Read-Host` because the Spectre Cons
 
 ### Description
 
-This function uses Spectre Console to prompt the user with a question and returns the user's input. The function takes two parameters: $Question and $DefaultAnswer. $Question is the question to prompt the user with, and $DefaultAnswer is the default answer if the user does not provide any input.
+This function uses Spectre Console to prompt the user with a question and returns the user's input.
 
 
 
@@ -33,6 +33,11 @@ This will prompt the user with the question "What's your name?" and return the u
 
 ```powershell
 Read-SpectreText -Question "What's your name?" -DefaultAnswer "Prefer not to say"
+```
+This will prompt the user with the question "What's your favorite color?" and return the user's input.
+
+```powershell
+Read-SpectreText -Question "What's your favorite color?" -AnswerColor "Cyan1" -Choices "Black", "Green","Magenta", "I'll never tell!"
 ```
 
 
@@ -79,9 +84,9 @@ The color of the user's answer input. The default behaviour uses the standard te
 
 
 
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[String]`|false   |3       |false        |
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Color]`|false   |3       |false        |
 
 
 
@@ -100,6 +105,22 @@ If specified, the user can provide an empty answer.
 
 
 
+#### **Choices**
+
+An array of choices that the user can choose from. If specified, the user will be prompted with a list of choices to choose from, with validation.
+With autocomplete and can tab through the choices.
+
+
+
+
+
+
+|Type        |Required|Position|PipelineInput|
+|------------|--------|--------|-------------|
+|`[String[]]`|false   |4       |false        |
+
+
+
 
 
 ---
@@ -107,5 +128,5 @@ If specified, the user can provide an empty answer.
 
 ### Syntax
 ```powershell
-Read-SpectreText [[-Question] <String>] [[-DefaultAnswer] <String>] [[-AnswerColor] <String>] [-AllowEmpty] [<CommonParameters>]
+Read-SpectreText [[-Question] <String>] [[-DefaultAnswer] <String>] [[-AnswerColor] <Color>] [-AllowEmpty] [[-Choices] <String[]>] [<CommonParameters>]
 ```

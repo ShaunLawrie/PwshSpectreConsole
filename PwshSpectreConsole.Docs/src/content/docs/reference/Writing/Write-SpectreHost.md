@@ -49,9 +49,9 @@ The message to write to the console.
 
 
 
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[String]`|true    |1       |false        |
+|Type      |Required|Position|PipelineInput |
+|----------|--------|--------|--------------|
+|`[String]`|true    |1       |true (ByValue)|
 
 
 

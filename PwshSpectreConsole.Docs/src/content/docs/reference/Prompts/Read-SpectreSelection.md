@@ -91,9 +91,9 @@ The color of the selected option in the selection prompt.
 
 
 
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[String]`|false   |4       |false        |
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Color]`|false   |4       |false        |
 
 
 
@@ -119,5 +119,5 @@ The number of choices to display per page in the selection prompt.
 
 ### Syntax
 ```powershell
-Read-SpectreSelection [[-Title] <String>] [[-Choices] <Array>] [[-ChoiceLabelProperty] <String>] [[-Color] <String>] [[-PageSize] <Int32>] [<CommonParameters>]
+Read-SpectreSelection [[-Title] <String>] [[-Choices] <Array>] [[-ChoiceLabelProperty] <String>] [[-Color] <Color>] [[-PageSize] <Int32>] [<CommonParameters>]
 ```

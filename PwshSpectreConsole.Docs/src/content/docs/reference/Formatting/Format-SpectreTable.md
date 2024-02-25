@@ -36,15 +36,59 @@ $data = @(
 )
 Format-SpectreTable -Data $data
 ```
+> EXAMPLE 2
+
+```powershell
+$Properties = @(
+    # foreground + background
+    @{'Name'='FileName'; Expression={ "[orange1 on blue]" + $_.Name + "[/]" }},
+    # foreground
+    @{'Name'='Last Updated'; Expression={ "[DeepSkyBlue3_1]" + $_.LastWriteTime.ToString() + "[/]" }},
+    # background
+    @{'Name'='Drive'; Expression={ "[default on orange1]" + (Split-Path $_.Fullname -Qualifier) + "[/]" }}
+)
+Get-ChildItem | Format-SpectreTable -Property $Properties -AllowMarkup
+```
+> EXAMPLE 3
+
+```powershell
+1..10 | Format-SpectreTable -Title Numbers
+```
 
 
 ---
 
 
 ### Parameters
+#### **Data**
+
+The array of objects to be formatted into a table.
+Takes pipeline input.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput |Aliases    |
+|----------|--------|--------|--------------|-----------|
+|`[Object]`|true    |named   |true (ByValue)|InputObject|
+
+
+
 #### **Property**
 
-The list of properties to select for the table from the input data.
+Specifies the object properties that appear in the display and the order in which they appear.
+Type one or more property names, separated by commas, or use a hash table to display a calculated property.
+Wildcards are permitted.
+The Property parameter is optional. You can't use the Property and View parameters in the same command.
+The value of the Property parameter can be a new calculated property.
+The calculated property can be a script block or a hash table. Valid key-value pairs are:
+* Name (or Label) `<string>`
+* Expression - `<string>` or `<script block>`
+* FormatString - `<string>`
+* Width - `<int32>` - must be greater than `0`
+* Alignment - value can be `Left`, `Center`, or `Right`
 
 
 
@@ -53,22 +97,38 @@ The list of properties to select for the table from the input data.
 
 |Type        |Required|Position|PipelineInput|
 |------------|--------|--------|-------------|
-|`[String[]]`|false   |1       |false        |
+|`[Object[]]`|false   |1       |false        |
 
 
 
-#### **Data**
+#### **Wrap**
 
-The array of objects to be formatted into a table.
-
-
-
+Displays text that exceeds the column width on the next line. By default, text that exceeds the column width is truncated
+Currently there is a bug with this, spectre.console/issues/1185
 
 
 
-|Type      |Required|Position|PipelineInput |
-|----------|--------|--------|--------------|
-|`[Object]`|true    |named   |true (ByValue)|
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|false   |named   |false        |
+
+
+
+#### **View**
+
+The View parameter lets you specify an alternate format or custom view for the table.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |named   |false        |
 
 
 
@@ -119,9 +179,39 @@ The color of the table border. Default is the accent color of the script.
 
 
 
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[String]`|false   |named   |false        |
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Color]`|false   |named   |false        |
+
+
+
+#### **HeaderColor**
+
+The color of the table header text. Default is the DefaultTableHeaderColor.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Color]`|false   |named   |false        |
+
+
+
+#### **TextColor**
+
+The color of the table text. Default is the DefaultTableTextColor.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Color]`|false   |named   |false        |
 
 
 
@@ -192,5 +282,11 @@ Allow Spectre markup in the table elements e.g. [green]message[/].
 
 ### Syntax
 ```powershell
-Format-SpectreTable [[-Property] <String[]>] -Data <Object> [-Border <String>] [-Color <String>] [-Width <Int32>] [-HideHeaders] [-Title <String>] [-AllowMarkup] [<CommonParameters>]
+Format-SpectreTable -Data <Object> [-Wrap] [-Border <String>] [-Color <Color>] [-HeaderColor <Color>] [-TextColor <Color>] [-Width <Int32>] [-HideHeaders] [-Title <String>] [-AllowMarkup] [<CommonParameters>]
+```
+```powershell
+Format-SpectreTable -Data <Object> [[-Property] <Object[]>] [-Wrap] [-Border <String>] [-Color <Color>] [-HeaderColor <Color>] [-TextColor <Color>] [-Width <Int32>] [-HideHeaders] [-Title <String>] [-AllowMarkup] [<CommonParameters>]
+```
+```powershell
+Format-SpectreTable -Data <Object> [-Wrap] [-View <String>] [-Border <String>] [-Color <Color>] [-HeaderColor <Color>] [-TextColor <Color>] [-Width <Int32>] [-HideHeaders] [-Title <String>] [-AllowMarkup] [<CommonParameters>]
 ```

@@ -19,7 +19,7 @@ Formats data into a breakdown chart.
 
 ### Description
 
-This function takes an array of data and formats it into a breakdown chart using Spectre.Console.BreakdownChart. The chart can be customized with a specified width and color.
+This function takes an array of data and formats it into a breakdown chart using BreakdownChart. The chart can be customized with a specified width and color.
 
 
 

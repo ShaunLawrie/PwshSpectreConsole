@@ -38,10 +38,10 @@ Displays the image "MyImage.png" in the console with a maximum width of 80 chara
 ```powershell
 PS C:\> Get-SpectreImageExperimental -ImagePath "C:\Images\MyImage.png" -MaxWidth 80
 ```
-Displays the animated GIF "MyAnimation.gif" in the console with a maximum width of 80 characters, repeating indefinitely.
+Displays the animated GIF "MyAnimation.gif" in the console with a maximum width of 80 characters, repeating indefinitely. Press ctrl-c to stop the animation.
 
 ```powershell
-PS C:\> Get-SpectreImageExperimental -ImagePath "C:\Images\MyAnimation.gif" -MaxWidth 80 -Repeat
+PS C:\> Get-SpectreImageExperimental -ImagePath "C:\Images\MyAnimation.gif" -MaxWidth 80
 ```
 
 
@@ -64,6 +64,21 @@ The path to the image file to display.
 
 
 
+#### **ImageUrl**
+
+The URL to the image file to display. If specified, the image is downloaded to a temporary file and then displayed.
+
+
+
+
+
+
+|Type   |Required|Position|PipelineInput|
+|-------|--------|--------|-------------|
+|`[Uri]`|false   |2       |false        |
+
+
+
 #### **Width**
 
 The width of the image in characters. The image is scaled to fit within this width while maintaining its aspect ratio.
@@ -75,18 +90,22 @@ The width of the image in characters. The image is scaled to fit within this wid
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
-|`[Int32]`|false   |2       |false        |
+|`[Int32]`|false   |3       |false        |
 
 
 
 #### **LoopCount**
+
+The number of times to repeat the animation. The default value is 0, which means the animation will repeat forever. Press ctrl-c to stop the animation.
+
+
 
 
 
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
-|`[Int32]`|false   |3       |false        |
+|`[Int32]`|false   |4       |false        |
 
 
 
@@ -108,7 +127,7 @@ Valid Values:
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
-|`[String]`|false   |4       |false        |
+|`[String]`|false   |5       |false        |
 
 
 
@@ -119,5 +138,5 @@ Valid Values:
 
 ### Syntax
 ```powershell
-Get-SpectreImageExperimental [[-ImagePath] <String>] [[-Width] <Int32>] [[-LoopCount] <Int32>] [[-Resampler] <String>] [<CommonParameters>]
+Get-SpectreImageExperimental [[-ImagePath] <String>] [[-ImageUrl] <Uri>] [[-Width] <Int32>] [[-LoopCount] <Int32>] [[-Resampler] <String>] [<CommonParameters>]
 ```

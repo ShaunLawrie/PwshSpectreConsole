@@ -115,9 +115,9 @@ The text and markup to display if the user chooses no. If left undefined, nothin
 
 
 
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[String]`|false   |5       |false        |
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Color]`|false   |5       |false        |
 
 
 
@@ -128,5 +128,5 @@ The text and markup to display if the user chooses no. If left undefined, nothin
 
 ### Syntax
 ```powershell
-Read-SpectreConfirm [[-Prompt] <String>] [[-DefaultAnswer] <String>] [[-ConfirmSuccess] <String>] [[-ConfirmFailure] <String>] [[-Color] <String>] [<CommonParameters>]
+Read-SpectreConfirm [[-Prompt] <String>] [[-DefaultAnswer] <String>] [[-ConfirmSuccess] <String>] [[-ConfirmFailure] <String>] [[-Color] <Color>] [<CommonParameters>]
 ```

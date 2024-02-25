@@ -51,7 +51,7 @@ $data = @{
         }
     )
 }
-Format-SpectreTree -Data $data -Border "Heavy" -Color "Green"
+Format-SpectreTree -Data $data -Guide BoldLine -Color "Green"
 ```
 
 
@@ -103,9 +103,9 @@ The color to use for the tree. This can be a Spectre Console color name or a hex
 
 
 
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[String]`|false   |3       |false        |
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Color]`|false   |3       |false        |
 
 
 
@@ -116,5 +116,5 @@ The color to use for the tree. This can be a Spectre Console color name or a hex
 
 ### Syntax
 ```powershell
-Format-SpectreTree [-Data] <Hashtable> [[-Guide] <String>] [[-Color] <String>] [<CommonParameters>]
+Format-SpectreTree [-Data] <Hashtable> [[-Guide] <String>] [[-Color] <Color>] [<CommonParameters>]
 ```
