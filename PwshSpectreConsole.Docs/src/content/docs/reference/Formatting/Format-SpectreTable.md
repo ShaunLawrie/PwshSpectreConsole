@@ -72,6 +72,7 @@ The calculated property can be a script block or a hash table. Valid key-value p
 |Type        |Required|Position|PipelineInput|
 |------------|--------|--------|-------------|
 |`[Object[]]`|false   |1       |false        |
+|`[Object[]]`|false   |1       |false        |
 
 #### **Wrap**
 Displays text that exceeds the column width on the next line. By default, text that exceeds the column width is truncated
@@ -168,6 +169,13 @@ Allow Spectre markup in the table elements e.g. [green]message[/].
 
 ### Syntax
 ```powershell
+Format-SpectreTable -Data <Object> [-Wrap] [-Border <String>] [-Color <Color>] [-HeaderColor <Color>] [-TextColor <Color>] [-Width <Int32>] [-HideHeaders] [-Title <String>] [-AllowMarkup] [<CommonParameters>]
+```
+```powershell
+Format-SpectreTable -Data <Object> [[-Property] <Object[]>] [-Wrap] [-Border <String>] [-Color <Color>] [-HeaderColor <Color>] [-TextColor <Color>] [-Width <Int32>] [-HideHeaders] [-Title <String>] [-AllowMarkup] [<CommonParameters>]
+```
+```powershell
+Format-SpectreTable -Data <Object> [-Wrap] [-View <String>] [-Border <String>] [-Color <Color>] [-HeaderColor <Color>] [-TextColor <Color>] [-Width <Int32>] [-HideHeaders] [-Title <String>] [-AllowMarkup] [<CommonParameters>]
 Format-SpectreTable -Data <Object> [-Wrap] [-Border <String>] [-Color <Color>] [-HeaderColor <Color>] [-TextColor <Color>] [-Width <Int32>] [-HideHeaders] [-Title <String>] [-AllowMarkup] [<CommonParameters>]
 ```
 ```powershell

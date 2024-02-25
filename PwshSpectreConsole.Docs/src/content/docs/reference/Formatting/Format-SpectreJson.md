@@ -10,6 +10,7 @@ title: Format-SpectreJson
 
 ### Synopsis
 Formats an array of objects into a Spectre Console Json.
+Formats an array of objects into a Spectre Console Json.
 Thanks to [trackd](https://github.com/trackd) for adding this.
 ![Spectre json example](/json.png)
 
@@ -131,5 +132,6 @@ The height of the Json panel.
 
 ### Syntax
 ```powershell
+Format-SpectreJson [-Data] <Object> [[-Depth] <Int32>] [[-Title] <String>] [-NoBorder] [[-Border] <String>] [[-Color] <Color>] [[-Width] <Int32>] [[-Height] <Int32>] [-Expand] [<CommonParameters>]
 Format-SpectreJson [-Data] <Object> [[-Depth] <Int32>] [[-Title] <String>] [-NoBorder] [[-Border] <String>] [[-Color] <Color>] [[-Width] <Int32>] [[-Height] <Int32>] [-Expand] [<CommonParameters>]
 ```

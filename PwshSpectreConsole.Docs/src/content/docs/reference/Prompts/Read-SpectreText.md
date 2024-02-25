@@ -74,4 +74,5 @@ With autocomplete and can tab through the choices.
 ### Syntax
 ```powershell
 Read-SpectreText [[-Question] <String>] [[-DefaultAnswer] <String>] [[-AnswerColor] <Color>] [-AllowEmpty] [[-Choices] <String[]>] [<CommonParameters>]
+Read-SpectreText [[-Question] <String>] [[-DefaultAnswer] <String>] [[-AnswerColor] <Color>] [-AllowEmpty] [[-Choices] <String[]>] [<CommonParameters>]
 ```

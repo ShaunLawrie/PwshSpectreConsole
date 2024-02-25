@@ -23,7 +23,7 @@ Adapted from https://key2consulting.com/powershell-how-to-display-job-progress/
 Waits for two jobs to complete
 
 ```powershell
-Invoke-SpectreCommandWithProgress -Title "Waiting" -ScriptBlock {
+Invoke-SpectreCommandWithProgress -ScriptBlock {
     param (
         $Context
     )

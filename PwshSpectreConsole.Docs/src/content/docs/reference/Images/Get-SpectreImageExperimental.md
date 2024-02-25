@@ -28,10 +28,10 @@ Displays the image "MyImage.png" in the console with a maximum width of 80 chara
 ```powershell
 PS C:\> Get-SpectreImageExperimental -ImagePath "C:\Images\MyImage.png" -MaxWidth 80
 ```
-Displays the animated GIF "MyAnimation.gif" in the console with a maximum width of 80 characters, repeating indefinitely.
+Displays the animated GIF "MyAnimation.gif" in the console with a maximum width of 80 characters, repeating indefinitely. Press ctrl-c to stop the animation.
 
 ```powershell
-PS C:\> Get-SpectreImageExperimental -ImagePath "C:\Images\MyAnimation.gif" -MaxWidth 80 -Repeat
+PS C:\> Get-SpectreImageExperimental -ImagePath "C:\Images\MyAnimation.gif" -MaxWidth 80
 ```
 
 ---
@@ -78,5 +78,6 @@ Valid Values:
 
 ### Syntax
 ```powershell
+Get-SpectreImageExperimental [[-ImagePath] <String>] [[-ImageUrl] <Uri>] [[-Width] <Int32>] [[-LoopCount] <Int32>] [[-Resampler] <String>] [<CommonParameters>]
 Get-SpectreImageExperimental [[-ImagePath] <String>] [[-ImageUrl] <Uri>] [[-Width] <Int32>] [[-LoopCount] <Int32>] [[-Resampler] <String>] [<CommonParameters>]
 ```

@@ -20,6 +20,7 @@ Displays the text "Hello Spectre!" in the center of the console, in red color.
 
 ```powershell
 Write-SpectreFigletText -Text "Hello Spectre!" -Alignment "Center" -Color "Red"
+Write-SpectreFigletText -Text "Hello Spectre!" -Alignment "Center" -Color "Red"
 ```
 Displays the text "Woah!" using a custom figlet font.
 
@@ -76,5 +77,6 @@ The figlet font format is usually *.flf, see https://spectreconsole.net/widgets/
 
 ### Syntax
 ```powershell
+Write-SpectreFigletText [[-Text] <String>] [[-Alignment] <String>] [[-Color] <Color>] [[-FigletFontPath] <String>] [<CommonParameters>]
 Write-SpectreFigletText [[-Text] <String>] [[-Alignment] <String>] [[-Color] <Color>] [[-FigletFontPath] <String>] [<CommonParameters>]
 ```

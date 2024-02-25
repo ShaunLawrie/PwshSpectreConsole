@@ -65,4 +65,5 @@ The number of choices to display per page in the selection prompt.
 ### Syntax
 ```powershell
 Read-SpectreSelection [[-Title] <String>] [[-Choices] <Array>] [[-ChoiceLabelProperty] <String>] [[-Color] <Color>] [[-PageSize] <Int32>] [<CommonParameters>]
+Read-SpectreSelection [[-Title] <String>] [[-Choices] <Array>] [[-ChoiceLabelProperty] <String>] [[-Color] <Color>] [[-PageSize] <Int32>] [<CommonParameters>]
 ```

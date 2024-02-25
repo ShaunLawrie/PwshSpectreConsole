@@ -74,4 +74,5 @@ The text and markup to display if the user chooses no. If left undefined, nothin
 ### Syntax
 ```powershell
 Read-SpectreConfirm [[-Prompt] <String>] [[-DefaultAnswer] <String>] [[-ConfirmSuccess] <String>] [[-ConfirmFailure] <String>] [[-Color] <Color>] [<CommonParameters>]
+Read-SpectreConfirm [[-Prompt] <String>] [[-DefaultAnswer] <String>] [[-ConfirmSuccess] <String>] [[-ConfirmFailure] <String>] [[-Color] <Color>] [<CommonParameters>]
 ```

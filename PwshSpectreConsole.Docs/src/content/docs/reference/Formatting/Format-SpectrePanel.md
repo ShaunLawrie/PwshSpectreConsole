@@ -88,4 +88,5 @@ The height of the panel.
 ### Syntax
 ```powershell
 Format-SpectrePanel [-Data] <Object> [[-Title] <String>] [[-Border] <String>] [-Expand] [[-Color] <Color>] [[-Width] <Int32>] [[-Height] <Int32>] [<CommonParameters>]
+Format-SpectrePanel [-Data] <Object> [[-Title] <String>] [[-Border] <String>] [-Expand] [[-Color] <Color>] [[-Width] <Int32>] [[-Height] <Int32>] [<CommonParameters>]
 ```

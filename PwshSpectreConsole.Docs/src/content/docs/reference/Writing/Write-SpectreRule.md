@@ -56,4 +56,5 @@ The color of the rule. The default value is the accent color of the script.
 ### Syntax
 ```powershell
 Write-SpectreRule [-Title] <String> [[-Alignment] <String>] [[-Color] <Color>] [<CommonParameters>]
+Write-SpectreRule [-Title] <String> [[-Alignment] <String>] [[-Color] <Color>] [<CommonParameters>]
 ```

@@ -67,4 +67,5 @@ The default value color to set. Must be a valid Spectre Console color name. Defa
 ### Syntax
 ```powershell
 Set-SpectreColors [[-AccentColor] <Color>] [[-DefaultValueColor] <Color>] [[-DefaultTableHeaderColor] <Color>] [[-DefaultTableTextColor] <Color>] [<CommonParameters>]
+Set-SpectreColors [[-AccentColor] <Color>] [[-DefaultValueColor] <Color>] [[-DefaultTableHeaderColor] <Color>] [[-DefaultTableTextColor] <Color>] [<CommonParameters>]
 ```

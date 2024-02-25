@@ -135,4 +135,5 @@ The color of the spinner. Valid values can be found with Get-SpectreDemoColors.
 ### Syntax
 ```powershell
 Invoke-SpectreCommandWithStatus [-ScriptBlock] <ScriptBlock> [[-Spinner] <String>] [-Title] <String> [[-Color] <Color>] [<CommonParameters>]
+Invoke-SpectreCommandWithStatus [-ScriptBlock] <ScriptBlock> [[-Spinner] <String>] [-Title] <String> [[-Color] <Color>] [<CommonParameters>]
 ```
