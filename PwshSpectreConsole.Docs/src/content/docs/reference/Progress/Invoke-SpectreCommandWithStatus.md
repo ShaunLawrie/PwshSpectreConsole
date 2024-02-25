@@ -4,16 +4,26 @@ title: Invoke-SpectreCommandWithStatus
 
 
 
+
+
+
+
 ### Synopsis
 Invokes a script block with a Spectre status spinner.
 
+
+
 ---
+
 
 ### Description
 
 This function starts a Spectre status spinner with the specified title and spinner type, and invokes the specified script block. The spinner will continue to spin until the script block completes.
 
+
+
 ---
+
 
 ### Examples
 Starts a Spectre status spinner with the "dots" spinner type, a yellow color, and the title "Waiting for process to complete". The spinner will continue to spin for 5 seconds.
@@ -22,18 +32,32 @@ Starts a Spectre status spinner with the "dots" spinner type, a yellow color, an
 Invoke-SpectreCommandWithStatus -ScriptBlock { Start-Sleep -Seconds 5 } -Spinner dots -Title "Waiting for process to complete" -Color yellow
 ```
 
+
 ---
+
 
 ### Parameters
 #### **ScriptBlock**
+
 The script block to invoke.
+
+
+
+
+
 
 |Type           |Required|Position|PipelineInput|
 |---------------|--------|--------|-------------|
 |`[ScriptBlock]`|true    |1       |false        |
 
+
+
 #### **Spinner**
+
 The type of spinner to display.
+
+
+
 Valid Values:
 
 * Aesthetic
@@ -112,28 +136,53 @@ Valid Values:
 * Triangle
 * Weather
 
+
+
+
+
+
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|false   |2       |false        |
 
+
+
 #### **Title**
+
 The title to display above the spinner.
+
+
+
+
+
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|true    |3       |false        |
 
+
+
 #### **Color**
+
 The color of the spinner. Valid values can be found with Get-SpectreDemoColors.
+
+
+
+
+
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
 |`[Color]`|false   |4       |false        |
 
+
+
+
+
 ---
+
 
 ### Syntax
 ```powershell
-Invoke-SpectreCommandWithStatus [-ScriptBlock] <ScriptBlock> [[-Spinner] <String>] [-Title] <String> [[-Color] <Color>] [<CommonParameters>]
 Invoke-SpectreCommandWithStatus [-ScriptBlock] <ScriptBlock> [[-Spinner] <String>] [-Title] <String> [[-Color] <Color>] [<CommonParameters>]
 ```
