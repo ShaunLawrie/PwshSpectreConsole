@@ -1,10 +1,12 @@
+using namespace Spectre.Console
+
 class SpectreChartItem
 {
     [string] $Label
     [double] $Value
-    [string] $Color
+    [Color] $Color
 
-    SpectreChartItem([string] $Label, [double] $Value, [string] $Color) {
+    SpectreChartItem([string] $Label, [double] $Value, [Color] $Color) {
         $this.Label = $Label
         $this.Value = $Value
         $this.Color = $Color

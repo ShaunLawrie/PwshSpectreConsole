@@ -12,11 +12,14 @@ function Get-SpectreImageExperimental {
     .PARAMETER ImagePath
     The path to the image file to display.
 
+    .PARAMETER ImageUrl
+    The URL to the image file to display. If specified, the image is downloaded to a temporary file and then displayed.
+
     .PARAMETER Width
     The width of the image in characters. The image is scaled to fit within this width while maintaining its aspect ratio.
 
-    .PARAMETER Repeat
-    If specified, the animation will repeat indefinitely.
+    .PARAMETER LoopCount
+    The number of times to repeat the animation. The default value is 0, which means the animation will repeat forever. Press ctrl-c to stop the animation.
 
     .PARAMETER Resampler
     The resampling algorithm to use when scaling the image. Valid values are "Bicubic" and "NearestNeighbor". The default value is "Bicubic".
@@ -26,8 +29,8 @@ function Get-SpectreImageExperimental {
     PS C:\> Get-SpectreImageExperimental -ImagePath "C:\Images\MyImage.png" -MaxWidth 80
 
     .EXAMPLE
-    # Displays the animated GIF "MyAnimation.gif" in the console with a maximum width of 80 characters, repeating indefinitely.
-    PS C:\> Get-SpectreImageExperimental -ImagePath "C:\Images\MyAnimation.gif" -MaxWidth 80 -Repeat
+    # Displays the animated GIF "MyAnimation.gif" in the console with a maximum width of 80 characters, repeating indefinitely. Press ctrl-c to stop the animation.
+    PS C:\> Get-SpectreImageExperimental -ImagePath "C:\Images\MyAnimation.gif" -MaxWidth 80
     #>
     [Reflection.AssemblyMetadata("title", "Get-SpectreImageExperimental")]
     param (
@@ -52,7 +55,7 @@ function Get-SpectreImageExperimental {
 
         $backgroundColor = [System.Drawing.Color]::FromName([Console]::BackgroundColor)
 
-        $image = [SixLabors.ImageSharp.Image]::Load($ImagePath)
+        $image = [SixLabors.ImageSharp.Image]::Load($imagePathResolved)
 
         if ($Width) {
             $maxWidth = $Width
@@ -188,6 +191,10 @@ function Get-SpectreImageExperimental {
         $loopIterations = 0
         [Console]::SetCursorPosition($topLeft.X, $topLeft.Y)
         [Console]::CursorVisible = $false
+        if($frames.Count -eq 1) {
+            Write-Host $frames[0].Frame
+            return
+        }
         do {
             foreach ($frame in $frames) {
                 [Console]::SetCursorPosition($topLeft.X, $topLeft.Y)
@@ -195,10 +202,10 @@ function Get-SpectreImageExperimental {
                 Start-Sleep -Milliseconds $frame.FrameDelayMilliseconds
             }
             $loopIterations++
-        } while ($loopIterations -lt $LoopCount)
-        [Console]::CursorVisible = $true
+        } while ($loopIterations -lt $LoopCount -or $LoopCount -eq 0)
     }
     finally {
+        [Console]::CursorVisible = $true
         if ($ImageUrl) {
             Remove-Item $ImagePath
         }
