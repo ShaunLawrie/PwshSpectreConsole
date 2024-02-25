@@ -22,7 +22,7 @@ function Wait-SpectreJobs {
 
     .EXAMPLE
     # Waits for two jobs to complete
-    Invoke-SpectreCommandWithProgress -Title "Waiting" -ScriptBlock {
+    Invoke-SpectreCommandWithProgress -ScriptBlock {
         param (
             $Context
         )
