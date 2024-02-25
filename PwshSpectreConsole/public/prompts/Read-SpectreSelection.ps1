@@ -1,4 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
+using namespace Spectre.Console
 
 function Read-SpectreSelection {
     <#
@@ -32,12 +33,12 @@ function Read-SpectreSelection {
         [string] $Title = "What's your favourite colour [$($script:AccentColor.ToMarkup())]option[/]?",
         [array] $Choices = @("red", "green", "blue"),
         [string] $ChoiceLabelProperty,
-        [ValidateSpectreColor()]
+        [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [string] $Color = $script:AccentColor.ToMarkup(),
+        [Color] $Color = $script:AccentColor,
         [int] $PageSize = 5
     )
-    $spectrePrompt = [Spectre.Console.SelectionPrompt[string]]::new()
+    $spectrePrompt = [SelectionPrompt[string]]::new()
 
     $choiceLabels = $Choices
     if($ChoiceLabelProperty) {
@@ -46,15 +47,14 @@ function Read-SpectreSelection {
 
     $duplicateLabels = $choiceLabels | Group-Object | Where-Object { $_.Count -gt 1 }
     if($duplicateLabels) {
-        Write-Error "You have duplicate labels in your select list, this is ambiguous so a selection cannot be made"
-        exit 2
+        throw "You have duplicate labels in your select list, this is ambiguous so a selection cannot be made"
     }
 
-    $spectrePrompt = [Spectre.Console.SelectionPromptExtensions]::AddChoices($spectrePrompt, [string[]]$choiceLabels)
+    $spectrePrompt = [SelectionPromptExtensions]::AddChoices($spectrePrompt, [string[]]$choiceLabels)
     $spectrePrompt.Title = $Title
     $spectrePrompt.PageSize = $PageSize
     $spectrePrompt.WrapAround = $true
-    $spectrePrompt.HighlightStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
+    $spectrePrompt.HighlightStyle = [Style]::new($Color)
     $spectrePrompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
     $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt
 

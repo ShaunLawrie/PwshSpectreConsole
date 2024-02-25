@@ -1,4 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
+using namespace Spectre.Console
 
 function Write-SpectreRule {
     <#
@@ -12,7 +13,7 @@ function Write-SpectreRule {
     The title of the rule.
 
     .PARAMETER Alignment
-    The alignment of the text in the rule. Valid values are Left, Center, and Right. The default value is Left.
+    The alignment of the text in the rule. The default value is Left.
 
     .PARAMETER Color
     The color of the rule. The default value is the accent color of the script.
@@ -27,11 +28,11 @@ function Write-SpectreRule {
         [string] $Title,
         [ValidateSet([SpectreConsoleJustify], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Alignment = "Left",
-        [ValidateSpectreColor()]
+        [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [string] $Color = $script:AccentColor.ToMarkup()
+        [Color] $Color = $script:AccentColor
     )
-    $rule = [Spectre.Console.Rule]::new("[$($Color)]$Title[/]")
-    $rule.Justification = [Spectre.Console.Justify]::$Alignment
+    $rule = [Rule]::new("[$($Color.ToMarkup())]$Title[/]")
+    $rule.Justification = [Justify]::$Alignment
     Write-AnsiConsole $rule
 }

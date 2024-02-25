@@ -1,4 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
+using namespace Spectre.Console
 
 function Format-SpectrePanel {
     <#
@@ -37,22 +38,22 @@ function Format-SpectrePanel {
     [Reflection.AssemblyMetadata("title", "Format-SpectrePanel")]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
-        [string] $Data,
+        [object] $Data,
         [string] $Title,
         [ValidateSet([SpectreConsoleBoxBorder], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Border = "Rounded",
         [switch] $Expand,
-        [ValidateSpectreColor()]
+        [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [string] $Color = $script:AccentColor.ToMarkup(),
-        [ValidateScript({ $_ -gt 0 -and $_ -le [console]::BufferWidth }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
+        [Color] $Color = $script:AccentColor,
+        [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostWidth) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
         [int]$Width,
-        [ValidateScript({ $_ -gt 0 -and $_ -le [console]::WindowHeight }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console height.")]
+        [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostHeight) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console height.")]
         [int]$Height
     )
-    $panel = [Spectre.Console.Panel]::new($Data)
+    $panel = [Panel]::new($Data)
     if ($Title) {
-        $panel.Header = [Spectre.Console.PanelHeader]::new($Title)
+        $panel.Header = [PanelHeader]::new($Title)
     }
     if ($width) {
         $panel.Width = $Width
@@ -61,7 +62,7 @@ function Format-SpectrePanel {
         $panel.Height = $Height
     }
     $panel.Expand = $Expand
-    $panel.Border = [Spectre.Console.BoxBorder]::$Border
-    $panel.BorderStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
+    $panel.Border = [BoxBorder]::$Border
+    $panel.BorderStyle = [Style]::new($Color)
     Write-AnsiConsole $panel
 }

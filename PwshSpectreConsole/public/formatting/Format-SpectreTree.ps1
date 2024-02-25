@@ -1,4 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
+using namespace Spectre.Console
 
 function Format-SpectreTree {
     <#
@@ -12,7 +13,7 @@ function Format-SpectreTree {
     The hashtable to format as a tree.
 
     .PARAMETER Border
-    The type of border to use for the tree. Valid values are 'Rounded', 'Heavy', 'Light', 'Double', 'Solid', 'Ascii', and 'None'. Default is 'Rounded'.
+    The type of border to use for the tree.
 
     .PARAMETER Color
     The color to use for the tree. This can be a Spectre Console color name or a hex color code. Default is the accent color defined in the script.
@@ -50,16 +51,16 @@ function Format-SpectreTree {
         [hashtable] $Data,
         [ValidateSet([SpectreConsoleTreeGuide],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Guide = "Line",
-        [ValidateSpectreColor()]
+        [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [string] $Color = $script:AccentColor.ToMarkup()
+        [Color] $Color = $script:AccentColor
     )
 
-    $tree = [Spectre.Console.Tree]::new($Data.Label)
-    $tree.Guide = [Spectre.Console.TreeGuide]::$Guide
+    $tree = [Tree]::new($Data.Label)
+    $tree.Guide = [TreeGuide]::$Guide
 
     Add-SpectreTreeNode -Node $tree -Children $Data.Children
 
-    $tree.Style = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
+    $tree.Style = [Style]::new($Color)
     Write-AnsiConsole $tree
 }

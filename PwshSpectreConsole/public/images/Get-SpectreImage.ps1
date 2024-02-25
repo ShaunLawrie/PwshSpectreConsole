@@ -1,10 +1,12 @@
+using namespace Spectre.Console
+
 function Get-SpectreImage {
     <#
     .SYNOPSIS
-    Displays an image in the console using Spectre.Console.CanvasImage.
+    Displays an image in the console using CanvasImage.
 
     .DESCRIPTION
-    Displays an image in the console using Spectre.Console.CanvasImage. The image can be resized to a maximum width if desired.
+    Displays an image in the console using CanvasImage. The image can be resized to a maximum width if desired.
 
     .PARAMETER ImagePath
     The path to the image file to be displayed.
@@ -21,7 +23,7 @@ function Get-SpectreImage {
         [string] $ImagePath,
         [int] $MaxWidth
     )
-    $image = [Spectre.Console.CanvasImage]::new($ImagePath)
+    $image = [CanvasImage]::new($ImagePath)
     if($MaxWidth) {
         $image.MaxWidth = $MaxWidth
     }

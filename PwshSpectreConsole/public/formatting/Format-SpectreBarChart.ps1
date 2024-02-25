@@ -1,4 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
+using namespace Spectre.Console
 
 function Format-SpectreBarChart {
     <#
@@ -26,7 +27,7 @@ function Format-SpectreBarChart {
     $data = @()
 
     $data += New-SpectreChartItem -Label "Apples" -Value 10 -Color "Green"
-    $data += New-SpectreChartItem -Label "Oranges" -Value 5 -Color "Orange"
+    $data += New-SpectreChartItem -Label "Oranges" -Value 5 -Color "DarkOrange"
     $data += New-SpectreChartItem -Label "Bananas" -Value 2.2 -Color "#FFFF00"
     
     Format-SpectreBarChart -Data $data -Title "Fruit Sales" -Width 50
@@ -36,12 +37,12 @@ function Format-SpectreBarChart {
         [Parameter(ValueFromPipeline, Mandatory)]
         [array] $Data,
         [String] $Title,
-        [ValidateScript({ $_ -gt 0 -and $_ -le [console]::BufferWidth }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
-        [int] $Width = [console]::BufferWidth,
+        [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostWidth) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
+        [int] $Width = (Get-HostWidth),
         [switch] $HideValues
     )
     begin {
-        $barChart = [Spectre.Console.BarChart]::new()
+        $barChart = [BarChart]::new()
         if ($Title) {
             $barChart.Label = $Title
         }
@@ -53,10 +54,10 @@ function Format-SpectreBarChart {
     process {
         if ($Data -is [array]) {
             foreach ($dataItem in $Data) {
-                $barChart = [Spectre.Console.BarChartExtensions]::AddItem($barChart, $dataItem.Label, $dataItem.Value, ($dataItem.Color | Convert-ToSpectreColor))
+                $barChart = [BarChartExtensions]::AddItem($barChart, $dataItem.Label, $dataItem.Value, ($dataItem.Color | Convert-ToSpectreColor))
             }
         } else {
-            $barChart = [Spectre.Console.BarChartExtensions]::AddItem($barChart, $Data.Label, $Data.Value, ($Data.Color | Convert-ToSpectreColor))
+            $barChart = [BarChartExtensions]::AddItem($barChart, $Data.Label, $Data.Value, ($Data.Color | Convert-ToSpectreColor))
         }
     }
     end {

@@ -1,0 +1,7 @@
+Root
+[38;5;197m┣━━ [0mChild 1
+[38;5;197m┃   ┗━━ [0mGrandchild 1
+[38;5;197m┃       ┣━━ [0mGreat Grandchild 1
+[38;5;197m┃       ┣━━ [0mGreat Grandchild 2
+[38;5;197m┃       ┗━━ [0mGreat Grandchild 3
+[38;5;197m┗━━ [0mChild 2

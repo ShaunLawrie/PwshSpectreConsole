@@ -1,4 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
+using namespace Spectre.Console
 
 function Format-SpectreBreakdownChart {
     <#
@@ -7,7 +8,7 @@ function Format-SpectreBreakdownChart {
     ![Example breakdown chart](/breakdownchart.png)
 
     .DESCRIPTION
-    This function takes an array of data and formats it into a breakdown chart using Spectre.Console.BreakdownChart. The chart can be customized with a specified width and color.
+    This function takes an array of data and formats it into a breakdown chart using BreakdownChart. The chart can be customized with a specified width and color.
 
     .PARAMETER Data
     An array of data to be formatted into a breakdown chart.
@@ -35,13 +36,13 @@ function Format-SpectreBreakdownChart {
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
         [array] $Data,
-        [ValidateScript({ $_ -gt 0 -and $_ -le [console]::BufferWidth }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
-        [int]$Width = [console]::BufferWidth,
+        [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostWidth) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
+        [int]$Width = (Get-HostWidth),
         [switch]$HideTags,
         [Switch]$HideTagValues
     )
     begin {
-        $chart = [Spectre.Console.BreakdownChart]::new()
+        $chart = [BreakdownChart]::new()
         $chart.Width = $Width
         if ($HideTags) {
             $chart.ShowTags = $false
@@ -53,10 +54,10 @@ function Format-SpectreBreakdownChart {
     process {
         if($Data -is [array]) {
             foreach($dataItem in $Data) {
-                [Spectre.Console.BreakdownChartExtensions]::AddItem($chart, $dataItem.Label, $dataItem.Value, ($dataItem.Color | Convert-ToSpectreColor)) | Out-Null
+                [BreakdownChartExtensions]::AddItem($chart, $dataItem.Label, $dataItem.Value, ($dataItem.Color | Convert-ToSpectreColor)) | Out-Null
             }
         } else {
-            [Spectre.Console.BreakdownChartExtensions]::AddItem($chart, $Data.Label, $Data.Value, ($Data.Color | Convert-ToSpectreColor)) | Out-Null
+            [BreakdownChartExtensions]::AddItem($chart, $Data.Label, $Data.Value, ($Data.Color | Convert-ToSpectreColor)) | Out-Null
         }
     }
     end {

@@ -1,4 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
+using namespace Spectre.Console
 
 function Read-SpectreMultiSelectionGrouped {
     <#
@@ -53,43 +54,47 @@ function Read-SpectreMultiSelectionGrouped {
             }
         ),
         [string] $ChoiceLabelProperty,
-        [ValidateSpectreColor()]
+        [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [string] $Color = $script:AccentColor.ToMarkup(),
+        [Color] $Color = $script:AccentColor,
         [int] $PageSize = 10,
         [switch] $AllowEmpty
     )
-    $spectrePrompt = [Spectre.Console.MultiSelectionPrompt[string]]::new()
+    $spectrePrompt = [MultiSelectionPrompt[string]]::new()
 
     $choiceLabels = $Choices.Choices
+    $flattenedChoices = $Choices.Choices
     if($ChoiceLabelProperty) {
-        $choiceLabels = $Choices | Select-Object -ExpandProperty $ChoiceLabelProperty
+        $choiceLabels = $choiceLabels | Select-Object -ExpandProperty $ChoiceLabelProperty
     }
     $duplicateLabels = $choiceLabels | Group-Object | Where-Object { $_.Count -gt 1 }
     if($duplicateLabels) {
-        Write-Error "You have duplicate labels in your select list, this is ambiguous so a selection cannot be made (even when using choice groups)"
-        exit 2
+        throw "You have duplicate labels in your select list, this is ambiguous so a selection cannot be made (even when using choice groups)"
     }
 
     foreach($group in $Choices) {
+        $choiceObjects = $group.Choices | Where-Object { $_ -isnot [string] }
+        if($null -ne $choiceObjects -and [string]::IsNullOrEmpty($ChoiceLabelProperty)) {
+            throw "You must specify the ChoiceLabelProperty parameter when using choice groups with complex objects"
+        }
         $choiceLabels = $group.Choices
         if($ChoiceLabelProperty) {
-            $choiceLabels = $Choices | Select-Object -ExpandProperty $ChoiceLabelProperty
+            $choiceLabels = $choiceLabels | Select-Object -ExpandProperty $ChoiceLabelProperty
         }
-        $spectrePrompt = [Spectre.Console.MultiSelectionPromptExtensions]::AddChoiceGroup($spectrePrompt, $group.Name, [string[]]$choiceLabels)
+        $spectrePrompt = [MultiSelectionPromptExtensions]::AddChoiceGroup($spectrePrompt, $group.Name, [string[]]$choiceLabels)
     }
 
     $spectrePrompt.Title = $Title
     $spectrePrompt.PageSize = $PageSize
     $spectrePrompt.WrapAround = $true
     $spectrePrompt.Required = !$AllowEmpty
-    $spectrePrompt.HighlightStyle = [Spectre.Console.Style]::new(($Color | Convert-ToSpectreColor))
+    $spectrePrompt.HighlightStyle = [Style]::new($Color)
     $spectrePrompt.InstructionsText = "[$($script:DefaultValueColor.ToMarkup())](Press [$($script:AccentColor.ToMarkup())]space[/] to toggle a choice and press [$($script:AccentColor.ToMarkup())]<enter>[/] to submit your answer)[/]"
     $spectrePrompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
     $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt
 
     if($ChoiceLabelProperty) {
-        $selected = $Choices | Where-Object -Property $ChoiceLabelProperty -Eq $selected
+        $selected = $flattenedChoices | Where-Object { $selected -contains $_.$ChoiceLabelProperty }
     }
 
     return $selected

@@ -1,11 +1,11 @@
 name: Publish to PSGallery
 env:
- PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
+  PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
 on:
   push:
     branches:
-     - main
-     - prerelease
+      - main
+      - prerelease
 
 permissions:
   contents: write
@@ -14,56 +14,102 @@ jobs:
   publish-to-psgallery:
     name: Publish
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && github.repository_owner == 'ShaunLawrie'
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
       - name: Version Bump
         shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           $ErrorActionPreference = "Stop"
           & .\PwshSpectreConsole\Build.ps1
           $env:PSModulePath = @($env:PSModulePath, ".\PwshSpectreConsole\") -join ":"
+          Invoke-Pester -CI -ExcludeTag "ExcludeCI"
           $version = Get-Module PwshSpectreConsole -ListAvailable | Sort-Object -Property Version -Descending | Select-Object -First 1 -ExpandProperty Version
           if($null -eq $version) { throw "Failed to load version" }
-          $newVersion = [version]::new($version.Major, $version.Minor + 1, 0)
-          Write-Host "Bumping version from $version to $newVersion"
-          Update-ModuleManifest -Path .\PwshSpectreConsole\PwshSpectreConsole.psd1 -ModuleVersion $newVersion
-          git config --global user.name 'Shaun Lawrie (via GitHub Actions)'
-          git config --global user.email 'shaun.r.lawrie@gmail.com'
-          git add PwshSpectreConsole/PwshSpectreConsole.psd1
-          git commit -m "[skip ci] Bump version to $newVersion"
-          git push
+          $onlineVersion = Find-Module -Name PwshSpectreConsole -RequiredVersion $version -ErrorAction SilentlyContinue
+          $newVersion = [version]::new($version.Major, $version.Minor, $version.Build)
+          if($null -eq $onlineVersion) {
+            Write-Warning "Online version doesn't exist, this version $newVersion will be published without a version bump"
+          } else {
+            $newVersion = [version]::new($version.Major, $version.Minor, $version.Build + 1)
+            Write-Host "Bumping version from $version to $newVersion"
+            Update-ModuleManifest -Path .\PwshSpectreConsole\PwshSpectreConsole.psd1 -ModuleVersion $newVersion
+            git config --global user.name 'Shaun Lawrie (via GitHub Actions)'
+            git config --global user.email 'shaun.r.lawrie@gmail.com'
+            git add PwshSpectreConsole/PwshSpectreConsole.psd1
+            git commit -m "[skip ci] Bump version to $newVersion"
+            git push
+          }
           Import-Module .\PwshSpectreConsole\PwshSpectreConsole.psd1 -Force
           Publish-Module -Name PwshSpectreConsole -Exclude "Build.ps1" -NugetApiKey $env:PSGALLERY_API_KEY
-  
+          gh release create "v$newVersion" --target main --generate-notes
+      - name: Upload Snapshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Snapshots
+          path: PwshSpectreConsole.Tests/@snapshots/*.txt
+
   publish-prerelease-to-psgallery:
     name: Publish Prerelease
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/prerelease'
+    if: github.ref == 'refs/heads/prerelease' && github.repository_owner == 'ShaunLawrie'
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
       - name: Version Bump and Publish
         shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           $ErrorActionPreference = "Stop"
           & ./PwshSpectreConsole/Build.ps1
           $env:PSModulePath = @($env:PSModulePath, ".\PwshSpectreConsole\") -join ":"
+          Invoke-Pester -CI -ExcludeTag "ExcludeCI"
           $version = Get-Module PwshSpectreConsole -ListAvailable | Sort-Object -Property Version -Descending | Select-Object -First 1 -ExpandProperty Version
           if($null -eq $version) { throw "Failed to load version" }
-          $newVersion = [version]::new($version.Major, $version.Minor, $version.Build + 1)
-          Write-Host "Bumping version from $version to $newVersion"
-          Update-ModuleManifest -Path .\PwshSpectreConsole\PwshSpectreConsole.psd1 -ModuleVersion $newVersion
-          git config --global user.name 'Shaun Lawrie (via GitHub Actions)'
-          git config --global user.email 'shaun.r.lawrie@gmail.com'
-          git add PwshSpectreConsole/PwshSpectreConsole.psd1
-          git commit -m "[skip ci] Bump version to $newVersion"
-          git push
+          $onlineVersions = Find-Module -Name PwshSpectreConsole -AllowPrerelease -AllVersions
+
+          $latestStableVersion = $onlineVersions | Where-Object { $_.Version -notlike "*prerelease*" } | Sort-Object -Property Version -Descending | Select-Object -First 1 -ExpandProperty Version
+          $latestStableVersion = [version]$latestStableVersion
+          $latestPrereleaseVersion = $onlineVersions | Where-Object { $_.Version -like "*prerelease*" } | Sort-Object -Property Version -Descending | Select-Object -First 1 -ExpandProperty Version
+          $latestPrereleaseTag = $latestPrereleaseVersion.Split("-prerelease")[1] # format is like -prerelease6, output here is just 6
+          $latestPrereleaseVersion = [version]$latestPrereleaseVersion.Split("-prerelease")[0]
+
+          # Generate a new prerelease name, psgallery only allows characters 'a-zA-Z0-9' and a hyphen ('-') at the beginning of the prerelease string
+          $newPrereleaseTag = "prerelease" + (([int]$latestPrereleaseTag) + 1)
+
+          # Prerelease will always be at least one minor version above the latest published stable version so when it's merged to main the minor version will get bumped
+          # To bump a major version the manifest would be edited manually to vnext.0.0 before merging to main
+          $newVersion = [version]::new($latestStableVersion.Major, $latestStableVersion.Minor + 1, 0)
+
+          if($newVersion -eq $oldVersion) {
+            Write-Host "Version is not being bumped in prerelease"
+          } else {
+            Write-Host "Bumping version from $version to $newVersion"
+            Update-ModuleManifest -Path .\PwshSpectreConsole\PwshSpectreConsole.psd1 -ModuleVersion $newVersion
+            git config --global user.name 'Shaun Lawrie (via GitHub Actions)'
+            git config --global user.email 'shaun.r.lawrie@gmail.com'
+            git add PwshSpectreConsole/PwshSpectreConsole.psd1
+            git commit -m "[skip ci] Bump version to $newVersion"
+            git push
+          }
 
           # Mark as prerelease
-          Update-ModuleManifest -Path .\PwshSpectreConsole\PwshSpectreConsole.psd1 -PrivateData @{ Prerelease = 'prerelease' }
+          Update-ModuleManifest -Path .\PwshSpectreConsole\PwshSpectreConsole.psd1 -PrivateData @{ Prerelease = "$newPrereleaseTag" }
 
           # Publish pre-release version
           Import-Module .\PwshSpectreConsole\PwshSpectreConsole.psd1 -Force
           Publish-Module -Name PwshSpectreConsole -Exclude "Build.ps1" -NugetApiKey $env:PSGALLERY_API_KEY -AllowPrerelease
+
+          # Create a gh release for it
+          gh release create "v$newVersion-$newPrereleaseTag" --target prerelease --generate-notes --prerelease
+      - name: Upload Snapshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Snapshots
+          path: PwshSpectreConsole.Tests/@snapshots/*.txt

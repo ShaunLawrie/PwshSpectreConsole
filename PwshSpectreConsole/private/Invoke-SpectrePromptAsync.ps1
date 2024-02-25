@@ -1,3 +1,5 @@
+using namespace Spectre.Console
+
 function Invoke-SpectrePromptAsync {
     <#
     .SYNOPSIS
@@ -18,7 +20,7 @@ function Invoke-SpectrePromptAsync {
     )
     $cts = [System.Threading.CancellationTokenSource]::new()
     try {
-        $task = $Prompt.ShowAsync([Spectre.Console.AnsiConsole]::Console, $cts.Token)
+        $task = $Prompt.ShowAsync([AnsiConsole]::Console, $cts.Token)
         while (-not $task.AsyncWaitHandle.WaitOne(200)) {
             # Waiting for the async task this way allows ctrl-c interrupts to continue to work within the single-threaded PowerShell world
         }

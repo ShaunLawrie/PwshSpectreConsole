@@ -27,6 +27,18 @@ function Invoke-SpectreCommandWithProgress {
         $task1.Increment(25)
         Start-Sleep -Seconds 1
     }
+
+    .EXAMPLE
+    # This example will display a progress bar while multiple background jobs are running.
+    Invoke-SpectreCommandWithProgress -ScriptBlock {
+        param (
+            $Context
+        )
+        $jobs = @()
+        $jobs += Add-SpectreJob -Context $Context -JobName "job 1" -Job (Start-Job { Start-Sleep -Seconds 5 })
+        $jobs += Add-SpectreJob -Context $Context -JobName "job 2" -Job (Start-Job { Start-Sleep -Seconds 10 })
+        Wait-SpectreJobs -Context $Context -Jobs $jobs
+    }
     #>
     [Reflection.AssemblyMetadata("title", "Invoke-SpectreCommandWithProgress")]
     param (

@@ -1,3 +1,5 @@
+using namespace Spectre.Console
+
 function Get-SpectreEscapedText {
     <#
     .SYNOPSIS
@@ -21,5 +23,5 @@ function Get-SpectreEscapedText {
         [Parameter(ValueFromPipeline, Mandatory)]
         [string] $Text
     )
-    return [Spectre.Console.Markup]::Escape($Text)
+    return [Markup]::Escape($Text)
 }

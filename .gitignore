@@ -23,6 +23,7 @@ pnpm-debug.log*
 
 # Exclude packages folder
 PwshSpectreConsole/packages
+PwshSpectreConsole.Tests/packages
 
 # Exclude working folder
 Working/
