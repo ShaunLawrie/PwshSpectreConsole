@@ -8,28 +8,18 @@ title: Format-SpectreJson
 
 
 
-
-
-
-
 ### Synopsis
 Formats an array of objects into a Spectre Console Json.
 Thanks to [trackd](https://github.com/trackd) for adding this.
 ![Spectre json example](/json.png)
 
-
-
 ---
-
 
 ### Description
 
 This function takes an array of objects and converts them into Json using the Spectre Console Json Library.
 
-
-
 ---
-
 
 ### Examples
 This example formats an array of objects into a table with a double border and the accent color of the script.
@@ -64,77 +54,39 @@ $data = @(
 Format-SpectreJson -Data $data -Title "Employee Data" -Border "Rounded" -Color "Green"
 ```
 
-
 ---
-
 
 ### Parameters
 #### **Data**
-
 The array of objects to be formatted into Json.
-
-
-
-
-
 
 |Type      |Required|Position|PipelineInput |
 |----------|--------|--------|--------------|
 |`[Object]`|true    |1       |true (ByValue)|
 
-
-
 #### **Depth**
-
 The maximum depth of the Json. Default is defined by the version of powershell.
-
-
-
-
-
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
 |`[Int32]`|false   |2       |false        |
 
-
-
 #### **Title**
-
 The title of the Json.
-
-
-
-
-
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|false   |3       |false        |
 
-
-
 #### **NoBorder**
-
 If specified, the Json will not be surrounded by a border.
-
-
-
-
-
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[Switch]`|false   |named   |false        |
 
-
-
 #### **Border**
-
 The border style of the Json. Default is "Rounded".
-
-
-
 Valid Values:
 
 * Ascii
@@ -144,77 +96,38 @@ Valid Values:
 * Rounded
 * Square
 
-
-
-
-
-
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|false   |4       |false        |
 
-
-
 #### **Color**
-
 The color of the Json border. Default is the accent color of the script.
-
-
-
-
-
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
 |`[Color]`|false   |5       |false        |
 
-
-
 #### **Width**
-
 The width of the Json panel.
-
-
-
-
-
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
 |`[Int32]`|false   |6       |false        |
 
-
-
 #### **Height**
-
 The height of the Json panel.
-
-
-
-
-
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
 |`[Int32]`|false   |7       |false        |
 
-
-
 #### **Expand**
-
-
-
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[Switch]`|false   |named   |false        |
 
-
-
-
-
 ---
-
 
 ### Syntax
 ```powershell
