@@ -31,13 +31,13 @@ Describe "Format-SpectreTree" {
                 $testConsole.Write($RenderableObject)
             }
             $testData = @{
-                Label = "Root"
+                Label    = "Root"
                 Children = @(
                     @{
-                        Label = "Child 1"
+                        Label    = "Child 1"
                         Children = @(
                             @{
-                                Label = "Grandchild 1"
+                                Label    = "Grandchild 1"
                                 Children = @(
                                     @{
                                         Label = "Great Grandchild 1"

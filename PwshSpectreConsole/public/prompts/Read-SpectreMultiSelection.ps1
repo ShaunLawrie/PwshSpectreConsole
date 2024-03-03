@@ -46,15 +46,15 @@ function Read-SpectreMultiSelection {
 
     $choiceLabels = $Choices
     $choiceObjects = $Choices | Where-Object { $_ -isnot [string] }
-    if($null -ne $choiceObjects -and [string]::IsNullOrEmpty($ChoiceLabelProperty)) {
+    if ($null -ne $choiceObjects -and [string]::IsNullOrEmpty($ChoiceLabelProperty)) {
         throw "You must specify the ChoiceLabelProperty parameter when using choice groups with complex objects"
     }
-    if($ChoiceLabelProperty) {
+    if ($ChoiceLabelProperty) {
         $choiceLabels = $Choices | Select-Object -ExpandProperty $ChoiceLabelProperty
     }
 
     $duplicateLabels = $choiceLabels | Group-Object | Where-Object { $_.Count -gt 1 }
-    if($duplicateLabels) {
+    if ($duplicateLabels) {
         throw "You have duplicate labels in your select list, this is ambiguous so a selection cannot be made"
     }
 
@@ -68,7 +68,7 @@ function Read-SpectreMultiSelection {
     $spectrePrompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
     $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt
 
-    if($ChoiceLabelProperty) {
+    if ($ChoiceLabelProperty) {
         $selected = $Choices | Where-Object { $selected -contains $_.$ChoiceLabelProperty }
     }
 

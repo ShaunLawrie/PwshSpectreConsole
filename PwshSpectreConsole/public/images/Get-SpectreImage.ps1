@@ -24,7 +24,7 @@ function Get-SpectreImage {
         [int] $MaxWidth
     )
     $image = [CanvasImage]::new($ImagePath)
-    if($MaxWidth) {
+    if ($MaxWidth) {
         $image.MaxWidth = $MaxWidth
     }
     Write-AnsiConsole $image

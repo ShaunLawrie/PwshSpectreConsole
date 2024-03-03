@@ -26,13 +26,13 @@ function Read-SpectrePause {
     Clear-InputQueue
 
     $position = $Host.UI.RawUI.CursorPosition
-    if(!$NoNewline) {
+    if (!$NoNewline) {
         Write-Host ""
     }
     Write-SpectreHost $Message -NoNewline
     Read-Host
     $endPosition = $Host.UI.RawUI.CursorPosition
-    if($endPosition -eq $position) {
+    if ($endPosition -eq $position) {
         # Reached the end of the window
         Set-CursorPosition -X $position.X -Y ($position.Y - 2)
         Write-Host (" " * $Message.Length)

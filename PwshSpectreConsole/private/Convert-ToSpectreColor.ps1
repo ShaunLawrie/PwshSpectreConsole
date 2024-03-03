@@ -29,11 +29,11 @@ function Convert-ToSpectreColor {
     )
     try {
         # Just return the console color object
-        if($Color -is [Color]) {
+        if ($Color -is [Color]) {
             return $Color
         }
         # Already validated in validation attribute
-        if($Color.StartsWith("#")) {
+        if ($Color.StartsWith("#")) {
             $hexString = $Color -replace '^#', ''
             $hexBytes = [System.Convert]::FromHexString($hexString)
             return [Color]::new($hexBytes[0], $hexBytes[1], $hexBytes[2])

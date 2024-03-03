@@ -9,7 +9,7 @@ function Write-SpectreExample {
         [switch] $HideHeader,
         [switch] $NoNewline
     )
-    if($host.UI.RawUI.WindowSize.Width -lt 120) {
+    if ($host.UI.RawUI.WindowSize.Width -lt 120) {
         Write-SpectreFigletText "Pwsh + Spectre!"
     } else {
         Write-SpectreFigletText "Welcome to PwshSpectreConsole!"
@@ -18,11 +18,11 @@ function Write-SpectreExample {
 
     Write-SpectreRule $Title -Color ([Color]::SteelBlue1)
     Write-SpectreHost "`n$Description"
-    if(!$HideHeader) {
+    if (!$HideHeader) {
         Write-CodeblockHeader
     }
     $Codeblock | Write-Codeblock -SyntaxHighlight -ShowLineNumbers
-    if(!$NoNewline) {
+    if (!$NoNewline) {
         Write-Host ""
     }
 }
@@ -45,7 +45,7 @@ function Start-SpectreDemo {
 
     Clear-Host
 
-    if($host.UI.RawUI.WindowSize.Width -lt 120) {
+    if ($host.UI.RawUI.WindowSize.Width -lt 120) {
         Write-SpectreFigletText "Pwsh + Spectre!"
     } else {
         Write-SpectreFigletText "Welcome to PwshSpectreConsole!"
@@ -57,7 +57,7 @@ function Start-SpectreDemo {
     Write-SpectreHost "`nSpectre Console is mostly an async library and it leans heavily on types and extension methods in C# which are very verbose to work with in PowerShell so this module hides away some of the complexity."
     Write-SpectreHost "`nThe module doesn't expose the full feature set of Spectre.Console because the scope of the library is huge and I've focused on the features that I use to enhance my scripts."
     Write-Host ""
-    if(![AnsiConsole]::Console.Profile.Capabilities.Unicode) {
+    if (![AnsiConsole]::Console.Profile.Capabilities.Unicode) {
         Write-Warning "To enable all features of Spectre.Console you need to enable Unicode support in your PowerShell profile by adding the following to your profile at $PROFILE. See https://spectreconsole.net/best-practices for more info.`n`n`$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding`n"
     }
 

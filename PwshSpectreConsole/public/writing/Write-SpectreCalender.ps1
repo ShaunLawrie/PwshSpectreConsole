@@ -51,7 +51,7 @@ function Write-SpectreCalendar {
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
         [Color] $Color = $script:AccentColor,
-        [ValidateSet([SpectreConsoleTableBorder],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
+        [ValidateSet([SpectreConsoleTableBorder], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Border = "Double",
         [cultureinfo] $Culture = [cultureinfo]::CurrentCulture,
         [Hashtable]$Events,
@@ -75,8 +75,7 @@ function Write-SpectreCalendar {
         }
         Write-AnsiConsole $calendar
         $calendar.CalendarEvents | Sort-Object -Property Day | Format-SpectreTable -Border $Border -Color $Color
-    }
-    else {
+    } else {
         Write-AnsiConsole $calendar
     }
 }

@@ -49,7 +49,7 @@ function Format-SpectreTree {
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
         [hashtable] $Data,
-        [ValidateSet([SpectreConsoleTreeGuide],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
+        [ValidateSet([SpectreConsoleTreeGuide], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Guide = "Line",
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]

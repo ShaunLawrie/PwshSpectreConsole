@@ -88,7 +88,7 @@ function Format-SpectreJson {
         $collector = [System.Collections.Generic.List[psobject]]::new()
         $splat = @{
             WarningAction = 'Ignore'
-            ErrorAction  = 'Stop'
+            ErrorAction   = 'Stop'
         }
         if ($Depth) {
             $splat.Depth = $Depth
@@ -108,8 +108,7 @@ function Format-SpectreJson {
                 try {
                     $jsonObjects = $data | Out-String | ConvertFrom-Json -AsHashtable @splat
                     return $collector.add($jsonObjects)
-                }
-                catch {
+                } catch {
                     Write-Debug "Failed to convert string to object, $_"
                 }
             }
@@ -119,8 +118,7 @@ function Format-SpectreJson {
                     try {
                         $jsonObjects = Get-Content -Raw $data.FullName | ConvertFrom-Json -AsHashtable @splat
                         return $collector.add($jsonObjects)
-                    }
-                    catch {
+                    } catch {
                         Write-Debug "Failed to convert json to object, $_"
                     }
                 }
@@ -147,8 +145,7 @@ function Format-SpectreJson {
                     $jsonObject = $ht[$key].ToString() | Out-String | ConvertFrom-Json -AsHashtable @splat
                     $collector.add($jsonObject)
                     continue
-                }
-                catch {
+                } catch {
                     Write-Debug "Failed to convert json to object: $key, $_"
                 }
             }
@@ -158,8 +155,7 @@ function Format-SpectreJson {
         }
         try {
             $json = [Json.JsonText]::new(($collector | ConvertTo-Json @splat))
-        }
-        catch {
+        } catch {
             Write-Error "Failed to convert to json, $_"
             return
         }

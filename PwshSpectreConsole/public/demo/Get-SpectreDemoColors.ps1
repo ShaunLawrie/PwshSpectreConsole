@@ -25,33 +25,33 @@ function Get-SpectreDemoColors {
     Write-Host ""
 
     $colors = [Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
-    $colors  = $colors | ForEach-Object {
+    $colors = $colors | ForEach-Object {
         $prefix = ($_ -replace '[_0-9]+', '')
         $numeric = ($_ -replace '^[^0-9]+', '')
         $value = 0
-        if([string]::IsNullOrEmpty($numeric)) {
+        if ([string]::IsNullOrEmpty($numeric)) {
             $value = 0.0
         } else {
             $numericParts = $numeric.Split('_')
-            if($numericParts.Count -lt 2) {
+            if ($numericParts.Count -lt 2) {
                 $value = [double]"$($numericParts[0]).9"
             } else {
                 $value = [double]"$($numericParts[0]).$($numericParts[1])"
             }
         }
         return [pscustomobject]@{
-            Name = $_
-            Prefix = $prefix
+            Name    = $_
+            Prefix  = $prefix
             Numeric = $value
         }
-    } | Sort-Object -Property @{Expression = "Prefix"}, @{Expression = "Numeric"} | Select-Object -ExpandProperty Name
+    } | Sort-Object -Property @{Expression = "Prefix" }, @{Expression = "Numeric" } | Select-Object -ExpandProperty Name
 
     $maxLength = $colors | Measure-Object -Maximum -Property Length | Select-Object -ExpandProperty Maximum
 
-    foreach($color in $colors) {
-        $total = [Color]::$color | Select-Object @{ Name = "Total"; Expression = {$_.R + $_.G + $_.B} } | Select-Object -ExpandProperty Total
+    foreach ($color in $colors) {
+        $total = [Color]::$color | Select-Object @{ Name = "Total"; Expression = { $_.R + $_.G + $_.B } } | Select-Object -ExpandProperty Total
         $textColor = "white"
-        if($total -gt 280) {
+        if ($total -gt 280) {
             $textColor = "black"
         }
         

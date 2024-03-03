@@ -29,12 +29,12 @@ function Invoke-SpectreScriptBlockQuietly {
         $job = Start-Job $Command
         $job | Wait-Job | Out-Null
 
-        if($job.State -eq "Failed") {
+        if ($job.State -eq "Failed") {
             $job | Receive-Job
             throw "Failed to execute script block"
         }
         
-        switch($Level) {
+        switch ($Level) {
             "Quiet" {
                 return ($job | Receive-Job)
             }

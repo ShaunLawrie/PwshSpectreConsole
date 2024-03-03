@@ -52,8 +52,8 @@ function Format-SpectreBreakdownChart {
         }
     }
     process {
-        if($Data -is [array]) {
-            foreach($dataItem in $Data) {
+        if ($Data -is [array]) {
+            foreach ($dataItem in $Data) {
                 [BreakdownChartExtensions]::AddItem($chart, $dataItem.Label, $dataItem.Value, ($dataItem.Color | Convert-ToSpectreColor)) | Out-Null
             }
         } else {

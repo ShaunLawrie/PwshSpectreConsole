@@ -41,12 +41,12 @@ function Read-SpectreSelection {
     $spectrePrompt = [SelectionPrompt[string]]::new()
 
     $choiceLabels = $Choices
-    if($ChoiceLabelProperty) {
+    if ($ChoiceLabelProperty) {
         $choiceLabels = $Choices | Select-Object -ExpandProperty $ChoiceLabelProperty
     }
 
     $duplicateLabels = $choiceLabels | Group-Object | Where-Object { $_.Count -gt 1 }
-    if($duplicateLabels) {
+    if ($duplicateLabels) {
         throw "You have duplicate labels in your select list, this is ambiguous so a selection cannot be made"
     }
 
@@ -58,7 +58,7 @@ function Read-SpectreSelection {
     $spectrePrompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
     $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt
 
-    if($ChoiceLabelProperty) {
+    if ($ChoiceLabelProperty) {
         $selected = $Choices | Where-Object -Property $ChoiceLabelProperty -Eq $selected
     }
 

@@ -24,10 +24,10 @@ function Start-AnsiConsoleProgress {
     $resultVariableName = "AnsiConsoleProgressResult-$([guid]::NewGuid())"
     New-Variable -Name $resultVariableName -Scope "Script"
     [AnsiConsole]::Progress().Start({
-        param (
-            $ctx
-        )
-        Set-Variable -Name $resultVariableName -Value (& $ScriptBlock $ctx) -Scope "Script"
-    })
+            param (
+                $ctx
+            )
+            Set-Variable -Name $resultVariableName -Value (& $ScriptBlock $ctx) -Scope "Script"
+        })
     return Get-Variable -Name $resultVariableName -ValueOnly
 }

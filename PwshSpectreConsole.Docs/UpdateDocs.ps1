@@ -10,7 +10,7 @@ Import-Module "$PSScriptRoot\..\PwshSpectreConsole\PwshSpectreConsole.psd1" -For
 Remove-Item -Recurse -Path "$PSScriptRoot\src\content\docs\reference\*" -Force
 $module = Get-Module PwshSpectreConsole
 
-if($null -eq $module) {
+if ($null -eq $module) {
     throw "Failed to import PwshSpectreConsole module"
 }
 
@@ -45,16 +45,16 @@ $groups = @(
 )
 
 $docs = Get-ChildItem "$PSScriptRoot\src\content\docs\reference\" -Filter "*.md" -Recurse
-foreach($doc in $docs) {
-    if($remove -contains $doc.Name -or $doc.Name -notlike "*-*") {
+foreach ($doc in $docs) {
+    if ($remove -contains $doc.Name -or $doc.Name -notlike "*-*") {
         Remove-Item $doc.FullName
         continue
     }
 
     $group = $null
-    foreach($testGroup in $groups) {
-        foreach($match in $testGroup.Matches) {
-            if($doc.Name -like "*$match*") {
+    foreach ($testGroup in $groups) {
+        foreach ($match in $testGroup.Matches) {
+            if ($doc.Name -like "*$match*") {
                 $group = $testGroup
                 break
             }
@@ -62,16 +62,16 @@ foreach($doc in $docs) {
     }
 
     $outLocation = "$PSScriptRoot\src\content\docs\reference\$($group.Name)\$($doc.Name)"
-    if($null -eq $group) {
+    if ($null -eq $group) {
         $outLocation = $doc.FullName
     }
     New-Item -ItemType Directory -Path "$PSScriptRoot\src\content\docs\reference\$($group.Name)" -Force | Out-Null
     $content = Get-Content $doc.FullName -Raw
     Remove-Item $doc.FullName
     $content = $content -replace '```PowerShell', '```powershell' -replace '(?m)^.+\n^[\-]{10,99}', '' -replace "`r", ""
-    if($experimental -contains $doc.Name) {
+    if ($experimental -contains $doc.Name) {
         $content = $content -replace '(?s)^---', "---`n$experimentalTag"
-    } elseif($new -contains $doc.Name) {
+    } elseif ($new -contains $doc.Name) {
         $content = $content -replace '(?s)^---', "---`n$newTag"
     }
     $content | Out-File $outLocation -NoNewline
@@ -79,21 +79,21 @@ foreach($doc in $docs) {
 
 # Build the docs site
 npm ci --prefix $PSScriptRoot
-if($LASTEXITCODE -ne 0) {
+if ($LASTEXITCODE -ne 0) {
     throw "Failed to install npm dependencies"
 }
 
 npm run build --prefix $PSScriptRoot
-if($LASTEXITCODE -ne 0) {
+if ($LASTEXITCODE -ne 0) {
     throw "Failed to run npm build"
 }
 
-if($NonInteractive) {
+if ($NonInteractive) {
     return
 }
 
 # Deploy to preview
-if(npx --yes wrangler whoami | Where-Object { $_ -like "*You are logged in*" }) {
+if (npx --yes wrangler whoami | Where-Object { $_ -like "*You are logged in*" }) {
     Write-Host "Already logged into cloudflare"
 } else {
     npx wrangler login
@@ -102,8 +102,8 @@ npx wrangler pages deploy "$PSScriptRoot\dist" --project-name pwshspectreconsole
 
 # Yeet it to cloudflare
 $choice = Read-Host "`nDeploy to Prod CF pages? (y/n)"
-if($choice -eq "y") {
-    if(npx wrangler whoami | Where-Object { $_ -like "*You are logged in*" }) {
+if ($choice -eq "y") {
+    if (npx wrangler whoami | Where-Object { $_ -like "*You are logged in*" }) {
         Write-Host "Already logged into cloudflare"
     } else {
         npx wrangler login

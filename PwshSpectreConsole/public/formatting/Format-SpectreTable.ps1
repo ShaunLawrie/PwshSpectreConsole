@@ -87,12 +87,12 @@ function Format-SpectreTable {
         [Parameter(ValueFromPipeline, Mandatory)]
         [Alias('InputObject')]
         [object] $Data,
-        [Parameter(Position = 0,ParameterSetName = 'Property')]
+        [Parameter(Position = 0, ParameterSetName = 'Property')]
         [object[]] $Property,
         [Switch] $Wrap,
         [Parameter(ParameterSetName = 'View')]
         [String] $View,
-        [ValidateSet([SpectreConsoleTableBorder],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
+        [ValidateSet([SpectreConsoleTableBorder], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Border = "Double",
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]

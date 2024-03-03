@@ -42,7 +42,7 @@ function Add-SpectreJob {
     )
 
     return @{
-        Job = $Job
+        Job  = $Job
         Task = $Context.AddTask($JobName)
     }
 }

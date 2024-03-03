@@ -47,7 +47,7 @@ function Read-SpectreConfirm {
     $confirmationPrompt = [TextPrompt[string]]::new($Prompt)
     $confirmationPrompt = [TextPromptExtensions]::AddChoice($confirmationPrompt, "y")
     $confirmationPrompt = [TextPromptExtensions]::AddChoice($confirmationPrompt, "n")
-    if($DefaultAnswer -ne "none") {
+    if ($DefaultAnswer -ne "none") {
         $confirmationPrompt = [TextPromptExtensions]::DefaultValue($confirmationPrompt, $DefaultAnswer)
     }
 
@@ -59,12 +59,12 @@ function Read-SpectreConfirm {
     # Invoke-SpectrePromptAsync supports ctrl-c
     $confirmed = (Invoke-SpectrePromptAsync -Prompt $confirmationPrompt) -eq "y"
 
-    if(!$confirmed) {
-        if(![String]::IsNullOrWhiteSpace($ConfirmFailure)) {
+    if (!$confirmed) {
+        if (![String]::IsNullOrWhiteSpace($ConfirmFailure)) {
             Write-SpectreHost $ConfirmFailure
         }
     } else {
-        if(![String]::IsNullOrWhiteSpace($ConfirmSuccess)) {
+        if (![String]::IsNullOrWhiteSpace($ConfirmSuccess)) {
             Write-SpectreHost $ConfirmSuccess
         }
     }

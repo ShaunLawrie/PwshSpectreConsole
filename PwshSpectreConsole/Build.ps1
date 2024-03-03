@@ -54,10 +54,10 @@ function Install-SpectreConsole {
 Write-Host "Downloading Spectre.Console version $Version"
 $installLocation = (Join-Path $PSScriptRoot "packages")
 $testingInstallLocation = (Join-Path $PSScriptRoot ".." "PwshSpectreConsole.Tests" "packages")
-if(Test-Path $installLocation) {
+if (Test-Path $installLocation) {
     Remove-Item $installLocation -Recurse -Force
 }
-if(Test-Path $testingInstallLocation) {
+if (Test-Path $testingInstallLocation) {
     Remove-Item $testingInstallLocation -Recurse -Force
 }
 Install-SpectreConsole -InstallLocation $installLocation -TestingInstallLocation $testingInstallLocation -Version $Version

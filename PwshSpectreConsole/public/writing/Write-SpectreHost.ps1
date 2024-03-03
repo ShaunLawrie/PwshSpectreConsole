@@ -26,7 +26,7 @@ function Write-SpectreHost {
         [switch] $NoNewline
     )
 
-    if($NoNewline) {
+    if ($NoNewline) {
         Write-SpectreHostInternalMarkup $Message
     } else {
         Write-SpectreHostInternalMarkupLine $Message

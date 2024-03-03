@@ -59,8 +59,7 @@ function Get-SpectreImageExperimental {
 
         if ($Width) {
             $maxWidth = $Width
-        }
-        else {
+        } else {
             $maxWidth = $Host.UI.RawUI.WindowSize.Width
             $Width = $image.Width
         }
@@ -97,8 +96,7 @@ function Get-SpectreImageExperimental {
                     # The delay is supposed to be in milliseconds and imagesharp seems to be a bit out when it decodes it
                     $frameDelayMilliseconds = $frameMetadata.FrameDelay * 10
                 }
-            }
-            catch {
+            } catch {
                 # Don't care
             }
             $buffer.Clear() | Out-Null
@@ -114,8 +112,7 @@ function Get-SpectreImageExperimental {
                             G = [math]::Min(255, ($currentPixel.G * $foregroundMultiplier + $backgroundColor.G * $backgroundMultiplier))
                             B = [math]::Min(255, ($currentPixel.B * $foregroundMultiplier + $backgroundColor.B * $backgroundMultiplier))
                         }
-                    }
-                    else {
+                    } else {
                         $currentPixelRgb = @{
                             R = $currentPixel.R
                             G = $currentPixel.G
@@ -137,8 +134,7 @@ function Get-SpectreImageExperimental {
                                 G = [math]::Min(255, ($pixelBelow.G * $foregroundMultiplier + $backgroundColor.G * $backgroundMultiplier))
                                 B = [math]::Min(255, ($pixelBelow.B * $foregroundMultiplier + $backgroundColor.B * $backgroundMultiplier))
                             }
-                        }
-                        else {
+                        } else {
                             $pixelBelowRgb = @{
                                 R = $pixelBelow.R
                                 G = $pixelBelow.G
@@ -181,8 +177,7 @@ function Get-SpectreImageExperimental {
         $newYPosition = 0
         if ($rowsToClear -ge $remainingRows) {
             $newYPosition = $cursorPosition.Y + $remainingRows - $rowsToClear - 2
-        }
-        else {
+        } else {
             $newYPosition = $cursorPosition.Y
         }
         [Console]::SetCursorPosition($cursorPosition.X, $newYPosition)
@@ -191,7 +186,7 @@ function Get-SpectreImageExperimental {
         $loopIterations = 0
         [Console]::SetCursorPosition($topLeft.X, $topLeft.Y)
         [Console]::CursorVisible = $false
-        if($frames.Count -eq 1) {
+        if ($frames.Count -eq 1) {
             Write-Host $frames[0].Frame
             return
         }
@@ -203,8 +198,7 @@ function Get-SpectreImageExperimental {
             }
             $loopIterations++
         } while ($loopIterations -lt $LoopCount -or $LoopCount -eq 0)
-    }
-    finally {
+    } finally {
         [Console]::CursorVisible = $true
         if ($ImageUrl) {
             Remove-Item $ImagePath

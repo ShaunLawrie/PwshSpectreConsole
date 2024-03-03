@@ -43,19 +43,19 @@ function Wait-SpectreJobs {
 
     $timeout = (Get-Date).AddSeconds($TimeoutSeconds)
 
-    while(!$Context.IsFinished) {
-        if((Get-Date) -gt $timeout) {
+    while (!$Context.IsFinished) {
+        if ((Get-Date) -gt $timeout) {
             throw "Timed out waiting for jobs after $TimeoutSeconds seconds"
         }
         $completedJobs = 0
-        foreach($job in $Jobs) {
-            if($job.Job.State -ne "Running") {
+        foreach ($job in $Jobs) {
+            if ($job.Job.State -ne "Running") {
                 $job.Task.Value = 100.0
                 $completedJobs++
                 continue
             }
             $progress = 0.0
-            if($null -ne $job.Job.ChildJobs[0].Progress) {
+            if ($null -ne $job.Job.ChildJobs[0].Progress) {
                 $progress = $job.Job.ChildJobs[0].Progress | Select-Object -Last 1 -ExpandProperty "PercentComplete"
             }
             $job.Task.Value = $progress

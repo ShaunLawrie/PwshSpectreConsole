@@ -137,8 +137,7 @@ function Get-SpectreRenderable {
         $console = [Spectre.Console.AnsiConsole]::Create($settings)
         $console.Write($RenderableObject)
         $writer.ToString()
-    }
-    finally {
+    } finally {
         $writer.Dispose()
     }
 }
@@ -155,8 +154,7 @@ function Get-AnsiEscapeSequence {
         $Escaped = $String.EnumerateRunes() | ForEach-Object {
             if ($_.Value -le 0x1f) {
                 [Text.Rune]::new($_.Value + 0x2400)
-            }
-            else {
+            } else {
                 $_
             }
         } | Join-String
@@ -234,7 +232,7 @@ function Get-SpectreTableRowData {
     1..$Count | ForEach-Object {
         if ($Markup) {
             return '[{0}] {1} [/]' -f (Get-RandomColor), (Get-RandomString)
-            }
+        }
         Get-RandomString
     }
 }
@@ -250,7 +248,7 @@ function Assert-OutputMatchesSnapshot {
     Set-Content -Path $snapShotComparisonPath -Value $compare -NoNewline
     $snapshot = Get-Content -Path $snapShotPath -Raw
     $snapshot = $snapshot -replace "`r", ""
-    if($compare -ne $snapshot) {
+    if ($compare -ne $snapshot) {
         Write-Host "Expected to match snapshot:`n`n$snapshot"
         Write-Host "But the output was:`n`n$compare"
         Write-Host "You can diff the snapshot files at:`n - $snapShotPath`n - $snapShotComparisonPath"

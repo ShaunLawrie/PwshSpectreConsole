@@ -29,7 +29,7 @@ function Invoke-SpectreCommandWithStatus {
     param (
         [Parameter(Mandatory)]
         [scriptblock] $ScriptBlock,
-        [ValidateSet([SpectreConsoleSpinner],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
+        [ValidateSet([SpectreConsoleSpinner], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Spinner = "Dots",
         [Parameter(Mandatory)]
         [string] $Title,
@@ -38,10 +38,10 @@ function Invoke-SpectreCommandWithStatus {
         [Color] $Color = $script:AccentColor
     )
     $splat = @{
-        Title = $Title
-        Spinner = [Spinner+Known]::$Spinner
+        Title        = $Title
+        Spinner      = [Spinner+Known]::$Spinner
         SpinnerStyle = [Style]::new($Color)
-        ScriptBlock = $ScriptBlock
+        ScriptBlock  = $ScriptBlock
     }
     Start-AnsiConsoleStatus @splat
 }

@@ -16,16 +16,14 @@ function Add-TableColumns {
         if ($Title) {
             Write-Debug "Adding column with title: $Title"
             $table.AddColumn("[$($Color.ToMarkup())]$Title[/]") | Out-Null
-        }
-        else {
+        } else {
             Write-Debug "Adding column with title: Value"
             $table.AddColumn("[$($Color.ToMarkup())]Value[/]") | Out-Null
         }
         if (-Not $Wrap) {
             $table.Columns[-1].NoWrap = $true
         }
-    }
-    else {
+    } else {
         foreach ($key in $FormatData.keys) {
             $lookup = $FormatData[$key]
             Write-Debug "Adding column from formatdata: $($lookup.GetEnumerator())"

@@ -9,7 +9,7 @@ Describe "Format-SpectreBreakdownChart" {
             $testConsole.EmitAnsiSequences = $true
             $testWidth = Get-Random -Minimum 10 -Maximum 100
             $testData = @()
-            for($i = 0; $i -lt (Get-Random -Minimum 3 -Maximum 10); $i++) {
+            for ($i = 0; $i -lt (Get-Random -Minimum 3 -Maximum 10); $i++) {
                 $testData += Get-RandomChartItem
             }
 

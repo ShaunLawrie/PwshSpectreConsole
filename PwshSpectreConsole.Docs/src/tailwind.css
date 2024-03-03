@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 :root {
-    --sl-sidebar-width: 28rem;
-    --sl-content-width: 80rem;
+  --sl-sidebar-width: 28rem;
+  --sl-content-width: 80rem;
 }
 
 @media (min-width: 50rem) {
-    .hero {
-        padding-block: clamp(2.5rem,calc(1rem + 10vmin),5rem);
-    }
+  .hero {
+    padding-block: clamp(2.5rem, calc(1rem + 10vmin), 5rem);
+  }
 }

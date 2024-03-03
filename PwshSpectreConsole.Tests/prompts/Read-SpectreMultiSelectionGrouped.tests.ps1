@@ -22,13 +22,13 @@ Describe "Read-SpectreMultiSelectionGrouped" {
         It "prompts and allows selection" {
             $itemsToBeSelectedNames = @("toBeSelected")
             $testChoices = @(Get-RandomList -Generator {
-                return @{
-                    Name = Get-RandomString
-                    Choices = Get-RandomList
-                }
-            })
+                    return @{
+                        Name    = Get-RandomString
+                        Choices = Get-RandomList
+                    }
+                })
             $testChoices += @{
-                Name = "Group with selection"
+                Name    = "Group with selection"
                 Choices = @(Get-RandomList) + $itemsToBeSelectedNames
             }
             Read-SpectreMultiSelectionGrouped -Title $testTitle -Choices $testChoices -PageSize $testPageSize -Color $testColor | Should -Be $itemsToBeSelectedNames
@@ -38,13 +38,13 @@ Describe "Read-SpectreMultiSelectionGrouped" {
         It "prompts and allows multiple selection" {
             $itemsToBeSelectedNames = @("toBeSelected", "also to be selected")
             $testChoices = @(Get-RandomList -Generator {
-                return @{
-                    Name = Get-RandomString
-                    Choices = "toBeSelected" + (Get-RandomList)
-                }
-            })
+                    return @{
+                        Name    = Get-RandomString
+                        Choices = "toBeSelected" + (Get-RandomList)
+                    }
+                })
             $testChoices += @{
-                Name = "Group with selection"
+                Name    = "Group with selection"
                 Choices = @(Get-RandomList) + "also to be selected"
             }
             Read-SpectreMultiSelectionGrouped -Title $testTitle -Choices $testChoices -PageSize $testPageSize -Color $testColor | Should -Be $itemsToBeSelectedNames
@@ -58,10 +58,10 @@ Describe "Read-SpectreMultiSelectionGrouped" {
         It "throws with object choices and no ChoiceLabelProperty" {
             $testChoices = Get-RandomList -Generator {
                 return @{
-                    Name = Get-RandomString
+                    Name    = Get-RandomString
                     Choices = (Get-RandomList -Generator {
-                        [PSCustomObject]@{ ColumnToSelectFrom = Get-RandomString; Other = Get-RandomString }
-                    })
+                            [PSCustomObject]@{ ColumnToSelectFrom = Get-RandomString; Other = Get-RandomString }
+                        })
                 }
             }
             { Read-SpectreMultiSelectionGrouped -Title $testTitle -Choices $testChoices -PageSize $testPageSize -Color $testColor } | Should -Throw
@@ -72,10 +72,10 @@ Describe "Read-SpectreMultiSelectionGrouped" {
             $itemToBeSelected = [PSCustomObject]@{ ColumnToSelectFrom = $itemsToBeSelectedNames[0]; Other = Get-RandomString }
             $testChoices = @(
                 @{
-                    Name = Get-RandomString
+                    Name    = Get-RandomString
                     Choices = @(Get-RandomList -Generator {
-                        [PSCustomObject]@{ ColumnToSelectFrom = Get-RandomString; Other = Get-RandomString }
-                    }) + $itemToBeSelected
+                            [PSCustomObject]@{ ColumnToSelectFrom = Get-RandomString; Other = Get-RandomString }
+                        }) + $itemToBeSelected
                 }
             )
             Read-SpectreMultiSelectionGrouped -Title $testTitle -ChoiceLabelProperty "ColumnToSelectFrom" -Choices $testChoices -PageSize $testPageSize -Color $testColor | Should -Be $itemToBeSelected
@@ -88,10 +88,10 @@ Describe "Read-SpectreMultiSelectionGrouped" {
             $anotherItemToBeSelected = [PSCustomObject]@{ ColumnToSelectFrom = $itemsToBeSelectedNames[1]; Other = Get-RandomString }
             $testChoices = @(
                 @{
-                    Name = Get-RandomString
+                    Name    = Get-RandomString
                     Choices = @($itemToBeSelected) + (Get-RandomList -Generator {
-                        [PSCustomObject]@{ ColumnToSelectFrom = Get-RandomString; Other = Get-RandomString }
-                    }) + $anotherItemToBeSelected
+                            [PSCustomObject]@{ ColumnToSelectFrom = Get-RandomString; Other = Get-RandomString }
+                        }) + $anotherItemToBeSelected
                 }
             )
             Read-SpectreMultiSelectionGrouped -Title $testTitle -ChoiceLabelProperty "ColumnToSelectFrom" -Choices $testChoices -PageSize $testPageSize -Color $testColor | Should -Be @($itemToBeSelected, $anotherItemToBeSelected)

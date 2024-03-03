@@ -27,9 +27,9 @@ function Get-SpectreDemoEmoji {
     
     $emojiCollection = [Emoji+Known] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
     $faces = @()
-    foreach($emoji in $emojiCollection) {
+    foreach ($emoji in $emojiCollection) {
         $id = ($emoji -creplace '([A-Z])', '_$1' -replace '^_', '').ToLower()
-        if($id -like "*face*") {
+        if ($id -like "*face*") {
             $faces += $id
         } else {
             Write-SpectreHost ":${id}:`t$id"
@@ -39,7 +39,7 @@ function Get-SpectreDemoEmoji {
     Write-Host ""
     Write-SpectreRule "Faces"
     Write-Host ""
-    foreach($face in $faces) {
+    foreach ($face in $faces) {
         Write-SpectreHost ":${face}:`t$face"
     }
 

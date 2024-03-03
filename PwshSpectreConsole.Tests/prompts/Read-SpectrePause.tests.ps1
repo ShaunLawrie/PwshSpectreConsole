@@ -7,7 +7,7 @@ Describe "Read-SpectrePause" {
         BeforeEach {
             $testMessage = $null
             Mock Write-SpectreHost {
-                if($testMessage) {
+                if ($testMessage) {
                     $Message | Should -Be $testMessage
                 }
             }
