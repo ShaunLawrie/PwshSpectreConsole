@@ -4,17 +4,27 @@ title: Invoke-SpectreCommandWithProgress
 
 
 
+
+
+
+
 ### Synopsis
 Invokes a Spectre command with a progress bar.
 
+
+
 ---
+
 
 ### Description
 
 This function takes a script block as a parameter and executes it while displaying a progress bar. The context and task objects are defined at [https://spectreconsole.net/api/spectre.console/progresscontext/](https://spectreconsole.net/api/spectre.console/progresscontext/).
 The context requires at least one task to be added for progress to be displayed. The task object is used to update the progress bar by calling the Increment() method or other methods defined in Spectre console [https://spectreconsole.net/api/spectre.console/progresstask/](https://spectreconsole.net/api/spectre.console/progresstask/).
 
+
+
 ---
+
 
 ### Examples
 This example will display a progress bar while the script block is executing.
@@ -50,17 +60,30 @@ Invoke-SpectreCommandWithProgress -ScriptBlock {
 }
 ```
 
+
 ---
+
 
 ### Parameters
 #### **ScriptBlock**
+
 The script block to execute.
+
+
+
+
+
 
 |Type           |Required|Position|PipelineInput|
 |---------------|--------|--------|-------------|
 |`[ScriptBlock]`|true    |1       |false        |
 
+
+
+
+
 ---
+
 
 ### Syntax
 ```powershell
