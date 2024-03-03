@@ -50,7 +50,13 @@ function Get-RandomString {
 }
 
 function Get-RandomBoxBorder {
+    param (
+        [switch] $MustNotBeNone
+    )
     $lookup = [BoxBorder] | Get-Member -Static -MemberType Properties | Select-Object -ExpandProperty Name
+    if ($MustNotBeNone) {
+        $lookup = $lookup | Where-Object { $_ -ne 'None' }
+    }
     return $lookup[$(Get-Random -Minimum 0 -Maximum $lookup.Count)]
 }
 

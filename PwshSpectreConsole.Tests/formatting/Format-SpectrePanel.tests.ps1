@@ -9,7 +9,7 @@ Describe "Format-SpectrePanel" {
             $testConsole.EmitAnsiSequences = $true
             [Spectre.Console.Testing.TestConsoleExtensions]::Width($testConsole, 80)
             $testTitle = Get-RandomString -MinimumLength 5 -MaximumLength 10
-            $testBorder = Get-RandomBoxBorder
+            $testBorder = Get-RandomBoxBorder -MustNotBeNone
             $testExpand = $false
             $testColor = Get-RandomColor
 
