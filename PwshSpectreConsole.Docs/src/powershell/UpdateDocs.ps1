@@ -17,12 +17,12 @@ $env:GIT_COMMITTER_NAME = 'Shaun Lawrie (via GitHub Actions)'
 $env:GIT_COMMITTER_EMAIL = 'shaun.r.lawrie@gmail.com'
 
 # Stage files in a temp directory to avoid issues with astro running in dev mode locking files
+if($IsLinux) {
+    $env:TEMP = "/tmp"
+}
 $outputPath = "$PSScriptRoot\..\content\docs\reference\"
 $asciiCastOutputPath = "$PSScriptRoot\..\assets\examples\"
 $stagingPath = "$env:TEMP\refs-staging"
-if($IsLinux) {
-    $env:TEMP = "/tmp/refs-staging"
-}
 if(Test-Path $stagingPath) {
     Remove-Item $stagingPath -Force -Recurse
 }
