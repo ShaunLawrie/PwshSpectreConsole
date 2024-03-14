@@ -5,7 +5,11 @@ function Stop-SpectreRecording {
         .SYNOPSIS
             Stops a recording of the current console output and returns the recording.
         .DESCRIPTION
-            Stops a recording of the current console output and returns the recording.
+            Stops a recording of the current console output and returns the recording.  
+            I've used this to record the examples on the docs help site.
+            :::caution
+            This is experimental.
+            :::
         .PARAMETER Title
             The title of the recording, only used for asciinema recordings.
         .PARAMETER OutputPath
@@ -49,6 +53,9 @@ function Stop-SpectreRecording {
 
     # Reset the console
     [Spectre.Console.AnsiConsole]::Console = $global:SpectreRecordingOriginalConsole
+    $global:SpectreRecordingRecorder = $null
+    $global:SpectreRecordingOriginalConsole = $null
+    $global:SpectreRecordingType = $null
     
     # Return the output
     if ($OutputPath) {

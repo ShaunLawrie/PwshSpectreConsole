@@ -2,7 +2,6 @@ Import-NamespaceFromCsFile -Namespace "PwshSpectreConsole.Recording"
 
 $global:SpectreRecordingRecorder = $null
 $global:SpectreRecordingOriginalConsole = $null
-$global:SpectreRecordingOriginalOutput = $null
 $global:SpectreRecordingType = $null
 
 function Start-SpectreRecording {
@@ -10,7 +9,11 @@ function Start-SpectreRecording {
         .SYNOPSIS
             Starts a recording of the current console output. This can be used to record a demo of a script or module.
         .DESCRIPTION
-            Starts a recording of the current console output. This can be used to record a demo of a script or module.
+            Starts a recording of the current console output. This can be used to record all of the spectre console interactions in a PowerShell session.  
+            I've used this to record the examples on the docs help site.
+            :::caution
+            This is experimental.
+            :::
         .PARAMETER Width
             The width of the recording.
         .PARAMETER Height
@@ -40,6 +43,10 @@ function Start-SpectreRecording {
         [switch] $CountdownAndClear,
         [switch] $Quiet
     )
+
+    if(!$global:SpectreRecordingType) {
+        throw "A $global:SpectreRecordingType recording has already started"
+    }
 
     if($CountdownAndClear) {
         function Test-Recording {
