@@ -20,6 +20,9 @@ $env:GIT_COMMITTER_EMAIL = 'shaun.r.lawrie@gmail.com'
 $outputPath = "$PSScriptRoot\..\content\docs\reference\"
 $asciiCastOutputPath = "$PSScriptRoot\..\assets\examples\"
 $stagingPath = "$env:TEMP\refs-staging"
+if($IsLinux) {
+    $env:TEMP = "/tmp/refs-staging"
+}
 if(Test-Path $stagingPath) {
     Remove-Item $stagingPath -Force -Recurse
 }
