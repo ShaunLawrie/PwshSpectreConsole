@@ -142,7 +142,11 @@ foreach ($doc in $docs) {
                 }
                 Write-Host "Modified sample:"
                 Write-Host -ForegroundColor DarkGray $code
-                Invoke-Expression $code
+                try {
+                    Invoke-Expression $code
+                } catch {
+                    Write-Warning "Error generating sample: $_"
+                }
                 $recording = Stop-SpectreRecording -Title "Example $([int]$example++)"
 
                 $castName = ($doc.Name -replace '.md$', '' -replace '-', '').ToLower() + "Example$example"
