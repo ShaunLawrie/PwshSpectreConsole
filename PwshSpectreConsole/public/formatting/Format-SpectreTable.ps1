@@ -9,7 +9,6 @@ function Format-SpectreTable {
 
     .DESCRIPTION
     This function takes an array of objects and formats them into a table using the Spectre Console library. The table can be customized with a border style and color.
-    It's cool.
 
     .PARAMETER Property
     Specifies the object properties that appear in the display and the order in which they appear.
