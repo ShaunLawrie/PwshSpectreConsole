@@ -39,7 +39,7 @@ function Read-SpectrePause {
     }
     Write-SpectreHost $Message -NoNewline
     do {
-        $key = [console]::ReadKey($true)
+        $key = Read-ConsoleKey
         if($AnyKey) {
             break
         }
