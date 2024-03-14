@@ -1,4 +1,5 @@
 using namespace Spectre.Console
+Import-NamespaceFromCsFile -Namespace "PwshSpectreConsole.VTCodes"
 
 function ConvertTo-SpectreDecoration {
     param(
@@ -7,9 +8,6 @@ function ConvertTo-SpectreDecoration {
         [switch]$AllowMarkup
     )
     Write-Debug "Module: $($ExecutionContext.SessionState.Module.Name) Command: $($MyInvocation.MyCommand.Name) Param: $($PSBoundParameters.GetEnumerator())"
-    if (-Not ('PwshSpectreConsole.VTCodes.Parser' -as [type])) {
-        Add-PwshSpectreConsole.VTCodes
-    }
     $lookup = [PwshSpectreConsole.VTCodes.Parser]::Parse($String)
     $ht = @{
         decoration = [Decoration]::None

@@ -12,3 +12,24 @@
     padding-block: clamp(2.5rem, calc(1rem + 10vmin), 5rem);
   }
 }
+
+div.asciinema-player-theme-spectre {
+  border: solid 1px var(--sl-color-gray-5);
+  border-radius: 0!important;
+
+  --term-color-foreground: #eceff4;
+  --term-color-background: #020617;
+
+  --term-color-0: #28395e;
+  --term-color-1: #c13846;
+  --term-color-2: #a3be8c;
+  --term-color-3: #ebcb8b;
+  --term-color-4: #81a1c1;
+  --term-color-5: #b48ead;
+  --term-color-6: #6097a7;
+  --term-color-7: #eceff4;
+}
+
+div.asciinema-player-theme-spectre span {
+  letter-spacing: -0.02rem;
+}

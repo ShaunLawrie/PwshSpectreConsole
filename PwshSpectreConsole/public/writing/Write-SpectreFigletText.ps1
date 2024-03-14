@@ -23,20 +23,10 @@ function Write-SpectreFigletText {
     The figlet font format is usually *.flf, see https://spectreconsole.net/widgets/figlet for more.
 
     .EXAMPLE
-    # Displays the text "Hello Spectre!" in the center of the console, in red color.
     Write-SpectreFigletText -Text "Hello Spectre!" -Alignment "Center" -Color "Red"
 
     .EXAMPLE
-    # Displays the text "Woah!" using a custom figlet font.
-    Write-SpectreFigletText -Text "Whoa?!" -FigletFontPath "C:\Users\shaun\Downloads\3d.flf"
-     ██       ██ ██                          ████  ██
-    ░██      ░██░██                         ██░░██░██
-    ░██   █  ░██░██       ██████   ██████  ░██ ░██░██
-    ░██  ███ ░██░██████  ██░░░░██ ░░░░░░██ ░░  ██ ░██
-    ░██ ██░██░██░██░░░██░██   ░██  ███████    ██  ░██
-    ░████ ░░████░██  ░██░██   ░██ ██░░░░██   ░░   ░░
-    ░██░   ░░░██░██  ░██░░██████ ░░████████   ██   ██
-    ░░       ░░ ░░   ░░  ░░░░░░   ░░░░░░░░   ░░   ░░ 
+    Write-SpectreFigletText -Text "Whoa?!" -FigletFontPath "..\assets\3d.flf"
     #>
     [Reflection.AssemblyMetadata("title", "Write-SpectreFigletText")]
     param (

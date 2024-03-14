@@ -25,8 +25,9 @@ function Read-SpectreSelection {
     The number of choices to display per page in the selection prompt.
 
     .EXAMPLE
-    # This command displays a selection prompt with the title "Select your favorite color" and the choices "Red", "Green", and "Blue". The active selection is colored in green.
-    Read-SpectreSelection -Title "Select your favorite color" -Choices @("Red", "Green", "Blue") -Color "Green"
+    $color = Read-SpectreSelection -Title "Select your favorite color" -Choices @("Red", "Green", "Blue") -Color "Green"
+    # Type "↓", "↓", "↓", "↓", "↲" to wrap around the list and choose green
+    Write-SpectreHost "Your chosen color is '$color'"
     #>
     [Reflection.AssemblyMetadata("title", "Read-SpectreSelection")]
     param (

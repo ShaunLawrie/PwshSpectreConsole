@@ -85,7 +85,7 @@
     'Write-SpectreHost', 'Write-SpectreRule', 'Read-SpectreConfirm', 
     'New-SpectreChartItem', 'Invoke-SpectreScriptBlockQuietly', 
     'Get-SpectreDemoColors', 'Get-SpectreDemoEmoji', 'Format-SpectreJson', 
-    'Write-SpectreCalendar'
+    'Write-SpectreCalendar', 'Start-SpectreRecording', 'Stop-SpectreRecording'
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
     CmdletsToExport    = @()

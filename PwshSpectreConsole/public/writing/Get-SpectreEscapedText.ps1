@@ -14,8 +14,7 @@ function Get-SpectreEscapedText {
     The text to be escaped.
 
     .EXAMPLE
-    # This example shows some data that requires escaping being embedded in a string passed to Format-SpectrePanel.
-    $data = "][[][]]][[][][]["
+    $data = "][[][red]]][[/][][]["
     Format-SpectrePanel -Title "Unescaped data" -Data "I want escaped $($data | Get-SpectreEscapedText) [yellow]and[/] [red]unescaped[/] data"
     #>
     [Reflection.AssemblyMetadata("title", "Get-SpectreEscapedText")]

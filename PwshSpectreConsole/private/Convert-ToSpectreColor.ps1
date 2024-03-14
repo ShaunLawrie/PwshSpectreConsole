@@ -11,15 +11,12 @@ This function takes a string representation of a color and converts it to a Colo
 The color to convert. This parameter is mandatory and accepts input from the pipeline.
 
 .EXAMPLE
-# This example converts the string 'red' to a Color object.
 'red' | Convert-ToSpectreColor
 
 .EXAMPLE
-# This example converts the hexadecimal color code '#FF0000' to a Color object.
 '#FF0000' | Convert-ToSpectreColor
 
 .EXAMPLE
-# This example passes through and returns the original color, it's needed for backwards compatibility with the older way of doing things in this library.
 [Color]::Salmon1 | Convert-ToSpectreColor
 #>
 function Convert-ToSpectreColor {

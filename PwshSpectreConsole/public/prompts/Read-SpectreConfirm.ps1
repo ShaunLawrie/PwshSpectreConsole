@@ -22,13 +22,11 @@ function Read-SpectreConfirm {
     The text and markup to display if the user chooses no. If left undefined, nothing will display.
 
     .EXAMPLE
-    # This example displays a simple prompt. The user can select either yes or no [Y/n]. A different message is displayed based on the user's selection. The prompt uses the AnsiConsole.MarkupLine convenience method to support colored text and other supported markup. 
-    $readSpectreConfirmSplat = @{
-        Prompt = "Would you like to continue the preview installation of [#7693FF]PowerShell 7?[/]"
-        ConfirmSuccess = "Woohoo! The internet awaits your elite development contributions."
-        ConfirmFailure = "What kind of monster are you? How could you do this?"
-    }
-    Read-SpectreConfirm @readSpectreConfirmSplat
+    $answer = Read-SpectreConfirm -Prompt "Would you like to continue the preview installation of [#7693FF]PowerShell 7?[/]" `
+                                  -ConfirmSuccess "Woohoo! The internet awaits your elite development contributions." `
+                                  -ConfirmFailure "What kind of monster are you? How could you do this?"
+    # Type "y", "↲" to accept the prompt
+    Write-Host "Your answer was '$answer'"
     #>
     [Reflection.AssemblyMetadata("title", "Read-SpectreConfirm")]
     param (

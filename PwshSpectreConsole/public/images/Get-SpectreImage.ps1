@@ -15,15 +15,19 @@ function Get-SpectreImage {
     The maximum width of the image. If not specified, the image will be displayed at its original size.
 
     .EXAMPLE
-    # Displays the image located at "C:\Images\myimage.png" with a maximum width of 80 characters.
-    Get-SpectreImage -ImagePath "C:\Images\myimage.png" -MaxWidth 80
+    Get-SpectreImage -ImagePath "..\..\..\PwshSpectreConsole\private\images\smiley.png" -MaxWidth 40
     #>
     [Reflection.AssemblyMetadata("title", "Get-SpectreImage")]
     param (
         [string] $ImagePath,
         [int] $MaxWidth
     )
-    $image = [CanvasImage]::new($ImagePath)
+    $imagePathResolved = Resolve-Path $ImagePath
+    if (-not (Test-Path $imagePathResolved)) {
+        throw "The specified image path '$resolvedImagePath' does not exist."
+    }
+
+    $image = [CanvasImage]::new($imagePathResolved)
     if ($MaxWidth) {
         $image.MaxWidth = $MaxWidth
     }

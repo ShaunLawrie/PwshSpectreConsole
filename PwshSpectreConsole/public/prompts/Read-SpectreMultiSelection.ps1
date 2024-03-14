@@ -28,8 +28,11 @@ function Read-SpectreMultiSelection {
     Allow the multi-selection to be submitted without any options chosen.
 
     .EXAMPLE
-    # Displays a multi-selection prompt with the title "Select your favourite fruits", the list of fruits, the "Name" property as the label for each fruit, the color green for highlighting the selected fruits, and 3 fruits per page.
-    Read-SpectreMultiSelection -Title "Select your favourite fruits" -Choices @("apple", "banana", "orange", "pear", "strawberry") -Color "Green" -PageSize 3
+    $fruits = Read-SpectreMultiSelection -Title "Select your favourite fruits" `
+                                          -Choices @("apple", "banana", "orange", "pear", "strawberry", "durian", "lemon") `
+                                          -PageSize 4
+    # Type "↓", "<space>", "↓", "↓", "<space>", "↓", "<space>", "↲" to choose banana, pear and strawberry
+    Write-SpectreHost "Your favourite fruits are $($fruits -join ', ')"
     #>
     [Reflection.AssemblyMetadata("title", "Read-SpectreMultiSelection")]
     param (

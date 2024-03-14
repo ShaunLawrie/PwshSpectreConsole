@@ -9,22 +9,26 @@ using namespace Spectre.Console
     The Get-SpectreDemoColors function retrieves a list of Spectre Console colors and displays them with their corresponding markup. 
     It also provides information on how to use the colors as parameters for commands or in Spectre Console markup.
 
-.PARAMETER None
-    This function does not accept any parameters.
+.PARAMETER Count
+    Limit the number of colors returned. This is only really useful for generating the help docs.
 
 .EXAMPLE
-    # Displays a list of Spectre Console colors and their corresponding markup.
-    PS> Get-SpectreDemoColors
+    Get-SpectreDemoColors -Count 4
 #>
 function Get-SpectreDemoColors {
     [Reflection.AssemblyMetadata("title", "Get-SpectreDemoColors")]
-    param ()
+    param (
+        [int] $Count
+    )
     
-    Write-Host ""
+    Write-SpectreHost " "
     Write-SpectreRule "Colors"
-    Write-Host ""
+    Write-SpectreHost " "
 
     $colors = [Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
+    if($Count) {
+        $colors = $colors | Select-Object -First $Count
+    }
     $colors = $colors | ForEach-Object {
         $prefix = ($_ -replace '[_0-9]+', '')
         $numeric = ($_ -replace '^[^0-9]+', '')
@@ -59,11 +63,11 @@ function Get-SpectreDemoColors {
         Write-SpectreHost ("[$color]$color[/]")
     }
 
-    Write-Host ""
+    Write-SpectreHost " "
     Write-SpectreRule "Help"
-    Write-Host ""
+    Write-SpectreHost " "
 
-    Write-Host "The colors can be passed as the `"-Color`" parameter for most commands or used in Spectre Console markup like so:`n"
+    Write-SpectreHost "The colors can be passed as the `"-Color`" parameter for most commands or used in Spectre Console markup like so:`n"
     Write-SpectreHost "  PS> [Yellow]Write-SpectreHost[/] [DeepSkyBlue1]`"$('I am [Red]colored text[/] using [Yellow1 on Turquoise4]Spectre markdown[/]!' | Get-SpectreEscapedText)`"[/]"
     Write-SpectreHost "  [white on grey19]I am [Red]colored text[/] using [Yellow1 on Turquoise4]Spectre markdown[/]!                                                          [/]"
     Write-SpectreHost "`nFor more markdown hints see [link]https://spectreconsole.net/markup[/]`n"

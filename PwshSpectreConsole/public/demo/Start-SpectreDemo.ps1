@@ -31,14 +31,14 @@ function Start-SpectreDemo {
     <#
     .SYNOPSIS
     Runs a demo of the PwshSpectreConsole module.
-    ![Spectre demo animation](/demo.gif)
 
     .DESCRIPTION
-    This function runs a demo of the PwshSpectreConsole module, showcasing some of its features. It displays various examples of Spectre.Console functionality wrapped in PowerShell functions, such as text entry, select lists, multi-select lists, and panels.
+    This function runs a demo of the PwshSpectreConsole module, showcasing some of its features.  
+    It displays various examples of Spectre.Console functionality wrapped in PowerShell functions, such as text entry, select lists, multi-select lists, and panels.
+    ![Spectre demo animation](/demo.gif)
 
     .EXAMPLE
-    # Runs the PwshSpectreConsole demo.
-    PS C:\> Start-SpectreDemo
+    Start-SpectreDemo
     #>
     [Reflection.AssemblyMetadata("title", "Start-SpectreDemo")]
     param()
@@ -227,7 +227,7 @@ Get-Module PwshSpectreConsole | Select-Object PrivateData | Format-SpectreJson -
 
     $example = @'
 Invoke-SpectreCommandWithStatus -Spinner "Dots2" -Title "Showing a spinner..." -ScriptBlock {
-    # Write updates tot the host using Write-SpectreHost
+    # Write updates to the host using Write-SpectreHost
     Start-Sleep -Seconds 1
     Write-SpectreHost "`n[grey]LOG:[/] Doing some work      "
     Start-Sleep -Seconds 1

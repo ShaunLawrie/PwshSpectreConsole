@@ -36,7 +36,6 @@ function Format-SpectreJson {
     The height of the Json panel.
 
     .EXAMPLE
-    # This example formats an array of objects into a table with a double border and the accent color of the script.
     $data = @(
         [pscustomobject]@{
             Name = "John"
@@ -48,18 +47,6 @@ function Format-SpectreJson {
             Address = @{
                 Street = "123 Main St"
                 ZipCode = $null
-            }
-        },
-        [pscustomobject]@{
-            Name = "Jane"
-            Age = 30
-            City = "Los Angeles"
-            IsEmployed = $false
-            Salary = $null
-            Hobbies = @("Painting", "Hiking")
-            Address = @{
-                Street = "456 Elm St"
-                ZipCode = "90001"
             }
         }
     )

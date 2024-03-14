@@ -22,8 +22,16 @@ function Invoke-SpectreCommandWithStatus {
     The color of the spinner. Valid values can be found with Get-SpectreDemoColors.
 
     .EXAMPLE
-    # Starts a Spectre status spinner with the "dots" spinner type, a yellow color, and the title "Waiting for process to complete". The spinner will continue to spin for 5 seconds.
-    Invoke-SpectreCommandWithStatus -ScriptBlock { Start-Sleep -Seconds 5 } -Spinner dots -Title "Waiting for process to complete" -Color yellow
+    Invoke-SpectreCommandWithStatus -Spinner "Dots2" -Title "Showing a spinner..." -ScriptBlock {
+        # Write updates to the host using Write-SpectreHost
+        Start-Sleep -Seconds 1
+        Write-SpectreHost "`n[grey]LOG:[/] Doing some work      "
+        Start-Sleep -Seconds 1
+        Write-SpectreHost "`n[grey]LOG:[/] Doing some more work "
+        Start-Sleep -Seconds 1
+        Write-SpectreHost "`n[grey]LOG:[/] Done                 "
+        Start-Sleep -Seconds 1
+    }
     #>
     [Reflection.AssemblyMetadata("title", "Invoke-SpectreCommandWithStatus")]
     param (

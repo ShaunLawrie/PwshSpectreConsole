@@ -19,14 +19,23 @@ Install-Module PwshSpectreConsole -Scope CurrentUser
 ### 👻 Emoji Support and Line Drawing
 
 With the default configuration Windows Terminal and the older console host don't support the full range of Spectre Console features. It will still work but you will find it doesn't look quite like all the examples.  
+
+It will look like this:
 ![Old terminal setup showing missing rendering features](/withoutsetup.png)
 
-To get the full feature set:
+Instead of this:
+![New terminal setup showing full rendering features](/withsetup.png)
+
+#### To get the full feature set:
 
  1. Use Windows Terminal instead of the old console host.
  2. Install a NerdFont, a font with additional visual characters. I use "Cascadia Cove NF" from [https://www.nerdfonts.com/](https://www.nerdfonts.com/)
- 3. Enable full unicode by adding `$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding` as the **FIRST LINE** in your $PROFILE file.
+ 3. Enable full unicode by adding the following as the **FIRST LINE** in your `$PROFILE` file:
 
-![New terminal setup showing full rendering features](/withsetup.png)
+    ```pwsh
+    $OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
+    ```
+
+    Your profile file can be located by typing `$PROFILE` in your terminal, the path will be similar to `C:\Users\shaun\Documents\PowerShell\Microsoft.PowerShell_profile.ps1`. Your profile is loaded every time you open a terminal session so you can put other config in there too like your own custom functions and aliases.
 
 For more details see the [instructions on the official Spectre Console site to configure Windows Terminal for full Unicode and Emoji support](https://spectreconsole.net/best-practices#configuring-the-windows-terminal-for-unicode-and-emoji-support).  

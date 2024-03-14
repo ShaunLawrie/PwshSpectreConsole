@@ -15,8 +15,7 @@ function Write-SpectreHost {
     If specified, the message will not be followed by a newline character.
 
     .EXAMPLE
-    # This example writes the message "Hello, world!" to the console with the word world flashing blue with an underline followed by an emoji throwing a shaka.
-    Write-SpectreHost -Message "Hello, [blue underline rapidblink]world[/]! :call_me_hand:"
+    Write-SpectreHost -Message "Hello, [blue underline]world[/]! :call_me_hand:"
     #>
     [Reflection.AssemblyMetadata("title", "Write-SpectreHost")]
     [Reflection.AssemblyMetadata("description", "The Write-SpectreHost function writes a message to the console using Spectre Console. It supports ANSI markup and can optionally append a newline character to the end of the message.")]

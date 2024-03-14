@@ -32,11 +32,9 @@ function Write-SpectreCalendar {
     Hides the header of the calendar. (Date)
 
     .EXAMPLE
-    # This example shows how to use the Write-SpectreCalendar function with an events table defined as a hashtable in the command.
     Write-SpectreCalendar -Date 2024-07-01 -Events @{'2024-07-10' = 'Beach time!'; '2024-07-20' = 'Barbecue' }
 
     .EXAMPLE
-    # This example shows how to use the Write-SpectreCalendar function with an events table as an object argument.
     $events = @{
         '2024-01-10' = 'Hello World!'
         '2024-01-20' = 'Hello Universe!'

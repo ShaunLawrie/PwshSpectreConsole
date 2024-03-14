@@ -4,6 +4,7 @@ on:
   push:
     branches:
      - main
+     - prerelease
 
 permissions:
     contents: write
@@ -22,7 +23,7 @@ jobs:
           $ErrorActionPreference = "Stop"
           & .\PwshSpectreConsole\Build.ps1
           Install-Module HelpOut -Scope CurrentUser -Force
-          & .\PwshSpectreConsole.Docs\UpdateDocs.ps1 -NonInteractive
+          & .\PwshSpectreConsole.Docs\UpdateDocs.ps1 -NonInteractive -Branch "${{ github.ref_name }}"
           git config --global user.name 'Shaun Lawrie (via GitHub Actions)'
           git config --global user.email 'shaun.r.lawrie@gmail.com'
           git add PwshSpectreConsole.Docs/src/content || true

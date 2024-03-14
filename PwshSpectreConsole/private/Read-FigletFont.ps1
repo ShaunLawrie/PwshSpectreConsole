@@ -10,7 +10,8 @@ function Read-FigletFont {
         if (!(Test-Path $FigletFontPath)) {
             throw "The specified Figlet font file '$FigletFontPath' does not exist"
         }
-        $figletFont = [FigletFont]::Load($FigletFontPath)
+        $fullPath = (Resolve-Path $FigletFontPath).Path
+        $figletFont = [FigletFont]::Load($fullPath)
     }
     return $figletFont
 }

@@ -28,8 +28,7 @@ function Read-SpectreMultiSelectionGrouped {
     Allow the multi-selection to be submitted without any options chosen.
 
     .EXAMPLE
-    # This example displays a multi-selection prompt with two groups of choices: "Primary Colors" and "Secondary Colors". The prompt uses the "Name" property of each choice as the label. The user can select one or more choices from each group.
-    Read-SpectreMultiSelectionGrouped -Title "Select your favorite colors" -Choices @(
+    $selected = Read-SpectreMultiSelectionGrouped -Title "Select your favorite colors" -PageSize 8 -Choices @(
         @{
             Name = "Primary Colors"
             Choices = @("Red", "Blue", "Yellow")
@@ -39,6 +38,8 @@ function Read-SpectreMultiSelectionGrouped {
             Choices = @("Green", "Orange", "Purple")
         }
     )
+    # Type "↓", "<space>", "↓", "↓", "↓", "<space>", "↲" to choose red and all secondary colors
+    Write-SpectreHost "Your favourite colors are $($selected -join ', ')"
     #>
     [Reflection.AssemblyMetadata("title", "Read-SpectreMultiSelectionGrouped")]
     param (

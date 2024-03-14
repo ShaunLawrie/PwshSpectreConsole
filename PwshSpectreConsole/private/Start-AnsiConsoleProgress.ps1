@@ -11,7 +11,6 @@ This function is required for mocking ansiconsole in unit tests that write objec
 The script block to execute while the progress bar is running.
 
 .EXAMPLE
-# This example starts an ANSI console progress bar and executes a long-running operation.
 Start-AnsiConsoleProgress {
     # Some long-running operation
 }

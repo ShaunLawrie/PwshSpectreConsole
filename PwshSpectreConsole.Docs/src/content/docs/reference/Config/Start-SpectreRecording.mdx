@@ -1,0 +1,145 @@
+---
+sidebar:
+  badge:
+    text: New
+    variant: tip
+title: Start-SpectreRecording
+---
+
+
+
+
+
+
+
+import { TerminalPlayer } from 'astro-terminal-player';
+import startspectrerecordingExample1 from '../../../../assets/examples/startspectrerecordingExample1.cast?url';
+
+### Description
+
+Starts a recording of the current console output. This can be used to record a demo of a script or module.
+
+
+
+---
+
+
+### Examples
+> EXAMPLE 1
+
+```powershell
+$recording = Start-SpectreRecording -RecordingType "Html" -CountdownAndClear
+# Use spectre console functions, these will be recorded
+Write-SpectreHost "Hello [red]world[/]"
+# Finish the recording
+$result = Stop-SpectreRecording
+# Output the results
+Write-SpectreHost "Result:`n$result"
+```
+<TerminalPlayer
+    src={startspectrerecordingExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre"
+    }}
+    aria-label="Terminal session player"
+/>
+
+
+---
+
+
+### Parameters
+#### **Width**
+
+The width of the recording.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |1       |false        |
+
+
+
+#### **Height**
+
+The height of the recording.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |2       |false        |
+
+
+
+#### **RecordingType**
+
+The type of recording to create.
+
+
+
+Valid Values:
+
+* asciinema
+* text
+* html
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |3       |false        |
+
+
+
+#### **CountdownAndClear**
+
+If this switch is present, the console will be cleared and a countdown will be displayed before the recording starts.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|false   |named   |false        |
+
+
+
+#### **Quiet**
+
+If this switch is present all terminal output from spectre console will be suppressed, it will not be visible on the terminal.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|false   |named   |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Start-SpectreRecording [[-Width] <Int32>] [[-Height] <Int32>] [[-RecordingType] <String>] [-CountdownAndClear] [-Quiet] [<CommonParameters>]
+```

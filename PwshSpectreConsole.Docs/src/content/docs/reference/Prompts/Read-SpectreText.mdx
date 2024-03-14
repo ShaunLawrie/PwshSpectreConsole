@@ -1,0 +1,173 @@
+---
+sidebar:
+  badge:
+    text: New
+    variant: tip
+title: Read-SpectreText
+---
+
+
+
+
+
+
+
+import { TerminalPlayer } from 'astro-terminal-player';
+import readspectretextExample1 from '../../../../assets/examples/readspectretextExample1.cast?url';
+import readspectretextExample2 from '../../../../assets/examples/readspectretextExample2.cast?url';
+import readspectretextExample3 from '../../../../assets/examples/readspectretextExample3.cast?url';
+
+### Description
+
+This function uses Spectre Console to prompt the user with a question and returns the user's input.
+:::caution
+I would advise against this and instead use `Read-Host` because the Spectre Console prompt doesn't have access to the PowerShell session history.  
+Without session history you can't use the up and down arrow keys to navigate through your previous commands.
+This text entry also doesn't allow you to use arrow keys to go back and forwards through the text you're entering.
+:::
+
+
+
+---
+
+
+### Examples
+> EXAMPLE 1
+
+```powershell
+$name = Read-SpectreText -Question "What's your name?" -DefaultAnswer "Prefer not to say"
+# Type "↲" to provide no answer
+Write-SpectreHost "Your name is '$name'"
+```
+<TerminalPlayer
+    src={readspectretextExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre"
+    }}
+    aria-label="Terminal session player"
+/>
+> EXAMPLE 2
+
+```powershell
+$favouriteColor = Read-SpectreText -Question "What's your favorite color?" -DefaultAnswer "pink"
+# Type "orange", "↲" to enter your favourite color
+Write-SpectreHost "Your favourite color is '$favouriteColor'"
+```
+<TerminalPlayer
+    src={readspectretextExample2}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre"
+    }}
+    aria-label="Terminal session player"
+/>
+> EXAMPLE 3
+
+```powershell
+$favouriteColor = Read-SpectreText -Question "What's your favorite color?" -AnswerColor "Cyan1" -Choices "Black", "Green", "Magenta", "I'll never tell!"
+# Type "orange", "↲", "magenta", "↲" to enter text that must match a choice in the choices list, orange will be rejected, magenta will be accepted
+Write-SpectreHost "Your favourite color is '$favouriteColor'"
+```
+<TerminalPlayer
+    src={readspectretextExample3}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre"
+    }}
+    aria-label="Terminal session player"
+/>
+
+
+---
+
+
+### Parameters
+#### **Question**
+
+The question to prompt the user with.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |1       |false        |
+
+
+
+#### **DefaultAnswer**
+
+The default answer if the user does not provide any input.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |2       |false        |
+
+
+
+#### **AnswerColor**
+
+The color of the user's answer input. The default behaviour uses the standard terminal text color.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Color]`|false   |3       |false        |
+
+
+
+#### **AllowEmpty**
+
+If specified, the user can provide an empty answer.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|false   |named   |false        |
+
+
+
+#### **Choices**
+
+An array of choices that the user can choose from. If specified, the user will be prompted with a list of choices to choose from, with validation.
+With autocomplete and can tab through the choices.
+
+
+
+
+
+
+|Type        |Required|Position|PipelineInput|
+|------------|--------|--------|-------------|
+|`[String[]]`|false   |4       |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Read-SpectreText [[-Question] <String>] [[-DefaultAnswer] <String>] [[-AnswerColor] <Color>] [-AllowEmpty] [[-Choices] <String[]>] [<CommonParameters>]
+```
