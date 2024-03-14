@@ -8,10 +8,6 @@ title: Write-SpectreFigletText
 
 
 
-
-
-
-
 import { TerminalPlayer } from 'astro-terminal-player';
 import writespectrefiglettextExample1 from '../../../../assets/examples/writespectrefiglettextExample1.cast?url';
 import writespectrefiglettextExample2 from '../../../../assets/examples/writespectrefiglettextExample2.cast?url';
@@ -20,10 +16,7 @@ import writespectrefiglettextExample2 from '../../../../assets/examples/writespe
 
 This function writes a Spectre Console Figlet text to the console. The text can be aligned to the left, right, or center, and can be displayed in a specified color.
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -55,84 +48,44 @@ Write-SpectreFigletText -Text "Whoa?!" -FigletFontPath "..\assets\3d.flf"
     aria-label="Terminal session player"
 />
 
-
 ---
-
 
 ### Parameters
 #### **Text**
-
 The text to display in the Figlet format.
-
-
-
-
-
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|false   |1       |false        |
 
-
-
 #### **Alignment**
-
 The alignment of the text. The default value is "Left".
-
-
-
 Valid Values:
 
 * Left
 * Right
 * Center
 
-
-
-
-
-
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|false   |2       |false        |
 
-
-
 #### **Color**
-
 The color of the text. The default value is the accent color of the script.
-
-
-
-
-
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
 |`[Color]`|false   |3       |false        |
 
-
-
 #### **FigletFontPath**
-
 The path to the Figlet font file to use. If this parameter is not specified, the default built-in Figlet font is used.
 The figlet font format is usually *.flf, see https://spectreconsole.net/widgets/figlet for more.
-
-
-
-
-
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|false   |4       |false        |
 
-
-
-
-
 ---
-
 
 ### Syntax
 ```powershell

@@ -8,10 +8,6 @@ title: Read-SpectreText
 
 
 
-
-
-
-
 import { TerminalPlayer } from 'astro-terminal-player';
 import readspectretextExample1 from '../../../../assets/examples/readspectretextExample1.cast?url';
 import readspectretextExample2 from '../../../../assets/examples/readspectretextExample2.cast?url';
@@ -26,10 +22,7 @@ Without session history you can't use the up and down arrow keys to navigate thr
 This text entry also doesn't allow you to use arrow keys to go back and forwards through the text you're entering.
 :::
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -81,91 +74,46 @@ Write-SpectreHost "Your favourite color is '$favouriteColor'"
     aria-label="Terminal session player"
 />
 
-
 ---
-
 
 ### Parameters
 #### **Question**
-
 The question to prompt the user with.
-
-
-
-
-
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|false   |1       |false        |
 
-
-
 #### **DefaultAnswer**
-
 The default answer if the user does not provide any input.
-
-
-
-
-
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|false   |2       |false        |
 
-
-
 #### **AnswerColor**
-
 The color of the user's answer input. The default behaviour uses the standard terminal text color.
-
-
-
-
-
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
 |`[Color]`|false   |3       |false        |
 
-
-
 #### **AllowEmpty**
-
 If specified, the user can provide an empty answer.
-
-
-
-
-
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[Switch]`|false   |named   |false        |
 
-
-
 #### **Choices**
-
 An array of choices that the user can choose from. If specified, the user will be prompted with a list of choices to choose from, with validation.
 With autocomplete and can tab through the choices.
-
-
-
-
-
 
 |Type        |Required|Position|PipelineInput|
 |------------|--------|--------|-------------|
 |`[String[]]`|false   |4       |false        |
 
-
-
-
-
 ---
-
 
 ### Syntax
 ```powershell
