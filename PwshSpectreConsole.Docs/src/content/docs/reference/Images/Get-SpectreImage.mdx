@@ -8,10 +8,6 @@ title: Get-SpectreImage
 
 
 
-
-
-
-
 import { TerminalPlayer } from 'astro-terminal-player';
 import getspectreimageExample1 from '../../../../assets/examples/getspectreimageExample1.cast?url';
 
@@ -19,10 +15,7 @@ import getspectreimageExample1 from '../../../../assets/examples/getspectreimage
 
 Displays an image in the console using CanvasImage. The image can be resized to a maximum width if desired.
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -40,45 +33,24 @@ Get-SpectreImage -ImagePath "..\..\..\PwshSpectreConsole\private\images\smiley.p
     aria-label="Terminal session player"
 />
 
-
 ---
-
 
 ### Parameters
 #### **ImagePath**
-
 The path to the image file to be displayed.
-
-
-
-
-
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|false   |1       |false        |
 
-
-
 #### **MaxWidth**
-
 The maximum width of the image. If not specified, the image will be displayed at its original size.
-
-
-
-
-
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
 |`[Int32]`|false   |2       |false        |
 
-
-
-
-
 ---
-
 
 ### Syntax
 ```powershell

@@ -8,10 +8,6 @@ title: Add-SpectreJob
 
 
 
-
-
-
-
 import { TerminalPlayer } from 'astro-terminal-player';
 import addspectrejobExample1 from '../../../../assets/examples/addspectrejobExample1.cast?url';
 
@@ -22,10 +18,7 @@ This function adds a Spectre job to the list of jobs you want to wait for with W
 This is only used inside `Invoke-SpectreCommandWithProgress` where the Spectre ProgressContext object is exposed.
 :::
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -51,61 +44,32 @@ Invoke-SpectreCommandWithProgress -ScriptBlock {
     aria-label="Terminal session player"
 />
 
-
 ---
-
 
 ### Parameters
 #### **Context**
-
 The Spectre context to add the job to. The context object is only available inside Invoke-SpectreCommandWithProgress.
 [https://spectreconsole.net/api/spectre.console/progresscontext/](https://spectreconsole.net/api/spectre.console/progresscontext/)
-
-
-
-
-
 
 |Type               |Required|Position|PipelineInput|
 |-------------------|--------|--------|-------------|
 |`[ProgressContext]`|true    |1       |false        |
 
-
-
 #### **JobName**
-
 The name of the job to add.
-
-
-
-
-
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|true    |2       |false        |
 
-
-
 #### **Job**
-
 The PowerShell job to add to the context.
-
-
-
-
-
 
 |Type   |Required|Position|PipelineInput|
 |-------|--------|--------|-------------|
 |`[Job]`|true    |3       |false        |
 
-
-
-
-
 ---
-
 
 ### Syntax
 ```powershell

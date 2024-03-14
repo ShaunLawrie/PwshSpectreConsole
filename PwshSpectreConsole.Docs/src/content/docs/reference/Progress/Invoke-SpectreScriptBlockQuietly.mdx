@@ -8,10 +8,6 @@ title: Invoke-SpectreScriptBlockQuietly
 
 
 
-
-
-
-
 import { TerminalPlayer } from 'astro-terminal-player';
 import invokespectrescriptblockquietlyExample1 from '../../../../assets/examples/invokespectrescriptblockquietlyExample1.cast?url';
 
@@ -19,10 +15,7 @@ import invokespectrescriptblockquietlyExample1 from '../../../../assets/examples
 
 This function invokes a script block in a background job and returns the output. It also provides an option to suppress the output even more if there is garbage being printed to stderr if using Level = Quieter.
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -56,52 +49,28 @@ Invoke-SpectreCommandWithProgress {
     aria-label="Terminal session player"
 />
 
-
 ---
-
 
 ### Parameters
 #### **Command**
-
 The script block to be invoked.
-
-
-
-
-
 
 |Type           |Required|Position|PipelineInput|
 |---------------|--------|--------|-------------|
 |`[ScriptBlock]`|false   |1       |false        |
 
-
-
 #### **Level**
-
 Suppresses the output by varying amounts.
-
-
-
 Valid Values:
 
 * Quiet
 * Quieter
 
-
-
-
-
-
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|false   |2       |false        |
 
-
-
-
-
 ---
-
 
 ### Syntax
 ```powershell

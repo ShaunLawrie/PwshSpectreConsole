@@ -1,14 +1,10 @@
 ---
 sidebar:
   badge:
-    text: New
-    variant: tip
+    text: Experimental
+    variant: caution
 title: Start-SpectreRecording
 ---
-
-
-
-
 
 
 
@@ -17,12 +13,13 @@ import startspectrerecordingExample1 from '../../../../assets/examples/startspec
 
 ### Description
 
-Starts a recording of the current console output. This can be used to record a demo of a script or module.
-
-
+Starts a recording of the current console output. This can be used to record all of the spectre console interactions in a PowerShell session.  
+I've used this to record the examples on the docs help site.
+:::caution
+This is experimental.
+:::
 
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -46,98 +43,50 @@ Write-SpectreHost "Result:`n$result"
     aria-label="Terminal session player"
 />
 
-
 ---
-
 
 ### Parameters
 #### **Width**
-
 The width of the recording.
-
-
-
-
-
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
 |`[Int32]`|false   |1       |false        |
 
-
-
 #### **Height**
-
 The height of the recording.
-
-
-
-
-
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
 |`[Int32]`|false   |2       |false        |
 
-
-
 #### **RecordingType**
-
 The type of recording to create.
-
-
-
 Valid Values:
 
 * asciinema
 * text
 * html
 
-
-
-
-
-
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|false   |3       |false        |
 
-
-
 #### **CountdownAndClear**
-
 If this switch is present, the console will be cleared and a countdown will be displayed before the recording starts.
 
-
-
-
-
-
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[Switch]`|false   |named   |false        |
-
-
 
 #### **Quiet**
-
 If this switch is present all terminal output from spectre console will be suppressed, it will not be visible on the terminal.
-
-
-
-
-
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[Switch]`|false   |named   |false        |
 
-
-
-
-
 ---
-
 
 ### Syntax
 ```powershell

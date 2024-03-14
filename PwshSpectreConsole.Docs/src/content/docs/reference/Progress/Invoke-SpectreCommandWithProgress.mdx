@@ -8,10 +8,6 @@ title: Invoke-SpectreCommandWithProgress
 
 
 
-
-
-
-
 import { TerminalPlayer } from 'astro-terminal-player';
 import invokespectrecommandwithprogressExample1 from '../../../../assets/examples/invokespectrecommandwithprogressExample1.cast?url';
 import invokespectrecommandwithprogressExample2 from '../../../../assets/examples/invokespectrecommandwithprogressExample2.cast?url';
@@ -23,10 +19,7 @@ import invokespectrecommandwithprogressExample4 from '../../../../assets/example
 This function takes a script block as a parameter and executes it while displaying a progress bar. The context and task objects are defined at [https://spectreconsole.net/api/spectre.console/progresscontext/](https://spectreconsole.net/api/spectre.console/progresscontext/).
 The context requires at least one task to be added for progress to be displayed. The task object is used to update the progress bar by calling the Increment() method or other methods defined in Spectre console [https://spectreconsole.net/api/spectre.console/progresstask/](https://spectreconsole.net/api/spectre.console/progresstask/).
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -143,30 +136,17 @@ Invoke-SpectreCommandWithProgress -ScriptBlock {
     aria-label="Terminal session player"
 />
 
-
 ---
-
 
 ### Parameters
 #### **ScriptBlock**
-
 The script block to execute.
-
-
-
-
-
 
 |Type           |Required|Position|PipelineInput|
 |---------------|--------|--------|-------------|
 |`[ScriptBlock]`|true    |1       |false        |
 
-
-
-
-
 ---
-
 
 ### Syntax
 ```powershell

@@ -8,10 +8,6 @@ title: Read-SpectrePause
 
 
 
-
-
-
-
 import { TerminalPlayer } from 'astro-terminal-player';
 import readspectrepauseExample1 from '../../../../assets/examples/readspectrepauseExample1.cast?url';
 import readspectrepauseExample2 from '../../../../assets/examples/readspectrepauseExample2.cast?url';
@@ -20,10 +16,7 @@ import readspectrepauseExample2 from '../../../../assets/examples/readspectrepau
 
 The Read-SpectrePause function pauses the script execution and waits for user input to continue. It displays a message prompting the user to press the enter key to continue. If the end of the console window is reached, the function clears the message and moves the cursor up to the previous line.
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -57,56 +50,30 @@ Read-SpectrePause -Message "Press the [red]ANY[/] key to continue, when you pres
     aria-label="Terminal session player"
 />
 
-
 ---
-
 
 ### Parameters
 #### **Message**
-
 The message to display to the user. The default message is "[default value color]Press [accent color]enter[/] to continue[/]".
-
-
-
-
-
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|false   |1       |false        |
 
-
-
 #### **AnyKey**
 
-
-
-
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[Switch]`|false   |named   |false        |
-
-
 
 #### **NoNewline**
-
 Indicates whether to write a newline character before displaying the message. By default, a newline character is written.
-
-
-
-
-
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[Switch]`|false   |named   |false        |
 
-
-
-
-
 ---
-
 
 ### Syntax
 ```powershell

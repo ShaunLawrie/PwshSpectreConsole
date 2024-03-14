@@ -8,10 +8,6 @@ title: Write-SpectreRule
 
 
 
-
-
-
-
 import { TerminalPlayer } from 'astro-terminal-player';
 import writespectreruleExample1 from '../../../../assets/examples/writespectreruleExample1.cast?url';
 
@@ -19,10 +15,7 @@ import writespectreruleExample1 from '../../../../assets/examples/writespectreru
 
 The Write-SpectreRule function writes a Spectre horizontal-rule to the console with the specified title, alignment, and color.
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -40,68 +33,36 @@ Write-SpectreRule -Title "My Rule" -Alignment Center -Color Red
     aria-label="Terminal session player"
 />
 
-
 ---
-
 
 ### Parameters
 #### **Title**
-
 The title of the rule.
-
-
-
-
-
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|true    |1       |false        |
 
-
-
 #### **Alignment**
-
 The alignment of the text in the rule. The default value is Left.
-
-
-
 Valid Values:
 
 * Left
 * Right
 * Center
 
-
-
-
-
-
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|false   |2       |false        |
 
-
-
 #### **Color**
-
 The color of the rule. The default value is the accent color of the script.
-
-
-
-
-
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
 |`[Color]`|false   |3       |false        |
 
-
-
-
-
 ---
-
 
 ### Syntax
 ```powershell
