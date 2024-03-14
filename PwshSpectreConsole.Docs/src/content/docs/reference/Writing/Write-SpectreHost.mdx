@@ -1,0 +1,89 @@
+---
+sidebar:
+  badge:
+    text: New
+    variant: tip
+title: Write-SpectreHost
+description: The Write-SpectreHost function writes a message to the console using Spectre Console. It supports ANSI markup and can optionally append a newline character to the end of the message.
+---
+
+
+
+
+
+
+
+import { TerminalPlayer } from 'astro-terminal-player';
+import writespectrehostExample1 from '../../../../assets/examples/writespectrehostExample1.cast?url';
+
+### Description
+
+The Write-SpectreHost function writes a message to the console using Spectre Console. It supports ANSI markup and can optionally append a newline character to the end of the message.
+The markup language is defined at [https://spectreconsole.net/markup](https://spectreconsole.net/markup)
+Supported emoji are defined at [https://spectreconsole.net/appendix/emojis](https://spectreconsole.net/appendix/emojis)
+
+
+
+---
+
+
+### Examples
+> EXAMPLE 1
+
+```powershell
+Write-SpectreHost -Message "Hello, [blue underline]world[/]! :call_me_hand:"
+```
+<TerminalPlayer
+    src={writespectrehostExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre"
+    }}
+    aria-label="Terminal session player"
+/>
+
+
+---
+
+
+### Parameters
+#### **Message**
+
+The message to write to the console.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput |
+|----------|--------|--------|--------------|
+|`[String]`|true    |1       |true (ByValue)|
+
+
+
+#### **NoNewline**
+
+If specified, the message will not be followed by a newline character.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|false   |named   |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Write-SpectreHost [-Message] <String> [-NoNewline] [<CommonParameters>]
+```

@@ -19,7 +19,6 @@ function Format-SpectreTree {
     The color to use for the tree. This can be a Spectre Console color name or a hex color code. Default is the accent color defined in the script.
 
     .EXAMPLE
-    # This example formats a hashtable as a tree with a heavy border and green color.
     $data = @{
         Label = "Root"
         Children = @(
@@ -49,7 +48,7 @@ function Format-SpectreTree {
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
         [hashtable] $Data,
-        [ValidateSet([SpectreConsoleTreeGuide],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
+        [ValidateSet([SpectreConsoleTreeGuide], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Guide = "Line",
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]

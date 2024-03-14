@@ -2,5 +2,6 @@
     "powershell.codeFormatting.preset": "OTBS",
     "editor.formatOnPaste": false,
     "editor.formatOnSave": false,
-    "editor.formatOnType": false
+    "editor.formatOnType": false,
+    "editor.tabSize": 4
 }

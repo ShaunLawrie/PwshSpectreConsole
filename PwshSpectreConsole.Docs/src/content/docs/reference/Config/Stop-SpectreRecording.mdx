@@ -1,0 +1,92 @@
+---
+sidebar:
+  badge:
+    text: New
+    variant: tip
+title: Stop-SpectreRecording
+---
+
+
+
+
+
+
+
+import { TerminalPlayer } from 'astro-terminal-player';
+import stopspectrerecordingExample1 from '../../../../assets/examples/stopspectrerecordingExample1.cast?url';
+
+### Description
+
+Stops a recording of the current console output and returns the recording.
+
+
+
+---
+
+
+### Examples
+> EXAMPLE 1
+
+```powershell
+$recording = Start-SpectreRecording -RecordingType "Html" -CountdownAndClear
+# Use spectre console functions, these will be recorded
+Write-SpectreHost "Hello [red]world[/]"
+# Finish the recording
+$result = Stop-SpectreRecording
+# Output the results
+Write-SpectreHost "Result:`n$result"
+```
+<TerminalPlayer
+    src={stopspectrerecordingExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre"
+    }}
+    aria-label="Terminal session player"
+/>
+
+
+---
+
+
+### Parameters
+#### **Title**
+
+The title of the recording, only used for asciinema recordings.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |1       |false        |
+
+
+
+#### **OutputPath**
+
+The path to save the recording to.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |2       |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Stop-SpectreRecording [[-Title] <String>] [[-OutputPath] <String>] [<CommonParameters>]
+```

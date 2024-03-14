@@ -10,7 +10,7 @@ Describe "Read-SpectreConfirm" {
             Mock Invoke-SpectrePromptAsync {
                 $Prompt | Should -BeOfType [Spectre.Console.TextPrompt[string]]
                 (Compare-Object -ReferenceObject $Prompt.Choices -DifferenceObject $choices) | Should -BeNullOrEmpty
-                if($testColor) {
+                if ($testColor) {
                     $Prompt.ChoicesStyle.Foreground.ToMarkup() | Should -Be $testColor
                 }
                 return $testDefaultAnswer

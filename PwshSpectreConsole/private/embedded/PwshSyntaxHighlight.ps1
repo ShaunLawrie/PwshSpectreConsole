@@ -1,29 +1,29 @@
 $script:Themes = @{
     Github = @{
-        Function = @{ R = 255; G = 123; B = 114 }
-        Generic = @{ R = 199; G = 159; B = 252 }
-        String = @{ R = 143; G = 185; B = 221 }
-        Variable = @{ R = 255; G = 255; B = 255 }
-        Identifier = @{ R = 110; G = 174; B = 231 }
-        Number = @{ R = 255; G = 255; B = 255 }
-        Keyword = @{ R = 255; G = 123; B = 114 }
-        Default = @{ R = 200; G = 200; B = 200 }
+        Function      = @{ R = 255; G = 123; B = 114 }
+        Generic       = @{ R = 199; G = 159; B = 252 }
+        String        = @{ R = 143; G = 185; B = 221 }
+        Variable      = @{ R = 255; G = 255; B = 255 }
+        Identifier    = @{ R = 110; G = 174; B = 231 }
+        Number        = @{ R = 255; G = 255; B = 255 }
+        Keyword       = @{ R = 255; G = 123; B = 114 }
+        Default       = @{ R = 200; G = 200; B = 200 }
         ForegroundRgb = @{ R = 102; G = 102; B = 102 }
         BackgroundRgb = @{ R = 35; G = 35; B = 35 }
-        HighlightRgb = @{ R = 231; G = 72; B = 86 }
+        HighlightRgb  = @{ R = 231; G = 72; B = 86 }
     }
     Matrix = @{
-        Function = @{ R = 255; G = 255; B = 255 }
-        Generic = @{ R = 113; G = 255; B = 96 }
-        String = @{ R = 202; G = 255; B = 194 }
-        Variable = @{ R = 200; G = 255; B = 200 }
-        Identifier = @{ R = 131; G = 193; B = 26 }
-        Number = @{ R = 255; G = 255; B = 255 }
-        Keyword = @{ R = 40; G = 220; B = 20 }
-        Default = @{ R = 0; G = 120; B = 0 }
+        Function      = @{ R = 255; G = 255; B = 255 }
+        Generic       = @{ R = 113; G = 255; B = 96 }
+        String        = @{ R = 202; G = 255; B = 194 }
+        Variable      = @{ R = 200; G = 255; B = 200 }
+        Identifier    = @{ R = 131; G = 193; B = 26 }
+        Number        = @{ R = 255; G = 255; B = 255 }
+        Keyword       = @{ R = 40; G = 220; B = 20 }
+        Default       = @{ R = 0; G = 120; B = 0 }
         ForegroundRgb = @{ R = 102; G = 190; B = 102 }
         BackgroundRgb = @{ R = 15; G = 45; B = 15 }
-        HighlightRgb = @{ R = 255; G = 221; B = 0 }
+        HighlightRgb  = @{ R = 255; G = 221; B = 0 }
     }
 }
 
@@ -53,7 +53,7 @@ function Write-Codeblock {
     #>
     param (
         # The text containing the code to write to the host
-        [Parameter(ValueFromPipeline=$true, Mandatory)]
+        [Parameter(ValueFromPipeline = $true, Mandatory)]
         [string] $Text,
         # Show a gutter with line numbers
         [switch] $ShowLineNumbers,
@@ -73,7 +73,7 @@ function Write-Codeblock {
 
     # Work out the width of the console minus the line-number gutter
     $gutterSize = 0
-    if($ShowLineNumbers) {
+    if ($ShowLineNumbers) {
         $gutterSize = $Text.Split("`n").Count.ToString().Length + 1
     }
     $codeWidth = $Host.UI.RawUI.WindowSize.Width - $gutterSize
@@ -93,23 +93,23 @@ function Write-Codeblock {
         $lineExtents = $HighlightExtents | Group-Object { $_.StartLineNumber }
 
         $functionLinesToRender = $Text.Split("`n")
-        foreach($line in $functionLinesToRender) {
+        foreach ($line in $functionLinesToRender) {
             $gutterText = ""
-            if($ShowLineNumbers) {
+            if ($ShowLineNumbers) {
                 $gutterText = $functionLineNumber.ToString().PadLeft($gutterSize - 1) + " "
             }
 
             # Disable syntax highlighting for specifically highlighted lines
             $lineSyntax = $SyntaxHighlight
             $lineHighlight = $false
-            if($HighlightLines -contains $functionLineNumber) {
+            if ($HighlightLines -contains $functionLineNumber) {
                 $lineSyntax = $false
                 $lineHighlight = $true
             }
 
             # Work out the lines that will be wrapped in the terminal because they're too long and draw the background
             $lineBackground = $foregroundColorEscapeCode + $gutterText + $backgroundColorEscapeCode + (" " * $codeWidth) + $resetEscapeCode
-            if($line.Length -gt $codeWidth) {
+            if ($line.Length -gt $codeWidth) {
                 # How many times can this line be wrapped in the code editor width available
                 $wrappedLineSegments = ($line | Select-String -Pattern ".{1,$codeWidth}" -AllMatches).Matches.Value
                 # Render the background line plus additional background lines without the gutter line number for each wrapped line
@@ -125,14 +125,14 @@ function Write-Codeblock {
 
             # Render the tokens that are on this line
             ($lineTokens | Where-Object { $_.Name -eq $functionLineNumber }).Group | ForEach-Object {
-                if($null -ne $_) {
+                if ($null -ne $_) {
                     Write-Token -Token $_ -TerminalLine $terminalLine -BackgroundRgb $BackgroundRgb -GutterSize $gutterSize -Highlight:$lineHighlight -Theme $Theme -SyntaxHighlight:$lineSyntax
                 }
             }
 
             # Highlight all extents on this line that have been requested to be emphasized
             ($lineExtents | Where-Object { $_.Name -eq $functionLineNumber }).Group | Foreach-Object {
-                if($null -ne $_) {
+                if ($null -ne $_) {
                     Write-Token -Extent $_ -TerminalLine $terminalLine -BackgroundRgb $BackgroundRgb -GutterSize $gutterSize -Highlight -Theme $Theme
                 }
             }
@@ -158,27 +158,27 @@ function Expand-Tokens {
         [array] $Tokens
     )
     $splitTokens = @()
-    if($null -eq $Tokens -or $Tokens.Count -eq 0) {
+    if ($null -eq $Tokens -or $Tokens.Count -eq 0) {
         return $splitTokens
     }
-    foreach($token in $Tokens) {
+    foreach ($token in $Tokens) {
         $tokenLines = $token.Text.Split("`n")
         $lineOffset = 0
-        foreach($tokenLine in $tokenLines) {
+        foreach ($tokenLine in $tokenLines) {
             # If it's the first line this tokens column is not set to 1 it has its own x position
             $startColumnNumber = 1
-            if($lineOffset -eq 0) {
+            if ($lineOffset -eq 0) {
                 $startColumnNumber = $token.Extent.StartColumnNumber
             }
             $splitTokens += @{
-                Text = $tokenLine
-                Extent = @{
-                    Text = $tokenLine
+                Text         = $tokenLine
+                Extent       = @{
+                    Text              = $tokenLine
                     StartColumnNumber = $startColumnNumber
-                    StartLineNumber = $token.Extent.StartLineNumber + $lineOffset
+                    StartLineNumber   = $token.Extent.StartLineNumber + $lineOffset
                 }
-                Kind = $token.Kind
-                TokenFlags = $token.TokenFlags
+                Kind         = $token.Kind
+                TokenFlags   = $token.TokenFlags
                 NestedTokens = @()
             }
             $lineOffset++
@@ -211,7 +211,7 @@ function Get-TokenColor {
         "Number" { $script:Themes[$Theme].Number }
         default { $script:Themes[$Theme].Default }
     }
-    if($TokenFlags -like "*operator*" -or $TokenFlags -like "*keyword*") {
+    if ($TokenFlags -like "*operator*" -or $TokenFlags -like "*keyword*") {
         $ForegroundRgb = $script:Themes[$Theme].Keyword
     }
     return $ForegroundRgb
@@ -242,11 +242,11 @@ function Write-Token {
     $ForegroundRgb = $script:Themes[$Theme].ForegroundRgb
     $BackgroundRgb = $script:Themes[$Theme].BackgroundRgb
 
-    if($Highlight) {
+    if ($Highlight) {
         $ForegroundRgb = $script:Themes[$Theme].HighlightRgb
     }
 
-    if(!$Extent) {
+    if (!$Extent) {
         $Extent = $Token.Extent
     }
 
@@ -254,11 +254,11 @@ function Write-Token {
     $column = $Extent.StartColumnNumber
 
     $colorEscapeCode = ""
-    if($SyntaxHighlight -and $null -ne $Token) {
+    if ($SyntaxHighlight -and $null -ne $Token) {
         $ForegroundRgb = Get-TokenColor -Kind $Token.Kind -TokenFlags $Token.TokenFlags -Theme $Theme
     }
     $colorEscapeCode += "$([Char]27)[38;2;{0};{1};{2}m" -f $ForegroundRgb.R, $ForegroundRgb.G, $ForegroundRgb.B
-    if($BackgroundRgb) {
+    if ($BackgroundRgb) {
         $colorEscapeCode += "$([Char]27)[48;2;{0};{1};{2}m" -f $BackgroundRgb.R, $BackgroundRgb.G, $BackgroundRgb.B
     }
 
@@ -281,12 +281,12 @@ function Write-Token {
         $x = ($columnIndex % $consoleWidth) + $GutterSize
         $y = $wrappedLineIndex
         # Handle extent running beyond the width of the terminal
-        if(($x + $text.Length) -gt ($consoleWidth + $GutterSize)) {
+        if (($x + $text.Length) -gt ($consoleWidth + $GutterSize)) {
             $fullExtentLine = $text
             $endOfTextOnCurrentLine = $consoleWidth - $x + $GutterSize
             $text = $text.Substring(0, $endOfTextOnCurrentLine)
             $remainingText = $fullExtentLine.Substring($endOfTextOnCurrentLine, $fullExtentLine.Length - $endOfTextOnCurrentLine)
-            if($remainingText.Length -gt $consoleWidth) {
+            if ($remainingText.Length -gt $consoleWidth) {
                 $overrunText += ($remainingText | Select-String "(.{1,$consoleWidth})+").Matches.Groups[1].Captures.Value
             } else {
                 $overrunText += $remainingText
@@ -295,18 +295,18 @@ function Write-Token {
 
         $textToRender += @{
             Text = $text
-            X = $x
-            Y = $y
+            X    = $x
+            Y    = $y
         }
 
         # Prepare any parts of this line that extended beyond the width of the terminal
         $overruns = 0
-        foreach($overrun in $overrunText) {
+        foreach ($overrun in $overrunText) {
             $overruns++
             $textToRender += @{
                 Text = $overrun
-                X = $GutterSize
-                Y = $y + $overruns
+                X    = $GutterSize
+                Y    = $y + $overruns
             }
         }
 

@@ -24,9 +24,9 @@ function Add-SpectreTreeNode {
         [array] $Children
     )
 
-    foreach($child in $Children) {
+    foreach ($child in $Children) {
         $newNode = [HasTreeNodeExtensions]::AddNode($Node, $child.Label)
-        if($child.Children.Count -gt 0) {
+        if ($child.Children.Count -gt 0) {
             Add-SpectreTreeNode -Node $newNode -Children $child.Children
         }
     }

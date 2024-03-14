@@ -10,16 +10,16 @@ Describe "Format-SpectreJson" {
             $testConsole.EmitAnsiSequences = $true
             $testData = @(
                 [pscustomobject]@{
-                    Name = "John"
-                    Age = 25
-                    City = "New York"
+                    Name       = "John"
+                    Age        = 25
+                    City       = "New York"
                     IsEmployed = $true
-                    Salary = 10
-                    Hobbies = @("Reading", "Swimming")
-                    Address = [pscustomobject]@{
+                    Salary     = 10
+                    Hobbies    = @("Reading", "Swimming")
+                    Address    = [pscustomobject]@{
                         Street = "123 Main St"
-                        City = "New York"
-                        Deep = @{
+                        City   = "New York"
+                        Deep   = @{
                             Nested = @{
                                 Value = @{
                                     That = @{
@@ -32,8 +32,8 @@ Describe "Format-SpectreJson" {
                                 }
                             }
                         }
-                        State = "NY"
-                        Zip = "10001"
+                        State  = "NY"
+                        Zip    = "10001"
                     }
                 }
             )
@@ -63,7 +63,7 @@ Describe "Format-SpectreJson" {
             Mock Write-AnsiConsole {
                 $RenderableObject | Should -BeOfType [Spectre.Console.Panel]
                 $RenderableObject.Header.Text | Should -Be $testTitle
-                if($testBorder -ne "None") {
+                if ($testBorder -ne "None") {
                     $RenderableObject.Border.GetType().Name | Should -BeLike "*$testBorder*"
                 }
                 $RenderableObject.BorderStyle.Foreground.ToMarkup() | Should -Be $testColor
@@ -112,7 +112,7 @@ Describe "Format-SpectreJson" {
             )
             $data | ConvertTo-Json | Format-SpectreJson -Border None
             $roundtrip = $testConsole.Output | StripAnsi | ConvertFrom-Json
-            (Compare-Object -ReferenceObject $data -DifferenceObject $roundtrip -Property Name, Age, City -CaseSensitive -IncludeEqual).SideIndicator | Should -Be @('==','==')
+            (Compare-Object -ReferenceObject $data -DifferenceObject $roundtrip -Property Name, Age, City -CaseSensitive -IncludeEqual).SideIndicator | Should -Be @('==', '==')
         }
         
         It "Should roundtrip json string input" {

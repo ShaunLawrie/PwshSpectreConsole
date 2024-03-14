@@ -25,8 +25,9 @@ function Read-SpectreSelection {
     The number of choices to display per page in the selection prompt.
 
     .EXAMPLE
-    # This command displays a selection prompt with the title "Select your favorite color" and the choices "Red", "Green", and "Blue". The active selection is colored in green.
-    Read-SpectreSelection -Title "Select your favorite color" -Choices @("Red", "Green", "Blue") -Color "Green"
+    $color = Read-SpectreSelection -Title "Select your favorite color" -Choices @("Red", "Green", "Blue") -Color "Green"
+    # Type "↓", "↓", "↓", "↓", "↲" to wrap around the list and choose green
+    Write-SpectreHost "Your chosen color is '$color'"
     #>
     [Reflection.AssemblyMetadata("title", "Read-SpectreSelection")]
     param (
@@ -41,12 +42,12 @@ function Read-SpectreSelection {
     $spectrePrompt = [SelectionPrompt[string]]::new()
 
     $choiceLabels = $Choices
-    if($ChoiceLabelProperty) {
+    if ($ChoiceLabelProperty) {
         $choiceLabels = $Choices | Select-Object -ExpandProperty $ChoiceLabelProperty
     }
 
     $duplicateLabels = $choiceLabels | Group-Object | Where-Object { $_.Count -gt 1 }
-    if($duplicateLabels) {
+    if ($duplicateLabels) {
         throw "You have duplicate labels in your select list, this is ambiguous so a selection cannot be made"
     }
 
@@ -58,7 +59,7 @@ function Read-SpectreSelection {
     $spectrePrompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
     $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt
 
-    if($ChoiceLabelProperty) {
+    if ($ChoiceLabelProperty) {
         $selected = $Choices | Where-Object -Property $ChoiceLabelProperty -Eq $selected
     }
 

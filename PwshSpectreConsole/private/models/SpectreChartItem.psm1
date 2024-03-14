@@ -1,7 +1,6 @@
 using namespace Spectre.Console
 
-class SpectreChartItem
-{
+class SpectreChartItem {
     [string] $Label
     [double] $Value
     [Color] $Color

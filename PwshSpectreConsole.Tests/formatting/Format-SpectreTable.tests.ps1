@@ -15,10 +15,10 @@ Describe "Format-SpectreTable" {
             Mock Write-AnsiConsole {
                 $RenderableObject | Should -BeOfType [Spectre.Console.Table]
                 $RenderableObject.Rows.Count | Should -Be $testData.Count
-                if($testBorder -ne "None") {
+                if ($testBorder -ne "None") {
                     $RenderableObject.Border.GetType().Name | Should -BeLike "*$testBorder*"
                 }
-                if($testColor) {
+                if ($testColor) {
                     $RenderableObject.BorderStyle.Foreground.ToMarkup() | Should -Be $testColor
                 }
 
@@ -46,8 +46,7 @@ Describe "Format-SpectreTable" {
                 # i have no idea whats truncating LastWriteTime
                 # $defaultDisplayMembers.Properties.GetEnumerator().Name | Should -Be @("UnixMode", "User", "Group", "LastWriteTime", "Size", "Name")
                 $defaultDisplayMembers.keys | Should -Match 'UnixMode|User|Group|LastWrite|Size|Name'
-            }
-            else {
+            } else {
                 $defaultDisplayMembers.keys | Should -Be @("Mode", "LastWriteTime", "Length", "Name")
             }
         }
@@ -141,8 +140,7 @@ Describe "Format-SpectreTable" {
             }
             if ($IsLinux -or $IsMacOS) {
                 $verification.keys | Should -Match 'UnixMode|User|Group|LastWrite|Size|Name'
-            }
-            else {
+            } else {
                 $verification.keys | Should -Be $properties
             }
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
@@ -165,7 +163,7 @@ Describe "Format-SpectreTable" {
             $testBorder = 'Markdown'
             $testColor = $null
             Write-Debug "Setting testcolor to $testColor"
-            $testData | Format-SpectreTable ProcessName, @{Label="TotalRunningTime"; Expression={(Get-Date) - $_.StartTime}} -Border $testBorder
+            $testData | Format-SpectreTable ProcessName, @{Label = "TotalRunningTime"; Expression = { (Get-Date) - $_.StartTime } } -Border $testBorder
             $testResult = $testConsole.Output
             $obj = $testResult -split "\r?\n" | Select-Object -Skip 1 -SkipLast 2
             $deconstructed = $obj -split '\|' | StripAnsi | ForEach-Object {
@@ -184,15 +182,15 @@ Describe "Format-SpectreTable" {
                 $testConsole.Write($RenderableObject)
             }
             [pscustomobject]@{
-                "Name" = "Test 1"
+                "Name"  = "Test 1"
                 "Value" = 10
                 "Color" = "Turquoise2"
             }, [pscustomobject]@{
-                "Name" = "Test 2"
+                "Name"  = "Test 2"
                 "Value" = 20
                 "Color" = "#ff0000"
             }, [pscustomobject]@{
-                "Name" = "Test 3"
+                "Name"  = "Test 3"
                 "Value" = 30
                 "Color" = "Turquoise2"
             } | Format-SpectreTable -Border "Rounded" -Color "Turquoise2"

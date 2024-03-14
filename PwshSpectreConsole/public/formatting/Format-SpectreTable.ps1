@@ -59,7 +59,6 @@ function Format-SpectreTable {
     The View parameter lets you specify an alternate format or custom view for the table.
 
     .EXAMPLE
-    # This example formats an array of objects into a table with a double border and the accent color of the script.
     $data = @(
         [pscustomobject]@{Name="John"; Age=25; City="New York"},
         [pscustomobject]@{Name="Jane"; Age=30; City="Los Angeles"}
@@ -69,11 +68,11 @@ function Format-SpectreTable {
     .EXAMPLE
     $Properties = @(
         # foreground + background
-        @{'Name'='FileName'; Expression={ "[orange1 on blue]" + $_.Name + "[/]" }},
+        @{'Name'='FileName'; Expression={ "[white on DeepSkyBlue3_1]" + $_.Name + "[/]" }},
         # foreground
         @{'Name'='Last Updated'; Expression={ "[DeepSkyBlue3_1]" + $_.LastWriteTime.ToString() + "[/]" }},
         # background
-        @{'Name'='Drive'; Expression={ "[default on orange1]" + (Split-Path $_.Fullname -Qualifier) + "[/]" }}
+        @{'Name'='Drive'; Expression={ "[black on LightGreen_1]" + (Split-Path $_.Fullname -Qualifier) + "[/]" }}
     )
     Get-ChildItem | Format-SpectreTable -Property $Properties -AllowMarkup
 
@@ -87,12 +86,12 @@ function Format-SpectreTable {
         [Parameter(ValueFromPipeline, Mandatory)]
         [Alias('InputObject')]
         [object] $Data,
-        [Parameter(Position = 0,ParameterSetName = 'Property')]
+        [Parameter(Position = 0, ParameterSetName = 'Property')]
         [object[]] $Property,
         [Switch] $Wrap,
         [Parameter(ParameterSetName = 'View')]
         [String] $View,
-        [ValidateSet([SpectreConsoleTableBorder],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
+        [ValidateSet([SpectreConsoleTableBorder], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Border = "Double",
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]

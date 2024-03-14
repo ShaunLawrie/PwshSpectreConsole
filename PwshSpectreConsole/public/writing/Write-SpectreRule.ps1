@@ -19,7 +19,6 @@ function Write-SpectreRule {
     The color of the rule. The default value is the accent color of the script.
 
     .EXAMPLE
-    # This example writes a Spectre rule with the title "My Rule", centered alignment, and red color.
     Write-SpectreRule -Title "My Rule" -Alignment Center -Color Red
     #>
     [Reflection.AssemblyMetadata("title", "Write-SpectreRule")]

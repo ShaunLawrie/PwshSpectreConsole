@@ -32,8 +32,10 @@ function Format-SpectrePanel {
     The height of the panel.
 
     .EXAMPLE
-    # This example displays a panel with the title "My Panel", a rounded border, and a red border color.
     Format-SpectrePanel -Data "Hello, world!" -Title "My Panel" -Border "Rounded" -Color "Red"
+
+    .EXAMPLE
+    Format-SpectrePanel -Data "Hello, big panel!" -Title "My Big Panel" -Border "Double" -Color "Magenta1" -Expand
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectrePanel")]
     param (
