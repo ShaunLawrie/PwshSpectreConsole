@@ -1,7 +1,7 @@
 {"version": 2, "width": 110, "height": 6, "title": "Example 0", "env": {"TERM": "Spectre.Console"}}
 [0, "o", "Would you like to continue the preview installation of \u001B[38;2;118;147;255mPowerShell 7?\u001B[0m \u001B[38;5;12m[y/n]\u001B[0m \u001B[38;5;8m(y)\u001B[0m: "]
-[0.188, "o", "y"]
-[1.112, "o", "\n"]
-[1.116, "o", "Woohoo! The internet awaits your elite development contributions.\n"]
+[0.148, "o", "y"]
+[1.012, "o", "\n"]
+[1.02, "o", "Woohoo! The internet awaits your elite development contributions.\n"]
 
 
