@@ -9,7 +9,7 @@ jobs:
   unit-test:
     name: Unit Test
     runs-on: ubuntu-latest
-    if: github.repository_owner != 'ShaunLawrie' || !(github.ref == 'refs/heads/main' && github.ref == 'refs/heads/prerelease')
+    if: github.repository_owner != 'ShaunLawrie' || (github.ref != 'refs/heads/main' && github.ref != 'refs/heads/prerelease')
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
@@ -17,6 +17,7 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
+          Write-Host "Working on ${{ github.ref }}"
           & .\PwshSpectreConsole\Build.ps1
           $env:PSModulePath = @($env:PSModulePath, ".\PwshSpectreConsole\") -join ":"
           $PSVersionTable | Out-Host

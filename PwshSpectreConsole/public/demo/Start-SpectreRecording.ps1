@@ -44,7 +44,7 @@ function Start-SpectreRecording {
         [switch] $Quiet
     )
 
-    if(!$global:SpectreRecordingType) {
+    if($global:SpectreRecordingType) {
         throw "A $global:SpectreRecordingType recording has already started"
     }
 
