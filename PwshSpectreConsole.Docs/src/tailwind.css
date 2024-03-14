@@ -13,7 +13,7 @@
   }
 }
 
-@import 'asciinema-player/dist/bundle/asciinema-player.css';
+@import '../node_modules/asciinema-player/dist/bundle/asciinema-player.css';
 
 div.asciinema-player-theme-spectre {
   border: solid 1px var(--sl-color-gray-5);
