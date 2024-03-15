@@ -84,6 +84,7 @@ foreach ($doc in $docs) {
     $recentThresholdDays = 30
 
     # Work out the tag to apply to the current help file
+    $tag = $null
     if ($content -like "*This is experimental*") {
         $tag = "Experimental"
     } elseif([string]::IsNullOrEmpty($created) -or ((Get-Date) - ([datetime]$created)).TotalDays -lt $recentThresholdDays) {
@@ -180,6 +181,14 @@ foreach ($doc in $docs) {
 
 # Copy the files into the output directory in a way that doesn't crash the astro dev server
 Update-HelpFiles -StagingPath $stagingPath -AsciiCastOutputPath $asciiCastOutputPath -OutputPath $outputPath
+
+# Set some overrides to indicate it's the pre-release site
+if($Branch -eq "prerelease") {
+    $astroConfigPath = "$PSScriptRoot\..\..\astro.config.mjs"
+    $astroConfig = Get-Content -Path $astroConfigPath -Raw
+    $astroConfig = $astroConfig -replace 'title: "PwshSpectreConsole"', 'title: "PwshSpectreConsole (Pre-release)"'
+    Set-Content -Path $astroConfigPath -Value $astroConfig
+}
 
 if($NoBuild) {
     return 
