@@ -8,7 +8,7 @@ title: Format-SpectreBarChart
 
 
 
-import { TerminalPlayer } from 'astro-terminal-player';
+import Asciinema from '../../../../components/Asciinema.astro'
 
 ### Description
 
@@ -27,14 +27,14 @@ $data += New-SpectreChartItem -Label "Bananas" -Value 2.2 -Color "#FFFF00"
 
 Format-SpectreBarChart -Data $data -Title "Fruit Sales" -Width 50
 ```
-<TerminalPlayer
+<Asciinema
     src="/examples/formatspectrebarchartExample1.cast"
     settings={{
         loop: false,
+        poster: 'npt:0:0',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
-    aria-label="Terminal session player"
 />
 
 ---

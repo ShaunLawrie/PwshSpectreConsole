@@ -1,0 +1,60 @@
+---
+// Sourced from https://github.com/JulianCataldo/web-garden/tree/develop/components/TerminalPlayer
+// Required updates to work for my usage
+const { src, settings } = Astro.props;
+---
+
+<div
+    data-astro-asciinema-src={src}
+    data-astro-asciinema-settings={JSON.stringify(settings)}
+/>
+
+<script>
+  import * as AsciinemaPlayer from 'asciinema-player';
+
+  const containerElements = document.querySelectorAll(
+    '[data-astro-asciinema-src]',
+  );
+
+  if (containerElements.length) {
+    const options = {
+      root: null,
+      rootMargin: '400px 0px',
+    };
+
+    const players: Map<Element, Record<string, unknown>> = new Map();
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const player = players.get(entry.target) as any;
+
+        if (player) {
+          if (entry.isIntersecting) {
+            player.play();
+          } else {
+            player.pause();
+          }
+        }
+      });
+    }, options);
+
+    containerElements.forEach((elem) => {
+
+      const url = elem.getAttribute('data-astro-asciinema-src');
+      const settings = elem.getAttribute('data-astro-asciinema-settings');
+
+      const player = AsciinemaPlayer.create(
+        url,
+        elem,
+        settings ? JSON.parse(settings) : undefined,
+      );
+
+      players.set(elem, player);
+
+      // Wait a fe seconds before attaching the observer in case it's already on the screen
+      setTimeout(() => {
+        observer.observe(elem);
+      }, 2000);
+    });
+  }
+</script>

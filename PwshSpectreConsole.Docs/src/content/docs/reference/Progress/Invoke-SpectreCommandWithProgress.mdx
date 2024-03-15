@@ -8,7 +8,7 @@ title: Invoke-SpectreCommandWithProgress
 
 
 
-import { TerminalPlayer } from 'astro-terminal-player';
+import Asciinema from '../../../../components/Asciinema.astro'
 
 ### Description
 
@@ -37,14 +37,14 @@ Invoke-SpectreCommandWithProgress -ScriptBlock {
     Start-Sleep -Seconds 1
 }
 ```
-<TerminalPlayer
+<Asciinema
     src="/examples/invokespectrecommandwithprogressExample1.cast"
     settings={{
         loop: false,
+        poster: 'npt:0:0',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
-    aria-label="Terminal session player"
 />
 > EXAMPLE 2
 
@@ -77,14 +77,14 @@ Invoke-SpectreCommandWithProgress -ScriptBlock {
     Wait-SpectreJobs -Context $Context -Jobs $jobs
 }
 ```
-<TerminalPlayer
+<Asciinema
     src="/examples/invokespectrecommandwithprogressExample2.cast"
     settings={{
         loop: false,
+        poster: 'npt:0:0',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
-    aria-label="Terminal session player"
 />
 > EXAMPLE 3
 
@@ -98,14 +98,14 @@ Invoke-SpectreCommandWithProgress -ScriptBlock {
     $task1.Value = 100
 }
 ```
-<TerminalPlayer
+<Asciinema
     src="/examples/invokespectrecommandwithprogressExample3.cast"
     settings={{
         loop: false,
+        poster: 'npt:0:0',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
-    aria-label="Terminal session player"
 />
 > EXAMPLE 4
 
@@ -122,14 +122,14 @@ Invoke-SpectreCommandWithProgress -ScriptBlock {
     Wait-SpectreJobs -Context $Context -Jobs $job -EstimatedDurationSeconds 5
 }
 ```
-<TerminalPlayer
+<Asciinema
     src="/examples/invokespectrecommandwithprogressExample4.cast"
     settings={{
         loop: false,
+        poster: 'npt:0:0',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
-    aria-label="Terminal session player"
 />
 
 ---

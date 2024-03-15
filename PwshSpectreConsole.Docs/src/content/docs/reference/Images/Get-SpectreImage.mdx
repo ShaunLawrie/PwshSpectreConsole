@@ -8,7 +8,7 @@ title: Get-SpectreImage
 
 
 
-import { TerminalPlayer } from 'astro-terminal-player';
+import Asciinema from '../../../../components/Asciinema.astro'
 
 ### Description
 
@@ -22,14 +22,14 @@ Displays an image in the console using CanvasImage. The image can be resized to 
 ```powershell
 Get-SpectreImage -ImagePath "..\..\..\PwshSpectreConsole\private\images\smiley.png" -MaxWidth 40
 ```
-<TerminalPlayer
+<Asciinema
     src="/examples/getspectreimageExample1.cast"
     settings={{
         loop: false,
+        poster: 'npt:0:0',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
-    aria-label="Terminal session player"
 />
 
 ---

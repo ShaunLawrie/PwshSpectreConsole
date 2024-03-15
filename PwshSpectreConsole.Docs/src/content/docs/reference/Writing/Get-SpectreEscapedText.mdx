@@ -8,7 +8,7 @@ title: Get-SpectreEscapedText
 
 
 
-import { TerminalPlayer } from 'astro-terminal-player';
+import Asciinema from '../../../../components/Asciinema.astro'
 
 ### Description
 
@@ -24,14 +24,14 @@ See [https://spectreconsole.net/markup](https://spectreconsole.net/markup) for m
 $data = "][[][red]]][[/][][]["
 Format-SpectrePanel -Title "Unescaped data" -Data "I want escaped $($data | Get-SpectreEscapedText) [yellow]and[/] [red]unescaped[/] data"
 ```
-<TerminalPlayer
+<Asciinema
     src="/examples/getspectreescapedtextExample1.cast"
     settings={{
         loop: false,
+        poster: 'npt:0:0',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
-    aria-label="Terminal session player"
 />
 
 ---

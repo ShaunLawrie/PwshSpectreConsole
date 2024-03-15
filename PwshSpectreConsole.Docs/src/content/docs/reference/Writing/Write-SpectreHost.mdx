@@ -9,7 +9,7 @@ description: The Write-SpectreHost function writes a message to the console usin
 
 
 
-import { TerminalPlayer } from 'astro-terminal-player';
+import Asciinema from '../../../../components/Asciinema.astro'
 
 ### Description
 
@@ -25,14 +25,14 @@ Supported emoji are defined at [https://spectreconsole.net/appendix/emojis](http
 ```powershell
 Write-SpectreHost -Message "Hello, [blue underline]world[/]! :call_me_hand:"
 ```
-<TerminalPlayer
+<Asciinema
     src="/examples/writespectrehostExample1.cast"
     settings={{
         loop: false,
+        poster: 'npt:0:0',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
-    aria-label="Terminal session player"
 />
 
 ---

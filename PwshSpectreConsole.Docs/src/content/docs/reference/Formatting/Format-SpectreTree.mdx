@@ -8,7 +8,7 @@ title: Format-SpectreTree
 
 
 
-import { TerminalPlayer } from 'astro-terminal-player';
+import Asciinema from '../../../../components/Asciinema.astro'
 
 ### Description
 
@@ -44,14 +44,14 @@ $data = @{
 }
 Format-SpectreTree -Data $data -Guide BoldLine -Color "Green"
 ```
-<TerminalPlayer
+<Asciinema
     src="/examples/formatspectretreeExample1.cast"
     settings={{
         loop: false,
+        poster: 'npt:0:0',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
-    aria-label="Terminal session player"
 />
 
 ---

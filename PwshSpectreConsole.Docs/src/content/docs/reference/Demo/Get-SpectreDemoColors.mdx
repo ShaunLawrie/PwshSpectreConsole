@@ -8,7 +8,7 @@ title: Get-SpectreDemoColors
 
 
 
-import { TerminalPlayer } from 'astro-terminal-player';
+import Asciinema from '../../../../components/Asciinema.astro'
 
 ### Description
 
@@ -23,14 +23,14 @@ It also provides information on how to use the colors as parameters for commands
 ```powershell
 Get-SpectreDemoColors -Count 4
 ```
-<TerminalPlayer
+<Asciinema
     src="/examples/getspectredemocolorsExample1.cast"
     settings={{
         loop: false,
+        poster: 'npt:0:0',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
-    aria-label="Terminal session player"
 />
 
 ---

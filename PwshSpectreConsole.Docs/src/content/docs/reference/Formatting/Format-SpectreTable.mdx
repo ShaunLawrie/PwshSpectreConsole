@@ -8,7 +8,7 @@ title: Format-SpectreTable
 
 
 
-import { TerminalPlayer } from 'astro-terminal-player';
+import Asciinema from '../../../../components/Asciinema.astro'
 
 ### Description
 
@@ -26,14 +26,14 @@ $data = @(
 )
 Format-SpectreTable -Data $data
 ```
-<TerminalPlayer
+<Asciinema
     src="/examples/formatspectretableExample1.cast"
     settings={{
         loop: false,
+        poster: 'npt:0:0',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
-    aria-label="Terminal session player"
 />
 > EXAMPLE 2
 
@@ -48,28 +48,28 @@ $Properties = @(
 )
 Get-ChildItem | Format-SpectreTable -Property $Properties -AllowMarkup
 ```
-<TerminalPlayer
+<Asciinema
     src="/examples/formatspectretableExample2.cast"
     settings={{
         loop: false,
+        poster: 'npt:0:0',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
-    aria-label="Terminal session player"
 />
 > EXAMPLE 3
 
 ```powershell
 1..10 | Format-SpectreTable -Title Numbers
 ```
-<TerminalPlayer
+<Asciinema
     src="/examples/formatspectretableExample3.cast"
     settings={{
         loop: false,
+        poster: 'npt:0:0',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
-    aria-label="Terminal session player"
 />
 
 ---

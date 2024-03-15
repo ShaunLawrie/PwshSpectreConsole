@@ -8,7 +8,7 @@ title: Read-SpectrePause
 
 
 
-import { TerminalPlayer } from 'astro-terminal-player';
+import Asciinema from '../../../../components/Asciinema.astro'
 
 ### Description
 
@@ -23,14 +23,14 @@ The Read-SpectrePause function pauses the script execution and waits for user in
 Read-SpectrePause -Message "Press the [red]enter[/] key to continue, when you press it this message will disappear..."
 # Type "↲" to dismiss the message
 ```
-<TerminalPlayer
+<Asciinema
     src="/examples/readspectrepauseExample1.cast"
     settings={{
         loop: false,
+        poster: 'npt:0:0',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
-    aria-label="Terminal session player"
 />
 > EXAMPLE 2
 
@@ -38,14 +38,14 @@ Read-SpectrePause -Message "Press the [red]enter[/] key to continue, when you pr
 Read-SpectrePause -Message "Press the [red]ANY[/] key to continue, when you press it this message will disappear..."
 # Type "x" to dismiss the message
 ```
-<TerminalPlayer
+<Asciinema
     src="/examples/readspectrepauseExample2.cast"
     settings={{
         loop: false,
+        poster: 'npt:0:0',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
-    aria-label="Terminal session player"
 />
 
 ---

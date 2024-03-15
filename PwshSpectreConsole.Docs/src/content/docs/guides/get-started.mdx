@@ -2,7 +2,7 @@
 title: Get Started
 ---
 
-import { TerminalPlayer } from 'astro-terminal-player';
+import Asciinema from '../../../../components/Asciinema.astro'
 
 ### Demo
 
@@ -33,14 +33,14 @@ Write-SpectreHost "Your chosen color is '$color'"
 
 > Example of a user being prompted with a select list:
 
-<TerminalPlayer
+<Asciinema
     src="/examples/readspectreselectionExample1.cast"
     settings={{
         loop: false,
+        poster: 'npt:0:0',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
-    aria-label="Terminal session player"
 />
 
 But what if you wanted to ask the use what they want for something like a fruit smoothie? You can use [Read-SpectreMultiSelection](../reference/read-spectremultiselection) to ask them to choose multiple items from the list:
@@ -58,14 +58,14 @@ Write-SpectreHost "Your favourite fruits are $($chosenItems -join ', ')"
 
 > Example of a user being prompted with a multi-select list:
 
-<TerminalPlayer
+<Asciinema
     src="/examples/readspectremultiselectionExample1.cast"
     settings={{
         loop: false,
+        poster: 'npt:0:0',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
-    aria-label="Terminal session player"
 />
 
 ### More

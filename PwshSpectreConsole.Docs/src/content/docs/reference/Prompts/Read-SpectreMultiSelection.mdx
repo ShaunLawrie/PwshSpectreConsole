@@ -8,7 +8,7 @@ title: Read-SpectreMultiSelection
 
 
 
-import { TerminalPlayer } from 'astro-terminal-player';
+import Asciinema from '../../../../components/Asciinema.astro'
 
 ### Description
 
@@ -26,14 +26,14 @@ $fruits = Read-SpectreMultiSelection -Title "Select your favourite fruits" `
 # Type "↓", "<space>", "↓", "↓", "<space>", "↓", "<space>", "↲" to choose banana, pear and strawberry
 Write-SpectreHost "Your favourite fruits are $($fruits -join ', ')"
 ```
-<TerminalPlayer
+<Asciinema
     src="/examples/readspectremultiselectionExample1.cast"
     settings={{
         loop: false,
+        poster: 'npt:0:0',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
-    aria-label="Terminal session player"
 />
 
 ---

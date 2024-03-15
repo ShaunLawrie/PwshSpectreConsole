@@ -8,6 +8,8 @@ param(
 
 $ErrorActionPreference = "Stop"
 
+& "$PSScriptRoot\..\..\..\PwshSpectreConsole\Build.ps1"
+
 Import-Module "$PSScriptRoot\..\..\..\PwshSpectreConsole\PwshSpectreConsole.psd1" -Force
 Import-Module "$PSScriptRoot\Helpers.psm1" -Force
 Import-Module "$PSScriptRoot\Mocks.psm1" -Force
@@ -102,7 +104,7 @@ foreach ($doc in $docs) {
         Push-Location
         try {
             Set-Location $PSScriptRoot
-            $imports = "import { TerminalPlayer } from 'astro-terminal-player';`n"
+            $imports = "import Asciinema from '../../../../components/Asciinema.astro'`n"
             foreach($codeBlock in $codeBlocksExcludingSyntaxSection) {
                 $code = $codeBlock -replace '(?s)```powershell', ''
                 $code = $code -replace '```', ''

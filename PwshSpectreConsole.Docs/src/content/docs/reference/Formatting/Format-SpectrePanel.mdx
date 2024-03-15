@@ -8,7 +8,7 @@ title: Format-SpectrePanel
 
 
 
-import { TerminalPlayer } from 'astro-terminal-player';
+import Asciinema from '../../../../components/Asciinema.astro'
 
 ### Description
 
@@ -22,28 +22,28 @@ This function takes a string and formats it as a Spectre Console panel with opti
 ```powershell
 Format-SpectrePanel -Data "Hello, world!" -Title "My Panel" -Border "Rounded" -Color "Red"
 ```
-<TerminalPlayer
+<Asciinema
     src="/examples/formatspectrepanelExample1.cast"
     settings={{
         loop: false,
+        poster: 'npt:0:0',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
-    aria-label="Terminal session player"
 />
 > EXAMPLE 2
 
 ```powershell
 Format-SpectrePanel -Data "Hello, big panel!" -Title "My Big Panel" -Border "Double" -Color "Magenta1" -Expand
 ```
-<TerminalPlayer
+<Asciinema
     src="/examples/formatspectrepanelExample2.cast"
     settings={{
         loop: false,
+        poster: 'npt:0:0',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
-    aria-label="Terminal session player"
 />
 
 ---

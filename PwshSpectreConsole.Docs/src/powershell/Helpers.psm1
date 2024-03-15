@@ -210,14 +210,14 @@ function Get-GitCommitDatesForHashFile {
 }
 
 $script:AsciiCastTemplate = @'
-<TerminalPlayer
+<Asciinema
     src="CAST_URL"
     settings={{
         loop: false,
+        poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
-    aria-label="Terminal session player"
 />
 '@
 

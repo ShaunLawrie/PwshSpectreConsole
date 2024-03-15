@@ -8,7 +8,7 @@ title: Set-SpectreColors
 
 
 
-import { TerminalPlayer } from 'astro-terminal-player';
+import Asciinema from '../../../../components/Asciinema.astro'
 
 ### Description
 
@@ -25,14 +25,14 @@ Set-SpectreColors -AccentColor "Turquoise2"
 Write-SpectreRule "This is a Turquoise2 rule"
 Write-SpectreRule "This is a rule with a specified color" -Color "Yellow"
 ```
-<TerminalPlayer
+<Asciinema
     src="/examples/setspectrecolorsExample1.cast"
     settings={{
         loop: false,
+        poster: 'npt:0:0',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
-    aria-label="Terminal session player"
 />
 
 ---

@@ -8,7 +8,7 @@ title: Read-SpectreMultiSelectionGrouped
 
 
 
-import { TerminalPlayer } from 'astro-terminal-player';
+import Asciinema from '../../../../components/Asciinema.astro'
 
 ### Description
 
@@ -33,14 +33,14 @@ $selected = Read-SpectreMultiSelectionGrouped -Title "Select your favorite color
 # Type "↓", "<space>", "↓", "↓", "↓", "<space>", "↲" to choose red and all secondary colors
 Write-SpectreHost "Your favourite colors are $($selected -join ', ')"
 ```
-<TerminalPlayer
+<Asciinema
     src="/examples/readspectremultiselectiongroupedExample1.cast"
     settings={{
         loop: false,
+        poster: 'npt:0:0',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
-    aria-label="Terminal session player"
 />
 
 ---

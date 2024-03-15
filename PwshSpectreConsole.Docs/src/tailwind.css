@@ -35,3 +35,7 @@ div.asciinema-player-theme-spectre {
 div.asciinema-player-theme-spectre span {
   letter-spacing: -0.02rem;
 }
+
+div.ap-play-button {
+  display: none;
+}

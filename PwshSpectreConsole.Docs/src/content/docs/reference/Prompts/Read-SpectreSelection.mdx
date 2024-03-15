@@ -8,7 +8,7 @@ title: Read-SpectreSelection
 
 
 
-import { TerminalPlayer } from 'astro-terminal-player';
+import Asciinema from '../../../../components/Asciinema.astro'
 
 ### Description
 
@@ -24,14 +24,14 @@ $color = Read-SpectreSelection -Title "Select your favorite color" -Choices @("R
 # Type "↓", "↓", "↓", "↓", "↲" to wrap around the list and choose green
 Write-SpectreHost "Your chosen color is '$color'"
 ```
-<TerminalPlayer
+<Asciinema
     src="/examples/readspectreselectionExample1.cast"
     settings={{
         loop: false,
+        poster: 'npt:0:0',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
-    aria-label="Terminal session player"
 />
 
 ---

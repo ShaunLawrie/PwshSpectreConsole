@@ -8,7 +8,7 @@ title: Read-SpectreText
 
 
 
-import { TerminalPlayer } from 'astro-terminal-player';
+import Asciinema from '../../../../components/Asciinema.astro'
 
 ### Description
 
@@ -29,14 +29,14 @@ $name = Read-SpectreText -Question "What's your name?" -DefaultAnswer "Prefer no
 # Type "↲" to provide no answer
 Write-SpectreHost "Your name is '$name'"
 ```
-<TerminalPlayer
+<Asciinema
     src="/examples/readspectretextExample1.cast"
     settings={{
         loop: false,
+        poster: 'npt:0:0',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
-    aria-label="Terminal session player"
 />
 > EXAMPLE 2
 
@@ -45,14 +45,14 @@ $favouriteColor = Read-SpectreText -Question "What's your favorite color?" -Defa
 # Type "orange", "↲" to enter your favourite color
 Write-SpectreHost "Your favourite color is '$favouriteColor'"
 ```
-<TerminalPlayer
+<Asciinema
     src="/examples/readspectretextExample2.cast"
     settings={{
         loop: false,
+        poster: 'npt:0:0',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
-    aria-label="Terminal session player"
 />
 > EXAMPLE 3
 
@@ -61,14 +61,14 @@ $favouriteColor = Read-SpectreText -Question "What's your favorite color?" -Answ
 # Type "orange", "↲", "magenta", "↲" to enter text that must match a choice in the choices list, orange will be rejected, magenta will be accepted
 Write-SpectreHost "Your favourite color is '$favouriteColor'"
 ```
-<TerminalPlayer
+<Asciinema
     src="/examples/readspectretextExample3.cast"
     settings={{
         loop: false,
+        poster: 'npt:0:0',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
-    aria-label="Terminal session player"
 />
 
 ---
