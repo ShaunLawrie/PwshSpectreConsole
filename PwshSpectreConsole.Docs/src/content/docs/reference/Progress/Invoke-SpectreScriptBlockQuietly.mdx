@@ -8,13 +8,20 @@ title: Invoke-SpectreScriptBlockQuietly
 
 
 
+
+
+
+
 import Asciinema from '../../../../components/Asciinema.astro'
 
 ### Description
 
 This function invokes a script block in a background job and returns the output. It also provides an option to suppress the output even more if there is garbage being printed to stderr if using Level = Quieter.
 
+
+
 ---
+
 
 ### Examples
 > EXAMPLE 1
@@ -42,34 +49,58 @@ Invoke-SpectreCommandWithProgress {
     src="/examples/invokespectrescriptblockquietlyExample1.cast"
     settings={{
         loop: false,
-        poster: 'npt:0:0',
+        poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
 />
 
+
 ---
+
 
 ### Parameters
 #### **Command**
+
 The script block to be invoked.
+
+
+
+
+
 
 |Type           |Required|Position|PipelineInput|
 |---------------|--------|--------|-------------|
 |`[ScriptBlock]`|false   |1       |false        |
 
+
+
 #### **Level**
+
 Suppresses the output by varying amounts.
+
+
+
 Valid Values:
 
 * Quiet
 * Quieter
 
+
+
+
+
+
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|false   |2       |false        |
 
+
+
+
+
 ---
+
 
 ### Syntax
 ```powershell

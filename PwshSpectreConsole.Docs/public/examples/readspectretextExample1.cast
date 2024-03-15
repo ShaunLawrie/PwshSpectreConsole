@@ -1,7 +1,7 @@
 {"version": 2, "width": 110, "height": 5, "title": "Example 0", "env": {"TERM": "Spectre.Console"}}
 [0, "o", "What\u0027s your name? \u001B[38;5;8m(Prefer not to say)\u001B[0m: "]
-[0.704, "o", "Prefer not to say"]
-[0.704, "o", "\r\n"]
-[0.704, "o", "Your name is \u0027Prefer not to say\u0027\r\n"]
+[1, "o", "Prefer not to say"]
+[1, "o", "\r\n"]
+[1, "o", "Your name is \u0027Prefer not to say\u0027\r\n"]
 
 

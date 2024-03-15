@@ -8,6 +8,10 @@ title: Get-SpectreImageExperimental
 
 
 
+
+
+
+
 import Asciinema from '../../../../components/Asciinema.astro'
 
 ### Description
@@ -18,7 +22,10 @@ The images rendered by this experimental function are not handled by Spectre Con
 This is experimental.
 :::
 
+
+
 ---
+
 
 ### Examples
 > EXAMPLE 1
@@ -30,7 +37,7 @@ Get-SpectreImageExperimental -ImagePath "..\..\..\PwshSpectreConsole\private\ima
     src="/examples/getspectreimageexperimentalExample1.cast"
     settings={{
         loop: false,
-        poster: 'npt:0:0',
+        poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
@@ -44,55 +51,103 @@ Get-SpectreImageExperimental -ImagePath "..\..\..\PwshSpectreConsole\private\ima
     src="/examples/getspectreimageexperimentalExample2.cast"
     settings={{
         loop: false,
-        poster: 'npt:0:0',
+        poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
 />
 
+
 ---
+
 
 ### Parameters
 #### **ImagePath**
+
 The path to the image file to display.
+
+
+
+
+
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|false   |1       |false        |
 
+
+
 #### **ImageUrl**
+
 The URL to the image file to display. If specified, the image is downloaded to a temporary file and then displayed.
+
+
+
+
+
 
 |Type   |Required|Position|PipelineInput|
 |-------|--------|--------|-------------|
 |`[Uri]`|false   |2       |false        |
 
+
+
 #### **Width**
+
 The width of the image in characters. The image is scaled to fit within this width while maintaining its aspect ratio.
+
+
+
+
+
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
 |`[Int32]`|false   |3       |false        |
 
+
+
 #### **LoopCount**
+
 The number of times to repeat the animation. The default value is 0, which means the animation will repeat forever. Press ctrl-c to stop the animation.
+
+
+
+
+
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
 |`[Int32]`|false   |4       |false        |
 
+
+
 #### **Resampler**
+
 The resampling algorithm to use when scaling the image. Valid values are "Bicubic" and "NearestNeighbor". The default value is "Bicubic".
+
+
+
 Valid Values:
 
 * Bicubic
 * NearestNeighbor
 
+
+
+
+
+
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|false   |5       |false        |
 
+
+
+
+
 ---
+
 
 ### Syntax
 ```powershell

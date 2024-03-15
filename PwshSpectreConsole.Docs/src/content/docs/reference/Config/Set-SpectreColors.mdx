@@ -8,13 +8,20 @@ title: Set-SpectreColors
 
 
 
+
+
+
+
 import Asciinema from '../../../../components/Asciinema.astro'
 
 ### Description
 
 This function sets the accent color and default value color for Spectre Console. The accent color is used for highlighting important information, while the default value color is used for displaying default values.
 
+
+
 ---
+
 
 ### Examples
 > EXAMPLE 1
@@ -29,44 +36,81 @@ Write-SpectreRule "This is a rule with a specified color" -Color "Yellow"
     src="/examples/setspectrecolorsExample1.cast"
     settings={{
         loop: false,
-        poster: 'npt:0:0',
+        poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
 />
 
+
 ---
+
 
 ### Parameters
 #### **AccentColor**
+
 The accent color to set. Must be a valid Spectre Console color name. Defaults to "Blue".
+
+
+
+
+
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
 |`[Color]`|false   |1       |false        |
 
+
+
 #### **DefaultValueColor**
+
 The default value color to set. Must be a valid Spectre Console color name. Defaults to "Grey".
+
+
+
+
+
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
 |`[Color]`|false   |2       |false        |
 
+
+
 #### **DefaultTableHeaderColor**
+
 The default table header color to set. Must be a valid Spectre Console color name. Defaults to "Default" which will be the standard console foreground color.
+
+
+
+
+
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
 |`[Color]`|false   |3       |false        |
 
+
+
 #### **DefaultTableTextColor**
+
 The default table text color to set. Must be a valid Spectre Console color name. Defaults to "Default" which will be the standard console foreground color.
+
+
+
+
+
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
 |`[Color]`|false   |4       |false        |
 
+
+
+
+
 ---
+
 
 ### Syntax
 ```powershell

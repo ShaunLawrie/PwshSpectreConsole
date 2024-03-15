@@ -8,6 +8,10 @@ title: Get-SpectreEscapedText
 
 
 
+
+
+
+
 import Asciinema from '../../../../components/Asciinema.astro'
 
 ### Description
@@ -15,7 +19,10 @@ import Asciinema from '../../../../components/Asciinema.astro'
 This function escapes text for use where Spectre Console accepts markup. It is intended to be used as a helper function for other functions that output text to the console using Spectre Console which contains special characters that need escaping.
 See [https://spectreconsole.net/markup](https://spectreconsole.net/markup) for more information about the markup language used in Spectre Console.
 
+
+
 ---
+
 
 ### Examples
 > EXAMPLE 1
@@ -28,23 +35,36 @@ Format-SpectrePanel -Title "Unescaped data" -Data "I want escaped $($data | Get-
     src="/examples/getspectreescapedtextExample1.cast"
     settings={{
         loop: false,
-        poster: 'npt:0:0',
+        poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
 />
 
+
 ---
+
 
 ### Parameters
 #### **Text**
+
 The text to be escaped.
+
+
+
+
+
 
 |Type      |Required|Position|PipelineInput |
 |----------|--------|--------|--------------|
 |`[String]`|true    |1       |true (ByValue)|
 
+
+
+
+
 ---
+
 
 ### Syntax
 ```powershell
