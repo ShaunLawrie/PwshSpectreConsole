@@ -154,14 +154,7 @@ foreach ($doc in $docs) {
                 }
                 Write-Host "Modified sample:"
                 Write-Host -ForegroundColor DarkGray $code
-                if($code -like "*Write-Error*") {
-                    $ErrorActionPreference = "Continue"
-                    $previousErrorActionPreference = $ErrorActionPreference
-                    Invoke-Expression $code
-                    $ErrorActionPreference = $previousErrorActionPreference
-                } else {
-                    Invoke-Expression $code
-                }
+                Invoke-Expression $code
                 $recording = Stop-SpectreRecording -Title "Example $([int]$example++)"
 
                 $castName = ($doc.Name -replace '.md$', '' -replace '-', '').ToLower() + "Example$example"

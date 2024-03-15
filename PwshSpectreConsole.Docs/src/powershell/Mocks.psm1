@@ -37,3 +37,10 @@ function Stop-SpectreRecordingMock {
     $result += '</pre>'
     return $result
 }
+
+function Write-Error {
+    param (
+        [string] $Message
+    )
+    Write-SpectreHost "[red]$Message[/]"
+}
