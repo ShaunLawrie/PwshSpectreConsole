@@ -1,4 +1,4 @@
 {"version": 2, "width": 110, "height": 7, "title": "Example 0", "env": {"TERM": "Spectre.Console"}}
-[0, "o", "Root\n\u001B[38;5;2m\u2523\u2501\u2501 \u001B[0mChild 1\n\u001B[38;5;2m\u2503   \u2523\u2501\u2501 \u001B[0mGrandchild 1\n\u001B[38;5;2m\u2503   \u2517\u2501\u2501 \u001B[0mGrandchild 2\n\u001B[38;5;2m\u2517\u2501\u2501 \u001B[0mChild 2\n"]
+[0, "o", "Root\r\n\u001B[38;5;2m\u2523\u2501\u2501 \u001B[0mChild 1\r\n\u001B[38;5;2m\u2503   \u2523\u2501\u2501 \u001B[0mGrandchild 1\r\n\u001B[38;5;2m\u2503   \u2517\u2501\u2501 \u001B[0mGrandchild 2\r\n\u001B[38;5;2m\u2517\u2501\u2501 \u001B[0mChild 2\r\n"]
 
 
