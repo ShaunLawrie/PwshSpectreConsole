@@ -38,7 +38,7 @@ function Stop-SpectreRecordingMock {
     return $result
 }
 
-function Write-Error {
+function Write-ErrorMock {
     param (
         [string] $Message
     )
