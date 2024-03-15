@@ -13,6 +13,8 @@ title: Get-SpectreImageExperimental
 
 
 import Asciinema from '../../../../components/Asciinema.astro'
+import getspectreimageexperimentalExample1 from '../../../../assets/examples/getspectreimageexperimentalExample1.cast?url'
+import getspectreimageexperimentalExample2 from '../../../../assets/examples/getspectreimageexperimentalExample2.cast?url'
 
 ### Description
 
@@ -34,9 +36,10 @@ This is experimental.
 Get-SpectreImageExperimental -ImagePath "..\..\..\PwshSpectreConsole\private\images\harveyspecter.gif" -LoopCount 4 -Width 82
 ```
 <Asciinema
-    src="/examples/getspectreimageexperimentalExample1.cast"
+    src={getspectreimageexperimentalExample1}
     settings={{
         loop: false,
+        preload: true,
         poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"
@@ -48,9 +51,10 @@ Get-SpectreImageExperimental -ImagePath "..\..\..\PwshSpectreConsole\private\ima
 Get-SpectreImageExperimental -ImagePath "..\..\..\PwshSpectreConsole\private\images\smiley.png" -Width 80
 ```
 <Asciinema
-    src="/examples/getspectreimageexperimentalExample2.cast"
+    src={getspectreimageexperimentalExample2}
     settings={{
         loop: false,
+        preload: true,
         poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"

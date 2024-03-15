@@ -9,6 +9,8 @@ title: Write-SpectreCalendar
 
 
 import Asciinema from '../../../../components/Asciinema.astro'
+import writespectrecalendarExample1 from '../../../../assets/examples/writespectrecalendarExample1.cast?url'
+import writespectrecalendarExample2 from '../../../../assets/examples/writespectrecalendarExample2.cast?url'
 
 ### Description
 
@@ -26,9 +28,10 @@ Writes a Spectre Console Calendar text to the console.
 Write-SpectreCalendar -Date 2024-07-01 -Events @{'2024-07-10' = 'Beach time!'; '2024-07-20' = 'Barbecue' }
 ```
 <Asciinema
-    src="/examples/writespectrecalendarExample1.cast"
+    src={writespectrecalendarExample1}
     settings={{
         loop: false,
+        preload: true,
         poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"
@@ -44,9 +47,10 @@ $events = @{
 Write-SpectreCalendar -Date 2024-01-01 -Events $events
 ```
 <Asciinema
-    src="/examples/writespectrecalendarExample2.cast"
+    src={writespectrecalendarExample2}
     settings={{
         loop: false,
+        preload: true,
         poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"

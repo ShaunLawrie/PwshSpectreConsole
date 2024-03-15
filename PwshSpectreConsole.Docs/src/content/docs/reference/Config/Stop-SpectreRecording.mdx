@@ -13,6 +13,7 @@ title: Stop-SpectreRecording
 
 
 import Asciinema from '../../../../components/Asciinema.astro'
+import stopspectrerecordingExample1 from '../../../../assets/examples/stopspectrerecordingExample1.cast?url'
 
 ### Description
 
@@ -40,9 +41,10 @@ $result = Stop-SpectreRecording
 Write-SpectreHost "Result:`n$result"
 ```
 <Asciinema
-    src="/examples/stopspectrerecordingExample1.cast"
+    src={stopspectrerecordingExample1}
     settings={{
         loop: false,
+        preload: true,
         poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"

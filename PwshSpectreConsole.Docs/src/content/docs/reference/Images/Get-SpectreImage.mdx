@@ -9,6 +9,7 @@ title: Get-SpectreImage
 
 
 import Asciinema from '../../../../components/Asciinema.astro'
+import getspectreimageExample1 from '../../../../assets/examples/getspectreimageExample1.cast?url'
 
 ### Description
 
@@ -26,9 +27,10 @@ Displays an image in the console using CanvasImage. The image can be resized to 
 Get-SpectreImage -ImagePath "..\..\..\PwshSpectreConsole\private\images\smiley.png" -MaxWidth 40
 ```
 <Asciinema
-    src="/examples/getspectreimageExample1.cast"
+    src={getspectreimageExample1}
     settings={{
         loop: false,
+        preload: true,
         poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"

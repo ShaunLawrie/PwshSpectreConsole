@@ -9,6 +9,9 @@ title: Read-SpectreText
 
 
 import Asciinema from '../../../../components/Asciinema.astro'
+import readspectretextExample1 from '../../../../assets/examples/readspectretextExample1.cast?url'
+import readspectretextExample2 from '../../../../assets/examples/readspectretextExample2.cast?url'
+import readspectretextExample3 from '../../../../assets/examples/readspectretextExample3.cast?url'
 
 ### Description
 
@@ -33,9 +36,10 @@ $name = Read-SpectreText -Question "What's your name?" -DefaultAnswer "Prefer no
 Write-SpectreHost "Your name is '$name'"
 ```
 <Asciinema
-    src="/examples/readspectretextExample1.cast"
+    src={readspectretextExample1}
     settings={{
         loop: false,
+        preload: true,
         poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"
@@ -49,9 +53,10 @@ $favouriteColor = Read-SpectreText -Question "What's your favorite color?" -Defa
 Write-SpectreHost "Your favourite color is '$favouriteColor'"
 ```
 <Asciinema
-    src="/examples/readspectretextExample2.cast"
+    src={readspectretextExample2}
     settings={{
         loop: false,
+        preload: true,
         poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"
@@ -65,9 +70,10 @@ $favouriteColor = Read-SpectreText -Question "What's your favorite color?" -Answ
 Write-SpectreHost "Your favourite color is '$favouriteColor'"
 ```
 <Asciinema
-    src="/examples/readspectretextExample3.cast"
+    src={readspectretextExample3}
     settings={{
         loop: false,
+        preload: true,
         poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"

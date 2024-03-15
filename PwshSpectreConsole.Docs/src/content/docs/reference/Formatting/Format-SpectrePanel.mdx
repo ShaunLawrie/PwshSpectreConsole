@@ -9,6 +9,8 @@ title: Format-SpectrePanel
 
 
 import Asciinema from '../../../../components/Asciinema.astro'
+import formatspectrepanelExample1 from '../../../../assets/examples/formatspectrepanelExample1.cast?url'
+import formatspectrepanelExample2 from '../../../../assets/examples/formatspectrepanelExample2.cast?url'
 
 ### Description
 
@@ -26,9 +28,10 @@ This function takes a string and formats it as a Spectre Console panel with opti
 Format-SpectrePanel -Data "Hello, world!" -Title "My Panel" -Border "Rounded" -Color "Red"
 ```
 <Asciinema
-    src="/examples/formatspectrepanelExample1.cast"
+    src={formatspectrepanelExample1}
     settings={{
         loop: false,
+        preload: true,
         poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"
@@ -40,9 +43,10 @@ Format-SpectrePanel -Data "Hello, world!" -Title "My Panel" -Border "Rounded" -C
 Format-SpectrePanel -Data "Hello, big panel!" -Title "My Big Panel" -Border "Double" -Color "Magenta1" -Expand
 ```
 <Asciinema
-    src="/examples/formatspectrepanelExample2.cast"
+    src={formatspectrepanelExample2}
     settings={{
         loop: false,
+        preload: true,
         poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"

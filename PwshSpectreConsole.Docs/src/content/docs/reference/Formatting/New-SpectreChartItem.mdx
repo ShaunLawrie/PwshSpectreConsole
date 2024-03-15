@@ -9,6 +9,7 @@ title: New-SpectreChartItem
 
 
 import Asciinema from '../../../../components/Asciinema.astro'
+import newspectrechartitemExample1 from '../../../../assets/examples/newspectrechartitemExample1.cast?url'
 
 ### Description
 
@@ -33,9 +34,10 @@ Write-SpectreHost "`nGenerate a breakdown chart`n"
 $data | Format-SpectreBreakdownChart
 ```
 <Asciinema
-    src="/examples/newspectrechartitemExample1.cast"
+    src={newspectrechartitemExample1}
     settings={{
         loop: false,
+        preload: true,
         poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"
