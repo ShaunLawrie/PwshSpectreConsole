@@ -30,7 +30,7 @@ Format-SpectreTable -Data $data
     src="/examples/formatspectretableExample1.cast"
     settings={{
         loop: false,
-        poster: 'npt:0:0',
+        poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
@@ -44,7 +44,7 @@ $Properties = @(
     # foreground
     @{'Name'='Last Updated'; Expression={ "[DeepSkyBlue3_1]" + $_.LastWriteTime.ToString() + "[/]" }},
     # background
-    @{'Name'='Drive'; Expression={ "[black on LightGreen_1]" + (Split-Path $_.Fullname -Qualifier) + "[/]" }}
+    @{'Name'='Drive'; Expression={ "[black on LightGreen_1]" + $_.PSDrive.Root + "[/]" }}
 )
 Get-ChildItem | Format-SpectreTable -Property $Properties -AllowMarkup
 ```
@@ -52,7 +52,7 @@ Get-ChildItem | Format-SpectreTable -Property $Properties -AllowMarkup
     src="/examples/formatspectretableExample2.cast"
     settings={{
         loop: false,
-        poster: 'npt:0:0',
+        poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
@@ -66,7 +66,7 @@ Get-ChildItem | Format-SpectreTable -Property $Properties -AllowMarkup
     src="/examples/formatspectretableExample3.cast"
     settings={{
         loop: false,
-        poster: 'npt:0:0',
+        poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}
