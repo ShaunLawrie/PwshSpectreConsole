@@ -1,7 +1,7 @@
 {"version": 2, "width": 110, "height": 20, "title": "Example 0", "env": {"TERM": "Spectre.Console"}}
 [0, "o", " \r\n"]
-[0.004, "o", "\u2500\u2500 \u001B[38;5;12mColors\u001B[0m \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\r\n"]
-[0.004, "o", " \r\n"]
+[0, "o", "\u2500\u2500 \u001B[38;5;12mColors\u001B[0m \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\r\n"]
+[0, "o", " \r\n"]
 [0.02, "o", "\u001B[38;5;0;48;5;14m Aqua          \u001B[0m "]
 [0.02, "o", "\u001B[38;5;14mAqua\u001B[0m\r\n"]
 [0.02, "o", "\u001B[38;5;0;48;5;122m Aquamarine1_1 \u001B[0m "]
@@ -12,10 +12,10 @@
 [0.02, "o", "\u001B[38;5;79mAquamarine3\u001B[0m\r\n"]
 [0.02, "o", " \r\n"]
 [0.02, "o", "\u2500\u2500 \u001B[38;5;12mHelp\u001B[0m \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\r\n"]
-[0.02, "o", " \r\n"]
-[0.02, "o", "The colors can be passed as the \u0022-Color\u0022 parameter for most commands or used in Spectre Console markup like \r\nso:\r\n\r\n"]
+[0.024, "o", " \r\n"]
+[0.024, "o", "The colors can be passed as the \u0022-Color\u0022 parameter for most commands or used in Spectre Console markup like \r\nso:\r\n\r\n"]
 [0.024, "o", "  PS\u003E \u001B[38;5;11mWrite-SpectreHost\u001B[0m \u001B[38;5;39m\u0022I am [Red]colored text[/] using [Yellow1 on Turquoise4]Spectre markdown[/]!\u0022\u001B[0m\r\n"]
 [0.024, "o", "  \u001B[38;5;15;48;5;236mI am \u001B[0m\u001B[38;5;9;48;5;236mcolored text\u001B[0m\u001B[38;5;15;48;5;236m using \u001B[0m\u001B[38;5;226;48;5;30mSpectre markdown\u001B[0m\u001B[38;5;15;48;5;236m!                                                          \u001B[0m\r\n"]
-[0.024, "o", "\r\nFor more markdown hints see \u001B]8;id=865546864;https://spectreconsole.net/markup\u001B\\https://spectreconsole.net/markup\u001B]8;;\u001B\\\r\n\r\n"]
+[0.024, "o", "\r\nFor more markdown hints see \u001B]8;id=1020882812;https://spectreconsole.net/markup\u001B\\https://spectreconsole.net/markup\u001B]8;;\u001B\\\r\n\r\n"]
 
 
