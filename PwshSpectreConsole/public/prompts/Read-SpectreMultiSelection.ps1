@@ -28,8 +28,11 @@ function Read-SpectreMultiSelection {
     Allow the multi-selection to be submitted without any options chosen.
 
     .EXAMPLE
-    # Displays a multi-selection prompt with the title "Select your favourite fruits", the list of fruits, the "Name" property as the label for each fruit, the color green for highlighting the selected fruits, and 3 fruits per page.
-    Read-SpectreMultiSelection -Title "Select your favourite fruits" -Choices @("apple", "banana", "orange", "pear", "strawberry") -Color "Green" -PageSize 3
+    $fruits = Read-SpectreMultiSelection -Title "Select your favourite fruits" `
+                                          -Choices @("apple", "banana", "orange", "pear", "strawberry", "durian", "lemon") `
+                                          -PageSize 4
+    # Type "↓", "<space>", "↓", "↓", "<space>", "↓", "<space>", "↲" to choose banana, pear and strawberry
+    Write-SpectreHost "Your favourite fruits are $($fruits -join ', ')"
     #>
     [Reflection.AssemblyMetadata("title", "Read-SpectreMultiSelection")]
     param (
@@ -46,15 +49,15 @@ function Read-SpectreMultiSelection {
 
     $choiceLabels = $Choices
     $choiceObjects = $Choices | Where-Object { $_ -isnot [string] }
-    if($null -ne $choiceObjects -and [string]::IsNullOrEmpty($ChoiceLabelProperty)) {
+    if ($null -ne $choiceObjects -and [string]::IsNullOrEmpty($ChoiceLabelProperty)) {
         throw "You must specify the ChoiceLabelProperty parameter when using choice groups with complex objects"
     }
-    if($ChoiceLabelProperty) {
+    if ($ChoiceLabelProperty) {
         $choiceLabels = $Choices | Select-Object -ExpandProperty $ChoiceLabelProperty
     }
 
     $duplicateLabels = $choiceLabels | Group-Object | Where-Object { $_.Count -gt 1 }
-    if($duplicateLabels) {
+    if ($duplicateLabels) {
         throw "You have duplicate labels in your select list, this is ambiguous so a selection cannot be made"
     }
 
@@ -68,7 +71,7 @@ function Read-SpectreMultiSelection {
     $spectrePrompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
     $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt
 
-    if($ChoiceLabelProperty) {
+    if ($ChoiceLabelProperty) {
         $selected = $Choices | Where-Object { $selected -contains $_.$ChoiceLabelProperty }
     }
 

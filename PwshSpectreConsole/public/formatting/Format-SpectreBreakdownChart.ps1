@@ -23,7 +23,6 @@ function Format-SpectreBreakdownChart {
     Hides the tag values on the chart.
 
     .EXAMPLE
-    # This example uses the new helper for generating chart items New-SpectreChartItem and the various ways of passing color values in.
     $data = @()
 
     $data += New-SpectreChartItem -Label "Apples" -Value 10 -Color "Green"
@@ -52,8 +51,8 @@ function Format-SpectreBreakdownChart {
         }
     }
     process {
-        if($Data -is [array]) {
-            foreach($dataItem in $Data) {
+        if ($Data -is [array]) {
+            foreach ($dataItem in $Data) {
                 [BreakdownChartExtensions]::AddItem($chart, $dataItem.Label, $dataItem.Value, ($dataItem.Color | Convert-ToSpectreColor)) | Out-Null
             }
         } else {

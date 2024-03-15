@@ -7,14 +7,20 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "update-docs": "pwsh -NoProfile -File ./src/powershell/UpdateDocs.ps1",
+    "update-docs:no-commit": "pwsh -NoProfile -File ./src/powershell/UpdateDocs.ps1 -NoCommit"
   },
   "dependencies": {
     "@astrojs/starlight": "^0.11.1",
     "@astrojs/starlight-tailwind": "^2.0.0",
     "@astrojs/tailwind": "^5.0.2",
+    "asciinema-player": "^3.7.0",
     "astro": "^3.2.3",
     "sharp": "^0.32.5",
     "tailwindcss": "^3.3.3"
+  },
+  "devDependencies": {
+    "sass": "^1.71.1"
   }
 }

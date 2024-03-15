@@ -23,7 +23,6 @@ function Format-SpectreBarChart {
     Hides the values from being displayed on the chart.
 
     .EXAMPLE
-    # This example uses the new helper for generating chart items New-SpectreChartItem and shows the various ways of passing color values in
     $data = @()
 
     $data += New-SpectreChartItem -Label "Apples" -Value 10 -Color "Green"

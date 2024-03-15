@@ -18,7 +18,7 @@ Describe "Format-SpectrePanel" {
                 $RenderableObject.Header.Text | Should -Be $testTitle
                 $RenderableObject.Expand | Should -Be $testExpand
                 $RenderableObject.BorderStyle.Foreground.ToMarkup() | Should -Be $testColor
-                if($testBorder -ne "None") {
+                if ($testBorder -ne "None") {
                     $RenderableObject.Border.GetType().Name | Should -BeLike "*$testBorder*"
                 }
 

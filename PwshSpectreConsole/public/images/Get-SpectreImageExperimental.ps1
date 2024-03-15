@@ -2,12 +2,13 @@ function Get-SpectreImageExperimental {
     <#
     .SYNOPSIS
     Displays an image in the console using block characters and ANSI escape codes.
+
+    .DESCRIPTION
+    This function loads an image from a file and displays it in the console using block characters and ANSI escape codes. The image is scaled to fit within the specified maximum width while maintaining its aspect ratio. If the image is an animated GIF, each frame is displayed in sequence.  
+    The images rendered by this experimental function are not handled by Spectre Console, it's using a PowerShell script to render the image in a higher resolution than Spectre.Console does by using half-block characters.
     :::caution
     This is experimental.
     :::
-
-    .DESCRIPTION
-    This function loads an image from a file and displays it in the console using block characters and ANSI escape codes. The image is scaled to fit within the specified maximum width while maintaining its aspect ratio. If the image is an animated GIF, each frame is displayed in sequence with a configurable delay between frames.
 
     .PARAMETER ImagePath
     The path to the image file to display.
@@ -25,12 +26,10 @@ function Get-SpectreImageExperimental {
     The resampling algorithm to use when scaling the image. Valid values are "Bicubic" and "NearestNeighbor". The default value is "Bicubic".
 
     .EXAMPLE
-    # Displays the image "MyImage.png" in the console with a maximum width of 80 characters.
-    PS C:\> Get-SpectreImageExperimental -ImagePath "C:\Images\MyImage.png" -MaxWidth 80
+    Get-SpectreImageExperimental -ImagePath "..\..\..\PwshSpectreConsole\private\images\harveyspecter.gif" -LoopCount 4 -Width 82
 
     .EXAMPLE
-    # Displays the animated GIF "MyAnimation.gif" in the console with a maximum width of 80 characters, repeating indefinitely. Press ctrl-c to stop the animation.
-    PS C:\> Get-SpectreImageExperimental -ImagePath "C:\Images\MyAnimation.gif" -MaxWidth 80
+    Get-SpectreImageExperimental -ImagePath "..\..\..\PwshSpectreConsole\private\images\smiley.png" -Width 80
     #>
     [Reflection.AssemblyMetadata("title", "Get-SpectreImageExperimental")]
     param (
@@ -42,7 +41,9 @@ function Get-SpectreImageExperimental {
         [string] $Resampler = "Bicubic"
     )
 
-    $cursorPosition = $Host.UI.RawUI.CursorPosition
+    $spectreConsole = [Spectre.Console.AnsiConsole]::Console
+    $spectreConsoleHeight = $spectreConsole.Profile.Height
+
     try {
         if ($ImageUrl) {
             $ImagePath = New-TemporaryFile
@@ -59,12 +60,11 @@ function Get-SpectreImageExperimental {
 
         if ($Width) {
             $maxWidth = $Width
-        }
-        else {
-            $maxWidth = $Host.UI.RawUI.WindowSize.Width
+        } else {
+            $maxWidth = $spectreConsole.Profile.Out.Width
             $Width = $image.Width
         }
-        $maxHeight = ($Host.UI.RawUI.WindowSize.Height - 2) * 2
+        $maxHeight = ($spectreConsoleHeight) * 2
         $scaledHeight = [int]($image.Height * ($Width / $image.Width))
         if ($scaledHeight -gt $maxHeight) {
             $scaledHeight = $maxHeight
@@ -97,13 +97,17 @@ function Get-SpectreImageExperimental {
                     # The delay is supposed to be in milliseconds and imagesharp seems to be a bit out when it decodes it
                     $frameDelayMilliseconds = $frameMetadata.FrameDelay * 10
                 }
-            }
-            catch {
+            } catch {
                 # Don't care
             }
             $buffer.Clear() | Out-Null
             for ($y = 0; $y -lt $scaledHeight; $y += 2) {
-                for ($x = 0; $x -lt $MaxWidth; $x++) {
+                if (($y + 1) -ge $scaledHeight) {
+                    # The image is not an even number of pixels high and we're rendering two at a time, trim the last row if it's partial
+                    $buffer.AppendLine() | Out-Null
+                    break
+                }
+                for ($x = 0; $x -lt $scaledWidth; $x++) {
                     $currentPixel = $frame[$x, $y]
                     if ($null -ne $currentPixel.A) {
                         # Quick-hack blending the foreground with the terminal background color. This could be done in imagesharp
@@ -114,8 +118,7 @@ function Get-SpectreImageExperimental {
                             G = [math]::Min(255, ($currentPixel.G * $foregroundMultiplier + $backgroundColor.G * $backgroundMultiplier))
                             B = [math]::Min(255, ($currentPixel.B * $foregroundMultiplier + $backgroundColor.B * $backgroundMultiplier))
                         }
-                    }
-                    else {
+                    } else {
                         $currentPixelRgb = @{
                             R = $currentPixel.R
                             G = $currentPixel.G
@@ -137,8 +140,7 @@ function Get-SpectreImageExperimental {
                                 G = [math]::Min(255, ($pixelBelow.G * $foregroundMultiplier + $backgroundColor.G * $backgroundMultiplier))
                                 B = [math]::Min(255, ($pixelBelow.B * $foregroundMultiplier + $backgroundColor.B * $backgroundMultiplier))
                             }
-                        }
-                        else {
+                        } else {
                             $pixelBelowRgb = @{
                                 R = $pixelBelow.R
                                 G = $pixelBelow.G
@@ -146,18 +148,31 @@ function Get-SpectreImageExperimental {
                             }
                         }
 
-                        $buffer.Append(("$([Char]27)[38;2;{0};{1};{2}m" -f
-                                $pixelBelowRgb.R,
-                                $pixelBelowRgb.G,
-                                $pixelBelowRgb.B
-                            )) | Out-Null
+                        $transparentCurrentPixel = $false
+                        if($null -ne $pixelBelow.A -and $pixelBelow.A -lt 5) {
+                            $buffer.Append("$([Char]27)[0m") | Out-Null
+                            $transparentCurrentPixel = $true
+                        } else {
+                            $buffer.Append(("$([Char]27)[38;2;{0};{1};{2}m" -f
+                                    $pixelBelowRgb.R,
+                                    $pixelBelowRgb.G,
+                                    $pixelBelowRgb.B
+                                )) | Out-Null
+                        }
+                    } else {
+                        $buffer.Append("$([Char]27)[0mX") | Out-Null
+                        $transparentCurrentPixel = $true
                     }
 
-                    $buffer.Append(("$([Char]27)[48;2;{0};{1};{2}m$([Char]0x2584)$([Char]27)[0m" -f
-                            $currentPixelRgb.R,
-                            $currentPixelRgb.G,
-                            $currentPixelRgb.B
-                        )) | Out-Null
+                    if($transparentCurrentPixel -or ($null -ne $currentPixel.A -and $currentPixel.A -lt 5)) {
+                        $buffer.Append("$([Char]27)[0m ") | Out-Null
+                    } else {
+                        $buffer.Append(("$([Char]27)[48;2;{0};{1};{2}m$([Char]0x2584)$([Char]27)[0m" -f
+                                $currentPixelRgb.R,
+                                $currentPixelRgb.G,
+                                $currentPixelRgb.B
+                            )) | Out-Null
+                    }
                 }
                 $buffer.AppendLine() | Out-Null
             }
@@ -169,45 +184,35 @@ function Get-SpectreImageExperimental {
             )
         }
 
-        $Host.UI.RawUI.CursorPosition = $cursorPosition
-
-        # TODO: Fix this. It's haaaaacked together and not properly done
-        $cursorPosition = $Host.UI.RawUI.CursorPosition
-        $remainingRows = $Host.UI.RawUI.WindowSize.Height - $cursorPosition.Y - 1
-        $rowsToClear = [int]($scaledHeight / 2) - 1
-        -1..$rowsToClear | ForEach-Object {
-            Write-Host ""
-        }
-        $newYPosition = 0
-        if ($rowsToClear -ge $remainingRows) {
-            $newYPosition = $cursorPosition.Y + $remainingRows - $rowsToClear - 2
-        }
-        else {
-            $newYPosition = $cursorPosition.Y
-        }
-        [Console]::SetCursorPosition($cursorPosition.X, $newYPosition)
-
-        $topLeft = $Host.UI.RawUI.CursorPosition
         $loopIterations = 0
-        [Console]::SetCursorPosition($topLeft.X, $topLeft.Y)
         [Console]::CursorVisible = $false
-        if($frames.Count -eq 1) {
-            Write-Host $frames[0].Frame
+
+        # Just one frame, print the image and return
+        if ($frames.Count -eq 1) {
+            $spectreConsole.Profile.Out.Writer.Write($frames[0].Frame)
             return
         }
+
+        # The cursor needs to be returned to the top left of the image after every frame apart from the last
+        $imageLines = $frames[0].Frame.Split("`n").Count - 1
+        $returnLinesEscapeCode = "`r`e[${imageLines}A"
         do {
-            foreach ($frame in $frames) {
-                [Console]::SetCursorPosition($topLeft.X, $topLeft.Y)
-                Write-Host $frame.Frame
+            $animationFrameReturnLines = $returnLinesEscapeCode
+            for ($f = 0; $f -lt $frames.Count; $f++) {
+                if($f -eq ($frames.Count - 1) -and $loopIterations -eq ($LoopCount - 1)) {
+                    $animationFrameReturnLines = ""
+                }
+                $frame = $frames[$f]
+                $spectreConsole.Profile.Out.Writer.Write($frame.Frame + $animationFrameReturnLines)
                 Start-Sleep -Milliseconds $frame.FrameDelayMilliseconds
             }
             $loopIterations++
         } while ($loopIterations -lt $LoopCount -or $LoopCount -eq 0)
-    }
-    finally {
+    } finally {
         [Console]::CursorVisible = $true
         if ($ImageUrl) {
             Remove-Item $ImagePath
         }
+        Write-SpectreHost " "
     }
 }

@@ -12,8 +12,6 @@ The renderable object to write to the console e.g. [BarChart]
 
 .EXAMPLE
 Write-SpectreConsoleOutput -Object "Hello, World!" -ForegroundColor Green -BackgroundColor Black
-
-This example writes the string "Hello, World!" to the console with green foreground color and black background color.
 #>
 function Write-AnsiConsole {
     param(

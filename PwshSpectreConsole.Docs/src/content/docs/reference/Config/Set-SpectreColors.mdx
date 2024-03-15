@@ -1,0 +1,114 @@
+---
+title: Set-SpectreColors
+---
+
+
+
+
+
+
+
+import Asciinema from '../../../../components/Asciinema.astro'
+import setspectrecolorsExample1 from '../../../../assets/examples/setspectrecolorsExample1.cast?url'
+
+### Description
+
+This function sets the accent color and default value color for Spectre Console. The accent color is used for highlighting important information, while the default value color is used for displaying default values.
+
+
+
+---
+
+
+### Examples
+> EXAMPLE 1
+
+```powershell
+Write-SpectreRule "This is a default rule"
+Set-SpectreColors -AccentColor "Turquoise2"
+Write-SpectreRule "This is a Turquoise2 rule"
+Write-SpectreRule "This is a rule with a specified color" -Color "Yellow"
+```
+<Asciinema
+    src={setspectrecolorsExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre"
+    }}
+/>
+
+
+---
+
+
+### Parameters
+#### **AccentColor**
+
+The accent color to set. Must be a valid Spectre Console color name. Defaults to "Blue".
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Color]`|false   |1       |false        |
+
+
+
+#### **DefaultValueColor**
+
+The default value color to set. Must be a valid Spectre Console color name. Defaults to "Grey".
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Color]`|false   |2       |false        |
+
+
+
+#### **DefaultTableHeaderColor**
+
+The default table header color to set. Must be a valid Spectre Console color name. Defaults to "Default" which will be the standard console foreground color.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Color]`|false   |3       |false        |
+
+
+
+#### **DefaultTableTextColor**
+
+The default table text color to set. Must be a valid Spectre Console color name. Defaults to "Default" which will be the standard console foreground color.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Color]`|false   |4       |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Set-SpectreColors [[-AccentColor] <Color>] [[-DefaultValueColor] <Color>] [[-DefaultTableHeaderColor] <Color>] [[-DefaultTableTextColor] <Color>] [<CommonParameters>]
+```

@@ -11,7 +11,7 @@ Describe "Format-SpectreBarChart" {
             $testWidth = Get-Random -Minimum 10 -Maximum 100
             $testTitle = "Test Chart $([guid]::NewGuid())"
             $testData = @()
-            for($i = 0; $i -lt (Get-Random -Minimum 3 -Maximum 10); $i++) {
+            for ($i = 0; $i -lt (Get-Random -Minimum 3 -Maximum 10); $i++) {
                 $testData += New-SpectreChartItem -Label (Get-RandomString) -Value (Get-Random -Minimum -100 -Maximum 100) -Color (Get-RandomColor)
             }
 

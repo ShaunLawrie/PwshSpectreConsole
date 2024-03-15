@@ -1,0 +1,76 @@
+---
+title: Get-SpectreDemoEmoji
+---
+
+
+
+
+
+
+
+import Asciinema from '../../../../components/Asciinema.astro'
+import getspectredemoemojiExample1 from '../../../../assets/examples/getspectredemoemojiExample1.cast?url'
+
+### Description
+
+The Get-SpectreDemoEmoji function retrieves a collection of emojis available in Spectre Console. It displays the general emojis, faces, and provides information on how to use emojis in Spectre Console markup.
+
+
+
+---
+
+
+### Examples
+> EXAMPLE 1
+
+```powershell
+Get-SpectreDemoEmoji -Count 5
+```
+<Asciinema
+    src={getspectredemoemojiExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre"
+    }}
+/>
+
+
+---
+
+
+### Parameters
+#### **Count**
+
+Limit the number of emoji returned. This is only really useful for generating the help docs.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |1       |false        |
+
+
+
+
+
+---
+
+
+### Notes
+Emoji support is dependent on the operating system, terminal, and font support. For more information on Spectre Console markup and emojis, refer to the following links:
+- Spectre Console Markup: https://spectreconsole.net/markup
+- Spectre Console Emojis: https://spectreconsole.net/appendix/emojis
+
+
+
+---
+
+
+### Syntax
+```powershell
+Get-SpectreDemoEmoji [[-Count] <Int32>] [<CommonParameters>]
+```

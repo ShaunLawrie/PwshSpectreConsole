@@ -1,0 +1,81 @@
+---
+title: Get-SpectreImage
+---
+
+
+
+
+
+
+
+import Asciinema from '../../../../components/Asciinema.astro'
+import getspectreimageExample1 from '../../../../assets/examples/getspectreimageExample1.cast?url'
+
+### Description
+
+Displays an image in the console using CanvasImage. The image can be resized to a maximum width if desired.
+
+
+
+---
+
+
+### Examples
+> EXAMPLE 1
+
+```powershell
+Get-SpectreImage -ImagePath "..\..\..\PwshSpectreConsole\private\images\smiley.png" -MaxWidth 40
+```
+<Asciinema
+    src={getspectreimageExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre"
+    }}
+/>
+
+
+---
+
+
+### Parameters
+#### **ImagePath**
+
+The path to the image file to be displayed.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |1       |false        |
+
+
+
+#### **MaxWidth**
+
+The maximum width of the image. If not specified, the image will be displayed at its original size.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |2       |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Get-SpectreImage [[-ImagePath] <String>] [[-MaxWidth] <Int32>] [<CommonParameters>]
+```

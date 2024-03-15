@@ -12,8 +12,7 @@ function New-TableRow {
     }
     if ($scalar) {
         New-TableCell -String $Entry -Color $Color @opts
-    }
-    else {
+    } else {
         # simplified, should be faster.
         $detectVT = '\x1b'
         $rows = foreach ($cell in $Entry) {

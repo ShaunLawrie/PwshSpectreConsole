@@ -11,7 +11,6 @@ function Invoke-SpectreCommandWithProgress {
     The script block to execute.
 
     .EXAMPLE
-    # This example will display a progress bar while the script block is executing.
     Invoke-SpectreCommandWithProgress -ScriptBlock {
         param (
             $Context
@@ -29,16 +28,65 @@ function Invoke-SpectreCommandWithProgress {
     }
 
     .EXAMPLE
-    # This example will display a progress bar while multiple background jobs are running.
     Invoke-SpectreCommandWithProgress -ScriptBlock {
-        param (
-            $Context
-        )
+        param ( $Context )
+        
         $jobs = @()
-        $jobs += Add-SpectreJob -Context $Context -JobName "job 1" -Job (Start-Job { Start-Sleep -Seconds 5 })
-        $jobs += Add-SpectreJob -Context $Context -JobName "job 2" -Job (Start-Job { Start-Sleep -Seconds 10 })
+        $jobs += Add-SpectreJob -Context $Context -JobName "Drawing a picture" -Job (
+            Start-Job {
+                $progress = 0
+                while($progress -lt 100) {
+                    $progress += 1.5
+                    Write-Progress -Activity "Processing" -PercentComplete $progress
+                    Start-Sleep -Milliseconds 50
+                }
+            }
+        )
+        $jobs += Add-SpectreJob -Context $Context -JobName "Driving a car" -Job (
+            Start-Job {
+                $progress = 0
+                while($progress -lt 100) {
+                    $progress += 0.9
+                    Write-Progress -Activity "Processing" -PercentComplete $progress
+                    Start-Sleep -Milliseconds 50
+                }
+            }
+        )
+        
         Wait-SpectreJobs -Context $Context -Jobs $jobs
     }
+
+    .EXAMPLE
+    $result = Invoke-SpectreCommandWithProgress -ScriptBlock {
+        param ( $Context )
+        
+        $task1 = $Context.AddTask("Completing a task with an unknown duration")
+        $task1.IsIndeterminate = $true
+        Start-Sleep -Seconds 5
+        $task1.Value = 100
+
+        return "Some result"
+    }
+    Write-SpectreHost "Result: $result"
+
+    .EXAMPLE
+    $result = Invoke-SpectreCommandWithProgress -ScriptBlock {
+        param ( $Context )
+        
+        $job = Add-SpectreJob -Context $Context -JobName "Doing some work" -Job (
+            Start-Job {
+                Start-Sleep -Seconds 10
+                return 1234
+            }
+        )
+        
+        Wait-SpectreJobs -Context $Context -Jobs $job -EstimatedDurationSeconds 5
+        
+        $result = Receive-Job -Job $job.Job
+        
+        return $result
+    }
+    Write-SpectreHost "Result: $result"
     #>
     [Reflection.AssemblyMetadata("title", "Invoke-SpectreCommandWithProgress")]
     param (

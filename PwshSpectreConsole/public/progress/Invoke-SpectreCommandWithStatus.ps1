@@ -22,14 +22,25 @@ function Invoke-SpectreCommandWithStatus {
     The color of the spinner. Valid values can be found with Get-SpectreDemoColors.
 
     .EXAMPLE
-    # Starts a Spectre status spinner with the "dots" spinner type, a yellow color, and the title "Waiting for process to complete". The spinner will continue to spin for 5 seconds.
-    Invoke-SpectreCommandWithStatus -ScriptBlock { Start-Sleep -Seconds 5 } -Spinner dots -Title "Waiting for process to complete" -Color yellow
+    $result = Invoke-SpectreCommandWithStatus -Spinner "Dots2" -Title "Showing a spinner..." -ScriptBlock {
+        # Write updates to the host using Write-SpectreHost
+        Start-Sleep -Seconds 1
+        Write-SpectreHost "`n[grey]LOG:[/] Doing some work      "
+        Start-Sleep -Seconds 1
+        Write-SpectreHost "`n[grey]LOG:[/] Doing some more work "
+        Start-Sleep -Seconds 1
+        Write-SpectreHost "`n[grey]LOG:[/] Done                 "
+        Start-Sleep -Seconds 1
+        Write-SpectreHost " "
+        return "Some result"
+    }
+    Write-SpectreHost "Result: $result"
     #>
     [Reflection.AssemblyMetadata("title", "Invoke-SpectreCommandWithStatus")]
     param (
         [Parameter(Mandatory)]
         [scriptblock] $ScriptBlock,
-        [ValidateSet([SpectreConsoleSpinner],ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
+        [ValidateSet([SpectreConsoleSpinner], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Spinner = "Dots",
         [Parameter(Mandatory)]
         [string] $Title,
@@ -38,10 +49,10 @@ function Invoke-SpectreCommandWithStatus {
         [Color] $Color = $script:AccentColor
     )
     $splat = @{
-        Title = $Title
-        Spinner = [Spinner+Known]::$Spinner
+        Title        = $Title
+        Spinner      = [Spinner+Known]::$Spinner
         SpinnerStyle = [Style]::new($Color)
-        ScriptBlock = $ScriptBlock
+        ScriptBlock  = $ScriptBlock
     }
     Start-AnsiConsoleStatus @splat
 }

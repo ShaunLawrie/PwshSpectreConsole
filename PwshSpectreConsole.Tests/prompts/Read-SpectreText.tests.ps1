@@ -8,7 +8,7 @@ Describe "Read-SpectreText" {
             $testAnswerColor = $null
             Mock Invoke-SpectrePromptAsync {
                 $Prompt | Should -BeOfType [Spectre.Console.TextPrompt[string]]
-                if($Prompt.PromptStyle.Foreground) {
+                if ($Prompt.PromptStyle.Foreground) {
                     $Prompt.PromptStyle.Foreground.ToMarkup() | Should -Be $testAnswerColor
                 }
             }

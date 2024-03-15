@@ -9,7 +9,8 @@ export default defineConfig({
     starlight({
       title: "PwshSpectreConsole",
       editLink: {
-        baseUrl: "https://github.com/ShaunLawrie/PwshSpectreConsole/edit/main/PwshSpectreConsole.Docs/",
+        baseUrl:
+          "https://github.com/ShaunLawrie/PwshSpectreConsole/edit/main/PwshSpectreConsole.Docs/",
       },
       favicon: "/favicon.png",
       customCss: ["./src/tailwind.css"],
@@ -46,5 +47,5 @@ export default defineConfig({
     tailwind({
       applyBaseStyles: false,
     }),
-  ],
+  ]
 });

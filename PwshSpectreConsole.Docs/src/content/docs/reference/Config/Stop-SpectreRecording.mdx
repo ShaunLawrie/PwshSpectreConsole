@@ -1,0 +1,95 @@
+---
+sidebar:
+  badge:
+    text: Experimental
+    variant: caution
+title: Stop-SpectreRecording
+---
+
+
+
+
+
+
+
+import Asciinema from '../../../../components/Asciinema.astro'
+import stopspectrerecordingExample1 from '../../../../assets/examples/stopspectrerecordingExample1.cast?url'
+
+### Description
+
+Stops a recording of the current console output and returns the recording.  
+I've used this to record the examples on the docs help site.
+:::caution
+This is experimental.
+:::
+
+
+
+---
+
+
+### Examples
+> EXAMPLE 1
+
+```powershell
+$recording = Start-SpectreRecording -RecordingType "Html" -CountdownAndClear
+# Use spectre console functions, these will be recorded
+Write-SpectreHost "Hello [red]world[/]"
+# Finish the recording
+$result = Stop-SpectreRecording
+# Output the results
+Write-SpectreHost "Result:`n$result"
+```
+<Asciinema
+    src={stopspectrerecordingExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre"
+    }}
+/>
+
+
+---
+
+
+### Parameters
+#### **Title**
+
+The title of the recording, only used for asciinema recordings.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |1       |false        |
+
+
+
+#### **OutputPath**
+
+The path to save the recording to.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |2       |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Stop-SpectreRecording [[-Title] <String>] [[-OutputPath] <String>] [<CommonParameters>]
+```

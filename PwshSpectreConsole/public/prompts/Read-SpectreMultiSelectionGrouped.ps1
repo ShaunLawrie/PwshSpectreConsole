@@ -28,8 +28,7 @@ function Read-SpectreMultiSelectionGrouped {
     Allow the multi-selection to be submitted without any options chosen.
 
     .EXAMPLE
-    # This example displays a multi-selection prompt with two groups of choices: "Primary Colors" and "Secondary Colors". The prompt uses the "Name" property of each choice as the label. The user can select one or more choices from each group.
-    Read-SpectreMultiSelectionGrouped -Title "Select your favorite colors" -Choices @(
+    $selected = Read-SpectreMultiSelectionGrouped -Title "Select your favorite colors" -PageSize 8 -Choices @(
         @{
             Name = "Primary Colors"
             Choices = @("Red", "Blue", "Yellow")
@@ -39,17 +38,19 @@ function Read-SpectreMultiSelectionGrouped {
             Choices = @("Green", "Orange", "Purple")
         }
     )
+    # Type "↓", "<space>", "↓", "↓", "↓", "<space>", "↲" to choose red and all secondary colors
+    Write-SpectreHost "Your favourite colors are $($selected -join ', ')"
     #>
     [Reflection.AssemblyMetadata("title", "Read-SpectreMultiSelectionGrouped")]
     param (
         [string] $Title = "What are your favourite [$($script:AccentColor.ToMarkup())]colors[/]?",
         [array] $Choices = @(
             @{
-                Name = "The rainbow"
+                Name    = "The rainbow"
                 Choices = @("red", "orange", "yellow", "green", "blue", "indigo", "violet")
             },
             @{
-                Name = "The other colors"
+                Name    = "The other colors"
                 Choices = @("black", "grey", "white")
             }
         ),
@@ -64,21 +65,21 @@ function Read-SpectreMultiSelectionGrouped {
 
     $choiceLabels = $Choices.Choices
     $flattenedChoices = $Choices.Choices
-    if($ChoiceLabelProperty) {
+    if ($ChoiceLabelProperty) {
         $choiceLabels = $choiceLabels | Select-Object -ExpandProperty $ChoiceLabelProperty
     }
     $duplicateLabels = $choiceLabels | Group-Object | Where-Object { $_.Count -gt 1 }
-    if($duplicateLabels) {
+    if ($duplicateLabels) {
         throw "You have duplicate labels in your select list, this is ambiguous so a selection cannot be made (even when using choice groups)"
     }
 
-    foreach($group in $Choices) {
+    foreach ($group in $Choices) {
         $choiceObjects = $group.Choices | Where-Object { $_ -isnot [string] }
-        if($null -ne $choiceObjects -and [string]::IsNullOrEmpty($ChoiceLabelProperty)) {
+        if ($null -ne $choiceObjects -and [string]::IsNullOrEmpty($ChoiceLabelProperty)) {
             throw "You must specify the ChoiceLabelProperty parameter when using choice groups with complex objects"
         }
         $choiceLabels = $group.Choices
-        if($ChoiceLabelProperty) {
+        if ($ChoiceLabelProperty) {
             $choiceLabels = $choiceLabels | Select-Object -ExpandProperty $ChoiceLabelProperty
         }
         $spectrePrompt = [MultiSelectionPromptExtensions]::AddChoiceGroup($spectrePrompt, $group.Name, [string[]]$choiceLabels)
@@ -93,7 +94,7 @@ function Read-SpectreMultiSelectionGrouped {
     $spectrePrompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
     $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt
 
-    if($ChoiceLabelProperty) {
+    if ($ChoiceLabelProperty) {
         $selected = $flattenedChoices | Where-Object { $selected -contains $_.$ChoiceLabelProperty }
     }
 

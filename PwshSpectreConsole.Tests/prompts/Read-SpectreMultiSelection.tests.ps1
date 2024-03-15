@@ -57,7 +57,7 @@ Describe "Read-SpectreMultiSelection" {
         }
 
         It "prompts with an object input and allows multiple selection" {
-            $itemsToBeSelectedNames = @("toBeSelected",  "also to be selected")
+            $itemsToBeSelectedNames = @("toBeSelected", "also to be selected")
             $itemToBeSelected = [PSCustomObject]@{ ColumnToSelectFrom = $itemsToBeSelectedNames[0]; Other = Get-RandomString }
             $anotherItemToBeSelected = [PSCustomObject]@{ ColumnToSelectFrom = $itemsToBeSelectedNames[1]; Other = Get-RandomString }
             Read-SpectreMultiSelection -Title $testTitle -ChoiceLabelProperty "ColumnToSelectFrom" -PageSize $testPageSize -Color $testColor -Choices @(
