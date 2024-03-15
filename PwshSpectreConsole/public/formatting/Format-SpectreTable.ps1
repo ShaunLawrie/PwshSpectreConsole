@@ -72,7 +72,7 @@ function Format-SpectreTable {
         # foreground
         @{'Name'='Last Updated'; Expression={ "[DeepSkyBlue3_1]" + $_.LastWriteTime.ToString() + "[/]" }},
         # background
-        @{'Name'='Drive'; Expression={ "[black on LightGreen_1]" + (Split-Path $_.Fullname -Qualifier) + "[/]" }}
+        @{'Name'='Drive'; Expression={ "[black on LightGreen_1]" + $_.PSDrive.Root + "[/]" }}
     )
     Get-ChildItem | Format-SpectreTable -Property $Properties -AllowMarkup
 
