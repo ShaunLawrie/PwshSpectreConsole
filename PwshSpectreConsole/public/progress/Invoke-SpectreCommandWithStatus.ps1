@@ -22,7 +22,7 @@ function Invoke-SpectreCommandWithStatus {
     The color of the spinner. Valid values can be found with Get-SpectreDemoColors.
 
     .EXAMPLE
-    Invoke-SpectreCommandWithStatus -Spinner "Dots2" -Title "Showing a spinner..." -ScriptBlock {
+    $result = Invoke-SpectreCommandWithStatus -Spinner "Dots2" -Title "Showing a spinner..." -ScriptBlock {
         # Write updates to the host using Write-SpectreHost
         Start-Sleep -Seconds 1
         Write-SpectreHost "`n[grey]LOG:[/] Doing some work      "
@@ -31,7 +31,10 @@ function Invoke-SpectreCommandWithStatus {
         Start-Sleep -Seconds 1
         Write-SpectreHost "`n[grey]LOG:[/] Done                 "
         Start-Sleep -Seconds 1
+        Write-SpectreHost " "
+        return "Some result"
     }
+    Write-SpectreHost "Result: $result"
     #>
     [Reflection.AssemblyMetadata("title", "Invoke-SpectreCommandWithStatus")]
     param (

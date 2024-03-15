@@ -57,27 +57,36 @@ function Invoke-SpectreCommandWithProgress {
     }
 
     .EXAMPLE
-    Invoke-SpectreCommandWithProgress -ScriptBlock {
+    $result = Invoke-SpectreCommandWithProgress -ScriptBlock {
         param ( $Context )
         
         $task1 = $Context.AddTask("Completing a task with an unknown duration")
         $task1.IsIndeterminate = $true
         Start-Sleep -Seconds 5
         $task1.Value = 100
+
+        return "Some result"
     }
+    Write-SpectreHost "Result: $result"
 
     .EXAMPLE
-    Invoke-SpectreCommandWithProgress -ScriptBlock {
+    $result = Invoke-SpectreCommandWithProgress -ScriptBlock {
         param ( $Context )
         
         $job = Add-SpectreJob -Context $Context -JobName "Doing some work" -Job (
             Start-Job {
                 Start-Sleep -Seconds 10
+                return 1234
             }
         )
         
         Wait-SpectreJobs -Context $Context -Jobs $job -EstimatedDurationSeconds 5
+        
+        $result = Receive-Job -Job $job.Job
+        
+        return $result
     }
+    Write-SpectreHost "Result: $result"
     #>
     [Reflection.AssemblyMetadata("title", "Invoke-SpectreCommandWithProgress")]
     param (

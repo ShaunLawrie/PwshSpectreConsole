@@ -51,10 +51,7 @@ const { src, settings } = Astro.props;
 
       players.set(elem, player);
 
-      // Wait a fe seconds before attaching the observer in case it's already on the screen
-      setTimeout(() => {
-        observer.observe(elem);
-      }, 2000);
+      observer.observe(elem);
     });
   }
 </script>

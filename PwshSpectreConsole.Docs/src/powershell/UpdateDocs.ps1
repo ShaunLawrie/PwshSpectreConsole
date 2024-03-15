@@ -3,7 +3,8 @@ param(
     [ValidateSet("dev", "prerelease", "main")]
     [string]$Branch = "dev",
     [switch]$NonInteractive,
-    [switch]$NoBuild
+    [switch]$NoBuild,
+    [switch]$NoCommit
 )
 
 $ErrorActionPreference = "Stop"
@@ -59,7 +60,7 @@ foreach ($doc in $docs) {
 
 # Update the hash files in git so the modified files can be detected
 # I regret doing it this way but cbf changing it now
-Update-HashFilesInGit -StagingPath $stagingPath -OutputPath $outputPath
+Update-HashFilesInGit -StagingPath $stagingPath -OutputPath $outputPath -NoCommit:$NoCommit
 
 # Format the files for astro
 $docs = Get-ChildItem $stagingPath -Filter "*.md" -Recurse | Where-Object { $_.Name -like "*-*" }
@@ -153,16 +154,19 @@ foreach ($doc in $docs) {
                 }
                 Write-Host "Modified sample:"
                 Write-Host -ForegroundColor DarkGray $code
-                try {
+                if($code -like "*Write-Error*") {
+                    $ErrorActionPreference = "Continue"
+                    $previousErrorActionPreference = $ErrorActionPreference
                     Invoke-Expression $code
-                } catch {
-                    Write-Warning "Error generating sample: $_"
+                    $ErrorActionPreference = $previousErrorActionPreference
+                } else {
+                    Invoke-Expression $code
                 }
                 $recording = Stop-SpectreRecording -Title "Example $([int]$example++)"
 
                 $castName = ($doc.Name -replace '.md$', '' -replace '-', '').ToLower() + "Example$example"
                 Set-Content -Path "$asciiCastOutputPath\$castName.cast" -Value $recording
-                $imports += "import $castName from '../../../../assets/examples/$castName.cast'`n"
+                $imports += "import $castName from '../../../../assets/examples/$castName.cast?url'`n"
 
                 # Replace the code block with the ascii cast
                 $castTemplate = Get-AsciiCastTemplate -Name $castName
@@ -180,7 +184,7 @@ foreach ($doc in $docs) {
 }
 
 # Copy the files into the output directory in a way that doesn't crash the astro dev server
-Update-HelpFiles -StagingPath $stagingPath -AsciiCastOutputPath $asciiCastOutputPath -OutputPath $outputPath
+Update-HelpFiles -StagingPath $stagingPath -AsciiCastOutputPath $asciiCastOutputPath -OutputPath $outputPath -NoCommit:$NoCommit
 
 # Set some overrides to indicate it's the pre-release site
 if($Branch -eq "prerelease") {

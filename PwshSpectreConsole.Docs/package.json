@@ -8,7 +8,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "update-docs": "pwsh -NoProfile -File ./src/powershell/UpdateDocs.ps1"
+    "update-docs": "pwsh -NoProfile -File ./src/powershell/UpdateDocs.ps1",
+    "update-docs:no-commit": "pwsh -NoProfile -File ./src/powershell/UpdateDocs.ps1 -NoCommit"
   },
   "dependencies": {
     "@astrojs/starlight": "^0.11.1",

@@ -93,7 +93,8 @@ function Get-Tag {
 function Update-HashFilesInGit {
     param (
         [string] $StagingPath,
-        [string] $OutputPath
+        [string] $OutputPath,
+        [switch] $NoCommit
     )
 
     Push-Location
@@ -113,9 +114,13 @@ function Update-HashFilesInGit {
         # Update git hash files
         try {
             Set-Location $OutputPath
-            Write-Host "Committing hash files"
-            git add "*.sha256" *>$null
-            git commit -m "[skip ci] Update doc hashfiles" *>$null
+            if(!$NoCommit) {
+                Write-Host "Committing hash files"
+                git add "*.sha256" *>$null
+                git commit -m "[skip ci] Update doc hashfiles" *>$null
+            } else {
+                Write-Host "Skipping commit of hash files"
+            }
         } catch {
             Write-Host "No changes to commit"
         }
@@ -143,7 +148,8 @@ function Update-HelpFiles {
     param (
         [string] $StagingPath,
         [string] $OutputPath,
-        [string] $AsciiCastOutputPath
+        [string] $AsciiCastOutputPath,
+        [switch] $NoCommit
     )
 
     Push-Location
@@ -162,12 +168,16 @@ function Update-HelpFiles {
 
         try {
             Set-Location $OutputPath
-            Write-Host "Committing mdx files"
-            git add "*.mdx" *>$null
-            Set-Location $AsciiCastOutputPath
-            Write-Host "Committing cast files"
-            git add "*.cast" *>$null
-            git commit -m "[skip ci] Update docs" *>$null
+            if(!$NoCommit) {
+                Write-Host "Committing mdx files"
+                git add "*.mdx" *>$null
+                Set-Location $AsciiCastOutputPath
+                Write-Host "Committing cast files"
+                git add "*.cast" *>$null
+                git commit -m "[skip ci] Update docs" *>$null
+            } else {
+                Write-Host "Skipping commit of mdx and cast files"
+            }
         } catch {
             Write-Host "No changes to commit"
         }
@@ -218,8 +228,6 @@ $script:AsciiCastTemplate = @'
     src={CAST_NAME}
     settings={{
         loop: false,
-        preload: true,
-        poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}

@@ -4,7 +4,8 @@ function Add-SpectreJob {
     Adds a Spectre job to a list of jobs.
 
     .DESCRIPTION
-    This function adds a Spectre job to the list of jobs you want to wait for with Wait-SpectreJobs.
+    This function adds a Spectre job to the list of jobs you want to wait for with Wait-SpectreJobs.  
+    To retrieve the outcome of the job you need to use the standard PowerShell Receive-Job cmdlet.
     :::note
     This is only used inside `Invoke-SpectreCommandWithProgress` where the Spectre ProgressContext object is exposed.
     :::
@@ -20,7 +21,7 @@ function Add-SpectreJob {
     The PowerShell job to add to the context.
 
     .EXAMPLE
-    Invoke-SpectreCommandWithProgress -ScriptBlock {
+    $jobOutcomes = Invoke-SpectreCommandWithProgress -ScriptBlock {
         param (
             $Context
         )
@@ -28,7 +29,9 @@ function Add-SpectreJob {
         $jobs += Add-SpectreJob -Context $Context -JobName "job 1" -Job (Start-Job { Start-Sleep -Seconds 2 })
         $jobs += Add-SpectreJob -Context $Context -JobName "job 2" -Job (Start-Job { Start-Sleep -Seconds 4 })
         Wait-SpectreJobs -Context $Context -Jobs $jobs
+        return $jobs.Job
     }
+    $jobOutcomes | Format-SpectreTable -Property Id, Name, PSJobTypeName, State, Command
     #>
     [Reflection.AssemblyMetadata("title", "Add-SpectreJob")]
     param (
