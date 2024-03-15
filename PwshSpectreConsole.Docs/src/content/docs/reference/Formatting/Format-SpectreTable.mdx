@@ -9,9 +9,6 @@ title: Format-SpectreTable
 
 
 import { TerminalPlayer } from 'astro-terminal-player';
-import formatspectretableExample1 from '../../../../assets/examples/formatspectretableExample1.cast?url';
-import formatspectretableExample2 from '../../../../assets/examples/formatspectretableExample2.cast?url';
-import formatspectretableExample3 from '../../../../assets/examples/formatspectretableExample3.cast?url';
 
 ### Description
 
@@ -30,7 +27,7 @@ $data = @(
 Format-SpectreTable -Data $data
 ```
 <TerminalPlayer
-    src={formatspectretableExample1}
+    src="/examples/formatspectretableExample1.cast"
     settings={{
         loop: false,
         terminalLineHeight: 1.1,
@@ -52,7 +49,7 @@ $Properties = @(
 Get-ChildItem | Format-SpectreTable -Property $Properties -AllowMarkup
 ```
 <TerminalPlayer
-    src={formatspectretableExample2}
+    src="/examples/formatspectretableExample2.cast"
     settings={{
         loop: false,
         terminalLineHeight: 1.1,
@@ -66,7 +63,7 @@ Get-ChildItem | Format-SpectreTable -Property $Properties -AllowMarkup
 1..10 | Format-SpectreTable -Title Numbers
 ```
 <TerminalPlayer
-    src={formatspectretableExample3}
+    src="/examples/formatspectretableExample3.cast"
     settings={{
         loop: false,
         terminalLineHeight: 1.1,

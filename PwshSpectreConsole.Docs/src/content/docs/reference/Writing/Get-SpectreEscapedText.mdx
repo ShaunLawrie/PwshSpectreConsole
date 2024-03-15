@@ -9,7 +9,6 @@ title: Get-SpectreEscapedText
 
 
 import { TerminalPlayer } from 'astro-terminal-player';
-import getspectreescapedtextExample1 from '../../../../assets/examples/getspectreescapedtextExample1.cast?url';
 
 ### Description
 
@@ -26,7 +25,7 @@ $data = "][[][red]]][[/][][]["
 Format-SpectrePanel -Title "Unescaped data" -Data "I want escaped $($data | Get-SpectreEscapedText) [yellow]and[/] [red]unescaped[/] data"
 ```
 <TerminalPlayer
-    src={getspectreescapedtextExample1}
+    src="/examples/getspectreescapedtextExample1.cast"
     settings={{
         loop: false,
         terminalLineHeight: 1.1,

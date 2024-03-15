@@ -1,0 +1,4 @@
+{"version": 2, "width": 110, "height": 3, "title": "Example 0", "env": {"TERM": "Spectre.Console"}}
+[0, "o", "Hello, \u001B[4;38;5;12mworld\u001B[0m! \uD83E\uDD19\n"]
+
+

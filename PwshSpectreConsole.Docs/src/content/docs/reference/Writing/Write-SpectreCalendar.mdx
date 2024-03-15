@@ -9,8 +9,6 @@ title: Write-SpectreCalendar
 
 
 import { TerminalPlayer } from 'astro-terminal-player';
-import writespectrecalendarExample1 from '../../../../assets/examples/writespectrecalendarExample1.cast?url';
-import writespectrecalendarExample2 from '../../../../assets/examples/writespectrecalendarExample2.cast?url';
 
 ### Description
 
@@ -25,7 +23,7 @@ Writes a Spectre Console Calendar text to the console.
 Write-SpectreCalendar -Date 2024-07-01 -Events @{'2024-07-10' = 'Beach time!'; '2024-07-20' = 'Barbecue' }
 ```
 <TerminalPlayer
-    src={writespectrecalendarExample1}
+    src="/examples/writespectrecalendarExample1.cast"
     settings={{
         loop: false,
         terminalLineHeight: 1.1,
@@ -43,7 +41,7 @@ $events = @{
 Write-SpectreCalendar -Date 2024-01-01 -Events $events
 ```
 <TerminalPlayer
-    src={writespectrecalendarExample2}
+    src="/examples/writespectrecalendarExample2.cast"
     settings={{
         loop: false,
         terminalLineHeight: 1.1,

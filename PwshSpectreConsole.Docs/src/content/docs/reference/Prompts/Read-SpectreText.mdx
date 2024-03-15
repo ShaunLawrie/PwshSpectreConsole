@@ -9,9 +9,6 @@ title: Read-SpectreText
 
 
 import { TerminalPlayer } from 'astro-terminal-player';
-import readspectretextExample1 from '../../../../assets/examples/readspectretextExample1.cast?url';
-import readspectretextExample2 from '../../../../assets/examples/readspectretextExample2.cast?url';
-import readspectretextExample3 from '../../../../assets/examples/readspectretextExample3.cast?url';
 
 ### Description
 
@@ -33,7 +30,7 @@ $name = Read-SpectreText -Question "What's your name?" -DefaultAnswer "Prefer no
 Write-SpectreHost "Your name is '$name'"
 ```
 <TerminalPlayer
-    src={readspectretextExample1}
+    src="/examples/readspectretextExample1.cast"
     settings={{
         loop: false,
         terminalLineHeight: 1.1,
@@ -49,7 +46,7 @@ $favouriteColor = Read-SpectreText -Question "What's your favorite color?" -Defa
 Write-SpectreHost "Your favourite color is '$favouriteColor'"
 ```
 <TerminalPlayer
-    src={readspectretextExample2}
+    src="/examples/readspectretextExample2.cast"
     settings={{
         loop: false,
         terminalLineHeight: 1.1,
@@ -65,7 +62,7 @@ $favouriteColor = Read-SpectreText -Question "What's your favorite color?" -Answ
 Write-SpectreHost "Your favourite color is '$favouriteColor'"
 ```
 <TerminalPlayer
-    src={readspectretextExample3}
+    src="/examples/readspectretextExample3.cast"
     settings={{
         loop: false,
         terminalLineHeight: 1.1,

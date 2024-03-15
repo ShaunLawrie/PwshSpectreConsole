@@ -9,8 +9,6 @@ title: Read-SpectrePause
 
 
 import { TerminalPlayer } from 'astro-terminal-player';
-import readspectrepauseExample1 from '../../../../assets/examples/readspectrepauseExample1.cast?url';
-import readspectrepauseExample2 from '../../../../assets/examples/readspectrepauseExample2.cast?url';
 
 ### Description
 
@@ -26,7 +24,7 @@ Read-SpectrePause -Message "Press the [red]enter[/] key to continue, when you pr
 # Type "↲" to dismiss the message
 ```
 <TerminalPlayer
-    src={readspectrepauseExample1}
+    src="/examples/readspectrepauseExample1.cast"
     settings={{
         loop: false,
         terminalLineHeight: 1.1,
@@ -41,7 +39,7 @@ Read-SpectrePause -Message "Press the [red]ANY[/] key to continue, when you pres
 # Type "x" to dismiss the message
 ```
 <TerminalPlayer
-    src={readspectrepauseExample2}
+    src="/examples/readspectrepauseExample2.cast"
     settings={{
         loop: false,
         terminalLineHeight: 1.1,

@@ -9,7 +9,6 @@ title: Start-SpectreRecording
 
 
 import { TerminalPlayer } from 'astro-terminal-player';
-import startspectrerecordingExample1 from '../../../../assets/examples/startspectrerecordingExample1.cast?url';
 
 ### Description
 
@@ -34,7 +33,7 @@ $result = Stop-SpectreRecording
 Write-SpectreHost "Result:`n$result"
 ```
 <TerminalPlayer
-    src={startspectrerecordingExample1}
+    src="/examples/startspectrerecordingExample1.cast"
     settings={{
         loop: false,
         terminalLineHeight: 1.1,
@@ -79,16 +78,9 @@ If this switch is present, the console will be cleared and a countdown will be d
 |----------|--------|--------|-------------|
 |`[Switch]`|false   |named   |false        |
 
-#### **Quiet**
-If this switch is present all terminal output from spectre console will be suppressed, it will not be visible on the terminal.
-
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[Switch]`|false   |named   |false        |
-
 ---
 
 ### Syntax
 ```powershell
-Start-SpectreRecording [[-Width] <Int32>] [[-Height] <Int32>] [[-RecordingType] <String>] [-CountdownAndClear] [-Quiet] [<CommonParameters>]
+Start-SpectreRecording [[-Width] <Int32>] [[-Height] <Int32>] [[-RecordingType] <String>] [-CountdownAndClear] [<CommonParameters>]
 ```
