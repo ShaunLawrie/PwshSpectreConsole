@@ -13,7 +13,8 @@ import addspectrejobExample1 from '../../../../assets/examples/addspectrejobExam
 
 ### Description
 
-This function adds a Spectre job to the list of jobs you want to wait for with Wait-SpectreJobs.
+This function adds a Spectre job to the list of jobs you want to wait for with Wait-SpectreJobs.  
+To retrieve the outcome of the job you need to use the standard PowerShell Receive-Job cmdlet.
 :::note
 This is only used inside `Invoke-SpectreCommandWithProgress` where the Spectre ProgressContext object is exposed.
 :::
@@ -27,7 +28,7 @@ This is only used inside `Invoke-SpectreCommandWithProgress` where the Spectre P
 > EXAMPLE 1
 
 ```powershell
-Invoke-SpectreCommandWithProgress -ScriptBlock {
+$jobOutcomes = Invoke-SpectreCommandWithProgress -ScriptBlock {
     param (
         $Context
     )
@@ -35,14 +36,14 @@ Invoke-SpectreCommandWithProgress -ScriptBlock {
     $jobs += Add-SpectreJob -Context $Context -JobName "job 1" -Job (Start-Job { Start-Sleep -Seconds 2 })
     $jobs += Add-SpectreJob -Context $Context -JobName "job 2" -Job (Start-Job { Start-Sleep -Seconds 4 })
     Wait-SpectreJobs -Context $Context -Jobs $jobs
+    return $jobs.Job
 }
+$jobOutcomes | Format-SpectreTable -Property Id, Name, PSJobTypeName, State, Command
 ```
 <Asciinema
     src={addspectrejobExample1}
     settings={{
         loop: false,
-        preload: true,
-        poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}

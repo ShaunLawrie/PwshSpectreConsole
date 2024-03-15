@@ -8,9 +8,6 @@ title: Invoke-SpectreScriptBlockQuietly
 
 
 
-import Asciinema from '../../../../components/Asciinema.astro'
-import invokespectrescriptblockquietlyExample1 from '../../../../assets/examples/invokespectrescriptblockquietlyExample1.cast?url'
-
 ### Description
 
 This function invokes a script block in a background job and returns the output. It also provides an option to suppress the output even more if there is garbage being printed to stderr if using Level = Quieter.
@@ -39,19 +36,9 @@ Invoke-SpectreCommandWithProgress {
         Write-Output "But it shouldn't break progress bar rendering"
     }
     $task1.Increment(50)
-    Write-SpectreHost ($value | Get-SpectreEscapedText)
+    return $value
 }
 ```
-<Asciinema
-    src={invokespectrescriptblockquietlyExample1}
-    settings={{
-        loop: false,
-        preload: true,
-        poster: 'npt:0:0.5',
-        terminalLineHeight: 1.1,
-        theme: "spectre"
-    }}
-/>
 
 
 ---

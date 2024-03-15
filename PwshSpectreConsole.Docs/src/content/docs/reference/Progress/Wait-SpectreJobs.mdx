@@ -8,9 +8,6 @@ title: Wait-SpectreJobs
 
 
 
-import Asciinema from '../../../../components/Asciinema.astro'
-import waitspectrejobsExample1 from '../../../../assets/examples/waitspectrejobsExample1.cast?url'
-
 ### Description
 
 This function waits for Spectre jobs to complete by checking the progress of each job and updating the corresponding task value.
@@ -38,16 +35,6 @@ Invoke-SpectreCommandWithProgress -ScriptBlock {
     Wait-SpectreJobs -Context $Context -Jobs $jobs
 }
 ```
-<Asciinema
-    src={waitspectrejobsExample1}
-    settings={{
-        loop: false,
-        preload: true,
-        poster: 'npt:0:0.5',
-        terminalLineHeight: 1.1,
-        theme: "spectre"
-    }}
-/>
 
 
 ---

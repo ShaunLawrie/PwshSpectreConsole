@@ -8,9 +8,6 @@ title: Read-SpectreSelection
 
 
 
-import Asciinema from '../../../../components/Asciinema.astro'
-import readspectreselectionExample1 from '../../../../assets/examples/readspectreselectionExample1.cast?url'
-
 ### Description
 
 This function displays a selection prompt using Spectre Console. The user can select an option from the list of choices provided. The function returns the selected option.
@@ -28,16 +25,6 @@ $color = Read-SpectreSelection -Title "Select your favorite color" -Choices @("R
 # Type "↓", "↓", "↓", "↓", "↲" to wrap around the list and choose green
 Write-SpectreHost "Your chosen color is '$color'"
 ```
-<Asciinema
-    src={readspectreselectionExample1}
-    settings={{
-        loop: false,
-        preload: true,
-        poster: 'npt:0:0.5',
-        terminalLineHeight: 1.1,
-        theme: "spectre"
-    }}
-/>
 
 
 ---
