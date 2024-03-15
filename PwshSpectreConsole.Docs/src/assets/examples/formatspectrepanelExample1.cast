@@ -1,4 +1,4 @@
-{"version": 2, "width": 110, "height": 5, "title": "Example 0", "env": {"TERM": "Spectre.Console"}}
+{"version": 2, "width": 100, "height": 5, "title": "Example 0", "env": {"TERM": "Spectre.Console"}}
 [0, "o", "\u001B[38;5;9m\u256D\u2500My Panel\u2500\u2500\u2500\u2500\u2500\u2500\u256E\u001B[0m\n\u001B[38;5;9m\u2502\u001B[0m Hello, world! \u001B[38;5;9m\u2502\u001B[0m\n\u001B[38;5;9m\u2570\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256F\u001B[0m\n"]
 
 
