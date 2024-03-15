@@ -8,13 +8,20 @@ title: Invoke-SpectreCommandWithStatus
 
 
 
+
+
+
+
 import Asciinema from '../../../../components/Asciinema.astro'
 
 ### Description
 
 This function starts a Spectre status spinner with the specified title and spinner type, and invokes the specified script block. The spinner will continue to spin until the script block completes.
 
+
+
 ---
+
 
 ### Examples
 > EXAMPLE 1
@@ -41,18 +48,32 @@ Invoke-SpectreCommandWithStatus -Spinner "Dots2" -Title "Showing a spinner..." -
     }}
 />
 
+
 ---
+
 
 ### Parameters
 #### **ScriptBlock**
+
 The script block to invoke.
+
+
+
+
+
 
 |Type           |Required|Position|PipelineInput|
 |---------------|--------|--------|-------------|
 |`[ScriptBlock]`|true    |1       |false        |
 
+
+
 #### **Spinner**
+
 The type of spinner to display.
+
+
+
 Valid Values:
 
 * Aesthetic
@@ -131,25 +152,51 @@ Valid Values:
 * Triangle
 * Weather
 
+
+
+
+
+
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|false   |2       |false        |
 
+
+
 #### **Title**
+
 The title to display above the spinner.
+
+
+
+
+
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|true    |3       |false        |
 
+
+
 #### **Color**
+
 The color of the spinner. Valid values can be found with Get-SpectreDemoColors.
+
+
+
+
+
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
 |`[Color]`|false   |4       |false        |
 
+
+
+
+
 ---
+
 
 ### Syntax
 ```powershell

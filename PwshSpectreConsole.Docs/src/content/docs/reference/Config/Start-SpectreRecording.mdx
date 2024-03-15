@@ -8,6 +8,10 @@ title: Start-SpectreRecording
 
 
 
+
+
+
+
 import Asciinema from '../../../../components/Asciinema.astro'
 
 ### Description
@@ -18,7 +22,10 @@ I've used this to record the examples on the docs help site.
 This is experimental.
 :::
 
+
+
 ---
+
 
 ### Examples
 > EXAMPLE 1
@@ -42,43 +49,83 @@ Write-SpectreHost "Result:`n$result"
     }}
 />
 
+
 ---
+
 
 ### Parameters
 #### **Width**
+
 The width of the recording.
+
+
+
+
+
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
 |`[Int32]`|false   |1       |false        |
 
+
+
 #### **Height**
+
 The height of the recording.
+
+
+
+
+
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
 |`[Int32]`|false   |2       |false        |
 
+
+
 #### **RecordingType**
+
 The type of recording to create.
+
+
+
 Valid Values:
 
 * asciinema
 * text
 * html
 
+
+
+
+
+
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|false   |3       |false        |
 
+
+
 #### **CountdownAndClear**
+
 If this switch is present, the console will be cleared and a countdown will be displayed before the recording starts.
+
+
+
+
+
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[Switch]`|false   |named   |false        |
 
+
+
+
+
 ---
+
 
 ### Syntax
 ```powershell
