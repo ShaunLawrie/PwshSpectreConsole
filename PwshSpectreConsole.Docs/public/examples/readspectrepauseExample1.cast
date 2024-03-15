@@ -1,0 +1,6 @@
+{"version": 2, "width": 110, "height": 4, "title": "Example 0", "env": {"TERM": "Spectre.Console"}}
+[0, "o", "\r\nPress the \u001B[38;5;9menter\u001B[0m key to continue, when you press it this message will disappear..."]
+[2.004, "o", "\r                                                                                         \r\n"]
+[2.004, "o", "\u001B[2A\r\n"]
+
+

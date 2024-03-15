@@ -8,20 +8,13 @@ title: Read-SpectreConfirm
 
 
 
-
-
-
-
 import Asciinema from '../../../../components/Asciinema.astro'
 
 ### Description
 
 Displays a simple confirmation prompt with the option of selecting yes or no. Additional options are provided to display either a success or failure response message in addition to the boolean return value.
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -43,94 +36,49 @@ Write-Host "Your answer was '$answer'"
     }}
 />
 
-
 ---
-
 
 ### Parameters
 #### **Prompt**
-
 The prompt to display to the user. The default value is "Do you like cute animals?".
-
-
-
-
-
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|false   |1       |false        |
 
-
-
 #### **DefaultAnswer**
-
 The default answer to the prompt if the user just presses enter. The default value is "y".
-
-
-
 Valid Values:
 
 * y
 * n
 * none
 
-
-
-
-
-
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|false   |2       |false        |
 
-
-
 #### **ConfirmSuccess**
-
 The text and markup to display if the user chooses yes. If left undefined, nothing will display.
-
-
-
-
-
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|false   |3       |false        |
 
-
-
 #### **ConfirmFailure**
-
 The text and markup to display if the user chooses no. If left undefined, nothing will display.
-
-
-
-
-
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|false   |4       |false        |
 
-
-
 #### **Color**
-
-
-
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
 |`[Color]`|false   |5       |false        |
 
-
-
-
-
 ---
-
 
 ### Syntax
 ```powershell

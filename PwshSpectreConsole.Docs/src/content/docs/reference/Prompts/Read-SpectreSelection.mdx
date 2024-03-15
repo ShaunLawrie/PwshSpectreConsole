@@ -8,20 +8,13 @@ title: Read-SpectreSelection
 
 
 
-
-
-
-
 import Asciinema from '../../../../components/Asciinema.astro'
 
 ### Description
 
 This function displays a selection prompt using Spectre Console. The user can select an option from the list of choices provided. The function returns the selected option.
 
-
-
 ---
-
 
 ### Examples
 > EXAMPLE 1
@@ -41,90 +34,45 @@ Write-SpectreHost "Your chosen color is '$color'"
     }}
 />
 
-
 ---
-
 
 ### Parameters
 #### **Title**
-
 The title of the selection prompt.
-
-
-
-
-
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|false   |1       |false        |
 
-
-
 #### **Choices**
-
 The list of choices to display in the selection prompt. ChoiceLabelProperty is required if the choices are complex objects rather than an array of strings.
-
-
-
-
-
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
 |`[Array]`|false   |2       |false        |
 
-
-
 #### **ChoiceLabelProperty**
-
 If the object is complex then the property of the choice object to use as the label in the selection prompt is required.
-
-
-
-
-
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
 |`[String]`|false   |3       |false        |
 
-
-
 #### **Color**
-
 The color of the selected option in the selection prompt.
-
-
-
-
-
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
 |`[Color]`|false   |4       |false        |
 
-
-
 #### **PageSize**
-
 The number of choices to display per page in the selection prompt.
-
-
-
-
-
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
 |`[Int32]`|false   |5       |false        |
 
-
-
-
-
 ---
-
 
 ### Syntax
 ```powershell
