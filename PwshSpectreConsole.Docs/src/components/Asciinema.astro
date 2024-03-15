@@ -51,7 +51,9 @@ const { src, settings } = Astro.props;
 
       players.set(elem, player);
 
-      observer.observe(elem);
+      setTimeout(() => {
+        observer.observe(elem);
+      }, 200);
     });
   }
 </script>
