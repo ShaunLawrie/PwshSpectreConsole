@@ -3,8 +3,6 @@ title: Get Started
 ---
 
 import { TerminalPlayer } from 'astro-terminal-player';
-import readspectreselectionExample1 from '../../../assets/examples/readspectreselectionExample1.cast?url';
-import readspectremultiselectionExample1 from '../../../assets/examples/readspectremultiselectionExample1.cast?url';
 
 ### Demo
 
@@ -36,7 +34,7 @@ Write-SpectreHost "Your chosen color is '$color'"
 > Example of a user being prompted with a select list:
 
 <TerminalPlayer
-    src={readspectreselectionExample1}
+    src="/examples/readspectreselectionExample1.cast"
     settings={{
         loop: false,
         terminalLineHeight: 1.1,
@@ -61,7 +59,7 @@ Write-SpectreHost "Your favourite fruits are $($chosenItems -join ', ')"
 > Example of a user being prompted with a multi-select list:
 
 <TerminalPlayer
-    src={readspectremultiselectionExample1}
+    src="/examples/readspectremultiselectionExample1.cast"
     settings={{
         loop: false,
         terminalLineHeight: 1.1,

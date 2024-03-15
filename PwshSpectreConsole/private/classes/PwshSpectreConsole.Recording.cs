@@ -141,10 +141,9 @@ namespace PwshSpectreConsole.Recording
     {
         private IAnsiConsole _ansiConsole;
         private AsciiCastWriter _writer;
-        private bool _quiet;
         public AsciiCastInput Input { get; }
 
-        public RecordingConsole(int width, int height, bool quiet)
+        public RecordingConsole(int width, int height)
         {
             var profileEnrichment = new ProfileEnrichment();
             profileEnrichment.UseDefaultEnrichers = false;
@@ -168,7 +167,6 @@ namespace PwshSpectreConsole.Recording
             console.Profile.Capabilities.Unicode = true;
             console.Profile.Out = output;
 
-            _quiet = quiet;
             _ansiConsole = console;
             _writer = asciiCast;
             Input = new AsciiCastInput();
@@ -205,10 +203,7 @@ namespace PwshSpectreConsole.Recording
 
         public void Write(IRenderable renderable)
         {
-            if(_quiet)
-            {
-                _ansiConsole.Write(renderable);
-            }
+            _ansiConsole.Write(renderable);
         }
     }
 }

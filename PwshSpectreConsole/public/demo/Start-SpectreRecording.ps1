@@ -1,8 +1,8 @@
 Import-NamespaceFromCsFile -Namespace "PwshSpectreConsole.Recording"
 
-$global:SpectreRecordingRecorder = $null
-$global:SpectreRecordingOriginalConsole = $null
-$global:SpectreRecordingType = $null
+$script:SpectreRecordingRecorder = $null
+$script:SpectreRecordingOriginalConsole = $null
+$script:SpectreRecordingType = $null
 
 function Start-SpectreRecording {
     <#
@@ -22,8 +22,6 @@ function Start-SpectreRecording {
             The type of recording to create.
         .PARAMETER CountdownAndClear
             If this switch is present, the console will be cleared and a countdown will be displayed before the recording starts.
-        .PARAMETER Quiet
-            If this switch is present all terminal output from spectre console will be suppressed, it will not be visible on the terminal.
         .EXAMPLE
             $recording = Start-SpectreRecording -RecordingType "Html" -CountdownAndClear
             # Use spectre console functions, these will be recorded
@@ -40,12 +38,11 @@ function Start-SpectreRecording {
         [int] $Height = (Get-HostHeight),
         [ValidateSet("asciinema", "text", "html")]
         [string] $RecordingType = "asciinema",
-        [switch] $CountdownAndClear,
-        [switch] $Quiet
+        [switch] $CountdownAndClear
     )
 
-    if($global:SpectreRecordingType) {
-        throw "A $global:SpectreRecordingType recording has already started"
+    if($script:SpectreRecordingType) {
+        throw "A $script:SpectreRecordingType recording has already started"
     }
 
     if($CountdownAndClear) {
@@ -61,19 +58,19 @@ function Start-SpectreRecording {
         }
     }
 
-    $global:SpectreRecordingOriginalConsole = [Spectre.Console.AnsiConsole]::Console
+    $script:SpectreRecordingOriginalConsole = [Spectre.Console.AnsiConsole]::Console
 
     if($RecordingType -eq "asciinema") {
         # Create a recording console for asciinema, it's a bit fiddlier and requires an iansiconsole that can record durations between frames
-        $global:SpectreRecordingRecorder = [PwshSpectreConsole.Recording.RecordingConsole]::new($width, $height, $quiet)
+        $script:SpectreRecordingRecorder = [PwshSpectreConsole.Recording.RecordingConsole]::new($width, $height)
     } else {
         # Use the built in recorder
-        $global:SpectreRecordingRecorder = [Spectre.Console.Recorder]::new($global:SpectreRecordingOriginalConsole)
+        $script:SpectreRecordingRecorder = [Spectre.Console.Recorder]::new($script:SpectreRecordingOriginalConsole)
     }
 
     # Override current spectre console instance
-    $global:SpectreRecordingType = $RecordingType
-    [Spectre.Console.AnsiConsole]::Console = $global:SpectreRecordingRecorder
+    $script:SpectreRecordingType = $RecordingType
+    [Spectre.Console.AnsiConsole]::Console = $script:SpectreRecordingRecorder
 
-    return $global:SpectreRecordingRecorder
+    return $script:SpectreRecordingRecorder
 }

@@ -29,7 +29,7 @@ function Stop-SpectreRecording {
         [string] $OutputPath
     )
 
-    if(!$global:SpectreRecordingType) {
+    if(!$script:SpectreRecordingType) {
         Write-Warning "No recording in progress"
         return
     }
@@ -39,23 +39,23 @@ function Stop-SpectreRecording {
     }
 
     # Get the recording
-    switch ($global:SpectreRecordingType) {
+    switch ($script:SpectreRecordingType) {
         "asciinema" {
-            $recording = $global:SpectreRecordingRecorder.GetAsciiCastRecording($Title)
+            $recording = $script:SpectreRecordingRecorder.GetAsciiCastRecording($Title)
         }
         "text" {
-            $recording = [Spectre.Console.RecorderExtensions]::ExportText($global:SpectreRecordingRecorder)
+            $recording = [Spectre.Console.RecorderExtensions]::ExportText($script:SpectreRecordingRecorder)
         }
         "html" {
-            $recording = [Spectre.Console.RecorderExtensions]::ExportHtml($global:SpectreRecordingRecorder)
+            $recording = [Spectre.Console.RecorderExtensions]::ExportHtml($script:SpectreRecordingRecorder)
         }
     }
 
     # Reset the console
-    [Spectre.Console.AnsiConsole]::Console = $global:SpectreRecordingOriginalConsole
-    $global:SpectreRecordingRecorder = $null
-    $global:SpectreRecordingOriginalConsole = $null
-    $global:SpectreRecordingType = $null
+    [Spectre.Console.AnsiConsole]::Console = $script:SpectreRecordingOriginalConsole
+    $script:SpectreRecordingRecorder = $null
+    $script:SpectreRecordingOriginalConsole = $null
+    $script:SpectreRecordingType = $null
     
     # Return the output
     if ($OutputPath) {

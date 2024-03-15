@@ -113,7 +113,7 @@ foreach ($doc in $docs) {
                 $specialChars = @("↑", "↓", "↲", "¦", "<space>")
                 $inputDelay = Get-Random -Minimum 500 -Maximum 1000
                 $typingDelay = Get-Random -Minimum 50 -Maximum 200
-                $recordingConsole = Start-SpectreRecording -RecordingType "asciinema" -Width 100 -Height 48 -Quiet
+                $recordingConsole = Start-SpectreRecording -RecordingType "asciinema" -Width 110 -Height 48
 
                 Write-Host "Generating sample for:"
                 Write-Host -ForegroundColor DarkGray $code
@@ -151,12 +151,13 @@ foreach ($doc in $docs) {
 
                 $castName = ($doc.Name -replace '.md$', '' -replace '-', '').ToLower() + "Example$example"
                 Set-Content -Path "$asciiCastOutputPath\$castName.cast" -Value $recording
-                $castUrl += "/examples/$castName.cast';`n"
+                $castUrl = "/examples/$castName.cast"
 
                 # Replace the code block with the ascii cast
                 $castTemplate = Get-AsciiCastTemplate -Name $castUrl
                 $content = $content -replace "(?ms)> EXAMPLE $example.+?(``````.+?``````)", "> EXAMPLE $example`n`n`$1`n$castTemplate"
             }
+            $content = $content -replace "### Description", "$imports`n### Description"
         } finally {
             Pop-Location
             [Spectre.Console.AnsiConsole]::Console = $originalConsole
