@@ -84,6 +84,7 @@ foreach ($doc in $docs) {
     } elseif (((Get-Date) - ([datetime]$modified)).TotalDays -lt $recentThresholdDays) {
         $tag = "Updated"
     }
+    Write-Host "File $($doc.Name) was last modified on $modified and created on $created, using tag $tag"
     
     # Add the tag to the top of the file
     if($tag) {

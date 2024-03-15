@@ -203,7 +203,7 @@ function Get-GitCommitDatesForHashFile {
         $hashfileName = "_" + ($doc.Name -replace '.md$', '.sha256')
         $gitHashfileName = Join-Path $group.Name $hashfileName
         $dates = git log --follow --pretty="format:%ci" -- $gitHashfileName
-        return $dates
+        return $dates | Sort-Object -Descending
     } finally {
         Pop-Location
     }
