@@ -22,9 +22,9 @@ $env:GIT_COMMITTER_EMAIL = 'shaun.r.lawrie@gmail.com'
 if($IsLinux) {
     $env:TEMP = "/tmp"
 }
-$outputPath = "$PSScriptRoot\..\content\docs\reference\"
-$asciiCastOutputPath = "$PSScriptRoot\..\..\public\examples\"
-$stagingPath = "$env:TEMP\refs-staging"
+$outputPath = "$PSScriptRoot/../content/docs/reference/"
+$asciiCastOutputPath = "$PSScriptRoot/../../public/examples/"
+$stagingPath = "$env:TEMP/refs-staging"
 if(Test-Path $stagingPath) {
     Remove-Item $stagingPath -Force -Recurse
 }
