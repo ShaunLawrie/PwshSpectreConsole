@@ -22,7 +22,7 @@
             Write-Output "But it shouldn't break progress bar rendering"
         }
         $task1.Increment(50)
-        Write-SpectreHost ($value | Get-SpectreEscapedText)
+        return $value
     }
 #>
 function Invoke-SpectreScriptBlockQuietly {
@@ -45,7 +45,8 @@ function Invoke-SpectreScriptBlockQuietly {
         
         switch ($Level) {
             "Quiet" {
-                return ($job | Receive-Job 2>&1)
+                $output = $job | Receive-Job 2>$null
+                return $output
             }
             "Quieter" {
                 return
