@@ -7,7 +7,7 @@
     This function invokes a script block in a background job and returns the output. It also provides an option to suppress the output even more if there is garbage being printed to stderr if using Level = Quieter.
 
 .EXAMPLE
-    Invoke-SpectreCommandWithProgress {
+    $result = Invoke-SpectreCommandWithProgress {
         param (
             $Context
         )
@@ -23,6 +23,7 @@
         $task1.Increment(50)
         return $value
     }
+    Write-SpectreHost "Result: $result"
 #>
 function Invoke-SpectreScriptBlockQuietly {
     [Reflection.AssemblyMetadata("title", "Invoke-SpectreScriptBlockQuietly")]
