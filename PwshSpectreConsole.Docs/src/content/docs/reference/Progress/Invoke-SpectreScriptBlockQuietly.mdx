@@ -24,7 +24,7 @@ This function invokes a script block in a background job and returns the output.
 > EXAMPLE 1
 
 ```powershell
-Invoke-SpectreCommandWithProgress {
+$result = Invoke-SpectreCommandWithProgress {
     param (
         $Context
     )
@@ -40,6 +40,7 @@ Invoke-SpectreCommandWithProgress {
     $task1.Increment(50)
     return $value
 }
+Write-SpectreHost "Result: $result"
 ```
 <Asciinema
     src={invokespectrescriptblockquietlyExample1}
