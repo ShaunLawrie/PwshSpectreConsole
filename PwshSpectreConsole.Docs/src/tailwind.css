@@ -1,3 +1,5 @@
+@import '../node_modules/asciinema-player/dist/bundle/asciinema-player.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -12,8 +14,6 @@
     padding-block: clamp(2.5rem, calc(1rem + 10vmin), 5rem);
   }
 }
-
-@import '../node_modules/asciinema-player/dist/bundle/asciinema-player.css';
 
 div.asciinema-player-theme-spectre {
   border: solid 1px var(--sl-color-gray-5);

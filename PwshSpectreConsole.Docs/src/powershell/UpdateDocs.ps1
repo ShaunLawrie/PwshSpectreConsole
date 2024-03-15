@@ -113,7 +113,7 @@ foreach ($doc in $docs) {
                 $specialChars = @("↑", "↓", "↲", "¦", "<space>")
                 $inputDelay = Get-Random -Minimum 500 -Maximum 1000
                 $typingDelay = Get-Random -Minimum 50 -Maximum 200
-                $recordingConsole = Start-SpectreRecording -RecordingType "asciinema" -Width 110 -Height 48 -Quiet
+                $recordingConsole = Start-SpectreRecording -RecordingType "asciinema" -Width 100 -Height 48 -Quiet
 
                 Write-Host "Generating sample for:"
                 Write-Host -ForegroundColor DarkGray $code
