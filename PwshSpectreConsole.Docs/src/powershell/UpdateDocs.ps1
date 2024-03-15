@@ -21,7 +21,7 @@ if($IsLinux) {
     $env:TEMP = "/tmp"
 }
 $outputPath = "$PSScriptRoot\..\content\docs\reference\"
-$asciiCastOutputPath = "$PSScriptRoot\..\assets\examples\"
+$asciiCastOutputPath = "$PSScriptRoot\..\..\public\examples\"
 $stagingPath = "$env:TEMP\refs-staging"
 if(Test-Path $stagingPath) {
     Remove-Item $stagingPath -Force -Recurse
@@ -151,13 +151,12 @@ foreach ($doc in $docs) {
 
                 $castName = ($doc.Name -replace '.md$', '' -replace '-', '').ToLower() + "Example$example"
                 Set-Content -Path "$asciiCastOutputPath\$castName.cast" -Value $recording
-                $imports += "import $castName from '../../../../assets/examples/$castName.cast?url';`n"
+                $castUrl += "/examples/$castName.cast';`n"
 
                 # Replace the code block with the ascii cast
-                $castTemplate = Get-AsciiCastTemplate -Name $castName
+                $castTemplate = Get-AsciiCastTemplate -Name $castUrl
                 $content = $content -replace "(?ms)> EXAMPLE $example.+?(``````.+?``````)", "> EXAMPLE $example`n`n`$1`n$castTemplate"
             }
-            $content = $content -replace "### Description", "$imports`n### Description"
         } finally {
             Pop-Location
             [Spectre.Console.AnsiConsole]::Console = $originalConsole
