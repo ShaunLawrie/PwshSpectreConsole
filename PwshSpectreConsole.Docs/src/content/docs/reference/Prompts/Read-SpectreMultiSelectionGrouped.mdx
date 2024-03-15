@@ -8,6 +8,9 @@ title: Read-SpectreMultiSelectionGrouped
 
 
 
+import Asciinema from '../../../../components/Asciinema.astro'
+import readspectremultiselectiongroupedExample1 from '../../../../assets/examples/readspectremultiselectiongroupedExample1.cast?url'
+
 ### Description
 
 Displays a multi-selection prompt with grouped choices and returns the selected choices. The prompt allows the user to select one or more choices from a list of options. The choices can be grouped into categories, and the user can select choices from each category.
@@ -34,6 +37,14 @@ $selected = Read-SpectreMultiSelectionGrouped -Title "Select your favorite color
 # Type "↓", "<space>", "↓", "↓", "↓", "<space>", "↲" to choose red and all secondary colors
 Write-SpectreHost "Your favourite colors are $($selected -join ', ')"
 ```
+<Asciinema
+    src={readspectremultiselectiongroupedExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre"
+    }}
+/>
 
 
 ---

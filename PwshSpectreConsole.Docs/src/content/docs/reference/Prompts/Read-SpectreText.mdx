@@ -8,6 +8,11 @@ title: Read-SpectreText
 
 
 
+import Asciinema from '../../../../components/Asciinema.astro'
+import readspectretextExample1 from '../../../../assets/examples/readspectretextExample1.cast?url'
+import readspectretextExample2 from '../../../../assets/examples/readspectretextExample2.cast?url'
+import readspectretextExample3 from '../../../../assets/examples/readspectretextExample3.cast?url'
+
 ### Description
 
 This function uses Spectre Console to prompt the user with a question and returns the user's input.
@@ -30,6 +35,14 @@ $name = Read-SpectreText -Question "What's your name?" -DefaultAnswer "Prefer no
 # Type "↲" to provide no answer
 Write-SpectreHost "Your name is '$name'"
 ```
+<Asciinema
+    src={readspectretextExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre"
+    }}
+/>
 > EXAMPLE 2
 
 ```powershell
@@ -37,6 +50,14 @@ $favouriteColor = Read-SpectreText -Question "What's your favorite color?" -Defa
 # Type "orange", "↲" to enter your favourite color
 Write-SpectreHost "Your favourite color is '$favouriteColor'"
 ```
+<Asciinema
+    src={readspectretextExample2}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre"
+    }}
+/>
 > EXAMPLE 3
 
 ```powershell
@@ -44,6 +65,14 @@ $favouriteColor = Read-SpectreText -Question "What's your favorite color?" -Answ
 # Type "orange", "↲", "magenta", "↲" to enter text that must match a choice in the choices list, orange will be rejected, magenta will be accepted
 Write-SpectreHost "Your favourite color is '$favouriteColor'"
 ```
+<Asciinema
+    src={readspectretextExample3}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre"
+    }}
+/>
 
 
 ---

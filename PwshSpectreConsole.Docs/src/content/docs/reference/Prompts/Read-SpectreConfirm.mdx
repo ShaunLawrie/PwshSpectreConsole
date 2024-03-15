@@ -8,6 +8,9 @@ title: Read-SpectreConfirm
 
 
 
+import Asciinema from '../../../../components/Asciinema.astro'
+import readspectreconfirmExample1 from '../../../../assets/examples/readspectreconfirmExample1.cast?url'
+
 ### Description
 
 Displays a simple confirmation prompt with the option of selecting yes or no. Additional options are provided to display either a success or failure response message in addition to the boolean return value.
@@ -27,6 +30,14 @@ $answer = Read-SpectreConfirm -Prompt "Would you like to continue the preview in
 # Type "y", "↲" to accept the prompt
 Write-Host "Your answer was '$answer'"
 ```
+<Asciinema
+    src={readspectreconfirmExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre"
+    }}
+/>
 
 
 ---
