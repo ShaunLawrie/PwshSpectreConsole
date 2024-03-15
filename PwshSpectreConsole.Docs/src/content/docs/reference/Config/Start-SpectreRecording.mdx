@@ -12,9 +12,6 @@ title: Start-SpectreRecording
 
 
 
-import Asciinema from '../../../../components/Asciinema.astro'
-import startspectrerecordingExample1 from '../../../../assets/examples/startspectrerecordingExample1.cast?url'
-
 ### Description
 
 Starts a recording of the current console output. This can be used to record all of the spectre console interactions in a PowerShell session.  
@@ -40,16 +37,6 @@ $result = Stop-SpectreRecording
 # Output the results
 Write-SpectreHost "Result:`n$result"
 ```
-<Asciinema
-    src={startspectrerecordingExample1}
-    settings={{
-        loop: false,
-        preload: true,
-        poster: 'npt:0:0.5',
-        terminalLineHeight: 1.1,
-        theme: "spectre"
-    }}
-/>
 
 
 ---

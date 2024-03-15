@@ -24,7 +24,7 @@ This function starts a Spectre status spinner with the specified title and spinn
 > EXAMPLE 1
 
 ```powershell
-Invoke-SpectreCommandWithStatus -Spinner "Dots2" -Title "Showing a spinner..." -ScriptBlock {
+$result = Invoke-SpectreCommandWithStatus -Spinner "Dots2" -Title "Showing a spinner..." -ScriptBlock {
     # Write updates to the host using Write-SpectreHost
     Start-Sleep -Seconds 1
     Write-SpectreHost "`n[grey]LOG:[/] Doing some work      "
@@ -33,14 +33,15 @@ Invoke-SpectreCommandWithStatus -Spinner "Dots2" -Title "Showing a spinner..." -
     Start-Sleep -Seconds 1
     Write-SpectreHost "`n[grey]LOG:[/] Done                 "
     Start-Sleep -Seconds 1
+    Write-SpectreHost " "
+    return "Some result"
 }
+Write-SpectreHost "Result: $result"
 ```
 <Asciinema
     src={invokespectrecommandwithstatusExample1}
     settings={{
         loop: false,
-        preload: true,
-        poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"
     }}

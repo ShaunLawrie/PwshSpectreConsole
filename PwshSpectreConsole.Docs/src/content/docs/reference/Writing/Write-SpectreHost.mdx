@@ -9,9 +9,6 @@ description: The Write-SpectreHost function writes a message to the console usin
 
 
 
-import Asciinema from '../../../../components/Asciinema.astro'
-import writespectrehostExample1 from '../../../../assets/examples/writespectrehostExample1.cast?url'
-
 ### Description
 
 The Write-SpectreHost function writes a message to the console using Spectre Console. It supports ANSI markup and can optionally append a newline character to the end of the message.
@@ -29,16 +26,6 @@ Supported emoji are defined at [https://spectreconsole.net/appendix/emojis](http
 ```powershell
 Write-SpectreHost -Message "Hello, [blue underline]world[/]! :call_me_hand:"
 ```
-<Asciinema
-    src={writespectrehostExample1}
-    settings={{
-        loop: false,
-        preload: true,
-        poster: 'npt:0:0.5',
-        terminalLineHeight: 1.1,
-        theme: "spectre"
-    }}
-/>
 
 
 ---
