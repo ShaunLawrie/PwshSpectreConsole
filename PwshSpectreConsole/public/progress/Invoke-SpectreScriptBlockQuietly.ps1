@@ -18,7 +18,6 @@
             Write-Output "And stuff..."
             Write-Error "This is an error"
             Start-Sleep -Seconds 3
-            git checkout nonexistentbranch
             Write-Output "But it shouldn't break progress bar rendering"
         }
         $task1.Increment(50)
