@@ -175,6 +175,8 @@ namespace PwshSpectreConsole.Recording
         public string GetAsciiCastRecording(string title)
         {
             string json = _writer.GetOutput();
+            json = Regex.Replace(json, @"\\n", @"\r\n");
+            json = Regex.Replace(json, @"\\r\\r\\n", @"\r\n");
             // count number of times [2A appears in the json
             var cursorUps = Regex.Matches(json, @"\[([0-9]+)A");
             var countOfCursorUps = 0;
