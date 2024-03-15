@@ -162,7 +162,7 @@ foreach ($doc in $docs) {
 
                 $castName = ($doc.Name -replace '.md$', '' -replace '-', '').ToLower() + "Example$example"
                 Set-Content -Path "$asciiCastOutputPath\$castName.cast" -Value $recording
-                $imports += "import $castName from '../../../../assets/examples/$castName.cast?url'`n"
+                $imports += "import $castName from '../../../../assets/examples/$castName.cast'`n"
 
                 # Replace the code block with the ascii cast
                 $castTemplate = Get-AsciiCastTemplate -Name $castName
