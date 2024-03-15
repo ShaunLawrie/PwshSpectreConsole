@@ -8,6 +8,12 @@ param(
 
 $ErrorActionPreference = "Stop"
 
+# The new version has a bug which is failing this on windows
+$helpOut = Get-Module "HelpOut" -ListAvailable
+if($helpOut.Version.ToString() -ne "0.5") {
+    throw "Must be run with HelpOut v0.5"
+}
+
 & "$PSScriptRoot\..\..\..\PwshSpectreConsole\Build.ps1"
 
 Import-Module "$PSScriptRoot\..\..\..\PwshSpectreConsole\PwshSpectreConsole.psd1" -Force
@@ -52,6 +58,7 @@ foreach ($doc in $docs) {
 }
 
 # Update the hash files in git so the modified files can be detected
+# I regret doing it this way but cbf changing it now
 Update-HashFilesInGit -StagingPath $stagingPath -OutputPath $outputPath
 
 # Format the files for astro

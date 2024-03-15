@@ -200,7 +200,7 @@ function Get-GitCommitDatesForHashFile {
     try {
         Set-Location $OutputPath
         $group = Get-Group -Name $Name
-        $hashfileName = "_" + ($doc.Name -replace '.md$', '.sha256')
+        $hashfileName = "_" + ($Name -replace '.md$', '.sha256')
         $gitHashfileName = Join-Path $group.Name $hashfileName
         Write-Host "Getting git log for $gitHashfileName in cwd $OutputPath"
         $dates = git log --follow --pretty="format:%ci" -- $gitHashfileName

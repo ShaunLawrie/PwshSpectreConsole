@@ -109,7 +109,7 @@ jobs:
           gh release create "v$newVersion-$newPrereleaseTag" --target prerelease --generate-notes --prerelease
 
           # Publish prerelease docs
-          Install-Module HelpOut -Scope CurrentUser -Force
+          Install-Module HelpOut -Scope CurrentUser -RequiredVersion 0.5 -Force
           & .\PwshSpectreConsole.Docs\src\powershell\UpdateDocs.ps1 -NonInteractive
           git config --global user.name 'Shaun Lawrie (via GitHub Actions)'
           git config --global user.email 'shaun.r.lawrie@gmail.com'
