@@ -9,6 +9,7 @@ title: Read-SpectreMultiSelection
 
 
 import Asciinema from '../../../../components/Asciinema.astro'
+import readspectremultiselectionExample1 from '../../../../assets/examples/readspectremultiselectionExample1.cast?url'
 
 ### Description
 
@@ -30,9 +31,10 @@ $fruits = Read-SpectreMultiSelection -Title "Select your favourite fruits" `
 Write-SpectreHost "Your favourite fruits are $($fruits -join ', ')"
 ```
 <Asciinema
-    src="/examples/readspectremultiselectionExample1.cast"
+    src={readspectremultiselectionExample1}
     settings={{
         loop: false,
+        preload: true,
         poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"

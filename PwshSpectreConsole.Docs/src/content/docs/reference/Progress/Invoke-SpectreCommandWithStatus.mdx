@@ -9,6 +9,7 @@ title: Invoke-SpectreCommandWithStatus
 
 
 import Asciinema from '../../../../components/Asciinema.astro'
+import invokespectrecommandwithstatusExample1 from '../../../../assets/examples/invokespectrecommandwithstatusExample1.cast?url'
 
 ### Description
 
@@ -35,9 +36,10 @@ Invoke-SpectreCommandWithStatus -Spinner "Dots2" -Title "Showing a spinner..." -
 }
 ```
 <Asciinema
-    src="/examples/invokespectrecommandwithstatusExample1.cast"
+    src={invokespectrecommandwithstatusExample1}
     settings={{
         loop: false,
+        preload: true,
         poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"

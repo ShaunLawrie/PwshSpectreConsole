@@ -9,6 +9,7 @@ title: Get-SpectreDemoEmoji
 
 
 import Asciinema from '../../../../components/Asciinema.astro'
+import getspectredemoemojiExample1 from '../../../../assets/examples/getspectredemoemojiExample1.cast?url'
 
 ### Description
 
@@ -26,9 +27,10 @@ The Get-SpectreDemoEmoji function retrieves a collection of emojis available in 
 Get-SpectreDemoEmoji -Count 5
 ```
 <Asciinema
-    src="/examples/getspectredemoemojiExample1.cast"
+    src={getspectredemoemojiExample1}
     settings={{
         loop: false,
+        preload: true,
         poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"

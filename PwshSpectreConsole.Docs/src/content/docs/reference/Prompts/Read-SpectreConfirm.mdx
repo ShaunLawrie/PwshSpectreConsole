@@ -9,6 +9,7 @@ title: Read-SpectreConfirm
 
 
 import Asciinema from '../../../../components/Asciinema.astro'
+import readspectreconfirmExample1 from '../../../../assets/examples/readspectreconfirmExample1.cast?url'
 
 ### Description
 
@@ -30,9 +31,10 @@ $answer = Read-SpectreConfirm -Prompt "Would you like to continue the preview in
 Write-Host "Your answer was '$answer'"
 ```
 <Asciinema
-    src="/examples/readspectreconfirmExample1.cast"
+    src={readspectreconfirmExample1}
     settings={{
         loop: false,
+        preload: true,
         poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"

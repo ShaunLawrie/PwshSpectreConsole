@@ -10,6 +10,7 @@ description: The Write-SpectreHost function writes a message to the console usin
 
 
 import Asciinema from '../../../../components/Asciinema.astro'
+import writespectrehostExample1 from '../../../../assets/examples/writespectrehostExample1.cast?url'
 
 ### Description
 
@@ -29,9 +30,10 @@ Supported emoji are defined at [https://spectreconsole.net/appendix/emojis](http
 Write-SpectreHost -Message "Hello, [blue underline]world[/]! :call_me_hand:"
 ```
 <Asciinema
-    src="/examples/writespectrehostExample1.cast"
+    src={writespectrehostExample1}
     settings={{
         loop: false,
+        preload: true,
         poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"

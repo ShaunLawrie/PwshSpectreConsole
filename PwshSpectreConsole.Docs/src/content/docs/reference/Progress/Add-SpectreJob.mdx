@@ -9,6 +9,7 @@ title: Add-SpectreJob
 
 
 import Asciinema from '../../../../components/Asciinema.astro'
+import addspectrejobExample1 from '../../../../assets/examples/addspectrejobExample1.cast?url'
 
 ### Description
 
@@ -37,9 +38,10 @@ Invoke-SpectreCommandWithProgress -ScriptBlock {
 }
 ```
 <Asciinema
-    src="/examples/addspectrejobExample1.cast"
+    src={addspectrejobExample1}
     settings={{
         loop: false,
+        preload: true,
         poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"

@@ -9,6 +9,7 @@ title: Format-SpectreTree
 
 
 import Asciinema from '../../../../components/Asciinema.astro'
+import formatspectretreeExample1 from '../../../../assets/examples/formatspectretreeExample1.cast?url'
 
 ### Description
 
@@ -48,9 +49,10 @@ $data = @{
 Format-SpectreTree -Data $data -Guide BoldLine -Color "Green"
 ```
 <Asciinema
-    src="/examples/formatspectretreeExample1.cast"
+    src={formatspectretreeExample1}
     settings={{
         loop: false,
+        preload: true,
         poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"

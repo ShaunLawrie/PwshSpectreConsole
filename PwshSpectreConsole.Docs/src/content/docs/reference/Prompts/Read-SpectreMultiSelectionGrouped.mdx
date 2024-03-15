@@ -9,6 +9,7 @@ title: Read-SpectreMultiSelectionGrouped
 
 
 import Asciinema from '../../../../components/Asciinema.astro'
+import readspectremultiselectiongroupedExample1 from '../../../../assets/examples/readspectremultiselectiongroupedExample1.cast?url'
 
 ### Description
 
@@ -37,9 +38,10 @@ $selected = Read-SpectreMultiSelectionGrouped -Title "Select your favorite color
 Write-SpectreHost "Your favourite colors are $($selected -join ', ')"
 ```
 <Asciinema
-    src="/examples/readspectremultiselectiongroupedExample1.cast"
+    src={readspectremultiselectiongroupedExample1}
     settings={{
         loop: false,
+        preload: true,
         poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"

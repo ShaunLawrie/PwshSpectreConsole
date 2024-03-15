@@ -9,6 +9,9 @@ title: Format-SpectreTable
 
 
 import Asciinema from '../../../../components/Asciinema.astro'
+import formatspectretableExample1 from '../../../../assets/examples/formatspectretableExample1.cast?url'
+import formatspectretableExample2 from '../../../../assets/examples/formatspectretableExample2.cast?url'
+import formatspectretableExample3 from '../../../../assets/examples/formatspectretableExample3.cast?url'
 
 ### Description
 
@@ -30,9 +33,10 @@ $data = @(
 Format-SpectreTable -Data $data
 ```
 <Asciinema
-    src="/examples/formatspectretableExample1.cast"
+    src={formatspectretableExample1}
     settings={{
         loop: false,
+        preload: true,
         poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"
@@ -52,9 +56,10 @@ $Properties = @(
 Get-ChildItem | Format-SpectreTable -Property $Properties -AllowMarkup
 ```
 <Asciinema
-    src="/examples/formatspectretableExample2.cast"
+    src={formatspectretableExample2}
     settings={{
         loop: false,
+        preload: true,
         poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"
@@ -66,9 +71,10 @@ Get-ChildItem | Format-SpectreTable -Property $Properties -AllowMarkup
 1..10 | Format-SpectreTable -Title Numbers
 ```
 <Asciinema
-    src="/examples/formatspectretableExample3.cast"
+    src={formatspectretableExample3}
     settings={{
         loop: false,
+        preload: true,
         poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"

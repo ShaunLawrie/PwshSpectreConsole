@@ -9,6 +9,8 @@ title: Read-SpectrePause
 
 
 import Asciinema from '../../../../components/Asciinema.astro'
+import readspectrepauseExample1 from '../../../../assets/examples/readspectrepauseExample1.cast?url'
+import readspectrepauseExample2 from '../../../../assets/examples/readspectrepauseExample2.cast?url'
 
 ### Description
 
@@ -27,9 +29,10 @@ Read-SpectrePause -Message "Press the [red]enter[/] key to continue, when you pr
 # Type "↲" to dismiss the message
 ```
 <Asciinema
-    src="/examples/readspectrepauseExample1.cast"
+    src={readspectrepauseExample1}
     settings={{
         loop: false,
+        preload: true,
         poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"
@@ -42,9 +45,10 @@ Read-SpectrePause -Message "Press the [red]ANY[/] key to continue, when you pres
 # Type "x" to dismiss the message
 ```
 <Asciinema
-    src="/examples/readspectrepauseExample2.cast"
+    src={readspectrepauseExample2}
     settings={{
         loop: false,
+        preload: true,
         poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"
