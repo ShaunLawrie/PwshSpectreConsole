@@ -204,7 +204,10 @@ function Get-GitCommitDatesForHashFile {
         $gitHashfileName = Join-Path $group.Name $hashfileName
         Write-Host "Getting git log for $gitHashfileName in cwd $OutputPath"
         $dates = git log --follow --pretty="format:%ci" -- $gitHashfileName
-        return $dates | Sort-Object -Descending | Where-Object { $_ -notlike "*2024-03*" }
+        Write-Host "All dates:`n$($dates -join "`n")"
+        $filteredDates = $dates | Sort-Object -Descending | Where-Object { $_ -notlike "*2024-03*" }
+        Write-Host "Filtered dates:`n$($filteredDates -join "`n")"
+        return $filteredDates | Sort-Object -Descending | Where-Object { $_ -notlike "*2024-03*" }
     } finally {
         Pop-Location
     }
