@@ -24,7 +24,7 @@ jobs:
           $ErrorActionPreference = "Stop"
           & .\PwshSpectreConsole\Build.ps1
           Install-Module HelpOut -Scope CurrentUser -Force
-          & .\PwshSpectreConsole.Docs\UpdateDocs.ps1 -NonInteractive
+          & .\PwshSpectreConsole.Docs\src\powershell\UpdateDocs.ps1 -NonInteractive
           git config --global user.name 'Shaun Lawrie (via GitHub Actions)'
           git config --global user.email 'shaun.r.lawrie@gmail.com'
           git add PwshSpectreConsole.Docs/src/content || true
