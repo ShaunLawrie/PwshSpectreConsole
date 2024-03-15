@@ -29,7 +29,7 @@ if($IsLinux) {
     $env:TEMP = "/tmp"
 }
 $outputPath = "$PSScriptRoot/../content/docs/reference/"
-$asciiCastOutputPath = "$PSScriptRoot/../../public/examples/"
+$asciiCastOutputPath = "$PSScriptRoot/../assets/examples/"
 $stagingPath = "$env:TEMP/refs-staging"
 if(Test-Path $stagingPath) {
     Remove-Item $stagingPath -Force -Recurse
@@ -162,10 +162,10 @@ foreach ($doc in $docs) {
 
                 $castName = ($doc.Name -replace '.md$', '' -replace '-', '').ToLower() + "Example$example"
                 Set-Content -Path "$asciiCastOutputPath\$castName.cast" -Value $recording
-                $castUrl = "/examples/$castName.cast"
+                $imports += "import $castName from '../../../../assets/examples/$castName.cast?url'`n"
 
                 # Replace the code block with the ascii cast
-                $castTemplate = Get-AsciiCastTemplate -Name $castUrl
+                $castTemplate = Get-AsciiCastTemplate -Name $castName
                 $content = $content -replace "(?ms)> EXAMPLE $example.+?(``````.+?``````)", "> EXAMPLE $example`n`n`$1`n$castTemplate"
             }
             $content = $content -replace "### Description", "$imports`n### Description"

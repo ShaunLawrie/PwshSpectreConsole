@@ -3,6 +3,8 @@ title: Get Started
 ---
 
 import Asciinema from '../../../components/Asciinema.astro'
+import readspectreselectionExample1 from '../../../assets/examples/readspectreselectionExample1.cast?url'
+import readspectremultiselectionExample1 from '../../../assets/examples/readspectremultiselectionExample1.cast?url'
 
 ### Demo
 
@@ -34,7 +36,7 @@ Write-SpectreHost "Your chosen color is '$color'"
 > Example of a user being prompted with a select list:
 
 <Asciinema
-    src="/examples/readspectreselectionExample1.cast"
+    src={readspectreselectionExample1}
     settings={{
         loop: false,
         poster: 'npt:0:0',
@@ -59,7 +61,7 @@ Write-SpectreHost "Your favourite fruits are $($chosenItems -join ', ')"
 > Example of a user being prompted with a multi-select list:
 
 <Asciinema
-    src="/examples/readspectremultiselectionExample1.cast"
+    src={readspectremultiselectionExample1}
     settings={{
         loop: false,
         poster: 'npt:0:0',

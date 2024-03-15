@@ -215,9 +215,10 @@ function Get-GitCommitDatesForHashFile {
 
 $script:AsciiCastTemplate = @'
 <Asciinema
-    src="CAST_URL"
+    src={CAST_NAME}
     settings={{
         loop: false,
+        preload: true,
         poster: 'npt:0:0.5',
         terminalLineHeight: 1.1,
         theme: "spectre"
@@ -230,5 +231,5 @@ function Get-AsciiCastTemplate {
         [string] $Name
     )
 
-    return $script:AsciiCastTemplate -replace "CAST_URL", $Name
+    return $script:AsciiCastTemplate -replace "CAST_NAME", $Name
 }
