@@ -39,3 +39,8 @@ div.asciinema-player-theme-spectre span {
 div.ap-play-button {
   display: none;
 }
+
+div.ap-wrapper div.ap-player {
+  width: 100%;
+  overflow-x: auto;
+}
