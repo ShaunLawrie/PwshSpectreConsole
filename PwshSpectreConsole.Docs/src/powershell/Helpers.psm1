@@ -229,7 +229,8 @@ $script:AsciiCastTemplate = @'
     settings={{
         loop: false,
         terminalLineHeight: 1.1,
-        theme: "spectre"
+        theme: "spectre",
+        fit: "none"
     }}
 />
 '@
