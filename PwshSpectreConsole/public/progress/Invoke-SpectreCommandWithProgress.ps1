@@ -15,7 +15,7 @@ function Invoke-SpectreCommandWithProgress {
         param (
             $Context
         )
-        $task1 = $Context.AddTask("Completing a four stage process")
+        $task1 = $Context.AddTask("A 4-stage process")
         Start-Sleep -Seconds 1
         $task1.Increment(25)
         Start-Sleep -Seconds 1

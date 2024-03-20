@@ -23,13 +23,13 @@
   
 }
 
-@media (max-width: 35em) {
+@media (max-width: 45em) {
   h1 {
     font-size: x-large;
   }
 
   .astro-code, .astro-code span {
-    font-size: x-small;
+    font-size: xx-small;
     line-height: 0.7rem;
   }
   
@@ -37,11 +37,16 @@
     font-size: x-small;
     line-height: 0.7rem;
   }
+
+  .animated-terminal div pre {
+    font-size: x-small;
+  }
 }
 
 div.asciinema-player-theme-spectre {
   border: solid 1px var(--sl-color-gray-5);
   border-radius: 0!important;
+  font-synthesis: none;
 
   --term-color-foreground: #eceff4;
   --term-color-background: #020617;
