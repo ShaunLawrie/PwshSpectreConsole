@@ -79,7 +79,11 @@ jobs:
 
           $latestStableVersion = $onlineVersions | Where-Object { $_.Version -notlike "*prerelease*" } | Sort-Object -Property Version -Descending | Select-Object -First 1 -ExpandProperty Version
           $latestStableVersion = [version]$latestStableVersion
-          $latestPrereleaseVersion = $onlineVersions | Where-Object { $_.Version -like "*prerelease*" } | Sort-Object -Property Version -Descending | Select-Object -First 1 -ExpandProperty Version
+          $latestPrereleaseVersion = $onlineVersions | Where-Object { $_.Version -like "*prerelease*" } | Sort-Object {
+            $version = [version]$_.Version.Split("-")[0]
+            $version = [version]::new($version.Major, $version.Minor, $version.Build, ($_.Version.Split("-")[1] -replace "prerelease", ""))
+            return $version
+          } -Descending | Select-Object -First 1 -ExpandProperty Version
           $latestPrereleaseTag = $latestPrereleaseVersion.Split("-prerelease")[1] # format is like -prerelease6, output here is just 6
           $latestPrereleaseVersion = [version]$latestPrereleaseVersion.Split("-prerelease")[0]
 
@@ -115,11 +119,6 @@ jobs:
           # Publish prerelease docs
           Install-Module HelpOut -Scope CurrentUser -RequiredVersion 0.5 -Force
           & .\PwshSpectreConsole.Docs\src\powershell\UpdateDocs.ps1 -NonInteractive -Branch "prerelease"
-          git config --global user.name 'Shaun Lawrie (via GitHub Actions)'
-          git config --global user.email 'shaun.r.lawrie@gmail.com'
-          git add PwshSpectreConsole.Docs/src/content || true
-          git commit -m "[skip ci] Update docs" || true
-          git push || true
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:

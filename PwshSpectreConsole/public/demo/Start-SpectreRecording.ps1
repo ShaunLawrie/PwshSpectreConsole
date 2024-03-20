@@ -12,7 +12,8 @@ function Start-SpectreRecording {
             Starts a recording of the current console output. This can be used to record all of the spectre console interactions in a PowerShell session.  
             I've used this to record the examples on the docs help site.
             :::caution
-            This is experimental.
+            This is experimental.  
+            Experimental features are unstable and subject to change.
             :::
         .PARAMETER Width
             The width of the recording.

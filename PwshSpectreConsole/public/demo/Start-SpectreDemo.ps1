@@ -248,7 +248,7 @@ Invoke-SpectreCommandWithProgress -ScriptBlock {
     param (
         $ctx
     )
-    $task1 = $ctx.AddTask("Completing a four stage process")
+    $task1 = $ctx.AddTask("A 4-stage process")
     Start-Sleep -Seconds 1
     $task1.Increment(25)
     Start-Sleep -Seconds 1

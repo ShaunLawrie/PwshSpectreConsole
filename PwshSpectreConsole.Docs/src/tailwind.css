@@ -1,4 +1,11 @@
 @import '../node_modules/asciinema-player/dist/bundle/asciinema-player.css';
+@font-face {
+  font-family: "Cascadia Code";
+  font-style: normal;
+  font-weight: 200;
+  src: url('/CaskaydiaCoveNerdFontMono-Regular.ttf') format('truetype');
+  font-variant-ligatures: none;
+}
 
 @tailwind base;
 @tailwind components;
@@ -13,11 +20,33 @@
   .hero {
     padding-block: clamp(2.5rem, calc(1rem + 10vmin), 5rem);
   }
+  
+}
+
+@media (max-width: 45em) {
+  h1 {
+    font-size: x-large;
+  }
+
+  .astro-code, .astro-code span {
+    font-size: xx-small;
+    line-height: 0.7rem;
+  }
+  
+  div.asciinema-player-theme-spectre, div.asciinema-player-theme-spectre span {
+    font-size: x-small;
+    line-height: 0.7rem;
+  }
+
+  .animated-terminal div pre {
+    font-size: x-small;
+  }
 }
 
 div.asciinema-player-theme-spectre {
   border: solid 1px var(--sl-color-gray-5);
   border-radius: 0!important;
+  font-synthesis: none;
 
   --term-color-foreground: #eceff4;
   --term-color-background: #020617;
@@ -33,9 +62,14 @@ div.asciinema-player-theme-spectre {
 }
 
 div.asciinema-player-theme-spectre span {
-  letter-spacing: -0.02rem;
+  letter-spacing: -0.04rem;
 }
 
 div.ap-play-button {
   display: none;
+}
+
+div.ap-wrapper div.ap-player {
+  width: 100%;
+  overflow-x: auto;
 }

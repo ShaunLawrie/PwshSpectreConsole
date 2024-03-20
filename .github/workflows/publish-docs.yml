@@ -16,20 +16,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Build Docs
-        shell: pwsh
-        run: |
-          $ErrorActionPreference = "Stop"
-          & .\PwshSpectreConsole\Build.ps1
-          Install-Module HelpOut -Scope CurrentUser -Force
-          & .\PwshSpectreConsole.Docs\src\powershell\UpdateDocs.ps1 -NonInteractive
-          git config --global user.name 'Shaun Lawrie (via GitHub Actions)'
-          git config --global user.email 'shaun.r.lawrie@gmail.com'
-          git add PwshSpectreConsole.Docs/src/content || true
-          git commit -m "[skip ci] Update docs" || true
-          git push || true
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
