@@ -119,11 +119,6 @@ jobs:
           # Publish prerelease docs
           Install-Module HelpOut -Scope CurrentUser -RequiredVersion 0.5 -Force
           & .\PwshSpectreConsole.Docs\src\powershell\UpdateDocs.ps1 -NonInteractive -Branch "prerelease"
-          git config --global user.name 'Shaun Lawrie (via GitHub Actions)'
-          git config --global user.email 'shaun.r.lawrie@gmail.com'
-          git add PwshSpectreConsole.Docs/src/content || true
-          git commit -m "[skip ci] Update docs" || true
-          git push || true
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
