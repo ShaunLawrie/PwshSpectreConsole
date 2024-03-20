@@ -77,7 +77,7 @@ jobs:
           if($null -eq $version) { throw "Failed to load version" }
           $onlineVersions = Find-Module -Name PwshSpectreConsole -AllowPrerelease -AllVersions
 
-          $latestStableVersion = $onlineVersions | Where-Object { $_.Version -notlike "*prerelease*" } | Sort-Object -Property Version -Descending | Select-Object -First 1 -ExpandProperty Version
+          $latestStableVersion = $onlineVersions | Where-Object { $_.Version -notlike "*prerelease*" } | Sort-Object { [version]$_.Version } -Descending | Select-Object -First 1 -ExpandProperty Version
           $latestStableVersion = [version]$latestStableVersion
           $latestPrereleaseVersion = $onlineVersions | Where-Object { $_.Version -like "*prerelease*" } | Sort-Object {
             $version = [version]$_.Version.Split("-")[0]
@@ -119,6 +119,9 @@ jobs:
           # Publish prerelease docs
           Install-Module HelpOut -Scope CurrentUser -RequiredVersion 0.5 -Force
           & .\PwshSpectreConsole.Docs\src\powershell\UpdateDocs.ps1 -NonInteractive -Branch "prerelease"
+
+          # Push any docs changes
+          git push
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
