@@ -119,6 +119,9 @@ jobs:
           # Publish prerelease docs
           Install-Module HelpOut -Scope CurrentUser -RequiredVersion 0.5 -Force
           & .\PwshSpectreConsole.Docs\src\powershell\UpdateDocs.ps1 -NonInteractive -Branch "prerelease"
+
+          # Push any docs changes
+          git push
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
