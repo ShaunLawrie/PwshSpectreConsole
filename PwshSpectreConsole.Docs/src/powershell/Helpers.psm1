@@ -230,7 +230,8 @@ $script:AsciiCastTemplate = @'
         loop: false,
         terminalLineHeight: 1.1,
         theme: "spectre",
-        fit: "none"
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
     }}
 />
 '@

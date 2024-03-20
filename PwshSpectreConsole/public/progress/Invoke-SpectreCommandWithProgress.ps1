@@ -60,7 +60,7 @@ function Invoke-SpectreCommandWithProgress {
     $result = Invoke-SpectreCommandWithProgress -ScriptBlock {
         param ( $Context )
         
-        $task1 = $Context.AddTask("Completing a task with an unknown duration")
+        $task1 = $Context.AddTask("Task with unknown duration")
         $task1.IsIndeterminate = $true
         Start-Sleep -Seconds 5
         $task1.Value = 100
