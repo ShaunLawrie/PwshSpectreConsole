@@ -234,6 +234,6 @@ if ($Branch -eq "dev") {
         } else {
             npx wrangler login
         }
-        npx wrangler pages deploy "$PSScriptRoot\dist" --project-name pwshspectreconsole --commit-dirty=true --branch=main
+        npx wrangler pages deploy "$docsProjectRoot\dist" --project-name pwshspectreconsole --commit-dirty=true --branch=main
     }
 }
