@@ -7,7 +7,8 @@ function Read-SpectreSelection {
     Displays a selection prompt using Spectre Console.
 
     .DESCRIPTION
-    This function displays a selection prompt using Spectre Console. The user can select an option from the list of choices provided. The function returns the selected option.
+    This function displays a selection prompt using Spectre Console. The user can select an option from the list of choices provided. The function returns the selected option.  
+    With the `-EnableSearch` switch, the user can search for choices in the selection prompt by typing the characters instead of just typing up and down arrows.
 
     .PARAMETER Title
     The title of the selection prompt.
