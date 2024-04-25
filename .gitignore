@@ -31,3 +31,4 @@ Working/
 # dotnet build files
 bin/
 obj/
+*.sln

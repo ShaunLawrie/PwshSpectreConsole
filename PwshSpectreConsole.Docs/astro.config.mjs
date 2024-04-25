@@ -18,6 +18,9 @@ export default defineConfig({
         github: "https://github.com/ShaunLawrie/PwshSpectreConsole",
         twitter: "https://twitter.com/Shaun_Lawrie",
       },
+      components: {
+        Head: './src/components/Head.astro',
+      },
       sidebar: [
         {
           label: "Guides",
