@@ -1,5 +1,5 @@
 param (
-    [string] $Version = "0.47.0"
+    [string] $Version = "0.49.0"
 )
 
 function Install-SpectreConsole {
