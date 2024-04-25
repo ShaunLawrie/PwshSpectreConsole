@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: tip
 title: Read-SpectreSelection
 ---
 
@@ -10,10 +14,12 @@ title: Read-SpectreSelection
 
 import Asciinema from '../../../../components/Asciinema.astro'
 import readspectreselectionExample1 from '../../../../assets/examples/readspectreselectionExample1.cast?url'
+import readspectreselectionExample2 from '../../../../assets/examples/readspectreselectionExample2.cast?url'
 
 ### Description
 
-This function displays a selection prompt using Spectre Console. The user can select an option from the list of choices provided. The function returns the selected option.
+This function displays a selection prompt using Spectre Console. The user can select an option from the list of choices provided. The function returns the selected option.  
+With the `-EnableSearch` switch, the user can search for choices in the selection prompt by typing the characters instead of just typing up and down arrows.
 
 
 
@@ -30,6 +36,23 @@ Write-SpectreHost "Your chosen color is '$color'"
 ```
 <Asciinema
     src={readspectreselectionExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+> EXAMPLE 2
+
+```powershell
+$color = Read-SpectreSelection -Title "Select your favorite color" -Choices @("Blue", "Bluer", "Blue-est") -EnableSearch
+# Type "b", "l", "u", "e", "r", "↲" to choose "Bluer"
+Write-SpectreHost "Your chosen color is '$color'"
+```
+<Asciinema
+    src={readspectreselectionExample2}
     settings={{
         loop: false,
         terminalLineHeight: 1.1,
@@ -119,6 +142,36 @@ The number of choices to display per page in the selection prompt.
 
 
 
+#### **EnableSearch**
+
+If this switch is present, the user can search for choices in the selection prompt by typing the characters instead of just typing up and down arrows.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|false   |named   |false        |
+
+
+
+#### **SearchHighlightColor**
+
+The color of the search highlight in the selection prompt. Defaults to a slightly brighter version of the accent color.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Color]`|false   |6       |false        |
+
+
+
 
 
 ---
@@ -126,5 +179,5 @@ The number of choices to display per page in the selection prompt.
 
 ### Syntax
 ```powershell
-Read-SpectreSelection [[-Title] <String>] [[-Choices] <Array>] [[-ChoiceLabelProperty] <String>] [[-Color] <Color>] [[-PageSize] <Int32>] [<CommonParameters>]
+Read-SpectreSelection [[-Title] <String>] [[-Choices] <Array>] [[-ChoiceLabelProperty] <String>] [[-Color] <Color>] [[-PageSize] <Int32>] [-EnableSearch] [[-SearchHighlightColor] <Color>] [<CommonParameters>]
 ```

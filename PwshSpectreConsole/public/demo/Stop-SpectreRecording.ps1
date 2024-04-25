@@ -1,5 +1,3 @@
-Import-NamespaceFromCsFile -Namespace "PwshSpectreConsole.Recording"
-
 function Stop-SpectreRecording {
     <#
         .SYNOPSIS

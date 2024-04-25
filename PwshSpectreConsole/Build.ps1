@@ -1,11 +1,12 @@
 param (
-    [string] $Version = "0.47.0"
+    [string] $Version = "0.49.0"
 )
 
 function Install-SpectreConsole {
     param (
         [string] $InstallLocation,
         [string] $TestingInstallLocation,
+        [string] $CsharpProjectLocation,
         [string] $Version
     )
 
@@ -49,10 +50,25 @@ function Install-SpectreConsole {
     Invoke-WebRequest "https://www.nuget.org/api/v2/package/Spectre.Console.Json/$Version" -OutFile $downloadLocation -UseBasicParsing
     Expand-Archive $downloadLocation $libPath -Force
     Remove-Item $downloadLocation
+
+    $command = Get-Command "dotnet" -ErrorAction SilentlyContinue
+    if ($null -eq $command) {
+        throw "dotnet not found, please install dotnet sdk 6"
+    } elseif (-not (dotnet --list-sdks | Select-String "^6.+")) {
+        throw "dotnet sdk 6 not found, please install dotnet sdk 6"
+    }
+    try {
+        Push-Location
+        Set-Location -Path $CsharpProjectLocation
+        & dotnet build -c Release -o $installLocation
+    } finally {
+        Pop-Location
+    }
 }
 
 Write-Host "Downloading Spectre.Console version $Version"
 $installLocation = (Join-Path $PSScriptRoot "packages")
+$csharpProjectLocation = (Join-Path $PSScriptRoot "private" "classes")
 $testingInstallLocation = (Join-Path $PSScriptRoot ".." "PwshSpectreConsole.Tests" "packages")
 if (Test-Path $installLocation) {
     Remove-Item $installLocation -Recurse -Force
@@ -60,4 +76,4 @@ if (Test-Path $installLocation) {
 if (Test-Path $testingInstallLocation) {
     Remove-Item $testingInstallLocation -Recurse -Force
 }
-Install-SpectreConsole -InstallLocation $installLocation -TestingInstallLocation $testingInstallLocation -Version $Version
+Install-SpectreConsole -InstallLocation $installLocation -TestingInstallLocation $testingInstallLocation -CsharpProjectLocation $csharpProjectLocation -Version $Version

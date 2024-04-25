@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Spectre.Console" Version="0.49.0" />
+    <PackageReference Include="System.Management.Automation" Version="6.*" PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>

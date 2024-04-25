@@ -27,3 +27,7 @@ PwshSpectreConsole.Tests/packages
 
 # Exclude working folder
 Working/
+
+# dotnet build files
+bin/
+obj/
