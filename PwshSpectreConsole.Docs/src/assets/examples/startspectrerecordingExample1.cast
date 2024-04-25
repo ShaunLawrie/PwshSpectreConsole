@@ -1,12 +1,12 @@
 {"version": 2, "width": 110, "height": 8, "title": "Example 0", "env": {"TERM": "Spectre.Console"}}
 [0, "o", "\r\uD83D\uDD34 Recording starting in 3\r\n"]
-[1, "o", "\u001B[1A                                  "]
-[1, "o", "\r\uD83D\uDD34 Recording starting in 2\r\n"]
+[1.004, "o", "\u001B[1A                                  "]
+[1.004, "o", "\r\uD83D\uDD34 Recording starting in 2\r\n"]
 [2.004, "o", "\u001B[1A                                  "]
 [2.004, "o", "\r\uD83D\uDD34 Recording starting in 1\r\n"]
 [3.004, "o", "\u001B[1A                                  "]
 [3.004, "o", "\rRecording started\r\n"]
-[4.004, "o", "Hello \u001B[38;5;9mworld\u001B[0m\r\n"]
-[4.004, "o", "Result:\r\n\u003Cpre style=\u0022font-size:90%;font-family:consolas,\u0027Courier New\u0027,monospace\u0022\u003E\r\n\u003Cspan\u003EHello\u003C/span\u003E\u003Cspan\u003E \u003C/span\u003E\u003Cspan style=\u0022color: #FF0000\u0022\u003Eworld\u003C/span\u003E\r\n\u003C/pre\u003E\r\n"]
+[4.008, "o", "Hello \u001B[38;5;9mworld\u001B[0m\r\n"]
+[4.008, "o", "Result:\r\n\u003Cpre style=\u0022font-size:90%;font-family:consolas,\u0027Courier New\u0027,monospace\u0022\u003E\r\n\u003Cspan\u003EHello\u003C/span\u003E\u003Cspan\u003E \u003C/span\u003E\u003Cspan style=\u0022color: #FF0000\u0022\u003Eworld\u003C/span\u003E\r\n\u003C/pre\u003E\r\n"]
 
 
