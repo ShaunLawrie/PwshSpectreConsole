@@ -133,7 +133,7 @@ foreach ($doc in $docs) {
                 if($inputs) {
                     $strings = $inputs.Matches.Groups[1].Value.Split(",") | Foreach-Object { $_.Trim() -replace '^"', '' -replace '"$', '' }
                     foreach($string in $strings) {
-                        if($specialChars -contains $string) {
+                        if($specialChars -contains $string -or $string.Length -eq 1) {
                             Write-Host -ForegroundColor DarkGray "PushCharacter '$string'"
                             if($string -eq "<space>") {
                                 $recordingConsole.Input.PushKey([System.ConsoleKey]::Spacebar, $inputDelay)
