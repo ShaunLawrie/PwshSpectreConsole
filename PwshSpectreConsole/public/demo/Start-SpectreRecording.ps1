@@ -1,5 +1,3 @@
-Import-NamespaceFromCsFile -Namespace "PwshSpectreConsole.Recording"
-
 $script:SpectreRecordingRecorder = $null
 $script:SpectreRecordingOriginalConsole = $null
 $script:SpectreRecordingType = $null

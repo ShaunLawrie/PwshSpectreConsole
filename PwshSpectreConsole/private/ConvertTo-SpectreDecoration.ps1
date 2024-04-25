@@ -1,5 +1,4 @@
 using namespace Spectre.Console
-Import-NamespaceFromCsFile -Namespace "PwshSpectreConsole.VTCodes"
 
 function ConvertTo-SpectreDecoration {
     param(
