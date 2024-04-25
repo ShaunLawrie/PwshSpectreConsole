@@ -58,7 +58,7 @@ function Import-NamespaceFromCsFile {
             (Get-Module -ListAvailable "PwshSpectreConsole" | Format-Table | Out-String)
         ) -join "`n"
         Write-Warning "Failed to load namespace from csharp file:`n`n$errorDetails"
-        Write-Host -ForegroundColor "Red" -Message "Failed to import namespace $Namespace in PwshSpectreConsole, this is likely a compatibility bug in PwshSpectreConsole, please raise an issue on the GitHub repository with the details above.`n"
+        Write-Host -ForegroundColor "Red" -Message "Failed to import namespace $Namespace in PwshSpectreConsole, this is likely a compatibility bug in PwshSpectreConsole.`nPlease raise an issue on the GitHub repository with the details above https://github.com/ShaunLawrie/PwshSpectreConsole/issues`n"
     } finally {
         $ErrorActionPreference = $PreviousErrorActionPreference
     }
