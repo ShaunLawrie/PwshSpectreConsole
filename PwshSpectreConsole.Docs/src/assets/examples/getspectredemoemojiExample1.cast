@@ -14,8 +14,8 @@
 [0.012, "o", "The emoji can be used in Spectre Console markup like so:\r\n\r\n"]
 [0.012, "o", "  PS\u003E \u001B[38;5;11mWrite-SpectreHost\u001B[0m \u001B[38;5;39m\u0022I am a :\u001B[0m"]
 [0.012, "o", "\u001B[38;5;39mgrinning_face: Spectre markdown emoji string :\u001B[0m"]
-[0.012, "o", "\u001B[38;5;39mvictory_hand: !\u0022\u001B[0m\r\n"]
-[0.012, "o", "  \u001B[38;5;15;48;5;236mI am a \uD83D\uDE00 Spectre markdown emoji string \u270C !                                                \u001B[0m\r\n"]
-[0.012, "o", "\r\nEmoji support is dependent on OS, terminal \u0026 font support. For more markdown hints see \r\n\u001B]8;id=271860523;https://spectreconsole.net/markup\u001B\\https://spectreconsole.net/markup\u001B]8;;\u001B\\ and for more emoji help see \u001B]8;id=1395940377;https://spectreconsole.net/appendix/emojis\u001B\\https://spectreconsole.net/appendix/emojis\u001B]8;;\u001B\\\r\n\r\n"]
+[0.016, "o", "\u001B[38;5;39mvictory_hand: !\u0022\u001B[0m\r\n"]
+[0.016, "o", "  \u001B[38;5;15;48;5;236mI am a \uD83D\uDE00 Spectre markdown emoji string \u270C !                                                \u001B[0m\r\n"]
+[0.016, "o", "\r\nEmoji support is dependent on OS, terminal \u0026 font support. For more markdown hints see \r\n\u001B]8;id=610618169;https://spectreconsole.net/markup\u001B\\https://spectreconsole.net/markup\u001B]8;;\u001B\\ and for more emoji help see \u001B]8;id=992850443;https://spectreconsole.net/appendix/emojis\u001B\\https://spectreconsole.net/appendix/emojis\u001B]8;;\u001B\\\r\n\r\n"]
 
 
