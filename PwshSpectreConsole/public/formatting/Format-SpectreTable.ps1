@@ -58,6 +58,9 @@ function Format-SpectreTable {
     .PARAMETER View
     The View parameter lets you specify an alternate format or custom view for the table.
 
+    .PARAMETER PassThru
+    Returns the table object instead of writing it to the console.
+
     .EXAMPLE
     $data = @(
         [pscustomobject]@{Name="John"; Age=25; City="New York"},
@@ -106,7 +109,8 @@ function Format-SpectreTable {
         [int] $Width,
         [switch] $HideHeaders,
         [String] $Title,
-        [switch] $AllowMarkup
+        [switch] $AllowMarkup,
+        [switch] $PassThru
     )
     begin {
         Write-Debug "Module: $($ExecutionContext.SessionState.Module.Name) Command: $($MyInvocation.MyCommand.Name) Param: $($PSBoundParameters.GetEnumerator())"
@@ -114,6 +118,7 @@ function Format-SpectreTable {
         $rowoptions = @{}
         $FormatTableParams = @{}
         $collector = [System.Collections.Generic.List[psobject]]::new()
+        $renderables = @{}
         $table = [Table]::new()
         $table.Border = [TableBorder]::$Border
         $table.BorderStyle = [Style]::new($Color)
@@ -129,8 +134,16 @@ function Format-SpectreTable {
     }
     process {
         foreach ($entry in $data) {
-            if ($entry -is [hashtable]) {
-                $collector.add([pscustomobject]$entry)
+            if ($entry -is [Spectre.Console.Rendering.Renderable]) {
+                # The fancy stuff below to handle powershell formatting turns renderable spectre objects into strings.
+                # Here we're storing the original object in a lookup table to be read back when it's time to add cells to the table.
+                $renderableKey = "RENDERABLE__$([Guid]::NewGuid().Guid)"
+                $renderables[$renderableKey] = $entry
+                $collector.add($renderableKey)
+            } elseif ($entry -is [hashtable]) {
+                # Recursively expand values in the hashtable finding any renderables and putting them in the lookup table
+                $entry = Convert-HashtableToRenderSafePSObject -Hashtable $entry -Renderables $renderables
+                $collector.add($entry)
             } else {
                 $collector.add($entry)
             }
@@ -161,22 +174,46 @@ function Format-SpectreTable {
         }
         foreach ($item in $collector.FormatEntryInfo) {
             if ($rowoptions.scalar) {
-                $row = New-TableRow -Entry $item.Text -Color $TextColor @rowoptions
+                $row = New-TableRow -Entry $item.Text -Renderables $renderables -Color $TextColor @rowoptions
             } else {
                 if ($null -eq $item.FormatPropertyFieldList.propertyValue) {
                     continue
                 }
-                $row = New-TableRow -Entry $item.FormatPropertyFieldList.propertyValue -Color $TextColor @rowoptions
+                $row = New-TableRow -Entry $item.FormatPropertyFieldList.propertyValue -Renderables $renderables -Color $TextColor @rowoptions
             }
             if ($AllowMarkup) {
                 $table = [TableExtensions]::AddRow($table, [Markup[]]$row)
             } else {
-                $table = [TableExtensions]::AddRow($table, [Text[]]$row)
+                $table = [TableExtensions]::AddRow($table, [Rendering.Renderable[]]$row)
             }
         }
         if ($Title -And -Not $rowoptions.scalar) {
             $table.Title = [TableTitle]::new($Title, [Style]::new($Color))
         }
-        Write-AnsiConsole $table
+
+        if ($PassThru) {
+            return $table
+        } else {
+            Write-AnsiConsole $table
+        }
     }
+}
+
+function Convert-HashtableToRenderSafePSObject {
+    param(
+        [hashtable] $Hashtable,
+        [hashtable] $Renderables
+    )
+    $customObject = @{}
+    foreach ($item in $Hashtable.GetEnumerator()) {
+        if ($item.Value -is [hashtable]) {
+            $item.Value = Convert-HashtableToRenderSafePSObject -Hashtable $item.Value
+        } elseif ($item.Value -is [Spectre.Console.Rendering.Renderable]) {
+            $renderableKey = "RENDERABLE__$([Guid]::NewGuid().Guid)"
+            $Renderables[$renderableKey] = $item.Value
+            $item.Value = $renderableKey
+        }
+        $customObject[$item.Key] = $item.Value
+    }
+    return [pscustomobject]$customObject
 }

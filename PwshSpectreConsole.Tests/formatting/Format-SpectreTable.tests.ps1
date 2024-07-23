@@ -96,14 +96,14 @@ Describe "Format-SpectreTable" {
         It "Should be able to create a new table cell with spectre markup" {
             $rawString = "hello spectremarkup world"
             $ansiString = "hello [red]spectremarkup[/] world"
-            $result = New-TableCell -String $ansiString -AllowMarkup
+            $result = New-TableCell -CellData $ansiString -AllowMarkup
             $result | Should -BeOfType [Spectre.Console.Markup]
             $result.Length | Should -Be $rawString.Length
         }
 
         It "Should be able to create a new table cell without spectre markup by default" {
             $ansiString = "hello [red]spectremarkup[/] world"
-            $result = New-TableCell -String $ansiString
+            $result = New-TableCell -CellData $ansiString
             $result | Should -BeOfType [Spectre.Console.Text]
             $result.Length | Should -Be $ansiString.Length
         }
