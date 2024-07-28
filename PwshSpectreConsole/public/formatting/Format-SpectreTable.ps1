@@ -140,7 +140,7 @@ function Format-SpectreTable {
                 $renderableKey = "RENDERABLE__$([Guid]::NewGuid().Guid)"
                 $renderables[$renderableKey] = $entry
                 $collector.add($renderableKey)
-            } elseif ($entry -is [hashtable]) {
+            } elseif ($entry -is [hashtable] -or $entry -is [ordered]) {
                 # Recursively expand values in the hashtable finding any renderables and putting them in the lookup table
                 $entry = Convert-HashtableToRenderSafePSObject -Hashtable $entry -Renderables $renderables
                 $collector.add($entry)
@@ -201,12 +201,12 @@ function Format-SpectreTable {
 
 function Convert-HashtableToRenderSafePSObject {
     param(
-        [hashtable] $Hashtable,
+        [object] $Hashtable,
         [hashtable] $Renderables
     )
     $customObject = @{}
     foreach ($item in $Hashtable.GetEnumerator()) {
-        if ($item.Value -is [hashtable]) {
+        if ($item.Value -is [hashtable] -or $item.Value -is [ordered]) {
             $item.Value = Convert-HashtableToRenderSafePSObject -Hashtable $item.Value
         } elseif ($item.Value -is [Spectre.Console.Rendering.Renderable]) {
             $renderableKey = "RENDERABLE__$([Guid]::NewGuid().Guid)"
