@@ -1,3 +1,5 @@
+using namespace Spectre.Console
+
 function Write-SpectreHost {
     <#
     .SYNOPSIS
@@ -18,12 +20,21 @@ function Write-SpectreHost {
     Write-SpectreHost -Message "Hello, [blue underline]world[/]! :call_me_hand:"
     #>
     [Reflection.AssemblyMetadata("title", "Write-SpectreHost")]
-    [Reflection.AssemblyMetadata("description", "The Write-SpectreHost function writes a message to the console using Spectre Console. It supports ANSI markup and can optionally append a newline character to the end of the message.")]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
-        [string] $Message,
-        [switch] $NoNewline
+        [object] $Message,
+        [switch] $NoNewline,
+        [switch] $PassThru
     )
+
+    if ($PassThru) {
+        return $Message
+    }
+
+    if ($Message -is [Rendering.Renderable]) {
+        Write-AnsiConsole $Message
+        return
+    }
 
     if ($NoNewline) {
         Write-SpectreHostInternalMarkup $Message

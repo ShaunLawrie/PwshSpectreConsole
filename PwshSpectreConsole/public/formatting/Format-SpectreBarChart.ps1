@@ -1,4 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
+using module "..\..\private\completions\Transformers.psm1"
 using namespace Spectre.Console
 
 function Format-SpectreBarChart {
@@ -13,7 +14,7 @@ function Format-SpectreBarChart {
     .PARAMETER Data
     An array of objects containing the data to be displayed in the chart. Each object should have a Label, Value, and Color property.
 
-    .PARAMETER Title
+    .PARAMETER Label
     The title to be displayed above the chart.
 
     .PARAMETER Width
@@ -29,21 +30,23 @@ function Format-SpectreBarChart {
     $data += New-SpectreChartItem -Label "Oranges" -Value 5 -Color "DarkOrange"
     $data += New-SpectreChartItem -Label "Bananas" -Value 2.2 -Color "#FFFF00"
     
-    Format-SpectreBarChart -Data $data -Title "Fruit Sales" -Width 50
+    Format-SpectreBarChart -Data $data -Label "Fruit Sales" -Width 50
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectreBarChart")]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
+        [ChartItemTransformationAttribute()]
         [array] $Data,
-        [String] $Title,
+        [Alias("Title")]
+        [String] $Label,
         [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostWidth) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
         [int] $Width = (Get-HostWidth),
         [switch] $HideValues
     )
     begin {
         $barChart = [BarChart]::new()
-        if ($Title) {
-            $barChart.Label = $Title
+        if ($Label) {
+            $barChart.Label = $Label
         }
         if ($HideValues) {
             $barChart.ShowValues = $false
@@ -60,6 +63,6 @@ function Format-SpectreBarChart {
         }
     }
     end {
-        Write-AnsiConsole $barChart
+        return $barChart
     }
 }

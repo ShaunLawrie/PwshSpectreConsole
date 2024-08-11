@@ -1,5 +1,6 @@
 param (
-    [string] $Version = "0.49.0"
+    [string] $Version = "0.49.1",
+    [int] $DotnetSdkMajorVersion = 6
 )
 
 function Install-SpectreConsole {
@@ -53,9 +54,14 @@ function Install-SpectreConsole {
 
     $command = Get-Command "dotnet" -ErrorAction SilentlyContinue
     if ($null -eq $command) {
-        throw "dotnet not found, please install dotnet sdk 6"
-    } elseif (-not (dotnet --list-sdks | Select-String "^6.+")) {
-        throw "dotnet sdk 6 not found, please install dotnet sdk 6"
+        throw "dotnet not found, please install dotnet sdk $DotnetSdkMajorVersion"
+    } elseif (-not (dotnet --list-sdks | Select-String "^$DotnetSdkMajorVersion.+")) {
+        Write-Warning "dotnet sdk $DotnetSdkMajorVersion not found, please install dotnet sdk $DotnetSdkMajorVersion"
+        if (Get-Command "winget" -ErrorAction SilentlyContinue) {
+            winget install "Microsoft.DotNet.SDK.$DotnetSdkMajorVersion"
+        } else {
+            throw "Please install the dotnet sdk and try again"
+        }
     }
     try {
         Push-Location
@@ -64,6 +70,8 @@ function Install-SpectreConsole {
     } finally {
         Pop-Location
     }
+
+    & "$PSScriptRoot\PwshSpectreConsole.EzFormat.ps1"
 }
 
 Write-Host "Downloading Spectre.Console version $Version"

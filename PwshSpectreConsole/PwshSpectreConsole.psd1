@@ -67,7 +67,7 @@ RequiredAssemblies = '.\packages\Spectre.Console\lib\net6.0\Spectre.Console.dll'
 # TypesToProcess = @()
 
 # Format files (.ps1xml) to be loaded when importing this module
-# FormatsToProcess = @()
+FormatsToProcess = 'PwshSpectreConsole.format.ps1xml'
 
 # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
 # NestedModules = @()
@@ -86,7 +86,8 @@ FunctionsToExport = 'Add-SpectreJob', 'Format-SpectreBarChart',
                'New-SpectreChartItem', 'Invoke-SpectreScriptBlockQuietly', 
                'Get-SpectreDemoColors', 'Get-SpectreDemoEmoji', 'Format-SpectreJson', 
                'Write-SpectreCalendar', 'Start-SpectreRecording', 
-               'Stop-SpectreRecording'
+               'Stop-SpectreRecording', 'Format-SpectreColumns', 'Write-AnsiConsole',
+               'Out-SpectreHost'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()

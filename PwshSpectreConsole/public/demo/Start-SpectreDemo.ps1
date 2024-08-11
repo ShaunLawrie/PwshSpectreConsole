@@ -137,18 +137,18 @@ Get-Process | Select-Object -First 10 -Property Id, Name, Handles | Format-Spect
 
     $example = @'
 @{
-    Label = "Root"
+    Value = "Root"
     Children = @(
         @{
-            Label = "First Child"
+            Value = "First Child"
             Children = @(
-                @{ Label = "With"; Children = @() },
-                @{ Label = "Loads"; Children = @() },
-                @{ Label = "More"; Children = @() },
-                @{ Label = "Nested"; Children = @( @{ Label = "Children"; Children = @() } ) }
+                @{ Value = "With" },
+                @{ Value = "Loads" },
+                @{ Value = "More" },
+                @{ Value = "Nested"; Children = @( @{ Value = "Children" } ) }
             )
         },
-        @{ Label = "Second Child"; Children = @() }
+        @{ Value = "Second Child" }
     )
 } | Format-SpectreTree
 '@

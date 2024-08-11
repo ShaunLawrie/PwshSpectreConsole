@@ -1,4 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
+using module "..\..\private\completions\Transformers.psm1"
 using namespace Spectre.Console
 
 function Format-SpectreTable {
@@ -142,6 +143,7 @@ function Format-SpectreTable {
                 $collector.add($renderableKey)
             } elseif ($entry -is [hashtable] -or $entry -is [ordered]) {
                 # Recursively expand values in the hashtable finding any renderables and putting them in the lookup table
+                # Renderables is mutable (hashtables just are) so the Convert-HashtableToRenderSafePSObject will add the renderables to the lookup table
                 $entry = Convert-HashtableToRenderSafePSObject -Hashtable $entry -Renderables $renderables
                 $collector.add($entry)
             } else {
@@ -191,29 +193,6 @@ function Format-SpectreTable {
             $table.Title = [TableTitle]::new($Title, [Style]::new($Color))
         }
 
-        if ($PassThru) {
-            return $table
-        } else {
-            Write-AnsiConsole $table
-        }
+        return $table
     }
-}
-
-function Convert-HashtableToRenderSafePSObject {
-    param(
-        [object] $Hashtable,
-        [hashtable] $Renderables
-    )
-    $customObject = @{}
-    foreach ($item in $Hashtable.GetEnumerator()) {
-        if ($item.Value -is [hashtable] -or $item.Value -is [ordered]) {
-            $item.Value = Convert-HashtableToRenderSafePSObject -Hashtable $item.Value
-        } elseif ($item.Value -is [Spectre.Console.Rendering.Renderable]) {
-            $renderableKey = "RENDERABLE__$([Guid]::NewGuid().Guid)"
-            $Renderables[$renderableKey] = $item.Value
-            $item.Value = $renderableKey
-        }
-        $customObject[$item.Key] = $item.Value
-    }
-    return [pscustomobject]$customObject
 }

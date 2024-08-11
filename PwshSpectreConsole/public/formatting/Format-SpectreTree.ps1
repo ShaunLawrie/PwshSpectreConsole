@@ -1,4 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
+using module "..\..\private\completions\Transformers.psm1"
 using namespace Spectre.Console
 
 function Format-SpectreTree {
@@ -7,36 +8,37 @@ function Format-SpectreTree {
     Formats a hashtable as a tree using Spectre Console.
 
     .DESCRIPTION
-    This function takes a hashtable and formats it as a tree using Spectre Console. The hashtable should have a 'Label' key and a 'Children' key. The 'Label' key should contain the label for the root node of the tree, and the 'Children' key should contain an array of hashtables representing the child nodes of the root node. Each child hashtable should have a 'Label' key and a 'Children' key, following the same structure as the root node.
+    This function takes a hashtable and formats it as a tree using Spectre Console. The hashtable should have a 'Value' key and a 'Children' key. The 'Value' key should contain the Spectre Console renderable item (text or other objects like calendars etc.) for the node of the tree, and the 'Children' key should contain an array of hashtables representing the child nodes of the node.
 
     .PARAMETER Data
     The hashtable to format as a tree.
 
-    .PARAMETER Border
-    The type of border to use for the tree.
+    .PARAMETER Guide
+    The type of line to use for the tree.
 
     .PARAMETER Color
     The color to use for the tree. This can be a Spectre Console color name or a hex color code. Default is the accent color defined in the script.
 
     .EXAMPLE
+    $calendar = Write-SpectreCalendar -Date 2024-07-01 -PassThru
     $data = @{
-        Label = "Root"
+        Value = "Root"
         Children = @(
             @{
-                Label = "Child 1"
+                Value = "Child 1"
                 Children = @(
                     @{
-                        Label = "Grandchild 1"
+                        Value = "Grandchild 1"
                         Children = @()
                     },
                     @{
-                        Label = "Grandchild 2"
+                        Value = $calendar
                         Children = @()
                     }
                 )
             },
             @{
-                Label = "Child 2"
+                Value = "Child 2"
                 Children = @()
             }
         )
@@ -47,6 +49,7 @@ function Format-SpectreTree {
     [Reflection.AssemblyMetadata("title", "Format-SpectreTree")]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
+        [ValidateSpectreTreeItem()]
         [hashtable] $Data,
         [ValidateSet([SpectreConsoleTreeGuide], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Guide = "Line",
@@ -55,11 +58,14 @@ function Format-SpectreTree {
         [Color] $Color = $script:AccentColor
     )
 
-    $tree = [Tree]::new($Data.Label)
+    $tree = [Tree]::new($Data.Value)
     $tree.Guide = [TreeGuide]::$Guide
 
-    Add-SpectreTreeNode -Node $tree -Children $Data.Children
+    if ($Data.Children) {
+        Add-SpectreTreeNode -Node $tree -Children $Data.Children
+    }
 
     $tree.Style = [Style]::new($Color)
-    Write-AnsiConsole $tree
+    
+    return $tree
 }

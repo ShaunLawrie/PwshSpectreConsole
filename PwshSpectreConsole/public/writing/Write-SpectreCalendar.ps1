@@ -1,4 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
+using module "..\..\private\completions\Transformers.psm1"
 using namespace Spectre.Console
 
 function Write-SpectreCalendar {
@@ -53,7 +54,8 @@ function Write-SpectreCalendar {
         [string] $Border = "Double",
         [cultureinfo] $Culture = [cultureinfo]::CurrentCulture,
         [Hashtable]$Events,
-        [Switch] $HideHeader
+        [Switch] $HideHeader,
+        [Switch] $PassThru
     )
     $calendar = [Calendar]::new($date)
     $calendar.Alignment = [Justify]::$Alignment
@@ -65,15 +67,21 @@ function Write-SpectreCalendar {
     if ($HideHeader) {
         $calendar.ShowHeader = $false
     }
+
+    $outputData = @($calendar)
+
     if ($Events) {
         foreach ($event in $events.GetEnumerator()) {
-            # calendar events doesnt appear to support Culture.
+            # Calendar events don't appear to support Culture.
             $eventDate = $event.Name -as [datetime]
             $calendar = [CalendarExtensions]::AddCalendarEvent($calendar, $event.value, $eventDate.Year, $eventDate.Month, $eventDate.Day)
         }
-        Write-AnsiConsole $calendar
-        $calendar.CalendarEvents | Sort-Object -Property Day | Format-SpectreTable -Border $Border -Color $Color
-    } else {
-        Write-AnsiConsole $calendar
+        $outputData += $calendar.CalendarEvents | Sort-Object -Property Day | Format-SpectreTable -Border $Border -Color $Color
     }
+
+    if ($PassThru) {
+        return $outputData
+    }
+    
+    $outputData | Out-SpectreHost
 }

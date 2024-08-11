@@ -1,4 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
+using module "..\..\private\completions\Transformers.psm1"
 using namespace Spectre.Console
 
 function Write-SpectreFigletText {
@@ -36,11 +37,17 @@ function Write-SpectreFigletText {
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
         [Color] $Color = $script:AccentColor,
-        [string] $FigletFontPath
+        [string] $FigletFontPath,
+        [switch] $PassThru
     )
     $figletFont = Read-FigletFont -FigletFontPath $FigletFontPath
     $figletText = [FigletText]::new($figletFont, $Text)
     $figletText.Justification = [Justify]::$Alignment
     $figletText.Color = $Color
+
+    if ($PassThru) {
+        return $figletText
+    }
+    
     Write-AnsiConsole $figletText
 }

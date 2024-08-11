@@ -1,4 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
+using module "..\..\private\completions\Transformers.psm1"
 using namespace Spectre.Console
 
 function Format-SpectrePanel {
@@ -13,7 +14,7 @@ function Format-SpectrePanel {
     .PARAMETER Data
     The string to be formatted as a panel.
 
-    .PARAMETER Title
+    .PARAMETER Header
     The title to be displayed at the top of the panel.
 
     .PARAMETER Border
@@ -40,8 +41,10 @@ function Format-SpectrePanel {
     [Reflection.AssemblyMetadata("title", "Format-SpectrePanel")]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
+        [RenderableTransformationAttribute()]
         [object] $Data,
-        [string] $Title,
+        [Alias("Title")]
+        [string] $Header,
         [ValidateSet([SpectreConsoleBoxBorder], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Border = "Rounded",
         [switch] $Expand,
@@ -54,8 +57,8 @@ function Format-SpectrePanel {
         [int]$Height
     )
     $panel = [Panel]::new($Data)
-    if ($Title) {
-        $panel.Header = [PanelHeader]::new($Title)
+    if ($Header) {
+        $panel.Header = [PanelHeader]::new($Header)
     }
     if ($width) {
         $panel.Width = $Width
@@ -66,5 +69,6 @@ function Format-SpectrePanel {
     $panel.Expand = $Expand
     $panel.Border = [BoxBorder]::$Border
     $panel.BorderStyle = [Style]::new($Color)
-    Write-AnsiConsole $panel
+    
+    return $panel
 }

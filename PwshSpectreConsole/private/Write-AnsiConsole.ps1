@@ -1,3 +1,4 @@
+using module ".\completions\Transformers.psm1"
 using namespace Spectre.Console
 
 <#
@@ -14,9 +15,11 @@ The renderable object to write to the console e.g. [BarChart]
 Write-SpectreConsoleOutput -Object "Hello, World!" -ForegroundColor Green -BackgroundColor Black
 #>
 function Write-AnsiConsole {
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
-        [Rendering.Renderable] $RenderableObject
+        [RenderableTransformationAttribute()]
+        [object] $RenderableObject
     )
-    [AnsiConsole]::Write($RenderableObject)
+    [AnsiConsole]::Render($RenderableObject)
 }
