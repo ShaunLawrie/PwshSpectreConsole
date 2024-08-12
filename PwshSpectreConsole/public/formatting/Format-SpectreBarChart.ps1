@@ -36,7 +36,7 @@ function Format-SpectreBarChart {
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
         [ChartItemTransformationAttribute()]
-        [array] $Data,
+        [object] $Data,
         [Alias("Title")]
         [String] $Label,
         [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostWidth) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]

@@ -27,18 +27,24 @@ Describe "Format-SpectreBreakdownChart" {
         }
 
         It "Should create a bar chart with correct width" {
-            Format-SpectreBreakdownChart -Data $testData -Width $testWidth
+            $chart = Format-SpectreBreakdownChart -Data $testData -Width $testWidth
+            $chart | Should -BeOfType [Spectre.Console.BreakdownChart]
+            $chart | Out-SpectreHost
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
         }
         
         It "Should handle piped input correctly" {
-            $testData | Format-SpectreBreakdownChart -Width $testWidth
+            $chart = $testData | Format-SpectreBreakdownChart -Width $testWidth
+            $chart | Should -BeOfType [Spectre.Console.BreakdownChart]
+            $chart | Out-SpectreHost
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
         }
         
         It "Should handle single input correctly" {
             $testData = New-SpectreChartItem -Label (Get-RandomString) -Value (Get-Random -Minimum -100 -Maximum 100) -Color (Get-RandomColor)
-            Format-SpectreBreakdownChart -Data $testData -Width $testWidth
+            $chart = Format-SpectreBreakdownChart -Data $testData -Width $testWidth
+            $chart | Should -BeOfType [Spectre.Console.BreakdownChart]
+            $chart | Out-SpectreHost
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
         }
 
@@ -51,7 +57,9 @@ Describe "Format-SpectreBreakdownChart" {
 
                 $testConsole.Write($RenderableObject)
             }
-            Format-SpectreBreakdownChart -Data $testData
+            $chart = Format-SpectreBreakdownChart -Data $testData
+            $chart | Should -BeOfType [Spectre.Console.BreakdownChart]
+            $chart | Out-SpectreHost
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
         }
 
@@ -66,7 +74,9 @@ Describe "Format-SpectreBreakdownChart" {
                 (New-SpectreChartItem -Label "Test 2" -Value 20 -Color "Turquoise2"),
                 (New-SpectreChartItem -Label "Test 3" -Value 30 -Color "Turquoise2")
             )
-            Format-SpectreBreakdownChart -Data $testData
+            $chart = Format-SpectreBreakdownChart -Data $testData
+            $chart | Should -BeOfType [Spectre.Console.BreakdownChart]
+            $chart | Out-SpectreHost
             { Assert-OutputMatchesSnapshot -SnapshotName "Format-SpectreBreakdownChart" -Output $testConsole.Output } | Should -Not -Throw
         }
     }

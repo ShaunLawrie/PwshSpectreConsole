@@ -101,7 +101,7 @@ function Get-RandomTree {
 
     if ($null -eq $Root) {
         $Root = @{
-            Label    = Get-RandomString
+            Value    = Get-RandomString
             Children = @()
         }
     }
@@ -109,7 +109,7 @@ function Get-RandomTree {
     $children = Get-Random -Minimum $MinChildren -Maximum $MaxChildren
     for ($i = 0; $i -lt $children; $i++) {
         $newChild = @{
-            Label    = Get-RandomString
+            Value    = Get-RandomString
             Children = @()
         }
         $newTree = Get-RandomTree -Root $newChild -MaxChildren $MaxChildren -MaxDepth $MaxDepth -CurrentDepth $CurrentDepth

@@ -22,7 +22,9 @@ Describe "Format-SpectreTree" {
         }
 
         It "Should create a Tree" {
-            Get-RandomTree | Format-SpectreTree -Guide $testGuide -Color $testColor
+            $tree = Get-RandomTree | Format-SpectreTree -Guide $testGuide -Color $testColor
+            $tree | Should -BeOfType [Spectre.Console.Tree]
+            $tree | Out-SpectreHost
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
         }
 
@@ -31,36 +33,38 @@ Describe "Format-SpectreTree" {
                 $testConsole.Write($RenderableObject)
             }
             $testData = @{
-                Label    = "Root"
+                Value    = "Root"
                 Children = @(
                     @{
-                        Label    = "Child 1"
+                        Value    = "Child 1"
                         Children = @(
                             @{
-                                Label    = "Grandchild 1"
+                                Value    = "Grandchild 1"
                                 Children = @(
                                     @{
-                                        Label = "Great Grandchild 1"
+                                        Value = "Great Grandchild 1"
                                     },
                                     @{
-                                        Label = "Great Grandchild 2"
+                                        Value = "Great Grandchild 2"
                                     },
                                     @{
-                                        Label = "Great Grandchild 3"
+                                        Value = "Great Grandchild 3"
                                     }
                                 )
                             }
                         )
                     },
                     @{
-                        Label = "Child 2"
+                        Value = "Child 2"
                     }
                 )
             }
 
             $testGuide = "BoldLine"
             $testColor = "DeepPink2"
-            $testData | Format-SpectreTree -Guide $testGuide -Color $testColor
+            $tree = $testData | Format-SpectreTree -Guide $testGuide -Color $testColor
+            $tree | Should -BeOfType [Spectre.Console.Tree]
+            $tree | Out-SpectreHost
             { Assert-OutputMatchesSnapshot -SnapshotName "Format-SpectreTree" -Output $testConsole.Output } | Should -Not -Throw
         }
     }

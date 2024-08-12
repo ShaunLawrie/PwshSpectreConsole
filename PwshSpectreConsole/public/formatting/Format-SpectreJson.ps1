@@ -33,12 +33,6 @@ function Format-SpectreJson {
         NullStyle      = "Gray"
     }
 
-    .PARAMETER Width
-    The width of the Json panel.
-
-    .PARAMETER Height
-    The height of the Json panel.
-
     .EXAMPLE
     $data = @(
         [pscustomobject]@{
@@ -62,11 +56,6 @@ function Format-SpectreJson {
         [Parameter(ValueFromPipeline, Mandatory)]
         [object] $Data,
         [int] $Depth,
-        [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostWidth) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
-        [int] $Width,
-        [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostHeight) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console height.")]
-        [int] $Height,
-        [switch] $Expand,
         [ValidateSpectreColorTheme()]
         [ColorThemeTransformationAttribute()]
         [hashtable] $JsonStyle = @{

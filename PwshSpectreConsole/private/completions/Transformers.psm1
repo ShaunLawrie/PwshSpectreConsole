@@ -58,14 +58,14 @@ class RenderableTransformationAttribute : ArgumentTransformationAttribute {
         if ($InputData -like "*[/]*") {
             return [Markup]::new($InputData)
         } else {
-            return [Text]::new(($InputData | Out-String))
+            return [Text]::new(($InputData | Out-String -NoNewline))
         }
     }
 }
 
 class ChartItemTransformationAttribute : ArgumentTransformationAttribute {
-    [object] Transform([EngineIntrinsics]$engine, [object]$inputData) {
 
+    static [object] TransformItem([object]$inputData) {
         # These objects are already renderable
         if ($InputData -is [SpectreChartItem]) {
             return $InputData
@@ -86,5 +86,13 @@ class ChartItemTransformationAttribute : ArgumentTransformationAttribute {
         }
 
         throw "Cannot convert $($inputData.GetType().FullName) to [SpectreChartItem]. Expected a hashtable or PSCustomObject with 'Label', 'Value', and 'Color' properties."
+    }
+
+    [object] Transform([EngineIntrinsics]$engine, [object]$inputData) {
+        $outputData = @()
+        foreach ($dataItem in $inputData) {
+            $outputData += [ChartItemTransformationAttribute]::TransformItem($dataItem)
+        }
+        return $outputData
     }
 }
