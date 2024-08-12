@@ -1,6 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
-using namespace Spectre.Console
 
 function Read-SpectreConfirm {
     <#
@@ -38,21 +37,21 @@ function Read-SpectreConfirm {
         [string] $ConfirmFailure,
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $Color = $script:AccentColor
+        [Spectre.Console.Color] $Color = $script:AccentColor
     )
 
     # This is much fiddlier but it exposes the ability to set the color scheme. The confirmationprompt is just a textprompt with two choices hard coded to y/n:
     # https://github.com/spectreconsole/spectre.console/blob/63b940cf0eb127a8cd891a4fe338aa5892d502c5/src/Spectre.Console/Prompts/ConfirmationPrompt.cs#L71
-    $confirmationPrompt = [TextPrompt[string]]::new($Prompt)
-    $confirmationPrompt = [TextPromptExtensions]::AddChoice($confirmationPrompt, "y")
-    $confirmationPrompt = [TextPromptExtensions]::AddChoice($confirmationPrompt, "n")
+    $confirmationPrompt = [Spectre.Console.TextPrompt[string]]::new($Prompt)
+    $confirmationPrompt = [Spectre.Console.TextPromptExtensions]::AddChoice($confirmationPrompt, "y")
+    $confirmationPrompt = [Spectre.Console.TextPromptExtensions]::AddChoice($confirmationPrompt, "n")
     if ($DefaultAnswer -ne "none") {
-        $confirmationPrompt = [TextPromptExtensions]::DefaultValue($confirmationPrompt, $DefaultAnswer)
+        $confirmationPrompt = [Spectre.Console.TextPromptExtensions]::DefaultValue($confirmationPrompt, $DefaultAnswer)
     }
 
     # This is how I added the default colors with Set-SpectreColors so you don't have to keep passing them through and get a consistent TUI color scheme
-    $confirmationPrompt.DefaultValueStyle = [Style]::new($script:DefaultValueColor)
-    $confirmationPrompt.ChoicesStyle = [Style]::new($Color)
+    $confirmationPrompt.DefaultValueStyle = [Spectre.Console.Style]::new($script:DefaultValueColor)
+    $confirmationPrompt.ChoicesStyle = [Spectre.Console.Style]::new($Color)
     $confirmationPrompt.InvalidChoiceMessage = "[red]Please select one of the available options[/]"
 
     # Invoke-SpectrePromptAsync supports ctrl-c

@@ -1,19 +1,18 @@
-using namespace Spectre.Console
 
 function Start-AnsiConsoleStatus {
     param (
         [Parameter(Mandatory)]
         [string] $Title,
         [Parameter(Mandatory)]
-        [Spinner] $Spinner,
+        [Spectre.Console.Spinner] $Spinner,
         [Parameter(Mandatory)]
-        [Style] $SpinnerStyle,
+        [Spectre.Console.Style] $SpinnerStyle,
         [Parameter(Mandatory)]
         [scriptblock] $ScriptBlock
     )
     $resultVariableName = "AnsiConsoleStatusResult-$([guid]::NewGuid())"
     New-Variable -Name $resultVariableName -Scope "Script"
-    [AnsiConsole]::Status().Start($Title, {
+    [Spectre.Console.AnsiConsole]::Status().Start($Title, {
             param (
                 $ctx
             )

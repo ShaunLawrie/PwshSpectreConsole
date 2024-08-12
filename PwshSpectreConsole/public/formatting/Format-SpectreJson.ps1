@@ -1,6 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
-using namespace Spectre.Console
 
 function Format-SpectreJson {
     <#
@@ -60,17 +59,22 @@ function Format-SpectreJson {
         [ColorThemeTransformationAttribute()]
         [hashtable] $JsonStyle = @{
             MemberStyle    = $script:AccentColor
-            BracesStyle    = [Color]::Red
-            BracketsStyle  = [Color]::Orange1
+            BracesStyle    = [Spectre.Console.Color]::Red
+            BracketsStyle  = [Spectre.Console.Color]::Orange1
             ColonStyle     = $script:AccentColor
             CommaStyle     = $script:AccentColor
-            StringStyle    = [Color]::White
-            NumberStyle    = [Color]::Red
-            BooleanStyle   = [Color]::LightSkyBlue1
+            StringStyle    = [Spectre.Console.Color]::White
+            NumberStyle    = [Spectre.Console.Color]::Red
+            BooleanStyle   = [Spectre.Console.Color]::LightSkyBlue1
             NullStyle      = $script:DefaultValueColor
         }
     )
     begin {
+        $requiredJsonStyleKeys = @('MemberStyle', 'BracesStyle', 'BracketsStyle', 'ColonStyle', 'CommaStyle', 'StringStyle', 'NumberStyle', 'BooleanStyle', 'NullStyle')
+        if (($requiredJsonStyleKeys | ForEach-Object { $JsonStyle.Keys -contains $_ }) -contains $false) {
+            throw "JsonStyle must contain the following keys: $($requiredJsonStyleKeys -join ', ')"
+        }
+
         $collector = [System.Collections.Generic.List[psobject]]::new()
         $splat = @{
             WarningAction = 'Ignore'
@@ -141,7 +145,7 @@ function Format-SpectreJson {
             return
         }
         try {
-            $json = [Json.JsonText]::new(($collector | ConvertTo-Json @splat))
+            $json = [Spectre.Console.Json.JsonText]::new(($collector | ConvertTo-Json @splat))
         } catch {
             Write-Error "Failed to convert to json, $_"
             return

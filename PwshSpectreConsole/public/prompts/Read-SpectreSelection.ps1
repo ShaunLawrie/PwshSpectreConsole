@@ -1,6 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
-using namespace Spectre.Console
 
 function Read-SpectreSelection {
     <#
@@ -49,14 +48,14 @@ function Read-SpectreSelection {
         [string] $ChoiceLabelProperty,
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $Color = $script:AccentColor,
+        [Spectre.Console.Color] $Color = $script:AccentColor,
         [int] $PageSize = 5,
         [switch] $EnableSearch,
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $SearchHighlightColor = $script:AccentColor.Blend([Spectre.Console.Color]::White, 0.7)
+        [Spectre.Console.Color] $SearchHighlightColor = $script:AccentColor.Blend([Spectre.Console.Color]::White, 0.7)
     )
-    $spectrePrompt = [SelectionPrompt[string]]::new()
+    $spectrePrompt = [Spectre.Console.SelectionPrompt[string]]::new()
 
     $choiceLabels = $Choices
     if ($ChoiceLabelProperty) {
@@ -68,14 +67,14 @@ function Read-SpectreSelection {
         throw "You have duplicate labels in your select list, this is ambiguous so a selection cannot be made"
     }
 
-    $spectrePrompt = [SelectionPromptExtensions]::AddChoices($spectrePrompt, [string[]]$choiceLabels)
+    $spectrePrompt = [Spectre.Console.SelectionPromptExtensions]::AddChoices($spectrePrompt, [string[]]$choiceLabels)
     $spectrePrompt.Title = $Title
     $spectrePrompt.PageSize = $PageSize
     $spectrePrompt.WrapAround = $true
-    $spectrePrompt.HighlightStyle = [Style]::new($Color)
+    $spectrePrompt.HighlightStyle = [Spectre.Console.Style]::new($Color)
     $spectrePrompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
     $spectrePrompt.SearchEnabled = $EnableSearch
-    $spectrePrompt.SearchHighlightStyle = [Style]::new($SearchHighlightColor)
+    $spectrePrompt.SearchHighlightStyle = [Spectre.Console.Style]::new($SearchHighlightColor)
 
     $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt
 

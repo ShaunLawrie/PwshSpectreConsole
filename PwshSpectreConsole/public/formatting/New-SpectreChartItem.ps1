@@ -1,7 +1,6 @@
 using module "..\..\private\models\SpectreChartItem.psm1"
 using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
-using namespace Spectre.Console
 
 <#
 .SYNOPSIS
@@ -39,7 +38,7 @@ function New-SpectreChartItem {
         [Parameter(Mandatory)]
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color]$Color
+        [Spectre.Console.Color]$Color
     )
 
     return [SpectreChartItem]::new($Label, $Value, $Color)

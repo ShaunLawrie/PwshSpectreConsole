@@ -1,4 +1,3 @@
-using namespace Spectre.Console
 
 <#
 .SYNOPSIS
@@ -19,7 +18,7 @@ See Format-SpectreTree for usage.
 function Add-SpectreTreeNode {
     param (
         [Parameter(Mandatory)]
-        [IHasTreeNodes] $Node,
+        [Spectre.Console.IHasTreeNodes] $Node,
         [Parameter(Mandatory)]
         [array] $Children
     )
@@ -32,7 +31,7 @@ function Add-SpectreTreeNode {
             $child.Remove("Label")
         }
 
-        $newNode = [HasTreeNodeExtensions]::AddNode($Node, $child.Value)
+        $newNode = [Spectre.Console.HasTreeNodeExtensions]::AddNode($Node, $child.Value)
         if ($child.Children.Count -gt 0) {
             Add-SpectreTreeNode -Node $newNode -Children $child.Children
         }

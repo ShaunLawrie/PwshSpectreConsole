@@ -1,15 +1,14 @@
 using module ".\completions\Transformers.psm1"
-using namespace Spectre.Console
 
 <#
 .SYNOPSIS
-Writes an object to the console using [AnsiConsole]::Write()
+Writes an object to the console using [Spectre.Console.AnsiConsole]::Write()
 
 .DESCRIPTION
 This function is required for mocking ansiconsole in unit tests that write objects to the console.
 
 .PARAMETER RenderableObject
-The renderable object to write to the console e.g. [BarChart]
+The renderable object to write to the console e.g. [Spectre.Console.BarChart]
 
 .EXAMPLE
 Write-SpectreConsoleOutput -Object "Hello, World!" -ForegroundColor Green -BackgroundColor Black
@@ -21,5 +20,5 @@ function Write-AnsiConsole {
         [RenderableTransformationAttribute()]
         [object] $RenderableObject
     )
-    [AnsiConsole]::Render($RenderableObject)
+    [Spectre.Console.AnsiConsole]::Render($RenderableObject)
 }

@@ -1,6 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
-using namespace Spectre.Console
 
 function Format-SpectreTable {
     <#
@@ -99,13 +98,13 @@ function Format-SpectreTable {
         [string] $Border = "Double",
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $Color = $script:AccentColor,
+        [Spectre.Console.Color] $Color = $script:AccentColor,
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $HeaderColor = $script:DefaultTableHeaderColor,
+        [Spectre.Console.Color] $HeaderColor = $script:DefaultTableHeaderColor,
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $TextColor = $script:DefaultTableTextColor,
+        [Spectre.Console.Color] $TextColor = $script:DefaultTableTextColor,
         [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostWidth) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
         [int] $Width,
         [switch] $HideHeaders,
@@ -120,9 +119,9 @@ function Format-SpectreTable {
         $FormatTableParams = @{}
         $collector = [System.Collections.Generic.List[psobject]]::new()
         $renderables = @{}
-        $table = [Table]::new()
-        $table.Border = [TableBorder]::$Border
-        $table.BorderStyle = [Style]::new($Color)
+        $table = [Spectre.Console.Table]::new()
+        $table.Border = [Spectre.Console.TableBorder]::$Border
+        $table.BorderStyle = [Spectre.Console.Style]::new($Color)
         switch ($PSBoundParameters.Keys) {
             'Width' { $table.Width = $Width }
             'HideHeaders' { $table.ShowHeaders = $false }
@@ -184,13 +183,13 @@ function Format-SpectreTable {
                 $row = New-TableRow -Entry $item.FormatPropertyFieldList.propertyValue -Renderables $renderables -Color $TextColor @rowoptions
             }
             if ($AllowMarkup) {
-                $table = [TableExtensions]::AddRow($table, [Markup[]]$row)
+                $table = [Spectre.Console.TableExtensions]::AddRow($table, [Spectre.Console.Markup[]]$row)
             } else {
-                $table = [TableExtensions]::AddRow($table, [Rendering.Renderable[]]$row)
+                $table = [Spectre.Console.TableExtensions]::AddRow($table, [Spectre.Console.Rendering.Renderable[]]$row)
             }
         }
         if ($Title -And -Not $rowoptions.scalar) {
-            $table.Title = [TableTitle]::new($Title, [Style]::new($Color))
+            $table.Title = [Spectre.Console.TableTitle]::new($Title, [Spectre.Console.Style]::new($Color))
         }
 
         return $table

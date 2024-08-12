@@ -1,6 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
-using namespace Spectre.Console
 
 function Format-SpectreBreakdownChart {
     <#
@@ -43,7 +42,7 @@ function Format-SpectreBreakdownChart {
         [Switch]$HideTagValues
     )
     begin {
-        $chart = [BreakdownChart]::new()
+        $chart = [Spectre.Console.BreakdownChart]::new()
         $chart.Width = $Width
         if ($HideTags) {
             $chart.ShowTags = $false
@@ -55,10 +54,10 @@ function Format-SpectreBreakdownChart {
     process {
         if ($Data -is [array]) {
             foreach ($dataItem in $Data) {
-                [BreakdownChartExtensions]::AddItem($chart, $dataItem.Label, $dataItem.Value, ($dataItem.Color | Convert-ToSpectreColor)) | Out-Null
+                [Spectre.Console.BreakdownChartExtensions]::AddItem($chart, $dataItem.Label, $dataItem.Value, ($dataItem.Color | Convert-ToSpectreColor)) | Out-Null
             }
         } else {
-            [BreakdownChartExtensions]::AddItem($chart, $Data.Label, $Data.Value, ($Data.Color | Convert-ToSpectreColor)) | Out-Null
+            [Spectre.Console.BreakdownChartExtensions]::AddItem($chart, $Data.Label, $Data.Value, ($Data.Color | Convert-ToSpectreColor)) | Out-Null
         }
     }
     end {

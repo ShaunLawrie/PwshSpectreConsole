@@ -1,5 +1,4 @@
 using module "..\..\private\completions\Completers.psm1"
-using namespace Spectre.Console
 
 function Format-SpectreColumns {
     <#
@@ -13,7 +12,7 @@ function Format-SpectreColumns {
     .PARAMETER Data
     An array of objects containing the data to be displayed in the columns.
     #>
-    [Reflection.AssemblyMetadata("title", "New-SpectreColumn")]
+    [Reflection.AssemblyMetadata("title", "Format-SpectreColumns")]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
         [array] $Data,
@@ -26,28 +25,28 @@ function Format-SpectreColumns {
     process {
         if ($Data -is [array]) {
             foreach ($dataItem in $Data) {
-                if ($dataItem -is [Rendering.Renderable]) {
+                if ($dataItem -is [Spectre.Console.Rendering.Renderable]) {
                     $columnItems += $dataItem
                 } elseif ($dataItem -is [string]) {
-                    $columnItems += [Text]::new($dataItem)
+                    $columnItems += [Spectre.Console.Text]::new($dataItem)
                 } else {
                     throw "Data item must be a spectre renderable object or string"
                 }
             }
         } else {
-            if ($Data -is [Rendering.Renderable]) {
+            if ($Data -is [Spectre.Console.Rendering.Renderable]) {
                 $columnItems += $Data
             } elseif ($Data -is [string]) {
-                $columnItems += [Text]::new($Data)
+                $columnItems += [Spectre.Console.Text]::new($Data)
             } else {
                 throw "Data item must be a spectre renderable object or string"
             }
         }
     }
     end {
-        $columns = [Columns]::new($columnItems)
+        $columns = [Spectre.Console.Columns]::new($columnItems)
         $columns.Expand = $Expand
-        $columns.Padding = [Padding]::new($Padding, $Padding, $Padding, $Padding)
+        $columns.Padding = [Spectre.Console.Padding]::new($Padding, $Padding, $Padding, $Padding)
 
         return $columns
     }

@@ -1,6 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
-using namespace Spectre.Console
 
 function Format-SpectrePanel {
     <#
@@ -50,15 +49,15 @@ function Format-SpectrePanel {
         [switch] $Expand,
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $Color = $script:AccentColor,
+        [Spectre.Console.Color] $Color = $script:AccentColor,
         [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostWidth) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
         [int]$Width,
         [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostHeight) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console height.")]
         [int]$Height
     )
-    $panel = [Panel]::new($Data)
+    $panel = [Spectre.Console.Panel]::new($Data)
     if ($Header) {
-        $panel.Header = [PanelHeader]::new($Header)
+        $panel.Header = [Spectre.Console.PanelHeader]::new($Header)
     }
     if ($width) {
         $panel.Width = $Width
@@ -67,8 +66,8 @@ function Format-SpectrePanel {
         $panel.Height = $Height
     }
     $panel.Expand = $Expand
-    $panel.Border = [BoxBorder]::$Border
-    $panel.BorderStyle = [Style]::new($Color)
+    $panel.Border = [Spectre.Console.BoxBorder]::$Border
+    $panel.BorderStyle = [Spectre.Console.Style]::new($Color)
     
     return $panel
 }

@@ -1,4 +1,3 @@
-using namespace Spectre.Console
 
 function Write-SpectreExample {
     param (
@@ -16,7 +15,7 @@ function Write-SpectreExample {
     }
     Write-Host ""
 
-    Write-SpectreRule $Title -Color ([Color]::SteelBlue1)
+    Write-SpectreRule $Title -Color ([Spectre.Console.Color]::SteelBlue1)
     Write-SpectreHost "`n$Description"
     if (!$HideHeader) {
         Write-CodeblockHeader
@@ -52,12 +51,12 @@ function Start-SpectreDemo {
     }
     Write-Host ""
 
-    Write-SpectreRule "PwshSpectreConsole Intro" -Color ([Color]::SteelBlue1)
+    Write-SpectreRule "PwshSpectreConsole Intro" -Color ([Spectre.Console.Color]::SteelBlue1)
     Write-SpectreHost "`nPwshSpectreConsole is an opinionated wrapper for the awesome Spectre.Console library. It's opinionated in that I have not just exposed the internals of Spectre Console to PowerShell but have wrapped them in a way that makes them work better in the PowerShell ecosystem (in my opinion 😜)."
     Write-SpectreHost "`nSpectre Console is mostly an async library and it leans heavily on types and extension methods in C# which are very verbose to work with in PowerShell so this module hides away some of the complexity."
     Write-SpectreHost "`nThe module doesn't expose the full feature set of Spectre.Console because the scope of the library is huge and I've focused on the features that I use to enhance my scripts."
     Write-Host ""
-    if (![AnsiConsole]::Console.Profile.Capabilities.Unicode) {
+    if (![Spectre.Console.AnsiConsole]::Console.Profile.Capabilities.Unicode) {
         Write-Warning "To enable all features of Spectre.Console you need to enable Unicode support in your PowerShell profile by adding the following to your profile at $PROFILE. See https://spectreconsole.net/best-practices for more info.`n`n`$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding`n"
     }
 
@@ -163,22 +162,22 @@ $(
     @{
         Label = "Apple"
         Value = 12
-        Color = [Color]::Green
+        Color = [Spectre.Console.Color]::Green
     },
     @{
         Label = "Orange"
         Value = 54
-        Color = [Color]::Orange1
+        Color = [Spectre.Console.Color]::Orange1
     },
     @{
         Label = "Strawberry"
         Value = 51
-        Color = [Color]::Red
+        Color = [Spectre.Console.Color]::Red
     },
     @{
         Label = "Banana"
         Value = 33
-        Color = [Color]::Yellow
+        Color = [Spectre.Console.Color]::Yellow
     }
 ) | Format-SpectreBarChart
 '@
@@ -193,22 +192,22 @@ $(
     @{
         Label = "Apple"
         Value = 12
-        Color = [Color]::Green
+        Color = [Spectre.Console.Color]::Green
     },
     @{
         Label = "Strawberry"
         Value = 15
-        Color = [Color]::Red
+        Color = [Spectre.Console.Color]::Red
     },
     @{
         Label = "Orange"
         Value = 54
-        Color = [Color]::Orange1
+        Color = [Spectre.Console.Color]::Orange1
     },
     @{
         Label = "Plum"
         Value = 75
-        Color = [Color]::Fuchsia
+        Color = [Spectre.Console.Color]::Fuchsia
     }
 ) | Format-SpectreBreakdownChart
 '@

@@ -1,4 +1,3 @@
-using namespace Spectre.Console
 
 <#
 .SYNOPSIS
@@ -17,7 +16,7 @@ The color to convert. This parameter is mandatory and accepts input from the pip
 '#FF0000' | Convert-ToSpectreColor
 
 .EXAMPLE
-[Color]::Salmon1 | Convert-ToSpectreColor
+[Spectre.Console.Color]::Salmon1 | Convert-ToSpectreColor
 #>
 function Convert-ToSpectreColor {
     param (
@@ -26,18 +25,18 @@ function Convert-ToSpectreColor {
     )
     try {
         # Just return the console color object
-        if ($Color -is [Color]) {
+        if ($Color -is [Spectre.Console.Color]) {
             return $Color
         }
         # Already validated in validation attribute
         if ($Color.StartsWith("#")) {
             $hexString = $Color -replace '^#', ''
             $hexBytes = [System.Convert]::FromHexString($hexString)
-            return [Color]::new($hexBytes[0], $hexBytes[1], $hexBytes[2])
+            return [Spectre.Console.Color]::new($hexBytes[0], $hexBytes[1], $hexBytes[2])
         }
 
         # Validated in attribute as a real color already
-        return [Color]::$Color
+        return [Spectre.Console.Color]::$Color
     } catch {
         return $script:AccentColor
     }

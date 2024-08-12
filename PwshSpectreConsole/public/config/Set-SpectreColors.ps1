@@ -1,6 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
-using namespace Spectre.Console
 
 function Set-SpectreColors {
     <#
@@ -33,16 +32,16 @@ function Set-SpectreColors {
     param (
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $AccentColor = "Blue",
+        [Spectre.Console.Color] $AccentColor = "Blue",
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $DefaultValueColor = "Grey",
+        [Spectre.Console.Color] $DefaultValueColor = "Grey",
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $DefaultTableHeaderColor = [Color]::Default,
+        [Spectre.Console.Color] $DefaultTableHeaderColor = [Spectre.Console.Color]::Default,
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $DefaultTableTextColor = [Color]::Default
+        [Spectre.Console.Color] $DefaultTableTextColor = [Spectre.Console.Color]::Default
     )
     $script:AccentColor = $AccentColor
     $script:DefaultValueColor = $DefaultValueColor

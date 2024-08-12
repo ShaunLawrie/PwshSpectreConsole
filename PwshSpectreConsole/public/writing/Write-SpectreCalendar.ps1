@@ -1,6 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
-using namespace Spectre.Console
 
 function Write-SpectreCalendar {
     <#
@@ -49,7 +48,7 @@ function Write-SpectreCalendar {
         [string] $Alignment = "Left",
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $Color = $script:AccentColor,
+        [Spectre.Console.Color] $Color = $script:AccentColor,
         [ValidateSet([SpectreConsoleTableBorder], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Border = "Double",
         [cultureinfo] $Culture = [cultureinfo]::CurrentCulture,
@@ -57,13 +56,13 @@ function Write-SpectreCalendar {
         [Switch] $HideHeader,
         [Switch] $PassThru
     )
-    $calendar = [Calendar]::new($date)
-    $calendar.Alignment = [Justify]::$Alignment
-    $calendar.Border = [TableBorder]::$Border
-    $calendar.BorderStyle = [Style]::new($Color)
+    $calendar = [Spectre.Console.Calendar]::new($date)
+    $calendar.Alignment = [Spectre.Console.Justify]::$Alignment
+    $calendar.Border = [Spectre.Console.TableBorder]::$Border
+    $calendar.BorderStyle = [Spectre.Console.Style]::new($Color)
     $calendar.Culture = $Culture
-    $calendar.HeaderStyle = [Style]::new($Color)
-    $calendar.HighlightStyle = [Style]::new($Color)
+    $calendar.HeaderStyle = [Spectre.Console.Style]::new($Color)
+    $calendar.HighlightStyle = [Spectre.Console.Style]::new($Color)
     if ($HideHeader) {
         $calendar.ShowHeader = $false
     }
@@ -74,7 +73,7 @@ function Write-SpectreCalendar {
         foreach ($event in $events.GetEnumerator()) {
             # Calendar events don't appear to support Culture.
             $eventDate = $event.Name -as [datetime]
-            $calendar = [CalendarExtensions]::AddCalendarEvent($calendar, $event.value, $eventDate.Year, $eventDate.Month, $eventDate.Day)
+            $calendar = [Spectre.Console.CalendarExtensions]::AddCalendarEvent($calendar, $event.value, $eventDate.Year, $eventDate.Month, $eventDate.Day)
         }
         $outputData += $calendar.CalendarEvents | Sort-Object -Property Day | Format-SpectreTable -Border $Border -Color $Color
     }

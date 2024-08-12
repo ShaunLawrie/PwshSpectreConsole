@@ -1,4 +1,3 @@
-using namespace Spectre.Console
 
 function Write-SpectreHost {
     <#
@@ -31,7 +30,7 @@ function Write-SpectreHost {
         return $Message
     }
 
-    if ($Message -is [Rendering.Renderable]) {
+    if ($Message -is [Spectre.Console.Rendering.Renderable]) {
         Write-AnsiConsole $Message
         return
     }

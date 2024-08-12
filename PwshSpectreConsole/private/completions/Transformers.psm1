@@ -1,19 +1,18 @@
 using module "..\models\SpectreChartItem.psm1"
-using namespace Spectre.Console
 using namespace System.Management.Automation
 
 class ColorTransformationAttribute : ArgumentTransformationAttribute {
 
     static [object] TransformItem([object]$inputData) {
-        if ($InputData -is [Color]) {
+        if ($InputData -is [Spectre.Console.Color]) {
             return $InputData
         }
         if ($InputData.StartsWith('#')) {
             $hexBytes = [System.Convert]::FromHexString($InputData.Substring(1))
-            return [Color]::new($hexBytes[0], $hexBytes[1], $hexBytes[2])
+            return [Spectre.Console.Color]::new($hexBytes[0], $hexBytes[1], $hexBytes[2])
         }
         if ($InputData -is [String]) {
-            return [Color]::$InputData
+            return [Spectre.Console.Color]::$InputData
         }
         throw [System.ArgumentException]::new("Cannot convert $($inputData.GetType().FullName) '$InputData' to [Spectre.Console.Color]")
     }
@@ -34,7 +33,7 @@ class ColorThemeTransformationAttribute : ArgumentTransformationAttribute {
             if ($null -ne $colorValue) {
                 $outputData[$color.Key] = $colorValue
             } else {
-                $spectreColors = [Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
+                $spectreColors = [Spectre.Console.Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
                 throw "Invalid color value '$($color.Value)' for key '$($color.Key)' could not be mapped to one of the list of valid Spectre colors ['$($spectreColors -join ''', ''')']"
             }
         }
@@ -50,15 +49,15 @@ class RenderableTransformationAttribute : ArgumentTransformationAttribute {
         }
 
         # These objects are already renderable
-        if ($InputData -is [Rendering.Renderable]) {
+        if ($InputData -is [Spectre.Console.Rendering.Renderable]) {
             return $InputData
         }
 
         # For others just dump them as either strings formatted with markup which are easy to identify by the closing tag [/] or as plain text
         if ($InputData -like "*[/]*") {
-            return [Markup]::new($InputData)
+            return [Spectre.Console.Markup]::new($InputData)
         } else {
-            return [Text]::new(($InputData | Out-String -NoNewline))
+            return [Spectre.Console.Text]::new(($InputData | Out-String -NoNewline))
         }
     }
 }

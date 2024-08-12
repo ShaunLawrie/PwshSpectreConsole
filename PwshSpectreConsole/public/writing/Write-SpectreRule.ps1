@@ -1,6 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
-using namespace Spectre.Console
 
 function Write-SpectreRule {
     <#
@@ -30,11 +29,11 @@ function Write-SpectreRule {
         [string] $Alignment = "Left",
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $Color = $script:AccentColor,
+        [Spectre.Console.Color] $Color = $script:AccentColor,
         [switch] $PassThru
     )
-    $rule = [Rule]::new("[$($Color.ToMarkup())]$Title[/]")
-    $rule.Justification = [Justify]::$Alignment
+    $rule = [Spectre.Console.Rule]::new("[$($Color.ToMarkup())]$Title[/]")
+    $rule.Justification = [Spectre.Console.Justify]::$Alignment
 
     if ($PassThru) {
         return $rule

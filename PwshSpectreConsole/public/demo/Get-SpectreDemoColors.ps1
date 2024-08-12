@@ -1,4 +1,3 @@
-using namespace Spectre.Console
 
 <#
 .SYNOPSIS
@@ -25,7 +24,7 @@ function Get-SpectreDemoColors {
     Write-SpectreRule "Colors"
     Write-SpectreHost " "
 
-    $colors = [Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
+    $colors = [Spectre.Console.Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
     if($Count) {
         $colors = $colors | Select-Object -First $Count
     }
@@ -53,7 +52,7 @@ function Get-SpectreDemoColors {
     $maxLength = $colors | Measure-Object -Maximum -Property Length | Select-Object -ExpandProperty Maximum
 
     foreach ($color in $colors) {
-        $total = [Color]::$color | Select-Object @{ Name = "Total"; Expression = { $_.R + $_.G + $_.B } } | Select-Object -ExpandProperty Total
+        $total = [Spectre.Console.Color]::$color | Select-Object @{ Name = "Total"; Expression = { $_.R + $_.G + $_.B } } | Select-Object -ExpandProperty Total
         $textColor = "white"
         if ($total -gt 280) {
             $textColor = "black"

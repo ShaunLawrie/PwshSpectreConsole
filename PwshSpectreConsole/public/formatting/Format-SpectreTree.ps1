@@ -1,6 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
-using namespace Spectre.Console
 
 function Format-SpectreTree {
     <#
@@ -55,17 +54,17 @@ function Format-SpectreTree {
         [string] $Guide = "Line",
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $Color = $script:AccentColor
+        [Spectre.Console.Color] $Color = $script:AccentColor
     )
 
-    $tree = [Tree]::new($Data.Value)
-    $tree.Guide = [TreeGuide]::$Guide
+    $tree = [Spectre.Console.Tree]::new($Data.Value)
+    $tree.Guide = [Spectre.Console.TreeGuide]::$Guide
 
     if ($Data.Children) {
         Add-SpectreTreeNode -Node $tree -Children $Data.Children
     }
 
-    $tree.Style = [Style]::new($Color)
+    $tree.Style = [Spectre.Console.Style]::new($Color)
     
     return $tree
 }

@@ -1,4 +1,3 @@
-using namespace Spectre.Console
 
 function Get-SpectreImage {
     <#
@@ -27,7 +26,7 @@ function Get-SpectreImage {
         throw "The specified image path '$resolvedImagePath' does not exist."
     }
 
-    $image = [CanvasImage]::new($imagePathResolved)
+    $image = [Spectre.Console.CanvasImage]::new($imagePathResolved)
     if ($MaxWidth) {
         $image.MaxWidth = $MaxWidth
     }
