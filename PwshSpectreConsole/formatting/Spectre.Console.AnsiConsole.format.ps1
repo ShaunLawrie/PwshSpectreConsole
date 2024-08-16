@@ -21,6 +21,6 @@ Write-FormatView -TypeName "Spectre.Console.Rendering.Renderable" -Action {
     if ($targetIsInPipeline -and -not $targetIsPipedToSpectreFunction) {
         $_
     } else {
-        Write-AnsiConsole $_
+        $_ | Out-SpectreHost
     }
 }

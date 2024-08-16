@@ -1,7 +1,7 @@
 using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
-function Format-SpectrePath {
+function Format-SpectreTextPath {
     <#
     .SYNOPSIS
     Formats a path into a Spectre Console Path which supports highlighting and truncating.
@@ -15,7 +15,7 @@ function Format-SpectrePath {
     .EXAMPLE
     TODO Example
     #>
-    [Reflection.AssemblyMetadata("title", "Format-SpectrePath")]
+    [Reflection.AssemblyMetadata("title", "Format-SpectreTextPath")]
     param(
         [Parameter(ValueFromPipeline, Mandatory)]
         [string] $Path,

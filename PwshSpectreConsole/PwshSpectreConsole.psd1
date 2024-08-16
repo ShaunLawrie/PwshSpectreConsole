@@ -86,8 +86,9 @@ FunctionsToExport = 'Add-SpectreJob', 'Format-SpectreBarChart',
                'New-SpectreChartItem', 'Invoke-SpectreScriptBlockQuietly', 
                'Get-SpectreDemoColors', 'Get-SpectreDemoEmoji', 'Format-SpectreJson', 
                'Write-SpectreCalendar', 'Start-SpectreRecording', 'Stop-SpectreRecording', 
-               'Format-SpectreColumns', 'Format-SpectreRows', 
-               'Out-SpectreHost'
+               'Format-SpectreColumns', 'Format-SpectreRows', 'Format-SpectrePadded',
+               'Format-SpectreGrid', 'New-SpectreGridRow', 'Format-SpectreTextPath',
+               'New-SpectreLayout', 'Format-SpectreAligned', 'Out-SpectreHost'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()

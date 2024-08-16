@@ -92,6 +92,20 @@ class SpectreConsoleJustify : IValidateSetValuesGenerator {
     }
 }
 
+class SpectreConsoleHorizontalAlignment : IValidateSetValuesGenerator {
+    [String[]] GetValidValues() {
+        $lookup = [Spectre.Console.HorizontalAlignment].GetEnumNames()
+        return $lookup
+    }
+}
+
+class SpectreConsoleVerticalAlignment : IValidateSetValuesGenerator {
+    [String[]] GetValidValues() {
+        $lookup = [Spectre.Console.VerticalAlignment].GetEnumNames()
+        return $lookup
+    }
+}
+
 class SpectreConsoleSpinner : IValidateSetValuesGenerator {
     [String[]] GetValidValues() {
         $lookup = [Spectre.Console.Spinner+Known] | Get-Member -Static -MemberType Properties | Select-Object -ExpandProperty Name

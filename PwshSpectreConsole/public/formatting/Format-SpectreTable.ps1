@@ -109,8 +109,7 @@ function Format-SpectreTable {
         [int] $Width,
         [switch] $HideHeaders,
         [String] $Title,
-        [switch] $AllowMarkup,
-        [switch] $PassThru
+        [switch] $AllowMarkup
     )
     begin {
         Write-Debug "Module: $($ExecutionContext.SessionState.Module.Name) Command: $($MyInvocation.MyCommand.Name) Param: $($PSBoundParameters.GetEnumerator())"

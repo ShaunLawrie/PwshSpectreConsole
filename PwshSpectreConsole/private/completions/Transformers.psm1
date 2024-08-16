@@ -1,4 +1,5 @@
 using module "..\models\SpectreChartItem.psm1"
+using module "..\models\SpectreGridRow.psm1"
 using namespace System.Management.Automation
 
 class ColorTransformationAttribute : ArgumentTransformationAttribute {
@@ -91,6 +92,26 @@ class ChartItemTransformationAttribute : ArgumentTransformationAttribute {
         $outputData = @()
         foreach ($dataItem in $inputData) {
             $outputData += [ChartItemTransformationAttribute]::TransformItem($dataItem)
+        }
+        return $outputData
+    }
+}
+
+class GridRowTransformationAttribute : ArgumentTransformationAttribute {
+
+    static [object] TransformItem([object]$inputData) {
+        # These objects are already renderable
+        if ($InputData -is [SpectreGridRow]) {
+            return $InputData
+        }
+
+        return [SpectreGridRow]::new($inputData)
+    }
+
+    [object] Transform([EngineIntrinsics]$engine, [object]$inputData) {
+        $outputData = @()
+        foreach ($dataItem in $inputData) {
+            $outputData += [GridRowTransformationAttribute]::TransformItem($dataItem)
         }
         return $outputData
     }

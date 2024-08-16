@@ -33,7 +33,7 @@
     if ($targetIsInPipeline -and -not $targetIsPipedToSpectreFunction) {
         $_
     } else {
-        Write-AnsiConsole $_
+        $_ | Out-SpectreHost
     }
 </ScriptBlock>
               </ExpressionBinding>
