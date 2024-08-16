@@ -53,6 +53,7 @@ function Read-SpectreText {
         [ArgumentCompletionsSpectreColors()]
         [Spectre.Console.Color] $AnswerColor,
         [switch] $AllowEmpty,
+        [int] $TimeoutSeconds,
         [string[]] $Choices
     )
     $spectrePrompt = [Spectre.Console.TextPrompt[string]]::new($Question, [System.StringComparer]::InvariantCultureIgnoreCase)
@@ -67,5 +68,5 @@ function Read-SpectreText {
     if ($null -ne $Choices) {
         $spectrePrompt = [Spectre.Console.TextPromptExtensions]::AddChoices($spectrePrompt, $Choices)
     }
-    return Invoke-SpectrePromptAsync -Prompt $spectrePrompt
+    return Invoke-SpectrePromptAsync -Prompt $spectrePrompt -TimeoutSeconds $TimeoutSeconds
 }

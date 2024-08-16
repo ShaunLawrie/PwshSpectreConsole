@@ -43,6 +43,7 @@ function Read-SpectreMultiSelection {
         [ArgumentCompletionsSpectreColors()]
         [Spectre.Console.Color] $Color = $script:AccentColor,
         [int] $PageSize = 5,
+        [int] $TimeoutSeconds,
         [switch] $AllowEmpty
     )
     $spectrePrompt = [Spectre.Console.MultiSelectionPrompt[string]]::new()
@@ -69,7 +70,7 @@ function Read-SpectreMultiSelection {
     $spectrePrompt.HighlightStyle = [Spectre.Console.Style]::new($Color)
     $spectrePrompt.InstructionsText = "[$($script:DefaultValueColor.ToMarkup())](Press [$($script:AccentColor.ToMarkup())]space[/] to toggle a choice and press [$($script:AccentColor.ToMarkup())]<enter>[/] to submit your answer)[/]"
     $spectrePrompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
-    $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt
+    $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt -TimeoutSeconds $TimeoutSeconds
 
     if ($ChoiceLabelProperty) {
         $selected = $Choices | Where-Object { $selected -contains $_.$ChoiceLabelProperty }

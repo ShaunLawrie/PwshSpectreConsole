@@ -51,6 +51,7 @@ function Read-SpectreSelection {
         [Spectre.Console.Color] $Color = $script:AccentColor,
         [int] $PageSize = 5,
         [switch] $EnableSearch,
+        [int] $TimeoutSeconds,
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
         [Spectre.Console.Color] $SearchHighlightColor = $script:AccentColor.Blend([Spectre.Console.Color]::White, 0.7)
@@ -76,7 +77,7 @@ function Read-SpectreSelection {
     $spectrePrompt.SearchEnabled = $EnableSearch
     $spectrePrompt.SearchHighlightStyle = [Spectre.Console.Style]::new($SearchHighlightColor)
 
-    $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt
+    $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt -TimeoutSeconds $TimeoutSeconds
 
     if ($ChoiceLabelProperty) {
         $selected = $Choices | Where-Object -Property $ChoiceLabelProperty -Eq $selected

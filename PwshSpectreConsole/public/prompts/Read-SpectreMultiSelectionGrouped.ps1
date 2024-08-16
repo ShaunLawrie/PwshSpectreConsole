@@ -59,6 +59,7 @@ function Read-SpectreMultiSelectionGrouped {
         [ArgumentCompletionsSpectreColors()]
         [Spectre.Console.Color] $Color = $script:AccentColor,
         [int] $PageSize = 10,
+        [int] $TimeoutSeconds,
         [switch] $AllowEmpty
     )
     $spectrePrompt = [Spectre.Console.MultiSelectionPrompt[string]]::new()
@@ -92,7 +93,7 @@ function Read-SpectreMultiSelectionGrouped {
     $spectrePrompt.HighlightStyle = [Spectre.Console.Style]::new($Color)
     $spectrePrompt.InstructionsText = "[$($script:DefaultValueColor.ToMarkup())](Press [$($script:AccentColor.ToMarkup())]space[/] to toggle a choice and press [$($script:AccentColor.ToMarkup())]<enter>[/] to submit your answer)[/]"
     $spectrePrompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
-    $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt
+    $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt -TimeoutSeconds $TimeoutSeconds
 
     if ($ChoiceLabelProperty) {
         $selected = $flattenedChoices | Where-Object { $selected -contains $_.$ChoiceLabelProperty }

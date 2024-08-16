@@ -35,6 +35,7 @@ function Read-SpectreConfirm {
         [string] $DefaultAnswer = "y",
         [string] $ConfirmSuccess,
         [string] $ConfirmFailure,
+        [int] $TimeoutSeconds,
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
         [Spectre.Console.Color] $Color = $script:AccentColor
@@ -55,7 +56,7 @@ function Read-SpectreConfirm {
     $confirmationPrompt.InvalidChoiceMessage = "[red]Please select one of the available options[/]"
 
     # Invoke-SpectrePromptAsync supports ctrl-c
-    $confirmed = (Invoke-SpectrePromptAsync -Prompt $confirmationPrompt) -eq "y"
+    $confirmed = (Invoke-SpectrePromptAsync -Prompt $confirmationPrompt -TimeoutSeconds $TimeoutSeconds) -eq "y"
 
     if (!$confirmed) {
         if (![String]::IsNullOrWhiteSpace($ConfirmFailure)) {
