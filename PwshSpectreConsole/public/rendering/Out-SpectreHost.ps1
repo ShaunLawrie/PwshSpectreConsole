@@ -12,6 +12,9 @@ function Out-SpectreHost {
     .PARAMETER Data
     The data to write to the console.
 
+    .PARAMETER CustomItemFormatter
+    The default host customitem formatter has some restrictions, it needs to be one char less wide than when outputting to the standard console or it will wrap.
+
     .EXAMPLE
     $table = New-SpectreTable -Data $data
     $table | Out-SpectreHost
@@ -20,7 +23,8 @@ function Out-SpectreHost {
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
         [RenderableTransformationAttribute()]
-        [object] $Data
+        [object] $Data,
+        [switch] $CustomItemFormatter
     )
 
     begin {}
@@ -28,10 +32,10 @@ function Out-SpectreHost {
     process {
         if ($Data -is [array]) {
             foreach ($dataItem in $Data) {
-                Write-AnsiConsole -RenderableObject $dataItem
+                Write-AnsiConsole -RenderableObject $dataItem -CustomItemFormatter:$CustomItemFormatter
             }
         } else {
-            Write-AnsiConsole -RenderableObject $Data
+            Write-AnsiConsole -RenderableObject $Data -CustomItemFormatter:$CustomItemFormatter
         }
     }
 

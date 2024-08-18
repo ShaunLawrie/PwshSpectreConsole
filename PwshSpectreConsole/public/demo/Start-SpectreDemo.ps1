@@ -217,7 +217,7 @@ $(
     Clear-Host
 
     $example = @'
-Get-Module PwshSpectreConsole | Select-Object PrivateData | Format-SpectreJson -Expand
+Get-Module PwshSpectreConsole | Select-Object PrivateData | Format-SpectreJson
 '@
     $example | Write-SpectreExample -Title "Json Data" -Description "Spectre Console can format JSON with syntax highlighting thanks to https://github.com/trackd"
     Invoke-Expression $example
