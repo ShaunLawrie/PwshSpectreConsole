@@ -1,0 +1,74 @@
+---
+sidebar:
+  badge:
+    text: New
+    variant: tip
+title: Format-SpectreGrid
+---
+
+
+
+
+
+
+
+### Description
+
+TODO - Add description
+
+
+
+---
+
+
+### Parameters
+#### **Data**
+
+
+
+
+|Type      |Required|Position|PipelineInput |
+|----------|--------|--------|--------------|
+|`[Object]`|true    |1       |true (ByValue)|
+
+
+
+#### **Justify**
+
+Valid Values:
+
+* Left
+* Right
+* Center
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |2       |false        |
+
+
+
+#### **Width**
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |3       |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Format-SpectreGrid [-Data] <Object> [[-Justify] <String>] [[-Width] <Int32>] [<CommonParameters>]
+```

@@ -1,0 +1,102 @@
+---
+sidebar:
+  badge:
+    text: New
+    variant: tip
+title: Format-SpectreTextPath
+---
+
+
+
+
+
+
+
+import Asciinema from '../../../../components/Asciinema.astro'
+import formatspectretextpathExample1 from '../../../../assets/examples/formatspectretextpathExample1.cast?url'
+
+### Description
+
+Formats a path into a Spectre Console Path which supports highlighting and truncating.
+
+
+
+---
+
+
+### Examples
+> EXAMPLE 1
+
+```powershell
+Write-Host "TODO: Example"
+```
+<Asciinema
+    src={formatspectretextpathExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+---
+
+
+### Parameters
+#### **Path**
+
+The array of objects to be formatted into Json.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput |
+|----------|--------|--------|--------------|
+|`[String]`|true    |1       |true (ByValue)|
+
+
+
+#### **Alignment**
+
+Valid Values:
+
+* Left
+* Right
+* Center
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |2       |false        |
+
+
+
+#### **PathStyle**
+
+
+
+
+|Type         |Required|Position|PipelineInput|
+|-------------|--------|--------|-------------|
+|`[Hashtable]`|false   |3       |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Format-SpectreTextPath [-Path] <String> [[-Alignment] <String>] [[-PathStyle] <Hashtable>] [<CommonParameters>]
+```

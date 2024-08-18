@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: tip
 title: Write-SpectreCalendar
 ---
 
@@ -199,6 +203,17 @@ Hides the header of the calendar. (Date)
 
 
 
+#### **PassThru**
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|false   |named   |false        |
+
+
+
 
 
 ---
@@ -206,5 +221,5 @@ Hides the header of the calendar. (Date)
 
 ### Syntax
 ```powershell
-Write-SpectreCalendar [[-Date] <DateTime>] [[-Alignment] <String>] [[-Color] <Color>] [[-Border] <String>] [[-Culture] <CultureInfo>] [[-Events] <Hashtable>] [-HideHeader] [<CommonParameters>]
+Write-SpectreCalendar [[-Date] <DateTime>] [[-Alignment] <String>] [[-Color] <Color>] [[-Border] <String>] [[-Culture] <CultureInfo>] [[-Events] <Hashtable>] [-HideHeader] [-PassThru] [<CommonParameters>]
 ```

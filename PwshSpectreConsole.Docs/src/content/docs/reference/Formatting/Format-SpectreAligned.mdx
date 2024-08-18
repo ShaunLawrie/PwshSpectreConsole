@@ -1,0 +1,82 @@
+---
+sidebar:
+  badge:
+    text: New
+    variant: tip
+title: Format-SpectreAligned
+---
+
+
+
+
+
+
+
+### Description
+
+TODO Description
+
+
+
+---
+
+
+### Parameters
+#### **Data**
+
+
+
+
+|Type      |Required|Position|PipelineInput |
+|----------|--------|--------|--------------|
+|`[Object]`|true    |1       |true (ByValue)|
+
+
+
+#### **HorizontalAlignment**
+
+Valid Values:
+
+* Left
+* Center
+* Right
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |2       |false        |
+
+
+
+#### **VerticalAlignment**
+
+Valid Values:
+
+* Top
+* Middle
+* Bottom
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |3       |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Format-SpectreAligned [-Data] <Object> [[-HorizontalAlignment] <String>] [[-VerticalAlignment] <String>] [<CommonParameters>]
+```

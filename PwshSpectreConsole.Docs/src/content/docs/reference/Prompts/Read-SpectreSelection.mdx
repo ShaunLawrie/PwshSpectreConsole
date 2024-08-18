@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: tip
 title: Read-SpectreSelection
 ---
 
@@ -153,6 +157,17 @@ If this switch is present, the user can search for choices in the selection prom
 
 
 
+#### **TimeoutSeconds**
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |6       |false        |
+
+
+
 #### **SearchHighlightColor**
 
 The color of the search highlight in the selection prompt. Defaults to a slightly brighter version of the accent color.
@@ -164,7 +179,7 @@ The color of the search highlight in the selection prompt. Defaults to a slightl
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
-|`[Color]`|false   |6       |false        |
+|`[Color]`|false   |7       |false        |
 
 
 
@@ -175,5 +190,5 @@ The color of the search highlight in the selection prompt. Defaults to a slightl
 
 ### Syntax
 ```powershell
-Read-SpectreSelection [[-Title] <String>] [[-Choices] <Array>] [[-ChoiceLabelProperty] <String>] [[-Color] <Color>] [[-PageSize] <Int32>] [-EnableSearch] [[-SearchHighlightColor] <Color>] [<CommonParameters>]
+Read-SpectreSelection [[-Title] <String>] [[-Choices] <Array>] [[-ChoiceLabelProperty] <String>] [[-Color] <Color>] [[-PageSize] <Int32>] [-EnableSearch] [[-TimeoutSeconds] <Int32>] [[-SearchHighlightColor] <Color>] [<CommonParameters>]
 ```

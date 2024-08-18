@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: tip
 title: Read-SpectreMultiSelection
 ---
 
@@ -48,7 +52,7 @@ Write-SpectreHost "Your favourite fruits are $($fruits -join ', ')"
 ### Parameters
 #### **Title**
 
-The title of the prompt. Defaults to "What are your favourite [color]?".
+The title of the prompt. Defaults to "What are your favourite [Spectre.Console.Color]?".
 
 
 
@@ -121,6 +125,17 @@ The number of choices to display per page. Defaults to 5.
 
 
 
+#### **TimeoutSeconds**
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |6       |false        |
+
+
+
 #### **AllowEmpty**
 
 Allow the multi-selection to be submitted without any options chosen.
@@ -143,5 +158,5 @@ Allow the multi-selection to be submitted without any options chosen.
 
 ### Syntax
 ```powershell
-Read-SpectreMultiSelection [[-Title] <String>] [[-Choices] <Array>] [[-ChoiceLabelProperty] <String>] [[-Color] <Color>] [[-PageSize] <Int32>] [-AllowEmpty] [<CommonParameters>]
+Read-SpectreMultiSelection [[-Title] <String>] [[-Choices] <Array>] [[-ChoiceLabelProperty] <String>] [[-Color] <Color>] [[-PageSize] <Int32>] [[-TimeoutSeconds] <Int32>] [-AllowEmpty] [<CommonParameters>]
 ```

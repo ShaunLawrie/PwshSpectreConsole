@@ -1,0 +1,60 @@
+---
+sidebar:
+  badge:
+    text: New
+    variant: tip
+title: Format-SpectreRows
+---
+
+
+
+
+
+
+
+### Description
+
+This function creates a spectre rows widget that renders a collection of renderables in autosized rows to the console.  
+Rows can contain renderable items, see https://spectreconsole.net/widgets/rows for more information.
+
+
+
+---
+
+
+### Parameters
+#### **Data**
+
+An array of objects containing the data to be displayed in the rows.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput |
+|---------|--------|--------|--------------|
+|`[Array]`|true    |1       |true (ByValue)|
+
+
+
+#### **Expand**
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|false   |named   |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Format-SpectreRows [-Data] <Array> [-Expand] [<CommonParameters>]
+```

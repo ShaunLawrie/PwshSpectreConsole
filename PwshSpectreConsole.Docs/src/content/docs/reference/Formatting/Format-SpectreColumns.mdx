@@ -1,0 +1,71 @@
+---
+sidebar:
+  badge:
+    text: New
+    variant: tip
+title: Format-SpectreColumns
+---
+
+
+
+
+
+
+
+### Description
+
+This function creates a spectre columns widget that renders a collection of renderables in autosized columns to the console.  
+Columns can contain renderable items, see https://spectreconsole.net/widgets/columns for more information.
+
+
+
+---
+
+
+### Parameters
+#### **Data**
+
+An array of objects containing the data to be displayed in the columns.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput |
+|---------|--------|--------|--------------|
+|`[Array]`|true    |1       |true (ByValue)|
+
+
+
+#### **Padding**
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |2       |false        |
+
+
+
+#### **Expand**
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|false   |named   |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Format-SpectreColumns [-Data] <Array> [[-Padding] <Int32>] [-Expand] [<CommonParameters>]
+```

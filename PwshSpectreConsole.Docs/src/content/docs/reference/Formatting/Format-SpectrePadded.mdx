@@ -1,0 +1,121 @@
+---
+sidebar:
+  badge:
+    text: New
+    variant: tip
+title: Format-SpectrePadded
+---
+
+
+
+
+
+
+
+### Description
+
+This function creates a spectre rows widget that renders a collection of renderables in autosized rows to the console.  
+Rows can contain renderable items, see https://spectreconsole.net/widgets/rows for more information.
+
+
+
+---
+
+
+### Parameters
+#### **Data**
+
+An array of objects containing the data to be displayed in the rows.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput |
+|----------|--------|--------|--------------|
+|`[Object]`|true    |named   |true (ByValue)|
+
+
+
+#### **Padding**
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|true    |named   |false        |
+
+
+
+#### **Top**
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|true    |named   |false        |
+
+
+
+#### **Left**
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|true    |named   |false        |
+
+
+
+#### **Bottom**
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|true    |named   |false        |
+
+
+
+#### **Right**
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|true    |named   |false        |
+
+
+
+#### **Expand**
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|true    |named   |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Format-SpectrePadded -Data <Object> -Padding <Int32> [<CommonParameters>]
+```
+```powershell
+Format-SpectrePadded -Data <Object> -Top <Int32> -Left <Int32> -Bottom <Int32> -Right <Int32> [<CommonParameters>]
+```
+```powershell
+Format-SpectrePadded -Data <Object> -Expand [<CommonParameters>]
+```

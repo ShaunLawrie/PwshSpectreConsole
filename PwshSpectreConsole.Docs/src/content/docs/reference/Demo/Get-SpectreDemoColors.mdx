@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: tip
 title: Get-SpectreDemoColors
 ---
 
@@ -25,7 +29,7 @@ It also provides information on how to use the colors as parameters for commands
 > EXAMPLE 1
 
 ```powershell
-Get-SpectreDemoColors -Count 4
+Get-SpectreDemoColors
 ```
 <Asciinema
     src={getspectredemocolorsExample1}
@@ -42,28 +46,7 @@ Get-SpectreDemoColors -Count 4
 ---
 
 
-### Parameters
-#### **Count**
-
-Limit the number of colors returned. This is only really useful for generating the help docs.
-
-
-
-
-
-
-|Type     |Required|Position|PipelineInput|
-|---------|--------|--------|-------------|
-|`[Int32]`|false   |1       |false        |
-
-
-
-
-
----
-
-
 ### Syntax
 ```powershell
-Get-SpectreDemoColors [[-Count] <Int32>] [<CommonParameters>]
+Get-SpectreDemoColors [<CommonParameters>]
 ```

@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: tip
 title: Format-SpectreBreakdownChart
 ---
 
@@ -56,9 +60,9 @@ An array of data to be formatted into a breakdown chart.
 
 
 
-|Type     |Required|Position|PipelineInput |
-|---------|--------|--------|--------------|
-|`[Array]`|true    |1       |true (ByValue)|
+|Type      |Required|Position|PipelineInput |
+|----------|--------|--------|--------------|
+|`[Object]`|true    |1       |true (ByValue)|
 
 
 
@@ -114,5 +118,5 @@ Hides the tag values on the chart.
 
 ### Syntax
 ```powershell
-Format-SpectreBreakdownChart [-Data] <Array> [[-Width] <Int32>] [-HideTags] [-HideTagValues] [<CommonParameters>]
+Format-SpectreBreakdownChart [-Data] <Object> [[-Width] <Int32>] [-HideTags] [-HideTagValues] [<CommonParameters>]
 ```

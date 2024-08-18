@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: tip
 title: Write-SpectreFigletText
 ---
 
@@ -127,6 +131,17 @@ The figlet font format is usually *.flf, see https://spectreconsole.net/widgets/
 
 
 
+#### **PassThru**
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|false   |named   |false        |
+
+
+
 
 
 ---
@@ -134,5 +149,5 @@ The figlet font format is usually *.flf, see https://spectreconsole.net/widgets/
 
 ### Syntax
 ```powershell
-Write-SpectreFigletText [[-Text] <String>] [[-Alignment] <String>] [[-Color] <Color>] [[-FigletFontPath] <String>] [<CommonParameters>]
+Write-SpectreFigletText [[-Text] <String>] [[-Alignment] <String>] [[-Color] <Color>] [[-FigletFontPath] <String>] [-PassThru] [<CommonParameters>]
 ```

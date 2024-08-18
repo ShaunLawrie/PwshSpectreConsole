@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: tip
 title: Format-SpectreTree
 ---
 
@@ -13,7 +17,7 @@ import formatspectretreeExample1 from '../../../../assets/examples/formatspectre
 
 ### Description
 
-This function takes a hashtable and formats it as a tree using Spectre Console. The hashtable should have a 'Label' key and a 'Children' key. The 'Label' key should contain the label for the root node of the tree, and the 'Children' key should contain an array of hashtables representing the child nodes of the root node. Each child hashtable should have a 'Label' key and a 'Children' key, following the same structure as the root node.
+This function takes a hashtable and formats it as a tree using Spectre Console. The hashtable should have a 'Value' key and a 'Children' key. The 'Value' key should contain the Spectre Console renderable item (text or other objects like calendars etc.) for the node of the tree, and the 'Children' key should contain an array of hashtables representing the child nodes of the node.
 
 
 
@@ -24,24 +28,25 @@ This function takes a hashtable and formats it as a tree using Spectre Console. 
 > EXAMPLE 1
 
 ```powershell
+$calendar = Write-SpectreCalendar -Date 2024-07-01 -PassThru
 $data = @{
-    Label = "Root"
+    Value = "Root"
     Children = @(
         @{
-            Label = "Child 1"
+            Value = "Child 1"
             Children = @(
                 @{
-                    Label = "Grandchild 1"
+                    Value = "Grandchild 1"
                     Children = @()
                 },
                 @{
-                    Label = "Grandchild 2"
+                    Value = $calendar
                     Children = @()
                 }
             )
         },
         @{
-            Label = "Child 2"
+            Value = "Child 2"
             Children = @()
         }
     )
@@ -80,6 +85,10 @@ The hashtable to format as a tree.
 
 
 #### **Guide**
+
+The type of line to use for the tree.
+
+
 
 Valid Values:
 
