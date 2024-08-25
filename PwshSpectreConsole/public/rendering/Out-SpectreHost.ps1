@@ -16,7 +16,7 @@ function Out-SpectreHost {
     The default host customitem formatter has some restrictions, it needs to be one char less wide than when outputting to the standard console or it will wrap.
 
     .EXAMPLE
-    $table = New-SpectreTable -Data $data
+    $table = Get-ChildItem | Select-Object Name, Length, LastWriteTime | Format-SpectreTable
     $table | Out-SpectreHost
     #>
     [Reflection.AssemblyMetadata("title", "Out-SpectreHost")]

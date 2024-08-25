@@ -20,5 +20,24 @@
         </CustomEntries>
       </CustomControl>
     </View>
+    <View>
+      <Name>Spectre.Console.TextPath</Name>
+      <ViewSelectedBy>
+        <TypeName>Spectre.Console.TextPath</TypeName>
+      </ViewSelectedBy>
+      <CustomControl>
+        <CustomEntries>
+          <CustomEntry>
+            <CustomItem>
+              <ExpressionBinding>
+                <ScriptBlock>
+                  $_ | Out-SpectreHost -CustomItemFormatter
+                </ScriptBlock>
+              </ExpressionBinding>
+            </CustomItem>
+          </CustomEntry>
+        </CustomEntries>
+      </CustomControl>
+    </View>
   </ViewDefinitions>
 </Configuration>

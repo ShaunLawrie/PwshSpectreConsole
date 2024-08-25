@@ -119,3 +119,10 @@ class SpectreConsoleTreeGuide : IValidateSetValuesGenerator {
         return $lookup
     }
 }
+
+class SpectreConsoleExceptionFormats : IValidateSetValuesGenerator {
+    [String[]] GetValidValues() {
+        $lookup = [Spectre.Console.ExceptionFormats] | Get-Member -Static -MemberType Properties | Select-Object -ExpandProperty Name
+        return $lookup
+    }
+}

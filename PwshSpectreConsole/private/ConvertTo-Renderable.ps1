@@ -1,5 +1,6 @@
 function ConvertTo-Renderable {
     param (
+        [Parameter(ValueFromPipeline)]
         [object] $InputData
     )
 

@@ -54,6 +54,11 @@ class RenderableTransformationAttribute : ArgumentTransformationAttribute {
             return $InputData
         }
 
+        # Some stuff isn't a direct descendant of Renderable but can be rendered
+        if ($InputData.GetType().GetInterfaces() | Select-Object -ExpandProperty Name | Where-Object { $_ -eq "IRenderable" }) {
+            return $InputData
+        }
+
         # For others just dump them as either strings formatted with markup which are easy to identify by the closing tag [/] or as plain text
         if ($InputData -like "*[/]*") {
             return [Spectre.Console.Markup]::new($InputData)

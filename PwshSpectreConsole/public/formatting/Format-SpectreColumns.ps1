@@ -7,10 +7,26 @@ function Format-SpectreColumns {
 
     .DESCRIPTION
     This function creates a spectre columns widget that renders a collection of renderables in autosized columns to the console.  
-    Columns can contain renderable items, see https://spectreconsole.net/widgets/columns for more information.
+    Columns can contain renderable items.  
+    See https://spectreconsole.net/widgets/columns for more information.
 
     .PARAMETER Data
     An array of objects containing the data to be displayed in the columns.
+
+    .PARAMETER Padding
+    The padding to apply to the columns.
+
+    .PARAMETER Expand
+    A switch to expand the columns to fill the available space.
+
+    .EXAMPLE
+    @("left", "middle", "right") | Format-SpectreColumns
+
+    .EXAMPLE
+    @("left", "middle", "right") | Foreach-Object { $_ | Format-SpectrePanel -Expand } | Format-SpectreColumns
+
+    .EXAMPLE
+    @("left", "middle", "right") | Foreach-Object { $_ | Format-SpectrePanel -Expand } | Format-SpectreColumns -Expand
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectreColumns")]
     param (

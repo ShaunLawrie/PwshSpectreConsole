@@ -25,10 +25,10 @@ function Get-SpectreDemoEmoji {
     )
 
     Write-SpectreHost " "
-    Write-SpectreRule "`nGeneral"
+    Write-SpectreRule "`nEmoji"
     Write-SpectreHost " "
     
-    $emojiCollection = [Emoji+Known] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
+    $emojiCollection = [Spectre.Console.Emoji+Known] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
     if($Count) {
         $emojiCollection = $emojiCollection | Select-Object -First $Count
     }

@@ -31,6 +31,9 @@ function Write-SpectreCalendar {
     .PARAMETER HideHeader
     Hides the header of the calendar. (Date)
 
+    .PARAMETER PassThru
+    Returns the Spectre Calendar object instead of writing it to the console.
+
     .EXAMPLE
     Write-SpectreCalendar -Date 2024-07-01 -Events @{'2024-07-10' = 'Beach time!'; '2024-07-20' = 'Barbecue' }
 

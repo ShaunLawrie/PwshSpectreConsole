@@ -5,10 +5,10 @@ function Format-SpectreBreakdownChart {
     <#
     .SYNOPSIS
     Formats data into a breakdown chart.
-    ![Example breakdown chart](/breakdownchart.png)
 
     .DESCRIPTION
-    This function takes an array of data and formats it into a breakdown chart using BreakdownChart. The chart can be customized with a specified width and color.
+    This function takes an array of data and formats it into a breakdown chart using BreakdownChart. The chart can be customized with a specified width and color.  
+    See https://spectreconsole.net/widgets/breakdownchart for more information.
 
     .PARAMETER Data
     An array of data to be formatted into a breakdown chart.

@@ -7,7 +7,7 @@ using module "..\..\private\completions\Transformers.psm1"
 Creates a new SpectreChartItem object.
 
 .DESCRIPTION
-The New-SpectreChartItem function creates a new SpectreChartItem object with the specified label, value, and color for use in Format-SpectreBarChart and Format-SpectreBreakdownChart.
+The New-SpectreChartItem function creates a new SpectreChartItem object with the specified label, value, and color for use in Format-SpectreBarChart and Format-SpectreBreakdownChart.  
 
 .PARAMETER Label
 The label for the chart item.

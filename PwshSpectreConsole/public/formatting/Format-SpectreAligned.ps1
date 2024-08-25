@@ -7,7 +7,19 @@ function Format-SpectreAligned {
     Wraps a renderable object in a Spectre Console Aligned object.
 
     .DESCRIPTION
-    TODO Description
+    This wraps a renderable object in a Spectre Console Aligned object. This allows you to align the object horizontally and vertically within a space. Aligned objects are always expanded so they take up all available horizontal space.  
+
+    .PARAMETER Data
+    The renderable object to align.
+
+    .PARAMETER HorizontalAlignment
+    The horizontal alignment of the object.
+
+    .PARAMETER VerticalAlignment
+    The vertical alignment of the object.
+
+    .EXAMPLE
+    "hello right hand side" | Format-SpectreAligned -HorizontalAlignment Right -VerticalAlignment Middle | Format-SpectrePanel -Expand -Height 9
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectreAligned")]
     param(

@@ -5,10 +5,10 @@ function Format-SpectreBarChart {
     <#
     .SYNOPSIS
     Formats and displays a bar chart using the Spectre Console module.
-    ![Example bar chart](/barchart.png)
 
     .DESCRIPTION
-    This function takes an array of data and displays it as a bar chart using the Spectre Console module. The chart can be customized with a title and width.
+    This function takes an array of data and displays it as a bar chart using the Spectre Console module. The chart can be customized with a title and width.  
+    See https://spectreconsole.net/widgets/barchart for more information.
 
     .PARAMETER Data
     An array of objects containing the data to be displayed in the chart. Each object should have a Label, Value, and Color property.

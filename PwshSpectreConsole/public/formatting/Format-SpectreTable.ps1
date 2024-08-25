@@ -4,11 +4,12 @@ using module "..\..\private\completions\Transformers.psm1"
 function Format-SpectreTable {
     <#
     .SYNOPSIS
-    Formats an array of objects into a Spectre Console table. Thanks to [trackd](https://github.com/trackd) and [fmotion1](https://github.com/fmotion1) for the updates to support markdown and color in the table contents.
-    ![Example table](/table.png)
+    Formats an array of objects into a Spectre Console table.
 
     .DESCRIPTION
-    This function takes an array of objects and formats them into a table using the Spectre Console library. The table can be customized with a border style and color.
+    This function takes an array of objects and formats them into a table using the Spectre Console library. The table can be customized with a border style and color.  
+    Thanks to [trackd](https://github.com/trackd) and [fmotion1](https://github.com/fmotion1) for the updates to support markdown and color in the table contents.
+    See https://spectreconsole.net/widgets/table for more information.
 
     .PARAMETER Property
     Specifies the object properties that appear in the display and the order in which they appear.
@@ -28,7 +29,7 @@ function Format-SpectreTable {
     Takes pipeline input.
 
     .PARAMETER Border
-    The border style of the table. Default is "Double".
+    The border style of the table. Default is "Rounded".
 
     .PARAMETER Color
     The color of the table border. Default is the accent color of the script.
@@ -81,6 +82,20 @@ function Format-SpectreTable {
 
     .EXAMPLE
     1..10 | Format-SpectreTable -Title Numbers
+
+    .EXAMPLE
+    $calendar = Write-SpectreCalendar -Date (Get-Date) -PassThru
+
+    $fruits = @(
+        (New-SpectreChartItem -Label "Bananas" -Value 2.2 -Color Yellow),
+        (New-SpectreChartItem -Label "Oranges" -Value 6.6 -Color Orange1),
+        (New-SpectreChartItem -Label "Apples" -Value 1 -Color Red)
+    ) | Format-SpectreBarChart -Width 45
+
+    @{
+        Calendar = $calendar
+        Fruits = $fruits
+    } | Format-SpectreTable -Color Cyan1
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectreTable")]
     [cmdletbinding(DefaultParameterSetName = '__AllParameterSets')]
@@ -95,7 +110,7 @@ function Format-SpectreTable {
         [Parameter(ParameterSetName = 'View')]
         [String] $View,
         [ValidateSet([SpectreConsoleTableBorder], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
-        [string] $Border = "Double",
+        [string] $Border = "Rounded",
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
         [Spectre.Console.Color] $Color = $script:AccentColor,

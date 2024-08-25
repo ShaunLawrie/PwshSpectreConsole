@@ -3,17 +3,25 @@ using module "..\..\private\completions\Transformers.psm1"
 function Format-SpectrePadded {
     <#
     .SYNOPSIS
-    Renders a collection of renderables in rows to the console.
+    Wraps a Spectre Console renderable item in padding.
 
     .DESCRIPTION
-    This function creates a spectre rows widget that renders a collection of renderables in autosized rows to the console.  
-    Rows can contain renderable items, see https://spectreconsole.net/widgets/rows for more information.
+    This function that wraps a spectre renderable item in padding.  
+    See https://spectreconsole.net/widgets/padder for more information.
 
     .PARAMETER Data
-    An array of objects containing the data to be displayed in the rows.
+    A renderable item to wrap in padding.
+
+    .EXAMPLE
+    "Item to pad" | Format-SpectrePadded -Padding 1 | Format-SpectrePanel
+
+    .EXAMPLE
+    "Item to pad" | Format-SpectrePadded -Padding 4  | Format-SpectrePanel
+
+    .EXAMPLE
+    "Item to pad" | Format-SpectrePadded -Top 4 -Left 10 -Right 1 -Bottom 1 | Format-SpectrePanel
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectrePadded")]
-    # two parameter sets, one for padding evenly and one for specifing tlbr separately
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
         [RenderableTransformationAttribute()]

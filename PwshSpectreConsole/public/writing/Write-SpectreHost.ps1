@@ -1,4 +1,3 @@
-
 function Write-SpectreHost {
     <#
     .SYNOPSIS
@@ -22,13 +21,8 @@ function Write-SpectreHost {
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
         [object] $Message,
-        [switch] $NoNewline,
-        [switch] $PassThru
+        [switch] $NoNewline
     )
-
-    if ($PassThru) {
-        return $Message
-    }
 
     if ($Message -is [Spectre.Console.Rendering.Renderable]) {
         Write-AnsiConsole $Message

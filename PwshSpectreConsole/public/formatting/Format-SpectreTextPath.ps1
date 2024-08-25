@@ -10,10 +10,10 @@ function Format-SpectreTextPath {
     Formats a path into a Spectre Console Path which supports highlighting and truncating.
 
     .PARAMETER Path
-    The array of objects to be formatted into Json.
+    The directory/file path to format
 
     .EXAMPLE
-    TODO Example
+    Get-Location | Format-SpectreTextPath
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectreTextPath")]
     param(

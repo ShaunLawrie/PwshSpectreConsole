@@ -1,6 +1,6 @@
 param (
     [string] $Version = "0.49.1",
-    [int] $DotnetSdkMajorVersion = 6
+    [int] $DotnetSdkMajorVersion = 8
 )
 
 function Install-SpectreConsole {
@@ -70,8 +70,6 @@ function Install-SpectreConsole {
     } finally {
         Pop-Location
     }
-
-    & "$PSScriptRoot\PwshSpectreConsole.EzFormat.ps1"
 }
 
 Write-Host "Downloading Spectre.Console version $Version"

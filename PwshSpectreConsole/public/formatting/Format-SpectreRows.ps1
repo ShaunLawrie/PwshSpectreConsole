@@ -7,10 +7,17 @@ function Format-SpectreRows {
 
     .DESCRIPTION
     This function creates a spectre rows widget that renders a collection of renderables in autosized rows to the console.  
-    Rows can contain renderable items, see https://spectreconsole.net/widgets/rows for more information.
+    Rows can contain renderable items.  
+    See https://spectreconsole.net/widgets/rows for more information.
 
     .PARAMETER Data
-    An array of objects containing the data to be displayed in the rows.
+    An array of renderable items containing the data to be displayed in the rows.
+
+    .EXAMPLE
+    @("top", "middle", "bottom") | Format-SpectreRows
+
+    .EXAMPLE
+    @("top", "middle", "bottom") | Foreach-Object { $_ | Format-SpectrePanel -Expand } | Format-SpectreRows
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectreRows")]
     param (

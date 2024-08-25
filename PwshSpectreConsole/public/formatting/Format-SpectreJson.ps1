@@ -4,12 +4,12 @@ using module "..\..\private\completions\Transformers.psm1"
 function Format-SpectreJson {
     <#
     .SYNOPSIS
-    Formats an array of objects into a Spectre Console Json.
-    Thanks to [trackd](https://github.com/trackd) for adding this.
-    ![Spectre json example](/json.png)
+    Formats an array of objects into a Spectre Console Json.  
 
     .DESCRIPTION
-    This function takes an array of objects and converts them into Json using the Spectre Console Json Library.
+    This function takes an objects and converts them into syntax highlighted Json using the Spectre Console Json Library.  
+    Thanks to [trackd](https://github.com/trackd) for adding this!
+    See https://spectreconsole.net/widgets/json for more information.
 
     .PARAMETER Data
     The array of objects to be formatted into Json.
@@ -47,7 +47,7 @@ function Format-SpectreJson {
             }
         }
     )
-    Format-SpectreJson -Data $data -Color "Green"
+    Format-SpectreJson -Data $data
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectreJson")]
     [Alias('fsj')]
@@ -59,12 +59,12 @@ function Format-SpectreJson {
         [ColorThemeTransformationAttribute()]
         [hashtable] $JsonStyle = @{
             MemberStyle    = $script:AccentColor
-            BracesStyle    = [Spectre.Console.Color]::Red
+            BracesStyle    = [Spectre.Console.Color]::Cyan1
             BracketsStyle  = [Spectre.Console.Color]::Orange1
             ColonStyle     = $script:AccentColor
             CommaStyle     = $script:AccentColor
             StringStyle    = [Spectre.Console.Color]::White
-            NumberStyle    = [Spectre.Console.Color]::Red
+            NumberStyle    = [Spectre.Console.Color]::Cyan1
             BooleanStyle   = [Spectre.Console.Color]::LightSkyBlue1
             NullStyle      = $script:DefaultValueColor
         }

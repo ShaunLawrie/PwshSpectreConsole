@@ -7,7 +7,8 @@ function Format-SpectreTree {
     Formats a hashtable as a tree using Spectre Console.
 
     .DESCRIPTION
-    This function takes a hashtable and formats it as a tree using Spectre Console. The hashtable should have a 'Value' key and a 'Children' key. The 'Value' key should contain the Spectre Console renderable item (text or other objects like calendars etc.) for the node of the tree, and the 'Children' key should contain an array of hashtables representing the child nodes of the node.
+    This function takes a hashtable and formats it as a tree using Spectre Console. The hashtable should have a 'Value' key and a 'Children' key. The 'Value' key should contain the Spectre Console renderable item (text or other objects like calendars etc.) for the node of the tree, and the 'Children' key should contain an array of hashtables representing the child nodes of the node.  
+    See https://spectreconsole.net/widgets/tree for more information.
 
     .PARAMETER Data
     The hashtable to format as a tree.

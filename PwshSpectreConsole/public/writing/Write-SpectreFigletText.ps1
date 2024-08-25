@@ -22,6 +22,9 @@ function Write-SpectreFigletText {
     The path to the Figlet font file to use. If this parameter is not specified, the default built-in Figlet font is used.
     The figlet font format is usually *.flf, see https://spectreconsole.net/widgets/figlet for more.
 
+    .PARAMETER PassThru
+    Returns the Spectre Figlet text object instead of writing it to the console.
+
     .EXAMPLE
     Write-SpectreFigletText -Text "Hello Spectre!" -Alignment "Center" -Color "Red"
 

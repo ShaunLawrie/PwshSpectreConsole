@@ -1,9 +1,25 @@
 <#
 .SYNOPSIS
-TODO - Add synopsis
+Creates a new SpectreGridRow object.
 
 .DESCRIPTION
-TODO - Add description
+Creates a new SpectreGridRow object with the specified columns for use in Format-SpectreGrid. PowerShell collapses nested arrays, so you must use this function to create an array of SpectreGridRow objects to provide to Format-SpectreGrid.
+
+.PARAMETER Data
+An array of renderable items containing the data to be displayed in the columns of this row.
+
+.EXAMPLE
+$columns = @()
+$columns += "Column 1" | Format-SpectrePanel
+$columns += "Column 2" | Format-SpectrePanel
+$columns += "Column 3" | Format-SpectrePanel
+
+$rows = @(
+  (New-SpectreGridRow -Data $columns),
+  (New-SpectreGridRow -Data $columns)
+)
+
+$rows | Format-SpectreGrid
 #>
 function New-SpectreGridRow {
     [Reflection.AssemblyMetadata("title", "New-SpectreGridRow")]

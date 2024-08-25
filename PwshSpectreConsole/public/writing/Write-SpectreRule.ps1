@@ -18,6 +18,9 @@ function Write-SpectreRule {
     .PARAMETER Color
     The color of the rule. The default value is the accent color of the script.
 
+    .PARAMETER PassThru
+    Returns the Spectre Rule object instead of writing it to the console.
+
     .EXAMPLE
     Write-SpectreRule -Title "My Rule" -Alignment Center -Color Red
     #>

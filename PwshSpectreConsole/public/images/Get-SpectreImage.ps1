@@ -30,5 +30,6 @@ function Get-SpectreImage {
     if ($MaxWidth) {
         $image.MaxWidth = $MaxWidth
     }
-    Write-AnsiConsole $image
+    
+    return $image
 }

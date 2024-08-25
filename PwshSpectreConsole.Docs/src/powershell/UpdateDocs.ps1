@@ -4,7 +4,8 @@ param(
     [string]$Branch = "dev",
     [switch]$NonInteractive,
     [switch]$NoBuild,
-    [switch]$NoCommit
+    [switch]$NoCommit,
+    [string]$TargetFunction
 )
 
 $ErrorActionPreference = "Stop"
@@ -65,6 +66,10 @@ Update-HashFilesInGit -StagingPath $stagingPath -OutputPath $outputPath -NoCommi
 # Format the files for astro
 $docs = Get-ChildItem $stagingPath -Filter "*.md" -Recurse | Where-Object { $_.Name -like "*-*" }
 $mocks = Get-Module "Mocks"
+if (![string]::IsNullOrEmpty($TargetFunction)) {
+    Write-Host "Filtering to only include help for function $TargetFunction"
+    $docs = $docs | Where-Object { $_.Name -like "*$TargetFunction*" }
+}
 foreach ($doc in $docs) {
     $content = Get-Content $doc.FullName -Raw
 
@@ -122,7 +127,7 @@ foreach ($doc in $docs) {
 
                 # Extract the input comments
                 $inputs = $code | Select-String '# Type (".+")'
-                $specialChars = @("↑", "↓", "↲", "¦", "<space>")
+                $specialChars = @("↑", "↓", "↲", "<space>")
                 $inputDelay = Get-Random -Minimum 500 -Maximum 1000
                 $typingDelay = Get-Random -Minimum 50 -Maximum 200
                 $recordingConsole = Start-SpectreRecording -RecordingType "asciinema" -Width 110 -Height 48
@@ -180,7 +185,7 @@ foreach ($doc in $docs) {
 }
 
 # Copy the files into the output directory in a way that doesn't crash the astro dev server
-Update-HelpFiles -StagingPath $stagingPath -AsciiCastOutputPath $asciiCastOutputPath -OutputPath $outputPath -NoCommit:$NoCommit
+Update-HelpFiles -StagingPath $stagingPath -AsciiCastOutputPath $asciiCastOutputPath -OutputPath $outputPath -NoCommit:$NoCommit -TargetFunction $TargetFunction
 
 # Set some overrides to indicate it's the pre-release site
 if($Branch -eq "prerelease") {

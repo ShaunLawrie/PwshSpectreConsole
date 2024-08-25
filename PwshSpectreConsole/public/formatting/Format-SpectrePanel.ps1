@@ -5,13 +5,13 @@ function Format-SpectrePanel {
     <#
     .SYNOPSIS
     Formats a string as a Spectre Console panel with optional title, border, and color.
-    ![Spectre panel example](/panel.png)
 
     .DESCRIPTION
-    This function takes a string and formats it as a Spectre Console panel with optional title, border, and color. The resulting panel can be displayed in the console using the Write-Host command.
+    This function takes a string and formats it as a Spectre Console panel with optional title, border, and color. The resulting panel can be displayed in the console using the Write-Host command.  
+    See https://spectreconsole.net/widgets/panel for more information.
 
     .PARAMETER Data
-    The string to be formatted as a panel.
+    The renderable item to be formatted as a panel.
 
     .PARAMETER Header
     The title to be displayed at the top of the panel.
@@ -35,7 +35,7 @@ function Format-SpectrePanel {
     Format-SpectrePanel -Data "Hello, world!" -Title "My Panel" -Border "Rounded" -Color "Red"
 
     .EXAMPLE
-    Format-SpectrePanel -Data "Hello, big panel!" -Title "My Big Panel" -Border "Double" -Color "Magenta1" -Expand
+    "Hello, big panel!" | Format-SpectrePanel -Title "My Big Panel" -Border "Double" -Color "Magenta1" -Expand
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectrePanel")]
     param (
@@ -55,19 +55,24 @@ function Format-SpectrePanel {
         [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostHeight) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console height.")]
         [int]$Height
     )
-    $panel = [Spectre.Console.Panel]::new($Data)
-    if ($Header) {
-        $panel.Header = [Spectre.Console.PanelHeader]::new($Header)
-    }
-    if ($width) {
-        $panel.Width = $Width
-    }
-    if ($height) {
-        $panel.Height = $Height
-    }
-    $panel.Expand = $Expand
-    $panel.Border = [Spectre.Console.BoxBorder]::$Border
-    $panel.BorderStyle = [Spectre.Console.Style]::new($Color)
     
-    return $panel
+    process {
+        $dataCollection = @($Data)
+        foreach ($dataItem in $dataCollection) {
+            $panel = [Spectre.Console.Panel]::new($dataItem)
+            if ($Header) {
+                $panel.Header = [Spectre.Console.PanelHeader]::new($Header)
+            }
+            if ($width) {
+                $panel.Width = $Width
+            }
+            if ($height) {
+                $panel.Height = $Height
+            }
+            $panel.Expand = $Expand
+            $panel.Border = [Spectre.Console.BoxBorder]::$Border
+            $panel.BorderStyle = [Spectre.Console.Style]::new($Color)
+            return $panel
+        }
+    }
 }

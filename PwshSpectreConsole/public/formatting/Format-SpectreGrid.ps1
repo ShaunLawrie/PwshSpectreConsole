@@ -1,22 +1,37 @@
-using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Format-SpectreGrid {
     <#
     .SYNOPSIS
-    TODO - Add synopsis
+    Formats data into a Spectre Console grid.
 
     .DESCRIPTION
-    TODO - Add description
+    Formats data into a Spectre Console grid. The grid can be used to display data in a tabular format but it's not as flexible as the Layout widget.  
+    See https://spectreconsole.net/widgets/grid for more information.
+
+    .EXAMPLE
+    Format-SpectreGrid -Data @("hello", "I", "am"), @("a", "grid", "of"), @("rows", "using", "spectre")
+
+    .EXAMPLE
+    $rows = 4
+    $cols = 6
+    
+    $gridRows = @()
+    for ($row = 1; $row -le $rows; $row++) {
+        $columns = @()
+        for ($col = 1; $col -le $cols; $col++) {
+            $columns += "Row $row, Col $col" | Format-SpectrePanel
+        }
+        $gridRows += New-SpectreGridRow $columns
+    }
+    
+    $gridRows | Format-SpectreGrid
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectreGrid")]
-    # two parameter sets, one for padding evenly and one for specifing tlbr separately
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
         [GridRowTransformationAttribute()]
         [object]$Data,
-        [ValidateSet([SpectreConsoleJustify], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
-        [string] $Justify = 'Left',
         [int] $Width
     )
 
