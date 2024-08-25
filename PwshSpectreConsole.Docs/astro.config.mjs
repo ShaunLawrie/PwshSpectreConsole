@@ -34,6 +34,10 @@ export default defineConfig({
               link: "/guides/get-started/",
             },
             {
+              label: "Upgrading to 2.0",
+              link: "/guides/upgrading-to-2-0/",
+            },
+            {
               label: "FAQs",
               link: "/guides/faqs/",
             },
