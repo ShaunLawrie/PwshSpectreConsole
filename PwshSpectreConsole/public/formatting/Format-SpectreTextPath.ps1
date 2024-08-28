@@ -7,13 +7,14 @@ function Format-SpectreTextPath {
     Formats a path into a Spectre Console Path which supports highlighting and truncating.
 
     .DESCRIPTION
-    Formats a path into a Spectre Console Path which supports highlighting and truncating.
+    Formats a path into a Spectre Console Path which supports highlighting and truncating.  
+    See https://spectreconsole.net/widgets/text-path for more information.
 
     .PARAMETER Path
     The directory/file path to format
 
     .EXAMPLE
-    Get-Location | Format-SpectreTextPath
+    Get-Location | Format-SpectreTextPath | Out-SpectreHost
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectreTextPath")]
     param(

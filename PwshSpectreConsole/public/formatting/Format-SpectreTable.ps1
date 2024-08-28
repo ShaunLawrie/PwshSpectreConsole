@@ -8,7 +8,7 @@ function Format-SpectreTable {
 
     .DESCRIPTION
     This function takes an array of objects and formats them into a table using the Spectre Console library. The table can be customized with a border style and color.  
-    Thanks to [trackd](https://github.com/trackd) and [fmotion1](https://github.com/fmotion1) for the updates to support markdown and color in the table contents.
+    Thanks to [trackd](https://github.com/trackd) and [fmotion1](https://github.com/fmotion1) for the updates to support markdown and color in the table contents.  
     See https://spectreconsole.net/widgets/table for more information.
 
     .PARAMETER Property

@@ -51,12 +51,12 @@ div.asciinema-player-theme-spectre {
   --term-color-foreground: #eceff4;
   --term-color-background: #020617;
 
-  --term-color-0: #28395e;
-  --term-color-1: #c13846;
+  --term-color-0: #656a77;
+  --term-color-1: #8e9ab4;
   --term-color-2: #a3be8c;
   --term-color-3: #ebcb8b;
   --term-color-4: #81a1c1;
-  --term-color-5: #b48ead;
+  --term-color-5: #8e9ab4;
   --term-color-6: #6097a7;
   --term-color-7: #eceff4;
 }
@@ -72,4 +72,38 @@ div.ap-play-button {
 div.ap-wrapper div.ap-player {
   width: 100%;
   overflow-x: auto;
+}
+
+p > code, td > code, li > code, a > code {
+  display: inline-block;
+  border-radius: 0.25rem;
+  padding: 0rem 0.4rem 0rem 0.4rem;
+}
+
+a > code {
+  color: var(--sl-color-purple-high);
+  text-decoration: underline;
+}
+
+a > code[data-theme="light"] {
+  color: rgb(99, 38, 128);
+  text-decoration: underline;
+}
+
+.tip, .tip[data-theme="light"] {
+  color:rgba(189, 83, 238, 1.0)!important;
+  --sl-color-bg-badge: transparent!important;
+  --sl-color-border-badge: rgba(189, 83, 238, 1.0)!important;
+}
+
+.note, .note[data-theme="light"] {
+  --sl-color-bg-badge: transparent!important;
+  --sl-color-border-badge: transparent!important;
+  color:rgba(189, 83, 238, 1.0)!important;
+}
+
+.caution, .caution[data-theme="light"] {
+  --sl-color-bg-badge: transparent!important;
+  --sl-color-border-badge: transparent!important;
+  color:rgba(255, 166, 0, 1.0)!important;
 }

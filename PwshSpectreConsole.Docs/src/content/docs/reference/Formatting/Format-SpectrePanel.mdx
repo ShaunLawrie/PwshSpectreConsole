@@ -1,8 +1,4 @@
 ---
-sidebar:
-  badge:
-    text: Updated
-    variant: tip
 title: Format-SpectrePanel
 ---
 
@@ -18,7 +14,8 @@ import formatspectrepanelExample2 from '../../../../assets/examples/formatspectr
 
 ### Description
 
-This function takes a string and formats it as a Spectre Console panel with optional title, border, and color. The resulting panel can be displayed in the console using the Write-Host command.
+This function takes a string and formats it as a Spectre Console panel with optional title, border, and color. The resulting panel can be displayed in the console using the Write-Host command.  
+See https://spectreconsole.net/widgets/panel for more information.
 
 
 
@@ -44,7 +41,7 @@ Format-SpectrePanel -Data "Hello, world!" -Title "My Panel" -Border "Rounded" -C
 > EXAMPLE 2
 
 ```powershell
-Format-SpectrePanel -Data "Hello, big panel!" -Title "My Big Panel" -Border "Double" -Color "Magenta1" -Expand
+"Hello, big panel!" | Format-SpectrePanel -Title "My Big Panel" -Border "Double" -Color "Magenta1" -Expand
 ```
 <Asciinema
     src={formatspectrepanelExample2}
@@ -64,7 +61,7 @@ Format-SpectrePanel -Data "Hello, big panel!" -Title "My Big Panel" -Border "Dou
 ### Parameters
 #### **Data**
 
-The string to be formatted as a panel.
+The renderable item to be formatted as a panel.
 
 
 

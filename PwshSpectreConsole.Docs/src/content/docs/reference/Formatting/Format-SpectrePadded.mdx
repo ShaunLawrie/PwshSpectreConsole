@@ -12,11 +12,67 @@ title: Format-SpectrePadded
 
 
 
+import Asciinema from '../../../../components/Asciinema.astro'
+import formatspectrepaddedExample1 from '../../../../assets/examples/formatspectrepaddedExample1.cast?url'
+import formatspectrepaddedExample2 from '../../../../assets/examples/formatspectrepaddedExample2.cast?url'
+import formatspectrepaddedExample3 from '../../../../assets/examples/formatspectrepaddedExample3.cast?url'
+
 ### Description
 
-This function creates a spectre rows widget that renders a collection of renderables in autosized rows to the console.  
-Rows can contain renderable items, see https://spectreconsole.net/widgets/rows for more information.
+This function that wraps a spectre renderable item in padding.  
+See https://spectreconsole.net/widgets/padder for more information.
 
+
+
+---
+
+
+### Examples
+> EXAMPLE 1
+
+```powershell
+"Item to pad" | Format-SpectrePadded -Padding 1 | Format-SpectrePanel
+```
+<Asciinema
+    src={formatspectrepaddedExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+> EXAMPLE 2
+
+```powershell
+"Item to pad" | Format-SpectrePadded -Padding 4  | Format-SpectrePanel
+```
+<Asciinema
+    src={formatspectrepaddedExample2}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+> EXAMPLE 3
+
+```powershell
+"Item to pad" | Format-SpectrePadded -Top 4 -Left 10 -Right 1 -Bottom 1 | Format-SpectrePanel
+```
+<Asciinema
+    src={formatspectrepaddedExample3}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
 
 
 ---
@@ -25,7 +81,7 @@ Rows can contain renderable items, see https://spectreconsole.net/widgets/rows f
 ### Parameters
 #### **Data**
 
-An array of objects containing the data to be displayed in the rows.
+A renderable item to wrap in padding.
 
 
 

@@ -36,6 +36,10 @@ export default defineConfig({
             {
               label: "Upgrading to 2.0",
               link: "/guides/upgrading-to-2-0/",
+              badge: {
+                text: "New",
+                variant: "tip",
+              },
             },
             {
               label: "FAQs",
@@ -47,7 +51,6 @@ export default defineConfig({
           label: "Command Reference",
           autogenerate: {
             directory: "reference",
-            collapsed: true,
           },
         },
       ],

@@ -3,10 +3,11 @@ using module "..\..\private\completions\Transformers.psm1"
 
 <#
 .SYNOPSIS
-Formats a path into a Spectre Console Path which supports highlighting and truncating.
+Formats an error record/exception into a Spectre Console Exception which supports syntax highlighting.
 
 .DESCRIPTION
-Formats a path into a Spectre Console Path which supports highlighting and truncating.
+Formats an error record/exception into a Spectre Console Exception which supports syntax highlighting.  
+See https://spectreconsole.net/exceptions for more information.
 
 .PARAMETER Exception
 The error/exception object to format.
@@ -16,6 +17,7 @@ The format to use when rendering the exception. The default value is "Default".
 
 .PARAMETER ExceptionStyle
 The style to use when rendering the exception provided as a hashtable. e.g. 
+```
 @{
     Message        = "red"
     Exception      = "white"
@@ -28,10 +30,11 @@ The style to use when rendering the exception provided as a hashtable. e.g.
     Dimmed         = "grey"
     NonEmphasized  = "silver"
 }
+```
 
 .EXAMPLE
 try {
-    Set-Location "nowhere" -ErrorAction Stop
+    Get-ChildItem -BadParam -ErrorAction Stop
 } catch {
     $_ | Format-SpectreException -ExceptionFormat ShortenEverything
 }
@@ -68,7 +71,7 @@ function Format-SpectreException {
     } elseif ($Exception -is [System.Exception]) {
         $exceptionObject = $Exception
     } else {
-        throw "Invalid exception object type. Must be of type [System.Management.Automation.ErrorRecord] or [System.Exception]."
+        throw "Invalid exception object type $($Exception.GetType().FullName). Must be of type [System.Management.Automation.ErrorRecord] or [System.Exception]."
     }
 
     $exceptionSettings = [Spectre.Console.ExceptionSettings]::new()

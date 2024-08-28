@@ -1,6 +1,7 @@
 param (
     [string] $Version = "0.49.1",
-    [int] $DotnetSdkMajorVersion = 8
+    [int] $DotnetSdkMajorVersion = 8,
+    [switch] $NoReinstall
 )
 
 function Install-SpectreConsole {
@@ -76,6 +77,12 @@ Write-Host "Downloading Spectre.Console version $Version"
 $installLocation = (Join-Path $PSScriptRoot "packages")
 $csharpProjectLocation = (Join-Path $PSScriptRoot "private" "classes")
 $testingInstallLocation = (Join-Path $PSScriptRoot ".." "PwshSpectreConsole.Tests" "packages")
+
+if ((Test-Path $installLocation) -or (Test-Path $testingInstallLocation) -and $NoReinstall) {
+    Write-Host "Spectre.Console already installed, skipping"
+    return
+} 
+
 if (Test-Path $installLocation) {
     Remove-Item $installLocation -Recurse -Force
 }

@@ -17,7 +17,8 @@ import formatspectretextpathExample1 from '../../../../assets/examples/formatspe
 
 ### Description
 
-Formats a path into a Spectre Console Path which supports highlighting and truncating.
+Formats a path into a Spectre Console Path which supports highlighting and truncating.  
+See https://spectreconsole.net/widgets/text-path for more information.
 
 
 
@@ -28,7 +29,7 @@ Formats a path into a Spectre Console Path which supports highlighting and trunc
 > EXAMPLE 1
 
 ```powershell
-Write-Host "TODO: Example"
+Get-Location | Format-SpectreTextPath | Out-SpectreHost
 ```
 <Asciinema
     src={formatspectretextpathExample1}
@@ -48,7 +49,7 @@ Write-Host "TODO: Example"
 ### Parameters
 #### **Path**
 
-The array of objects to be formatted into Json.
+The directory/file path to format
 
 
 

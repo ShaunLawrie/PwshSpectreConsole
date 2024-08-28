@@ -21,7 +21,8 @@ The rows to be displayed in the layout.
 The ratio of the layout, when composing layouts of layouts you can use a higher ratio in one layout to make it larger than the other layouts.
 
 .PARAMETER Name
-The name of the layout, this is used when you want to access one of the layouts in a nested layout to update the contents.
+The name of the layout, this is used when you want to access one of the layouts in a nested layout to update the contents.  
+e.g. in the example below to update the contents of row1 you would use `$root = $root["row1"].Update(("hello row 1 again" | Format-SpectrePanel))`
 
 .PARAMETER MinimumSize
 The minimum size of the layout, this can be used to ensure a layout is at least the minimum width.
@@ -30,13 +31,15 @@ The minimum size of the layout, this can be used to ensure a layout is at least 
 $calendar = Write-SpectreCalendar -Date (Get-Date) -PassThru
 $files = Get-ChildItem | Format-SpectreTable | Format-SpectreAligned -HorizontalAlignment Right -VerticalAlignment Bottom
 
-$panel1 = "hello row 1" | Format-SpectrePanel -Header "panel 1" -Expand -Color Blue
-$panel2 = $files | Format-SpectrePanel -Header "panel 2 (align bottom right)" -Expand -Color Green
+$panel1 = $files | Format-SpectrePanel -Header "panel 1 (align bottom right)" -Expand -Color Green
+$panel2 = "hello row 2" | Format-SpectrePanel -Header "panel 2" -Expand -Color Blue
 $panel3 = $calendar | Format-SpectreAligned | Format-SpectrePanel -Header "panel 3 (align middle center)" -Expand -Color Yellow
 
 $row1 = New-SpectreLayout -Name "row1" -Data $panel1 -Ratio 1
 $row2 = New-SpectreLayout -Name "row2" -Columns @($panel2, $panel3) -Ratio 2
 $root = New-SpectreLayout -Name "root" -Rows @($row1, $row2)
+
+$root | Out-SpectreHost
 #>
 function New-SpectreLayout {
     [Reflection.AssemblyMetadata("title", "New-SpectreLayout")]

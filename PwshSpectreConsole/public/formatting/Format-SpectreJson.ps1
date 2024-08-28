@@ -8,7 +8,7 @@ function Format-SpectreJson {
 
     .DESCRIPTION
     This function takes an objects and converts them into syntax highlighted Json using the Spectre Console Json Library.  
-    Thanks to [trackd](https://github.com/trackd) for adding this!
+    Thanks to [trackd](https://github.com/trackd) for adding this!  
     See https://spectreconsole.net/widgets/json for more information.
 
     .PARAMETER Data
@@ -20,6 +20,7 @@ function Format-SpectreJson {
     .PARAMETER JsonStyle
     A hashtable of Spectre Console color names and values to style the Json output.
     e.g.
+    ```
     @{
         MemberStyle    = "Yellow"
         BracesStyle    = "Red"
@@ -31,6 +32,7 @@ function Format-SpectreJson {
         BooleanStyle   = "LightSkyBlue1"
         NullStyle      = "Gray"
     }
+    ```
 
     .EXAMPLE
     $data = @(

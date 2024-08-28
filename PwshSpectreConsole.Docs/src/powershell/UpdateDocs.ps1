@@ -16,11 +16,19 @@ if($helpOut.Version.ToString() -ne "0.5") {
     throw "Must be run with HelpOut v0.5"
 }
 
-& "$PSScriptRoot\..\..\..\PwshSpectreConsole\Build.ps1"
+& "$PSScriptRoot\..\..\..\PwshSpectreConsole\Build.ps1" -NoReinstall
 
 Import-Module "$PSScriptRoot\..\..\..\PwshSpectreConsole\PwshSpectreConsole.psd1" -Force
 Import-Module "$PSScriptRoot\Helpers.psm1" -Force
 Import-Module "$PSScriptRoot\Mocks.psm1" -Force
+
+# Ignore update tags for these
+$ignoreUpdatesFor = @(
+    "Format-SpectreBarChart",
+    "Format-SpectreBreakdownChart",
+    "Format-SpectrePanel",
+    "Format-SpectreTable"
+)
 
 # Git user details for github action commits
 $env:GIT_COMMITTER_NAME = 'Shaun Lawrie (via GitHub Actions)'
@@ -95,7 +103,7 @@ foreach ($doc in $docs) {
         $tag = "Experimental"
     } elseif([string]::IsNullOrEmpty($created) -or ((Get-Date) - ([datetime]$created)).TotalDays -lt $recentThresholdDays) {
         $tag = "New"
-    } elseif (((Get-Date) - ([datetime]$modified)).TotalDays -lt $recentThresholdDays) {
+    } elseif ((((Get-Date) - ([datetime]$modified)).TotalDays -lt $recentThresholdDays) -and $ignoreUpdatesFor -notcontains $commandName) {
         $tag = "Updated"
     }
     Write-Host "File $($doc.Name) was last modified on $modified and created on $created, using tag $tag"
@@ -120,6 +128,10 @@ foreach ($doc in $docs) {
         try {
             Set-Location $PSScriptRoot
             $imports = "import Asciinema from '../../../../components/Asciinema.astro'`n"
+            # Demo colors is annoying and needs a darker foreground color
+            if ($doc.Name -like "*DemoColors*") {
+                $imports = "<style>{`` div.asciinema-player-theme-spectre { --term-color-0: #000000; } ``}</style>`n`n" + $imports
+            }
             foreach($codeBlock in $codeBlocksExcludingSyntaxSection) {
                 $code = $codeBlock -replace '(?s)```powershell', ''
                 $code = $code -replace '```', ''

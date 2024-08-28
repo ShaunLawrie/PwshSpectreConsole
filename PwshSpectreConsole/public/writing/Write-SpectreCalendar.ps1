@@ -53,7 +53,7 @@ function Write-SpectreCalendar {
         [ArgumentCompletionsSpectreColors()]
         [Spectre.Console.Color] $Color = $script:AccentColor,
         [ValidateSet([SpectreConsoleTableBorder], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
-        [string] $Border = "Double",
+        [string] $Border = "Rounded",
         [cultureinfo] $Culture = [cultureinfo]::CurrentCulture,
         [Hashtable]$Events,
         [Switch] $HideHeader,

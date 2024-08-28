@@ -3,7 +3,8 @@
 Invokes a script block with live rendering.
 
 .DESCRIPTION
-Starts live rendering for a given renderable. The script block is able to update the renderable in real-time and Spectre Console redraws every time the scriptblock calls $Context.refresh().
+Starts live rendering for a given renderable. The script block is able to update the renderable in real-time and Spectre Console redraws every time the scriptblock calls $Context.refresh().  
+See https://spectreconsole.net/live/live-display for more information.
 
 .PARAMETER Data
 The renderable object to render.
@@ -29,10 +30,9 @@ Invoke-SpectreLive -Data $table -ScriptBlock {
         $Context.refresh()
     }
 }
-
-$table = Add-SpectreTableRow -Table $table -Columns "Shaun", 99, "Wellington"
 #>
 function Invoke-SpectreLive {
+    [Reflection.AssemblyMetadata("title", "Invoke-SpectreLive")]
     param (
         [Parameter(ValueFromPipeline)]
         [RenderableTransformationAttribute()]

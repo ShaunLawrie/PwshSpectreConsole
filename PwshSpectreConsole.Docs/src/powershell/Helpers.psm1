@@ -48,7 +48,7 @@ $script:UpdatedTag = @"
 sidebar:
   badge:
     text: Updated
-    variant: tip
+    variant: note
 "@
 
 $script:ExperimentalTag = @"

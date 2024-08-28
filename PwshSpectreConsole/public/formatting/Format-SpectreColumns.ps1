@@ -31,7 +31,7 @@ function Format-SpectreColumns {
     [Reflection.AssemblyMetadata("title", "Format-SpectreColumns")]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
-        [array] $Data,
+        [object] $Data,
         [int] $Padding = 1,
         [switch] $Expand
     )
@@ -62,7 +62,9 @@ function Format-SpectreColumns {
     end {
         $columns = [Spectre.Console.Columns]::new($columnItems)
         $columns.Expand = $Expand
-        $columns.Padding = [Spectre.Console.Padding]::new($Padding, $Padding, $Padding, $Padding)
+        if ($Padding -ne 1) {
+            $columns.Padding = [Spectre.Console.Padding]::new($Padding, $Padding, $Padding, $Padding)
+        }
 
         return $columns
     }

@@ -3,34 +3,68 @@ title: Upgrading to 2.0
 description: Breaking changes and stuff.
 ---
 
-I started this as a learning excercise in how to bridge the gap between C# libraries and PowerShell and wow have I learned a lot. Things I thought made sense when I first wrote this have now made it difficult to maintain. I've tried to maintain as much backwards compatibility as I can but there are some areas which will have breaking changes when upgrading to 2.0.
+Backwards compatibility was a goal but there are some areas which will have breaking changes when upgrading to 2.0. The flexibility and power of the new renderable objects should make up for the inconvenience of the breaking changes.
 
-## Breaking Changes
+## 💥 Breaking Changes
 
-- Format-SpectreJson parameters removed are `-Border`, `-Title`, `-NoBorder`.  
+- **[`Format-SpectreJson`](/reference/formatting/format-spectrejson/) has had parameters removed:**
+  - **-Border**, **-Title**, **-NoBorder** are no longer available.  
   To wrap the json in a border you can now pipe the output to Format-SpectrePanel e.g. `Format-SpectreJson -Data $data | Format-SpectrePanel`
+- **[`Format-SpectreTree`](/reference/formatting/format-spectretree/) data parameter has changed:**
+  - The input object was previously `@{ Label = "stringlabel"; Children = @() }` but it can now render any Spectre Console renderable object so `Label` is replaced with `Value`.
+- **[`Out-SpectreHost`](/reference/rendering/out-spectrehost/) is required if you want to render an item without additional whitespace:**  
+  - To enable the new features, the way the console handles the default host output has changed. Version 2.0 uses [powershell formatting](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_format.ps1xml?view=powershell-7.4) to render Spectre Console objects. When rendered to the terminal PowerShell pads these with a blank line before and after the renderable item.  
+  `$data | Format-SpectrePanel | Out-SpectreHost` will force the object to be rendered without padding.  
 
-## New Features
+## 🆕 New Features
 
-🆕 New commandlets to make this PowerShell library compatible with the rest of the Spectre.Console C# library:
+### Renderables
+
+Renderables are objects that can be rendered to the console. Most functions now return a renderable object instead of writing directly to the console host. This allows you to assign the output of a function to a variable and use it in other functions or redirect the output to a file. The renderable objects can also be used as inputs to other Spectre Console functions so you can build complex layouts.
+
+![renderable items inside tables](../../../../public/2-0-tables.png)
+
+```powershell
+# Example of using renderable objects inside a table
+$calendar = Write-SpectreCalendar -Date (Get-Date) -PassThru
+$files = Get-ChildItem | Format-SpectreTable
+$fruits = @(
+    (New-SpectreChartItem -Label "Bananas" -Value 2.2 -Color Yellow),
+    (New-SpectreChartItem -Label "Oranges" -Value 6.6 -Color Orange1),
+    (New-SpectreChartItem -Label "Apples" -Value 1 -Color Red)
+) | Format-SpectreBarChart -Width 45
+
+@{
+    Calendar = $calendar
+    Files = $files
+    Fruits = $fruits
+} | Format-SpectreTable -Color Cyan1
+```
+
+### New Commandlets
+
+New commandlets to make this PowerShell library compatible with the rest of the Spectre.Console C# library:
 
 - [`Add-SpectreTableRow`](/reference/formatting/add-spectretablerow/) - Add a row to an existing table.
 - [`Format-SpectreAligned`](/reference/formatting/format-spectrealigned/) - Set the alignment for an item inside a panel/layout.
-- [`Format-SpectreColumns`](/reference/formatting/format-spectrecolumns/) - A convenience method for rendering an array of items in columns.
+- [`Format-SpectreColumns`](/reference/formatting/format-spectrecolumns/) - A method for rendering an array of items in automatically layed out columns.
 - [`Format-SpectreRows`](/reference/formatting/format-spectrerows/) - Render an array of items in rows.
 - [`Format-SpectreGrid`](/reference/formatting/format-spectregrid/) - Render an array of items in a grid.
 - [`New-SpectreGridRow`](/reference/formatting/new-spectregridrow/) - Create a new row for a grid from an array of columns.
-- [`Format-SpectrePadded`](/reference/formatting/format-spectrepadded/) - Surround an item with spaced padding.
+- [`Format-SpectrePadded`](/reference/formatting/format-spectrepadded/) - Surround an item with whitespace.
 - [`Format-SpectreTextPath`](/reference/formatting/format-spectretextpath/) - Render a file/folder path with syntax highlighting.
 - [`Format-SpectreException`](/reference/formatting/format-spectreexception/) - Render an exception with syntax highlighting.
 - [`Invoke-SpectreLive`](/reference/live/invoke-spectrelive) - Run a scriptblock and update a renderable item live in real-time.
+- [`New-SpectreLayout`](/reference/rendering/new-spectrelayout/) - For rendering items in nested layouts.
 
-💲 Renderable items (markup, panels, tables etc.) use PowerShell formatters so you can now assign the output of functions like `Format-SpectreJson` to a variable and use it inside other Spectre Console functions like `Format-SpectreTable`.  
-![renderable items inside tables](/PwshSpectreConsole.Docs/public/2-0-tables.png)
+### Updated Commandlets
 
-### What about the canvas widget?
+- `Read-*` - Most "read" functions now accept a `-TimeoutSeconds` parameter after which, null is returned.
+- `Write-*` - Most "write" functions now have a `-PassThru` switch parameter that will return the renderable object instead of writing it to the host immediately.
 
-The [canvas](https://spectreconsole.net/widgets/canvas) widget is low level enough that it doesn't make sense to implement in PowerShell. If you need to use it you can use the C# library directly e.g.
+### What about the Canvas Widget?
+
+The [canvas](https://spectreconsole.net/widgets/canvas) widget is the lonely remaining widget that doesn't have a function to access it in this module. It is accessible enough that it doesn't make sense to implement in PowerShell. If you need to use it you can use the C# library directly e.g.
 
 ```powershell
 # Create a canvas

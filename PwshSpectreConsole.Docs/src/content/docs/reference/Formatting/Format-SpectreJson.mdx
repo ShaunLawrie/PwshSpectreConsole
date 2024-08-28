@@ -2,7 +2,7 @@
 sidebar:
   badge:
     text: Updated
-    variant: tip
+    variant: note
 title: Format-SpectreJson
 ---
 
@@ -17,7 +17,9 @@ import formatspectrejsonExample1 from '../../../../assets/examples/formatspectre
 
 ### Description
 
-This function takes an array of objects and converts them into Json using the Spectre Console Json Library.
+This function takes an objects and converts them into syntax highlighted Json using the Spectre Console Json Library.  
+Thanks to [trackd](https://github.com/trackd) for adding this!  
+See https://spectreconsole.net/widgets/json for more information.
 
 
 
@@ -94,6 +96,7 @@ The maximum depth of the Json. Default is defined by the version of powershell.
 
 A hashtable of Spectre Console color names and values to style the Json output.
 e.g.
+```
 @{
     MemberStyle    = "Yellow"
     BracesStyle    = "Red"
@@ -105,6 +108,7 @@ e.g.
     BooleanStyle   = "LightSkyBlue1"
     NullStyle      = "Gray"
 }
+```
 
 
 

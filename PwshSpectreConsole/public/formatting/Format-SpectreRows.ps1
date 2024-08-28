@@ -22,7 +22,7 @@ function Format-SpectreRows {
     [Reflection.AssemblyMetadata("title", "Format-SpectreRows")]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
-        [array] $Data,
+        [object] $Data,
         [switch] $Expand
     )
     begin {

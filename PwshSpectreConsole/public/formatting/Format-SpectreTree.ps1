@@ -52,6 +52,7 @@ function Format-SpectreTree {
         [ValidateSpectreTreeItem()]
         [hashtable] $Data,
         [ValidateSet([SpectreConsoleTreeGuide], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
+        [Alias("Border")]
         [string] $Guide = "Line",
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]

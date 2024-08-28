@@ -12,11 +12,52 @@ title: Format-SpectreRows
 
 
 
+import Asciinema from '../../../../components/Asciinema.astro'
+import formatspectrerowsExample1 from '../../../../assets/examples/formatspectrerowsExample1.cast?url'
+import formatspectrerowsExample2 from '../../../../assets/examples/formatspectrerowsExample2.cast?url'
+
 ### Description
 
 This function creates a spectre rows widget that renders a collection of renderables in autosized rows to the console.  
-Rows can contain renderable items, see https://spectreconsole.net/widgets/rows for more information.
+Rows can contain renderable items.  
+See https://spectreconsole.net/widgets/rows for more information.
 
+
+
+---
+
+
+### Examples
+> EXAMPLE 1
+
+```powershell
+@("top", "middle", "bottom") | Format-SpectreRows
+```
+<Asciinema
+    src={formatspectrerowsExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+> EXAMPLE 2
+
+```powershell
+@("top", "middle", "bottom") | Foreach-Object { $_ | Format-SpectrePanel -Expand } | Format-SpectreRows
+```
+<Asciinema
+    src={formatspectrerowsExample2}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
 
 
 ---
@@ -25,16 +66,16 @@ Rows can contain renderable items, see https://spectreconsole.net/widgets/rows f
 ### Parameters
 #### **Data**
 
-An array of objects containing the data to be displayed in the rows.
+An array of renderable items containing the data to be displayed in the rows.
 
 
 
 
 
 
-|Type     |Required|Position|PipelineInput |
-|---------|--------|--------|--------------|
-|`[Array]`|true    |1       |true (ByValue)|
+|Type      |Required|Position|PipelineInput |
+|----------|--------|--------|--------------|
+|`[Object]`|true    |1       |true (ByValue)|
 
 
 
@@ -56,5 +97,5 @@ An array of objects containing the data to be displayed in the rows.
 
 ### Syntax
 ```powershell
-Format-SpectreRows [-Data] <Array> [-Expand] [<CommonParameters>]
+Format-SpectreRows [-Data] <Object> [-Expand] [<CommonParameters>]
 ```
