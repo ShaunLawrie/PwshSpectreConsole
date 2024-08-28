@@ -90,12 +90,20 @@ jobs:
           $latestPrereleaseTag = $latestPrereleaseVersion.Split("-prerelease")[1] # format is like -prerelease6, output here is just 6
           $latestPrereleaseVersion = [version]$latestPrereleaseVersion.Split("-prerelease")[0]
 
-          # Generate a new prerelease name, psgallery only allows characters 'a-zA-Z0-9' and a hyphen ('-') at the beginning of the prerelease string
-          $newPrereleaseTag = "prerelease" + (([int]$latestPrereleaseTag) + 1)
+          # Jump to package version if it's been bumped beyond the latest prerelease version
+          $currentVersion = [version]::new($version.Major, $version.Minor, $version.Build)
+          if ($latestPrereleaseVersion -lt $currentVersion) {
+            Write-Host "Latest prerelease version is less than the latest stable version, jumping to $currentVersion"
+            $newPrereleaseTag = "prerelease1"
+            $newVersion = $currentVersion
+          } else {
+            # Generate a new prerelease name, psgallery only allows characters 'a-zA-Z0-9' and a hyphen ('-') at the beginning of the prerelease string
+            $newPrereleaseTag = "prerelease" + (([int]$latestPrereleaseTag) + 1)
 
-          # Prerelease will always be at least one minor version above the latest published stable version so when it's merged to main the minor version will get bumped
-          # To bump a major version the manifest would be edited manually to vnext.0.0 before merging to main
-          $newVersion = [version]::new($latestStableVersion.Major, $latestStableVersion.Minor + 1, 0)
+            # Prerelease will always be at least one minor version above the latest published stable version so when it's merged to main the minor version will get bumped
+            # To bump a major version the manifest would be edited manually to vnext.0.0 before merging to main
+            $newVersion = [version]::new($latestStableVersion.Major, $latestStableVersion.Minor + 1, 0)
+          }
 
           if($newVersion -eq $oldVersion) {
             Write-Host "Version is not being bumped in prerelease"
