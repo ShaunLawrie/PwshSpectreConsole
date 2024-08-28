@@ -30,15 +30,15 @@ These are guidelines not rules, you can do whatever you want to make things work
 
 These people are awesome and you should go follow them to keep tabs on all the other awesome stuff they're doing:
 
-- @patriksvensson  
+- [@patriksvensson](https://github.com/patriksvensson)  
   The [Spectre Console](https://spectreconsole.net/) creator. Without the dotnet library this module wouldn't exist.
-- @dfinke  
+- [@dfinke](https://github.com/dfinke)  
   Doug Finke helped fix some broken table logic in the earliest days of the module yet his biggest contribution has been to my growth as a developer. Thanks for helping me gather the courage to build in the open.
-- @trackd  
+- [@trackd](https://github.com/trackd)  
   The table whisperer. Most of the logic for translating between PowerShell objects and the format required by the Spectre Console table widgets has come from their big brain and it's melted mine. They're a crazy-talented PowerShell developer who has helped teach me a lot and their contributions are a big part of the v2 release.
-- @StartAutomating  
+- [@StartAutomating](https://github.com/StartAutomating)  
   Thanks for the sponsorship, EZOut and HelpOut modules. HelpOut is used to generate the markdown that powers the [pwshspectreconsole.com](https://pwshspectreconsole.com/reference/formatting/format-spectrebarchart/) documentation site.
-- @futuremotiondev, @ruckii and @csillikd-messerli  
+- [@futuremotiondev](https://github.com/futuremotiondev), [@ruckii](https://github.com/ruckii) and [@csillikd-messerli](https://github.com/csillikd-messerli)  
   Thank you for the issues raised and the fixes you've pulled together making this module better.
 
 ## Contact Me
