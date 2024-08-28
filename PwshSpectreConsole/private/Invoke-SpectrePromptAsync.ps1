@@ -1,4 +1,3 @@
-using namespace Spectre.Console
 
 function Invoke-SpectrePromptAsync {
     <#
@@ -16,15 +15,29 @@ function Invoke-SpectrePromptAsync {
     #>
     param (
         [Parameter(Mandatory)]
-        $Prompt
+        $Prompt,
+        [int] $TimeoutSeconds
     )
+
+    $timeout = $null
+    if ($TimeoutSeconds) {
+        $timeout = (Get-Date).AddSeconds($TimeoutSeconds)
+        Write-SpectreHost "[$script:DefaultValueColor]This prompt times out in $TimeoutSeconds seconds...[/]`n"
+    }
+
     $cts = [System.Threading.CancellationTokenSource]::new()
     try {
-        $task = $Prompt.ShowAsync([AnsiConsole]::Console, $cts.Token)
+        $task = $Prompt.ShowAsync([Spectre.Console.AnsiConsole]::Console, $cts.Token)
         while (-not $task.AsyncWaitHandle.WaitOne(200)) {
             # Waiting for the async task this way allows ctrl-c interrupts to continue to work within the single-threaded PowerShell world
+            if ($null -ne $timeout -and (Get-Date) -ge $timeout) {
+                $cts.Cancel()
+                Write-SpectreHost "`n`n[$script:DefaultValueColor]Prompt timed out[/]"
+            }
         }
-        return $task.GetAwaiter().GetResult()
+        if (!$task.IsCanceled) {
+            return $task.GetAwaiter().GetResult()
+        }
     } finally {
         $cts.Cancel()
         $task.Dispose()

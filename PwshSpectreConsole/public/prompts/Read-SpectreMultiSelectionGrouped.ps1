@@ -1,5 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
-using namespace Spectre.Console
+using module "..\..\private\completions\Transformers.psm1"
 
 function Read-SpectreMultiSelectionGrouped {
     <#
@@ -10,7 +10,7 @@ function Read-SpectreMultiSelectionGrouped {
     Displays a multi-selection prompt with grouped choices and returns the selected choices. The prompt allows the user to select one or more choices from a list of options. The choices can be grouped into categories, and the user can select choices from each category.
 
     .PARAMETER Title
-    The title of the prompt. The default value is "What are your favourite [color]?".
+    The title of the prompt. The default value is "What are your favourite [Spectre.Console.Color]?".
 
     .PARAMETER Choices
     An array of choice groups. Each group is a hashtable with two keys: "Name" and "Choices". The "Name" key is a string that represents the name of the group, and the "Choices" key is an array of strings that represents the choices in the group.
@@ -57,11 +57,12 @@ function Read-SpectreMultiSelectionGrouped {
         [string] $ChoiceLabelProperty,
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $Color = $script:AccentColor,
+        [Spectre.Console.Color] $Color = $script:AccentColor,
         [int] $PageSize = 10,
+        [int] $TimeoutSeconds,
         [switch] $AllowEmpty
     )
-    $spectrePrompt = [MultiSelectionPrompt[string]]::new()
+    $spectrePrompt = [Spectre.Console.MultiSelectionPrompt[string]]::new()
 
     $choiceLabels = $Choices.Choices
     $flattenedChoices = $Choices.Choices
@@ -82,17 +83,17 @@ function Read-SpectreMultiSelectionGrouped {
         if ($ChoiceLabelProperty) {
             $choiceLabels = $choiceLabels | Select-Object -ExpandProperty $ChoiceLabelProperty
         }
-        $spectrePrompt = [MultiSelectionPromptExtensions]::AddChoiceGroup($spectrePrompt, $group.Name, [string[]]$choiceLabels)
+        $spectrePrompt = [Spectre.Console.MultiSelectionPromptExtensions]::AddChoiceGroup($spectrePrompt, $group.Name, [string[]]$choiceLabels)
     }
 
     $spectrePrompt.Title = $Title
     $spectrePrompt.PageSize = $PageSize
     $spectrePrompt.WrapAround = $true
     $spectrePrompt.Required = !$AllowEmpty
-    $spectrePrompt.HighlightStyle = [Style]::new($Color)
+    $spectrePrompt.HighlightStyle = [Spectre.Console.Style]::new($Color)
     $spectrePrompt.InstructionsText = "[$($script:DefaultValueColor.ToMarkup())](Press [$($script:AccentColor.ToMarkup())]space[/] to toggle a choice and press [$($script:AccentColor.ToMarkup())]<enter>[/] to submit your answer)[/]"
     $spectrePrompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
-    $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt
+    $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt -TimeoutSeconds $TimeoutSeconds
 
     if ($ChoiceLabelProperty) {
         $selected = $flattenedChoices | Where-Object { $selected -contains $_.$ChoiceLabelProperty }

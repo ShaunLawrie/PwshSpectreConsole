@@ -1,4 +1,3 @@
-using namespace Spectre.Console
 
 <#
 .SYNOPSIS
@@ -9,61 +8,159 @@ using namespace Spectre.Console
     The Get-SpectreDemoColors function retrieves a list of Spectre Console colors and displays them with their corresponding markup. 
     It also provides information on how to use the colors as parameters for commands or in Spectre Console markup.
 
-.PARAMETER Count
-    Limit the number of colors returned. This is only really useful for generating the help docs.
-
 .EXAMPLE
-    Get-SpectreDemoColors -Count 4
+    Get-SpectreDemoColors
 #>
 function Get-SpectreDemoColors {
     [Reflection.AssemblyMetadata("title", "Get-SpectreDemoColors")]
-    param (
-        [int] $Count
-    )
-    
-    Write-SpectreHost " "
-    Write-SpectreRule "Colors"
-    Write-SpectreHost " "
+    param ()
 
-    $colors = [Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
-    if($Count) {
-        $colors = $colors | Select-Object -First $Count
-    }
-    $colors = $colors | ForEach-Object {
-        $prefix = ($_ -replace '[_0-9]+', '')
-        $numeric = ($_ -replace '^[^0-9]+', '')
-        $value = 0
-        if ([string]::IsNullOrEmpty($numeric)) {
-            $value = 0.0
-        } else {
-            $numericParts = $numeric.Split('_')
-            if ($numericParts.Count -lt 2) {
-                $value = [double]"$($numericParts[0]).9"
-            } else {
-                $value = [double]"$($numericParts[0]).$($numericParts[1])"
+    function Get-ColorCategory {
+        param (
+            [int] $Hue,
+            [int] $Saturation,
+            [int] $Value
+        )
+    
+        $categories = @{
+            "02 Red" = @(0..20 + 350..360)
+            "03 Orange" = @(21..45)
+            "04 Yellow" = @(46..60)
+            "05 Green" = @(61..108)
+            "06 Green2" = @(109..150)
+            "07 Cyan" = @(151..190)
+            "08 Blue" = @(191..220)
+            "09 Blue2" = @(221..240)
+            "10 Purple" = @(241..280)
+            "11 Pink1" = @(281..300)
+            "12 Pink" = @(301..350)
+        }
+    
+        if ($Saturation -lt 15) {
+            if ($Value -lt 40) {
+                return "00 Grey"
+            }
+            return "00 GreyZMud"
+        }
+    
+        foreach ($category in $categories.GetEnumerator()) {
+            if ($Hue -in $category.Value) {
+                $cat = $category.Key
+                if ($Saturation -lt 2) {
+                    $cat = $cat + "ZMud"
+                }
+                return $cat
             }
         }
-        return [pscustomobject]@{
-            Name    = $_
-            Prefix  = $prefix
-            Numeric = $value
-        }
-    } | Sort-Object -Property @{Expression = "Prefix" }, @{Expression = "Numeric" } | Select-Object -ExpandProperty Name
+    }
 
-    $maxLength = $colors | Measure-Object -Maximum -Property Length | Select-Object -ExpandProperty Maximum
-
-    foreach ($color in $colors) {
-        $total = [Color]::$color | Select-Object @{ Name = "Total"; Expression = { $_.R + $_.G + $_.B } } | Select-Object -ExpandProperty Total
-        $textColor = "white"
-        if ($total -gt 280) {
-            $textColor = "black"
+    function Convert-RgbToHsv {
+        param(
+            [int] $Red,
+            [int] $Green,
+            [int] $Blue
+        )
+    
+        $redPercent = $Red / 255.0
+        $greenPercent = $Green / 255.0
+        $bluePercent = $Blue / 255.0
+    
+        $max = [Math]::Max([Math]::Max($redPercent, $greenPercent), $bluePercent)
+        $min = [Math]::Min([Math]::Min($redPercent, $greenPercent), $bluePercent)
+        $delta = $max - $min
+    
+        $hue = 0
+        $saturation = 0
+        $value = 0
+    
+        if ($delta -eq 0) {
+            $hue = 0
+        } elseif ($max -eq $redPercent) {
+            $hue = 60 * ((($greenPercent - $bluePercent) / $delta) % 6)
+        } elseif ($max -eq $greenPercent) {
+            $hue = 60 * ((($bluePercent - $redPercent) / $delta) + 2)
+        } elseif ($max -eq $bluePercent) {
+            $hue = 60 * ((($redPercent - $greenPercent) / $delta) + 4)
         }
+    
+        if ($hue -lt 0) {
+            $hue = 360 + $hue
+        }
+    
+        if ($max -eq 0) {
+            $saturation = 0
+        } else {
+            $saturation = $delta / $max * 100
+        }
+    
+        $value = $max * 100
+    
+        return @(
+            [int]$hue,
+            [int]$saturation,
+            [int]$value
+        )
+    }
+
+    function Get-Lightness {
+        param(
+            [int] $Red,
+            [int] $Green,
+            [int] $Blue
+        )
+    
+        $redPercent = $Red / 255.0
+        $greenPercent = $Green / 255.0
+        $bluePercent = $Blue / 255.0
+    
+        $max = [Math]::Max([Math]::Max($redPercent, $greenPercent), $bluePercent)
+        $min = [Math]::Min([Math]::Min($redPercent, $greenPercent), $bluePercent)
         
-        Write-SpectreHost -NoNewline "[$textColor on $color] $($color.PadRight($maxLength)) [/] "
-        Write-SpectreHost ("[$color]$color[/]")
+        return ($max + $min) / 2
     }
 
     Write-SpectreHost " "
+    $width = Get-HostWidth
+    $remainder = $width
+    $colors = [Spectre.Console.Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
+    $sortableColors = $colors | ForEach-Object {
+        $color = [Spectre.Console.Color]::$_
+        $hsv = Convert-RgbToHsv -Red $color.R -Green $color.G -Blue $color.B
+        return [pscustomobject]@{
+            Name = $_
+            Color = $color
+            Saturation = $hsv[1]
+            ColorCategory = Get-ColorCategory -Hue $hsv[0] -Saturation $hsv[1] -Value $hsv[2]
+            Lightness = Get-Lightness -Red $color.R -Green $color.G -Blue $color.B
+        }
+    }
+    $colorCategories = $sortableColors | Group-Object ColorCategory
+    $colorCategories | ForEach-Object {
+        if ($_.Name -like "00 Grey*") {
+            $sorted = $_.Group | Sort-Object -Property Lightness
+        } else {
+            $sorted = $_.Group | Sort-Object -Property Saturation -Descending
+        }
+
+        $sorted | ForEach-Object {
+            $colorName = $_.Name
+            $spaceRequired = $colorName.Length + 3
+            $remainder -= $spaceRequired
+            if ($remainder -le 0) {
+                Write-SpectreHost "`n"
+                $remainder = $width - $spaceRequired
+            }
+
+            $foreground = if (($_.Color.R + $_.Color.G + $_.Color.B) -gt 280) {
+                "black"
+            } else {
+                "white"
+            }
+
+            Write-SpectreHost "[$foreground on #$($_.Color.ToHex())] $($_.Name) [/] " -NoNewline
+        }
+    }
+    Write-SpectreHost "`n"
     Write-SpectreRule "Help"
     Write-SpectreHost " "
 

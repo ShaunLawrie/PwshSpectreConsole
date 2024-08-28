@@ -1,5 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
-using namespace Spectre.Console
+using module "..\..\private\completions\Transformers.psm1"
 
 function Write-SpectreRule {
     <#
@@ -18,6 +18,9 @@ function Write-SpectreRule {
     .PARAMETER Color
     The color of the rule. The default value is the accent color of the script.
 
+    .PARAMETER PassThru
+    Returns the Spectre Rule object instead of writing it to the console.
+
     .EXAMPLE
     Write-SpectreRule -Title "My Rule" -Alignment Center -Color Red
     #>
@@ -29,9 +32,15 @@ function Write-SpectreRule {
         [string] $Alignment = "Left",
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $Color = $script:AccentColor
+        [Spectre.Console.Color] $Color = $script:AccentColor,
+        [switch] $PassThru
     )
-    $rule = [Rule]::new("[$($Color.ToMarkup())]$Title[/]")
-    $rule.Justification = [Justify]::$Alignment
+    $rule = [Spectre.Console.Rule]::new("[$($Color.ToMarkup())]$Title[/]")
+    $rule.Justification = [Spectre.Console.Justify]::$Alignment
+
+    if ($PassThru) {
+        return $rule
+    }
+
     Write-AnsiConsole $rule
 }

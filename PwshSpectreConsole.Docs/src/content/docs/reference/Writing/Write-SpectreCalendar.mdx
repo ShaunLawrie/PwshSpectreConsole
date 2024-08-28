@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
 title: Write-SpectreCalendar
 ---
 
@@ -199,6 +203,21 @@ Hides the header of the calendar. (Date)
 
 
 
+#### **PassThru**
+
+Returns the Spectre Calendar object instead of writing it to the console.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|false   |named   |false        |
+
+
+
 
 
 ---
@@ -206,5 +225,5 @@ Hides the header of the calendar. (Date)
 
 ### Syntax
 ```powershell
-Write-SpectreCalendar [[-Date] <DateTime>] [[-Alignment] <String>] [[-Color] <Color>] [[-Border] <String>] [[-Culture] <CultureInfo>] [[-Events] <Hashtable>] [-HideHeader] [<CommonParameters>]
+Write-SpectreCalendar [[-Date] <DateTime>] [[-Alignment] <String>] [[-Color] <Color>] [[-Border] <String>] [[-Culture] <CultureInfo>] [[-Events] <Hashtable>] [-HideHeader] [-PassThru] [<CommonParameters>]
 ```

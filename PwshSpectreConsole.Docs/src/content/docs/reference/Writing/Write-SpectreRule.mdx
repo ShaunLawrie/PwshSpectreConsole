@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
 title: Write-SpectreRule
 ---
 
@@ -95,6 +99,21 @@ The color of the rule. The default value is the accent color of the script.
 
 
 
+#### **PassThru**
+
+Returns the Spectre Rule object instead of writing it to the console.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|false   |named   |false        |
+
+
+
 
 
 ---
@@ -102,5 +121,5 @@ The color of the rule. The default value is the accent color of the script.
 
 ### Syntax
 ```powershell
-Write-SpectreRule [-Title] <String> [[-Alignment] <String>] [[-Color] <Color>] [<CommonParameters>]
+Write-SpectreRule [-Title] <String> [[-Alignment] <String>] [[-Color] <Color>] [-PassThru] [<CommonParameters>]
 ```

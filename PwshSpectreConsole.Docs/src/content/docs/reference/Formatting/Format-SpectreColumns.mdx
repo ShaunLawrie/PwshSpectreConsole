@@ -1,0 +1,136 @@
+---
+sidebar:
+  badge:
+    text: New
+    variant: tip
+title: Format-SpectreColumns
+---
+
+
+
+
+
+
+
+import Asciinema from '../../../../components/Asciinema.astro'
+import formatspectrecolumnsExample1 from '../../../../assets/examples/formatspectrecolumnsExample1.cast?url'
+import formatspectrecolumnsExample2 from '../../../../assets/examples/formatspectrecolumnsExample2.cast?url'
+import formatspectrecolumnsExample3 from '../../../../assets/examples/formatspectrecolumnsExample3.cast?url'
+
+### Description
+
+This function creates a spectre columns widget that renders a collection of renderables in autosized columns to the console.  
+Columns can contain renderable items.  
+See https://spectreconsole.net/widgets/columns for more information.
+
+
+
+---
+
+
+### Examples
+> EXAMPLE 1
+
+```powershell
+@("left", "middle", "right") | Format-SpectreColumns
+```
+<Asciinema
+    src={formatspectrecolumnsExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+> EXAMPLE 2
+
+```powershell
+@("left", "middle", "right") | Foreach-Object { $_ | Format-SpectrePanel -Expand } | Format-SpectreColumns
+```
+<Asciinema
+    src={formatspectrecolumnsExample2}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+> EXAMPLE 3
+
+```powershell
+@("left", "middle", "right") | Foreach-Object { $_ | Format-SpectrePanel -Expand } | Format-SpectreColumns -Expand
+```
+<Asciinema
+    src={formatspectrecolumnsExample3}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+---
+
+
+### Parameters
+#### **Data**
+
+An array of objects containing the data to be displayed in the columns.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput |
+|----------|--------|--------|--------------|
+|`[Object]`|true    |1       |true (ByValue)|
+
+
+
+#### **Padding**
+
+The padding to apply to the columns.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |2       |false        |
+
+
+
+#### **Expand**
+
+A switch to expand the columns to fill the available space.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|false   |named   |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Format-SpectreColumns [-Data] <Object> [[-Padding] <Int32>] [-Expand] [<CommonParameters>]
+```

@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
 title: Read-SpectreConfirm
 ---
 
@@ -114,6 +118,17 @@ The text and markup to display if the user chooses no. If left undefined, nothin
 
 
 
+#### **TimeoutSeconds**
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |5       |false        |
+
+
+
 #### **Color**
 
 
@@ -121,7 +136,7 @@ The text and markup to display if the user chooses no. If left undefined, nothin
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
-|`[Color]`|false   |5       |false        |
+|`[Color]`|false   |6       |false        |
 
 
 
@@ -132,5 +147,5 @@ The text and markup to display if the user chooses no. If left undefined, nothin
 
 ### Syntax
 ```powershell
-Read-SpectreConfirm [[-Prompt] <String>] [[-DefaultAnswer] <String>] [[-ConfirmSuccess] <String>] [[-ConfirmFailure] <String>] [[-Color] <Color>] [<CommonParameters>]
+Read-SpectreConfirm [[-Prompt] <String>] [[-DefaultAnswer] <String>] [[-ConfirmSuccess] <String>] [[-ConfirmFailure] <String>] [[-TimeoutSeconds] <Int32>] [[-Color] <Color>] [<CommonParameters>]
 ```

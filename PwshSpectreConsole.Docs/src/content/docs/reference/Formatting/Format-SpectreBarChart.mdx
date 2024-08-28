@@ -13,7 +13,8 @@ import formatspectrebarchartExample1 from '../../../../assets/examples/formatspe
 
 ### Description
 
-This function takes an array of data and displays it as a bar chart using the Spectre Console module. The chart can be customized with a title and width.
+This function takes an array of data and displays it as a bar chart using the Spectre Console module. The chart can be customized with a title and width.  
+See https://spectreconsole.net/widgets/barchart for more information.
 
 
 
@@ -29,7 +30,7 @@ $data += New-SpectreChartItem -Label "Apples" -Value 10 -Color "Green"
 $data += New-SpectreChartItem -Label "Oranges" -Value 5 -Color "DarkOrange"
 $data += New-SpectreChartItem -Label "Bananas" -Value 2.2 -Color "#FFFF00"
 
-Format-SpectreBarChart -Data $data -Title "Fruit Sales" -Width 50
+Format-SpectreBarChart -Data $data -Label "Fruit Sales" -Width 50
 ```
 <Asciinema
     src={formatspectrebarchartExample1}
@@ -56,13 +57,13 @@ An array of objects containing the data to be displayed in the chart. Each objec
 
 
 
-|Type     |Required|Position|PipelineInput |
-|---------|--------|--------|--------------|
-|`[Array]`|true    |1       |true (ByValue)|
+|Type      |Required|Position|PipelineInput |
+|----------|--------|--------|--------------|
+|`[Object]`|true    |1       |true (ByValue)|
 
 
 
-#### **Title**
+#### **Label**
 
 The title to be displayed above the chart.
 
@@ -71,9 +72,9 @@ The title to be displayed above the chart.
 
 
 
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[String]`|false   |2       |false        |
+|Type      |Required|Position|PipelineInput|Aliases|
+|----------|--------|--------|-------------|-------|
+|`[String]`|false   |2       |false        |Title  |
 
 
 
@@ -114,5 +115,5 @@ Hides the values from being displayed on the chart.
 
 ### Syntax
 ```powershell
-Format-SpectreBarChart [-Data] <Array> [[-Title] <String>] [[-Width] <Int32>] [-HideValues] [<CommonParameters>]
+Format-SpectreBarChart [-Data] <Object> [[-Label] <String>] [[-Width] <Int32>] [-HideValues] [<CommonParameters>]
 ```

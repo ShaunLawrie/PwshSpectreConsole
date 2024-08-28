@@ -1,4 +1,3 @@
-using namespace Spectre.Console
 
 <#
 .SYNOPSIS
@@ -22,7 +21,7 @@ function Start-AnsiConsoleProgress {
     )
     $resultVariableName = "AnsiConsoleProgressResult-$([guid]::NewGuid())"
     New-Variable -Name $resultVariableName -Scope "Script"
-    [AnsiConsole]::Progress().Start({
+    [Spectre.Console.AnsiConsole]::Progress().Start({
             param (
                 $ctx
             )

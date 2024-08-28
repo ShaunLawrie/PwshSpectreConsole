@@ -1,6 +1,9 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
 title: Write-SpectreHost
-description: The Write-SpectreHost function writes a message to the console using Spectre Console. It supports ANSI markup and can optionally append a newline character to the end of the message.
 ---
 
 
@@ -56,7 +59,7 @@ The message to write to the console.
 
 |Type      |Required|Position|PipelineInput |
 |----------|--------|--------|--------------|
-|`[String]`|true    |1       |true (ByValue)|
+|`[Object]`|true    |1       |true (ByValue)|
 
 
 
@@ -82,5 +85,5 @@ If specified, the message will not be followed by a newline character.
 
 ### Syntax
 ```powershell
-Write-SpectreHost [-Message] <String> [-NoNewline] [<CommonParameters>]
+Write-SpectreHost [-Message] <Object> [-NoNewline] [<CommonParameters>]
 ```

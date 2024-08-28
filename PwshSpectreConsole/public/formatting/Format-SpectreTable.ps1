@@ -1,14 +1,15 @@
 using module "..\..\private\completions\Completers.psm1"
-using namespace Spectre.Console
+using module "..\..\private\completions\Transformers.psm1"
 
 function Format-SpectreTable {
     <#
     .SYNOPSIS
-    Formats an array of objects into a Spectre Console table. Thanks to [trackd](https://github.com/trackd) and [fmotion1](https://github.com/fmotion1) for the updates to support markdown and color in the table contents.
-    ![Example table](/table.png)
+    Formats an array of objects into a Spectre Console table.
 
     .DESCRIPTION
-    This function takes an array of objects and formats them into a table using the Spectre Console library. The table can be customized with a border style and color.
+    This function takes an array of objects and formats them into a table using the Spectre Console library. The table can be customized with a border style and color.  
+    Thanks to [trackd](https://github.com/trackd) and [fmotion1](https://github.com/fmotion1) for the updates to support markdown and color in the table contents.  
+    See https://spectreconsole.net/widgets/table for more information.
 
     .PARAMETER Property
     Specifies the object properties that appear in the display and the order in which they appear.
@@ -28,7 +29,7 @@ function Format-SpectreTable {
     Takes pipeline input.
 
     .PARAMETER Border
-    The border style of the table. Default is "Double".
+    The border style of the table. Default is "Rounded".
 
     .PARAMETER Color
     The color of the table border. Default is the accent color of the script.
@@ -81,6 +82,20 @@ function Format-SpectreTable {
 
     .EXAMPLE
     1..10 | Format-SpectreTable -Title Numbers
+
+    .EXAMPLE
+    $calendar = Write-SpectreCalendar -Date (Get-Date) -PassThru
+
+    $fruits = @(
+        (New-SpectreChartItem -Label "Bananas" -Value 2.2 -Color Yellow),
+        (New-SpectreChartItem -Label "Oranges" -Value 6.6 -Color Orange1),
+        (New-SpectreChartItem -Label "Apples" -Value 1 -Color Red)
+    ) | Format-SpectreBarChart -Width 45
+
+    @{
+        Calendar = $calendar
+        Fruits = $fruits
+    } | Format-SpectreTable -Color Cyan1
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectreTable")]
     [cmdletbinding(DefaultParameterSetName = '__AllParameterSets')]
@@ -95,22 +110,21 @@ function Format-SpectreTable {
         [Parameter(ParameterSetName = 'View')]
         [String] $View,
         [ValidateSet([SpectreConsoleTableBorder], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
-        [string] $Border = "Double",
+        [string] $Border = "Rounded",
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $Color = $script:AccentColor,
+        [Spectre.Console.Color] $Color = $script:AccentColor,
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $HeaderColor = $script:DefaultTableHeaderColor,
+        [Spectre.Console.Color] $HeaderColor = $script:DefaultTableHeaderColor,
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $TextColor = $script:DefaultTableTextColor,
+        [Spectre.Console.Color] $TextColor = $script:DefaultTableTextColor,
         [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostWidth) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
         [int] $Width,
         [switch] $HideHeaders,
         [String] $Title,
-        [switch] $AllowMarkup,
-        [switch] $PassThru
+        [switch] $AllowMarkup
     )
     begin {
         Write-Debug "Module: $($ExecutionContext.SessionState.Module.Name) Command: $($MyInvocation.MyCommand.Name) Param: $($PSBoundParameters.GetEnumerator())"
@@ -119,9 +133,9 @@ function Format-SpectreTable {
         $FormatTableParams = @{}
         $collector = [System.Collections.Generic.List[psobject]]::new()
         $renderables = @{}
-        $table = [Table]::new()
-        $table.Border = [TableBorder]::$Border
-        $table.BorderStyle = [Style]::new($Color)
+        $table = [Spectre.Console.Table]::new()
+        $table.Border = [Spectre.Console.TableBorder]::$Border
+        $table.BorderStyle = [Spectre.Console.Style]::new($Color)
         switch ($PSBoundParameters.Keys) {
             'Width' { $table.Width = $Width }
             'HideHeaders' { $table.ShowHeaders = $false }
@@ -140,8 +154,9 @@ function Format-SpectreTable {
                 $renderableKey = "RENDERABLE__$([Guid]::NewGuid().Guid)"
                 $renderables[$renderableKey] = $entry
                 $collector.add($renderableKey)
-            } elseif ($entry -is [hashtable]) {
+            } elseif ($entry -is [hashtable] -or $entry -is [ordered]) {
                 # Recursively expand values in the hashtable finding any renderables and putting them in the lookup table
+                # Renderables is mutable (hashtables just are) so the Convert-HashtableToRenderSafePSObject will add the renderables to the lookup table
                 $entry = Convert-HashtableToRenderSafePSObject -Hashtable $entry -Renderables $renderables
                 $collector.add($entry)
             } else {
@@ -182,38 +197,15 @@ function Format-SpectreTable {
                 $row = New-TableRow -Entry $item.FormatPropertyFieldList.propertyValue -Renderables $renderables -Color $TextColor @rowoptions
             }
             if ($AllowMarkup) {
-                $table = [TableExtensions]::AddRow($table, [Markup[]]$row)
+                $table = [Spectre.Console.TableExtensions]::AddRow($table, [Spectre.Console.Markup[]]$row)
             } else {
-                $table = [TableExtensions]::AddRow($table, [Rendering.Renderable[]]$row)
+                $table = [Spectre.Console.TableExtensions]::AddRow($table, [Spectre.Console.Rendering.Renderable[]]$row)
             }
         }
         if ($Title -And -Not $rowoptions.scalar) {
-            $table.Title = [TableTitle]::new($Title, [Style]::new($Color))
+            $table.Title = [Spectre.Console.TableTitle]::new($Title, [Spectre.Console.Style]::new($Color))
         }
 
-        if ($PassThru) {
-            return $table
-        } else {
-            Write-AnsiConsole $table
-        }
+        return $table
     }
-}
-
-function Convert-HashtableToRenderSafePSObject {
-    param(
-        [hashtable] $Hashtable,
-        [hashtable] $Renderables
-    )
-    $customObject = @{}
-    foreach ($item in $Hashtable.GetEnumerator()) {
-        if ($item.Value -is [hashtable]) {
-            $item.Value = Convert-HashtableToRenderSafePSObject -Hashtable $item.Value
-        } elseif ($item.Value -is [Spectre.Console.Rendering.Renderable]) {
-            $renderableKey = "RENDERABLE__$([Guid]::NewGuid().Guid)"
-            $Renderables[$renderableKey] = $item.Value
-            $item.Value = $renderableKey
-        }
-        $customObject[$item.Key] = $item.Value
-    }
-    return [pscustomobject]$customObject
 }

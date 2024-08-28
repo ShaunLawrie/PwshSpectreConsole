@@ -28,7 +28,9 @@ Describe "Format-SpectrePanel" {
 
         It "Should create a panel" {
             $randomString = Get-RandomString
-            Format-SpectrePanel -Data $randomString -Title $testTitle -Border $testBorder -Color $testColor
+            $panel = Format-SpectrePanel -Data $randomString -Title $testTitle -Border $testBorder -Color $testColor
+            $panel | Should -BeOfType [Spectre.Console.Panel]
+            $panel | Out-SpectreHost
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
             $testConsole.Output | Should -BeLike "*$randomString*"
             $testConsole.Output | Should -BeLike "*$testTitle*"
@@ -37,7 +39,9 @@ Describe "Format-SpectrePanel" {
         It "Should create an expanded panel" {
             $testExpand = $true
             $randomString = Get-RandomString
-            Format-SpectrePanel -Data $randomString -Title $testTitle -Border $testBorder -Expand:$testExpand -Color $testColor
+            $panel = Format-SpectrePanel -Data $randomString -Title $testTitle -Border $testBorder -Expand:$testExpand -Color $testColor
+            $panel | Should -BeOfType [Spectre.Console.Panel]
+            $panel | Out-SpectreHost
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
             $testConsole.Output | Should -BeLike "*$randomString*"
             $testConsole.Output | Should -BeLike "*$testTitle*"
@@ -47,7 +51,9 @@ Describe "Format-SpectrePanel" {
             Mock Write-AnsiConsole {
                 $testConsole.Write($RenderableObject)
             }
-            Format-SpectrePanel -Data "This is a test panel" -Title "Test title" -Border "Rounded" -Color "Turquoise2" | Out-Null
+            $panel = Format-SpectrePanel -Data "This is a test panel" -Title "Test title" -Border "Rounded" -Color "Turquoise2"
+            $panel | Should -BeOfType [Spectre.Console.Panel]
+            $panel | Out-SpectreHost
             { Assert-OutputMatchesSnapshot -SnapshotName "Format-SpectrePanel" -Output $testConsole.Output } | Should -Not -Throw
         }
     }

@@ -1,5 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
-using namespace Spectre.Console
+using module "..\..\private\completions\Transformers.psm1"
 
 function Invoke-SpectreCommandWithStatus {
     <#
@@ -46,12 +46,12 @@ function Invoke-SpectreCommandWithStatus {
         [string] $Title,
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $Color = $script:AccentColor
+        [Spectre.Console.Color] $Color = $script:AccentColor
     )
     $splat = @{
         Title        = $Title
-        Spinner      = [Spinner+Known]::$Spinner
-        SpinnerStyle = [Style]::new($Color)
+        Spinner      = [Spectre.Console.Spinner+Known]::$Spinner
+        SpinnerStyle = [Spectre.Console.Style]::new($Color)
         ScriptBlock  = $ScriptBlock
     }
     Start-AnsiConsoleStatus @splat

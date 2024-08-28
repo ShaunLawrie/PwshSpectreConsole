@@ -1,15 +1,15 @@
 using module "..\..\private\completions\Completers.psm1"
-using namespace Spectre.Console
+using module "..\..\private\completions\Transformers.psm1"
 
 function Format-SpectreJson {
     <#
     .SYNOPSIS
-    Formats an array of objects into a Spectre Console Json.
-    Thanks to [trackd](https://github.com/trackd) for adding this.
-    ![Spectre json example](/json.png)
+    Formats an array of objects into a Spectre Console Json.  
 
     .DESCRIPTION
-    This function takes an array of objects and converts them into Json using the Spectre Console Json Library.
+    This function takes an objects and converts them into syntax highlighted Json using the Spectre Console Json Library.  
+    Thanks to [trackd](https://github.com/trackd) for adding this!  
+    See https://spectreconsole.net/widgets/json for more information.
 
     .PARAMETER Data
     The array of objects to be formatted into Json.
@@ -17,23 +17,22 @@ function Format-SpectreJson {
     .PARAMETER Depth
     The maximum depth of the Json. Default is defined by the version of powershell.
 
-    .PARAMETER NoBorder
-    If specified, the Json will not be surrounded by a border.
-
-    .PARAMETER Border
-    The border style of the Json. Default is "Rounded".
-
-    .PARAMETER Color
-    The color of the Json border. Default is the accent color of the script.
-
-    .PARAMETER Title
-    The title of the Json.
-
-    .PARAMETER Width
-    The width of the Json panel.
-
-    .PARAMETER Height
-    The height of the Json panel.
+    .PARAMETER JsonStyle
+    A hashtable of Spectre Console color names and values to style the Json output.
+    e.g.
+    ```
+    @{
+        MemberStyle    = "Yellow"
+        BracesStyle    = "Red"
+        BracketsStyle  = "Orange1"
+        ColonStyle     = "White"
+        CommaStyle     = "White"
+        StringStyle    = "White"
+        NumberStyle    = "Red"
+        BooleanStyle   = "LightSkyBlue1"
+        NullStyle      = "Gray"
+    }
+    ```
 
     .EXAMPLE
     $data = @(
@@ -50,7 +49,7 @@ function Format-SpectreJson {
             }
         }
     )
-    Format-SpectreJson -Data $data -Title "Employee Data" -Border "Rounded" -Color "Green"
+    Format-SpectreJson -Data $data
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectreJson")]
     [Alias('fsj')]
@@ -58,20 +57,26 @@ function Format-SpectreJson {
         [Parameter(ValueFromPipeline, Mandatory)]
         [object] $Data,
         [int] $Depth,
-        [string] $Title,
-        [switch] $NoBorder,
-        [ValidateSet([SpectreConsoleBoxBorder], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
-        [string] $Border = "Rounded",
-        [ColorTransformationAttribute()]
-        [ArgumentCompletionsSpectreColors()]
-        [Color] $Color = $script:AccentColor,
-        [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostWidth) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
-        [int] $Width,
-        [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostHeight) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console height.")]
-        [int] $Height,
-        [switch] $Expand
+        [ValidateSpectreColorTheme()]
+        [ColorThemeTransformationAttribute()]
+        [hashtable] $JsonStyle = @{
+            MemberStyle    = $script:AccentColor
+            BracesStyle    = [Spectre.Console.Color]::Cyan1
+            BracketsStyle  = [Spectre.Console.Color]::Orange1
+            ColonStyle     = $script:AccentColor
+            CommaStyle     = $script:AccentColor
+            StringStyle    = [Spectre.Console.Color]::White
+            NumberStyle    = [Spectre.Console.Color]::Cyan1
+            BooleanStyle   = [Spectre.Console.Color]::LightSkyBlue1
+            NullStyle      = $script:DefaultValueColor
+        }
     )
     begin {
+        $requiredJsonStyleKeys = @('MemberStyle', 'BracesStyle', 'BracketsStyle', 'ColonStyle', 'CommaStyle', 'StringStyle', 'NumberStyle', 'BooleanStyle', 'NullStyle')
+        if (($requiredJsonStyleKeys | ForEach-Object { $JsonStyle.Keys -contains $_ }) -contains $false) {
+            throw "JsonStyle must contain the following keys: $($requiredJsonStyleKeys -join ', ')"
+        }
+
         $collector = [System.Collections.Generic.List[psobject]]::new()
         $splat = @{
             WarningAction = 'Ignore'
@@ -108,6 +113,7 @@ function Format-SpectreJson {
                     } catch {
                         Write-Debug "Failed to convert json to object, $_"
                     }
+                    
                 }
                 return $collector.add(
                     [pscustomobject]@{
@@ -141,40 +147,22 @@ function Format-SpectreJson {
             return
         }
         try {
-            $json = [Json.JsonText]::new(($collector | ConvertTo-Json @splat))
+            $json = [Spectre.Console.Json.JsonText]::new(($collector | ConvertTo-Json @splat))
         } catch {
             Write-Error "Failed to convert to json, $_"
             return
         }
-        $json.BracesStyle = [Style]::new([Color]::Red)
-        $json.BracketsStyle = [Style]::new([Color]::Green)
-        $json.ColonStyle = [Style]::new([Color]::Blue)
-        $json.CommaStyle = [Style]::new([Color]::CadetBlue)
-        $json.StringStyle = [Style]::new([Color]::Yellow)
-        $json.NumberStyle = [Style]::new([Color]::Cyan2)
-        $json.BooleanStyle = [Style]::new([Color]::Teal)
-        $json.NullStyle = [Style]::new([Color]::Plum1)
 
-        if ($NoBorder) {
-            Write-AnsiConsole $json
-            return
-        }
+        $json.MemberStyle = $JsonStyle.MemberStyle
+        $json.BracesStyle = $JsonStyle.BracesStyle
+        $json.BracketsStyle = $JsonStyle.BracketsStyle
+        $json.ColonStyle = $JsonStyle.ColonStyle
+        $json.CommaStyle = $JsonStyle.CommaStyle
+        $json.StringStyle = $JsonStyle.StringStyle
+        $json.NumberStyle = $JsonStyle.NumberStyle
+        $json.BooleanStyle = $JsonStyle.BooleanStyle
+        $json.NullStyle = $JsonStyle.NullStyle
 
-        $panel = [Panel]::new($json)
-        $panel.Border = [BoxBorder]::$Border
-        $panel.BorderStyle = [Style]::new($Color)
-        if ($Title) {
-            $panel.Header = [PanelHeader]::new($Title)
-        }
-        if ($width) {
-            $panel.Width = $Width
-        }
-        if ($height) {
-            $panel.Height = $Height
-        }
-        if ($Expand) {
-            $panel.Expand = $Expand
-        }
-        Write-AnsiConsole $panel
+        return $json
     }
 }

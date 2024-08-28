@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
 title: Read-SpectreText
 ---
 
@@ -145,6 +149,17 @@ If specified, the user can provide an empty answer.
 
 
 
+#### **TimeoutSeconds**
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |4       |false        |
+
+
+
 #### **Choices**
 
 An array of choices that the user can choose from. If specified, the user will be prompted with a list of choices to choose from, with validation.
@@ -157,7 +172,7 @@ With autocomplete and can tab through the choices.
 
 |Type        |Required|Position|PipelineInput|
 |------------|--------|--------|-------------|
-|`[String[]]`|false   |4       |false        |
+|`[String[]]`|false   |5       |false        |
 
 
 
@@ -168,5 +183,5 @@ With autocomplete and can tab through the choices.
 
 ### Syntax
 ```powershell
-Read-SpectreText [[-Question] <String>] [[-DefaultAnswer] <String>] [[-AnswerColor] <Color>] [-AllowEmpty] [[-Choices] <String[]>] [<CommonParameters>]
+Read-SpectreText [[-Question] <String>] [[-DefaultAnswer] <String>] [[-AnswerColor] <Color>] [-AllowEmpty] [[-TimeoutSeconds] <Int32>] [[-Choices] <String[]>] [<CommonParameters>]
 ```

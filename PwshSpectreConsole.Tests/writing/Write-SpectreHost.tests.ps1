@@ -11,11 +11,11 @@ Describe "Write-SpectreHost" {
             $testMessage | Out-Null
             Mock Write-SpectreHostInternalMarkup {
                 $Message | Should -Be $testMessage
-                [AnsiConsoleExtensions]::Markup($testConsole, $Message)
+                [Spectre.Console.AnsiConsoleExtensions]::Markup($testConsole, $Message)
             }
             Mock Write-SpectreHostInternalMarkupLine {
                 $Message | Should -Be $testMessage
-                [AnsiConsoleExtensions]::MarkupLine($testConsole, $Message)
+                [Spectre.Console.AnsiConsoleExtensions]::MarkupLine($testConsole, $Message)
             }
         }
 

@@ -1,0 +1,133 @@
+---
+sidebar:
+  badge:
+    text: New
+    variant: tip
+title: Format-SpectreException
+---
+
+
+
+
+
+
+
+import Asciinema from '../../../../components/Asciinema.astro'
+import formatspectreexceptionExample1 from '../../../../assets/examples/formatspectreexceptionExample1.cast?url'
+
+### Description
+
+Formats an error record/exception into a Spectre Console Exception which supports syntax highlighting.  
+See https://spectreconsole.net/exceptions for more information.
+
+
+
+---
+
+
+### Examples
+> EXAMPLE 1
+
+```powershell
+try {
+    Get-ChildItem -BadParam -ErrorAction Stop
+} catch {
+    $_ | Format-SpectreException -ExceptionFormat ShortenEverything
+}
+```
+<Asciinema
+    src={formatspectreexceptionExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+---
+
+
+### Parameters
+#### **Exception**
+
+The error/exception object to format.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput |
+|----------|--------|--------|--------------|
+|`[Object]`|true    |1       |true (ByValue)|
+
+
+
+#### **ExceptionFormat**
+
+The format to use when rendering the exception. The default value is "Default".
+
+
+
+Valid Values:
+
+* Default
+* NoStackTrace
+* ShortenEverything
+* ShortenMethods
+* ShortenPaths
+* ShortenTypes
+* ShowLinks
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |2       |false        |
+
+
+
+#### **ExceptionStyle**
+
+The style to use when rendering the exception provided as a hashtable. e.g. 
+```
+@{
+    Message        = "red"
+    Exception      = "white"
+    Method         = "yellow"
+    ParameterType  = "blue"
+    ParameterName  = "silver"
+    Parenthesis    = "silver"
+    Path           = "Yellow"
+    LineNumber     = "blue"
+    Dimmed         = "grey"
+    NonEmphasized  = "silver"
+}
+```
+
+
+
+
+
+
+|Type         |Required|Position|PipelineInput|
+|-------------|--------|--------|-------------|
+|`[Hashtable]`|false   |3       |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Format-SpectreException [-Exception] <Object> [[-ExceptionFormat] <String>] [[-ExceptionStyle] <Hashtable>] [<CommonParameters>]
+```

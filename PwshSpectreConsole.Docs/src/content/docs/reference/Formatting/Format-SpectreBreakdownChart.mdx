@@ -13,7 +13,8 @@ import formatspectrebreakdownchartExample1 from '../../../../assets/examples/for
 
 ### Description
 
-This function takes an array of data and formats it into a breakdown chart using BreakdownChart. The chart can be customized with a specified width and color.
+This function takes an array of data and formats it into a breakdown chart using BreakdownChart. The chart can be customized with a specified width and color.  
+See https://spectreconsole.net/widgets/breakdownchart for more information.
 
 
 
@@ -56,9 +57,9 @@ An array of data to be formatted into a breakdown chart.
 
 
 
-|Type     |Required|Position|PipelineInput |
-|---------|--------|--------|--------------|
-|`[Array]`|true    |1       |true (ByValue)|
+|Type      |Required|Position|PipelineInput |
+|----------|--------|--------|--------------|
+|`[Object]`|true    |1       |true (ByValue)|
 
 
 
@@ -114,5 +115,5 @@ Hides the tag values on the chart.
 
 ### Syntax
 ```powershell
-Format-SpectreBreakdownChart [-Data] <Array> [[-Width] <Int32>] [-HideTags] [-HideTagValues] [<CommonParameters>]
+Format-SpectreBreakdownChart [-Data] <Object> [[-Width] <Int32>] [-HideTags] [-HideTagValues] [<CommonParameters>]
 ```

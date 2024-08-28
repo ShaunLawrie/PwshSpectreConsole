@@ -4,7 +4,8 @@ param(
     [string]$Branch = "dev",
     [switch]$NonInteractive,
     [switch]$NoBuild,
-    [switch]$NoCommit
+    [switch]$NoCommit,
+    [string]$TargetFunction
 )
 
 $ErrorActionPreference = "Stop"
@@ -15,11 +16,19 @@ if($helpOut.Version.ToString() -ne "0.5") {
     throw "Must be run with HelpOut v0.5"
 }
 
-& "$PSScriptRoot\..\..\..\PwshSpectreConsole\Build.ps1"
+& "$PSScriptRoot\..\..\..\PwshSpectreConsole\Build.ps1" -NoReinstall
 
 Import-Module "$PSScriptRoot\..\..\..\PwshSpectreConsole\PwshSpectreConsole.psd1" -Force
 Import-Module "$PSScriptRoot\Helpers.psm1" -Force
 Import-Module "$PSScriptRoot\Mocks.psm1" -Force
+
+# Ignore update tags for these
+$ignoreUpdatesFor = @(
+    "Format-SpectreBarChart",
+    "Format-SpectreBreakdownChart",
+    "Format-SpectrePanel",
+    "Format-SpectreTable"
+)
 
 # Git user details for github action commits
 $env:GIT_COMMITTER_NAME = 'Shaun Lawrie (via GitHub Actions)'
@@ -65,6 +74,10 @@ Update-HashFilesInGit -StagingPath $stagingPath -OutputPath $outputPath -NoCommi
 # Format the files for astro
 $docs = Get-ChildItem $stagingPath -Filter "*.md" -Recurse | Where-Object { $_.Name -like "*-*" }
 $mocks = Get-Module "Mocks"
+if (![string]::IsNullOrEmpty($TargetFunction)) {
+    Write-Host "Filtering to only include help for function $TargetFunction"
+    $docs = $docs | Where-Object { $_.Name -like "*$TargetFunction*" }
+}
 foreach ($doc in $docs) {
     $content = Get-Content $doc.FullName -Raw
 
@@ -90,7 +103,7 @@ foreach ($doc in $docs) {
         $tag = "Experimental"
     } elseif([string]::IsNullOrEmpty($created) -or ((Get-Date) - ([datetime]$created)).TotalDays -lt $recentThresholdDays) {
         $tag = "New"
-    } elseif (((Get-Date) - ([datetime]$modified)).TotalDays -lt $recentThresholdDays) {
+    } elseif ((((Get-Date) - ([datetime]$modified)).TotalDays -lt $recentThresholdDays) -and $ignoreUpdatesFor -notcontains $commandName) {
         $tag = "Updated"
     }
     Write-Host "File $($doc.Name) was last modified on $modified and created on $created, using tag $tag"
@@ -115,6 +128,10 @@ foreach ($doc in $docs) {
         try {
             Set-Location $PSScriptRoot
             $imports = "import Asciinema from '../../../../components/Asciinema.astro'`n"
+            # Demo colors is annoying and needs a darker foreground color
+            if ($doc.Name -like "*DemoColors*") {
+                $imports = "<style>{`` div.asciinema-player-theme-spectre { --term-color-0: #000000; } ``}</style>`n`n" + $imports
+            }
             foreach($codeBlock in $codeBlocksExcludingSyntaxSection) {
                 $code = $codeBlock -replace '(?s)```powershell', ''
                 $code = $code -replace '```', ''
@@ -122,7 +139,7 @@ foreach ($doc in $docs) {
 
                 # Extract the input comments
                 $inputs = $code | Select-String '# Type (".+")'
-                $specialChars = @("↑", "↓", "↲", "¦", "<space>")
+                $specialChars = @("↑", "↓", "↲", "<space>")
                 $inputDelay = Get-Random -Minimum 500 -Maximum 1000
                 $typingDelay = Get-Random -Minimum 50 -Maximum 200
                 $recordingConsole = Start-SpectreRecording -RecordingType "asciinema" -Width 110 -Height 48
@@ -180,7 +197,7 @@ foreach ($doc in $docs) {
 }
 
 # Copy the files into the output directory in a way that doesn't crash the astro dev server
-Update-HelpFiles -StagingPath $stagingPath -AsciiCastOutputPath $asciiCastOutputPath -OutputPath $outputPath -NoCommit:$NoCommit
+Update-HelpFiles -StagingPath $stagingPath -AsciiCastOutputPath $asciiCastOutputPath -OutputPath $outputPath -NoCommit:$NoCommit -TargetFunction $TargetFunction
 
 # Set some overrides to indicate it's the pre-release site
 if($Branch -eq "prerelease") {

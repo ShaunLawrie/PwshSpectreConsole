@@ -14,7 +14,8 @@ import formatspectrepanelExample2 from '../../../../assets/examples/formatspectr
 
 ### Description
 
-This function takes a string and formats it as a Spectre Console panel with optional title, border, and color. The resulting panel can be displayed in the console using the Write-Host command.
+This function takes a string and formats it as a Spectre Console panel with optional title, border, and color. The resulting panel can be displayed in the console using the Write-Host command.  
+See https://spectreconsole.net/widgets/panel for more information.
 
 
 
@@ -40,7 +41,7 @@ Format-SpectrePanel -Data "Hello, world!" -Title "My Panel" -Border "Rounded" -C
 > EXAMPLE 2
 
 ```powershell
-Format-SpectrePanel -Data "Hello, big panel!" -Title "My Big Panel" -Border "Double" -Color "Magenta1" -Expand
+"Hello, big panel!" | Format-SpectrePanel -Title "My Big Panel" -Border "Double" -Color "Magenta1" -Expand
 ```
 <Asciinema
     src={formatspectrepanelExample2}
@@ -60,7 +61,7 @@ Format-SpectrePanel -Data "Hello, big panel!" -Title "My Big Panel" -Border "Dou
 ### Parameters
 #### **Data**
 
-The string to be formatted as a panel.
+The renderable item to be formatted as a panel.
 
 
 
@@ -73,7 +74,7 @@ The string to be formatted as a panel.
 
 
 
-#### **Title**
+#### **Header**
 
 The title to be displayed at the top of the panel.
 
@@ -82,9 +83,9 @@ The title to be displayed at the top of the panel.
 
 
 
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[String]`|false   |2       |false        |
+|Type      |Required|Position|PipelineInput|Aliases|
+|----------|--------|--------|-------------|-------|
+|`[String]`|false   |2       |false        |Title  |
 
 
 
@@ -181,5 +182,5 @@ The height of the panel.
 
 ### Syntax
 ```powershell
-Format-SpectrePanel [-Data] <Object> [[-Title] <String>] [[-Border] <String>] [-Expand] [[-Color] <Color>] [[-Width] <Int32>] [[-Height] <Int32>] [<CommonParameters>]
+Format-SpectrePanel [-Data] <Object> [[-Header] <String>] [[-Border] <String>] [-Expand] [[-Color] <Color>] [[-Width] <Int32>] [[-Height] <Int32>] [<CommonParameters>]
 ```

@@ -2,7 +2,7 @@ function New-TableRow {
     param(
         [Parameter(Mandatory)]
         [Object] $Entry,
-        [Color] $Color = [Color]::Default,
+        [Spectre.Console.Color] $Color = [Spectre.Console.Color]::Default,
         [Switch] $AllowMarkup,
         [Switch] $Scalar,
         [hashtable] $Renderables

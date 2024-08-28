@@ -1,11 +1,13 @@
 $script:Groups = @(
     @{ Name = "Prompts/"; Matches = @("read-") }
-    @{ Name = "Formatting/"; Matches = @("format-", "chartitem") }
-    @{ Name = "Progress/"; Matches = @("invoke-", "job", "spectrescriptblock") }
+    @{ Name = "Formatting/"; Matches = @("format-", "new-spectrechartitem", "new-spectregridrow", "add-spectretablerow") }
+    @{ Name = "Progress/"; Matches = @("invoke-spectrecommand", "invoke-spectreprogress",  "job", "spectrescriptblock") }
     @{ Name = "Images/"; Matches = @("image") }
     @{ Name = "Writing/"; Matches = @("write-", "escaped") }
     @{ Name = "Config/"; Matches = @("set-", "recording") }
     @{ Name = "Demo/"; Matches = @("spectredemo") }
+    @{ Name = "Rendering/"; Matches = @("out-", "layout") }
+    @{ Name = "Live/"; Matches = @("live") }
 )
 
 <#
@@ -46,7 +48,7 @@ $script:UpdatedTag = @"
 sidebar:
   badge:
     text: Updated
-    variant: tip
+    variant: note
 "@
 
 $script:ExperimentalTag = @"
@@ -149,13 +151,19 @@ function Update-HelpFiles {
         [string] $StagingPath,
         [string] $OutputPath,
         [string] $AsciiCastOutputPath,
-        [switch] $NoCommit
+        [switch] $NoCommit,
+        [string] $TargetFunction
     )
 
     Push-Location
     try {
         # Get only the helpFiles to update
         $helpFiles = Get-ChildItem $StagingPath -Filter "*.md" -Recurse | Where-Object { $_.Name -like "*-*" }
+
+        if (![string]::IsNullOrEmpty($TargetFunction)) {
+            Write-Host "Filtering help files for $TargetFunction"
+            $helpFiles = $helpFiles | Where-Object { $_.Name -like "*$TargetFunction*" }
+        }
 
         foreach($helpFile in $helpFiles) {
             $group = Get-Group -Name $helpFile.Name

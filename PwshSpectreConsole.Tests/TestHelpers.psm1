@@ -1,5 +1,3 @@
-using namespace Spectre.Console
-
 function Get-RandomColor {
     $type = 1 # Get-Random -Minimum 0 -Maximum 2
     switch ($type) {
@@ -53,7 +51,7 @@ function Get-RandomBoxBorder {
     param (
         [switch] $MustNotBeNone
     )
-    $lookup = [BoxBorder] | Get-Member -Static -MemberType Properties | Select-Object -ExpandProperty Name
+    $lookup = [Spectre.Console.BoxBorder] | Get-Member -Static -MemberType Properties | Select-Object -ExpandProperty Name
     if ($MustNotBeNone) {
         $lookup = $lookup | Where-Object { $_ -ne 'None' }
     }
@@ -61,22 +59,22 @@ function Get-RandomBoxBorder {
 }
 
 function Get-RandomJustify {
-    $lookup = [Justify].GetEnumNames()
+    $lookup = [Spectre.Console.Justify].GetEnumNames()
     return $lookup[$(Get-Random -Minimum 0 -Maximum $lookup.Count)]
 }
 
 function Get-RandomSpinner {
-    $lookup = [Spinner+Known] | Get-Member -Static -MemberType Properties | Select-Object -ExpandProperty Name
+    $lookup = [Spectre.Console.Spinner+Known] | Get-Member -Static -MemberType Properties | Select-Object -ExpandProperty Name
     return $lookup[$(Get-Random -Minimum 0 -Maximum $lookup.Count)]
 }
 
 function Get-RandomTreeGuide {
-    $lookup = [TreeGuide] | Get-Member -Static -MemberType Properties | Select-Object -ExpandProperty Name
+    $lookup = [Spectre.Console.TreeGuide] | Get-Member -Static -MemberType Properties | Select-Object -ExpandProperty Name
     return $lookup[$(Get-Random -Minimum 0 -Maximum $lookup.Count)]
 }
 
 function Get-RandomTableBorder {
-    $lookup = [TableBorder] | Get-Member -Static -MemberType Properties | Select-Object -ExpandProperty Name
+    $lookup = [Spectre.Console.TableBorder] | Get-Member -Static -MemberType Properties | Select-Object -ExpandProperty Name
     return $lookup[$(Get-Random -Minimum 0 -Maximum $lookup.Count)]
 }
 
@@ -101,7 +99,7 @@ function Get-RandomTree {
 
     if ($null -eq $Root) {
         $Root = @{
-            Label    = Get-RandomString
+            Value    = Get-RandomString
             Children = @()
         }
     }
@@ -109,7 +107,7 @@ function Get-RandomTree {
     $children = Get-Random -Minimum $MinChildren -Maximum $MaxChildren
     for ($i = 0; $i -lt $children; $i++) {
         $newChild = @{
-            Label    = Get-RandomString
+            Value    = Get-RandomString
             Children = @()
         }
         $newTree = Get-RandomTree -Root $newChild -MaxChildren $MaxChildren -MaxDepth $MaxDepth -CurrentDepth $CurrentDepth
