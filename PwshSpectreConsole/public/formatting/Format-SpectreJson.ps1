@@ -34,6 +34,26 @@ function Format-SpectreJson {
     }
     ```
 
+    .PARAMETER Border
+    :::caution
+    This parameter is deprecated and will be removed in the future.
+    It takes no effect from version 2.0.
+    To add a border wrap this object in a panel, use the `$data | Format-SpectreJson | Format-SpectrePanel` function.
+    :::
+
+    .PARAMETER Title
+    :::caution
+    This parameter is deprecated and will be removed in the future.
+    It takes no effect from version 2.0.
+    To add a border title to a panel, use the `$data | Format-SpectreJson | Format-SpectrePanel -Header "title"` function.
+    :::
+
+    .PARAMETER NoBorder
+    :::caution
+    This parameter is deprecated and will be removed in the future.
+    It takes no effect from version 2.0.
+    :::
+
     .EXAMPLE
     $data = @(
         [pscustomobject]@{
@@ -69,9 +89,17 @@ function Format-SpectreJson {
             NumberStyle    = [Spectre.Console.Color]::Cyan1
             BooleanStyle   = [Spectre.Console.Color]::LightSkyBlue1
             NullStyle      = $script:DefaultValueColor
-        }
+        },
+        [string] $Border,
+        [string] $Title,
+        [switch] $NoBorder
     )
     begin {
+
+        if ($Border -or $Title -or $NoBorder) {
+            Write-Warning "Format-SpectrePanel: The parameters Border, Title, and NoBorder are deprecated and will be removed in the future."
+        }
+
         $requiredJsonStyleKeys = @('MemberStyle', 'BracesStyle', 'BracketsStyle', 'ColonStyle', 'CommaStyle', 'StringStyle', 'NumberStyle', 'BooleanStyle', 'NullStyle')
         if (($requiredJsonStyleKeys | ForEach-Object { $JsonStyle.Keys -contains $_ }) -contains $false) {
             throw "JsonStyle must contain the following keys: $($requiredJsonStyleKeys -join ', ')"

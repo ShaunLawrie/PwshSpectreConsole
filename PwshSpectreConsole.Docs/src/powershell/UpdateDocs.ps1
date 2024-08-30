@@ -99,9 +99,7 @@ foreach ($doc in $docs) {
 
     # Work out the tag to apply to the current help file
     $tag = $null
-    if ($content -like "*This is experimental*") {
-        $tag = "Experimental"
-    } elseif([string]::IsNullOrEmpty($created) -or ((Get-Date) - ([datetime]$created)).TotalDays -lt $recentThresholdDays) {
+    if([string]::IsNullOrEmpty($created) -or ((Get-Date) - ([datetime]$created)).TotalDays -lt $recentThresholdDays) {
         $tag = "New"
     } elseif ((((Get-Date) - ([datetime]$modified)).TotalDays -lt $recentThresholdDays) -and $ignoreUpdatesFor -notcontains $commandName) {
         $tag = "Updated"
