@@ -121,6 +121,62 @@ e.g.
 
 
 
+#### **Border**
+
+:::caution
+This parameter is deprecated and will be removed in the future.
+It takes no effect from version 2.0.
+To add a border wrap this object in a panel, use the `$data | Format-SpectreJson | Format-SpectrePanel` function.
+:::
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |4       |false        |
+
+
+
+#### **Title**
+
+:::caution
+This parameter is deprecated and will be removed in the future.
+It takes no effect from version 2.0.
+To add a border title to a panel, use the `$data | Format-SpectreJson | Format-SpectrePanel -Header "title"` function.
+:::
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |5       |false        |
+
+
+
+#### **NoBorder**
+
+:::caution
+This parameter is deprecated and will be removed in the future.
+It takes no effect from version 2.0.
+:::
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|false   |named   |false        |
+
+
+
 
 
 ---
@@ -128,5 +184,5 @@ e.g.
 
 ### Syntax
 ```powershell
-Format-SpectreJson [-Data] <Object> [[-Depth] <Int32>] [[-JsonStyle] <Hashtable>] [<CommonParameters>]
+Format-SpectreJson [-Data] <Object> [[-Depth] <Int32>] [[-JsonStyle] <Hashtable>] [[-Border] <String>] [[-Title] <String>] [-NoBorder] [<CommonParameters>]
 ```
