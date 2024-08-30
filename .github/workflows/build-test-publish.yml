@@ -71,8 +71,6 @@ jobs:
         run: |
           $ErrorActionPreference = "Stop"
 
-          Install-Module EZOut -Scope CurrentUser -RequiredVersion 2.0.6 -Force
-
           & ./PwshSpectreConsole/Build.ps1
           $env:PSModulePath = @($env:PSModulePath, ".\PwshSpectreConsole\") -join ":"
           Invoke-Pester -CI -ExcludeTag "ExcludeCI"
