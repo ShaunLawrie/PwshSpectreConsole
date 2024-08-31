@@ -36,33 +36,6 @@ class ValidateSpectreColorTheme : ValidateArgumentsAttribute {
     }
 }
 
-class ValidateSpectreTreeItem : ValidateArgumentsAttribute {
-
-    static[void]ValidateItem([object] $TreeItem) {
-        # These objects are already renderable
-        if ($TreeItem -isnot [hashtable]) {
-            throw "Input for Spectre Tree must be a hashtable with 'Value' (and the optional 'Children') keys"
-        }
-
-        if ($TreeItem.Keys -notcontains "Value") {
-            throw "Input for Spectre Tree must be a hashtable with 'Value' (and the optional 'Children') keys"
-        }
-
-        if ($TreeItem.Keys -contains "Children") {
-            if ($TreeItem.Children -isnot [array]) {
-                throw "Children must be an array of tree items (hashtables with 'Value' and 'Children' keys)"
-            }
-            foreach ($child in $TreeItem.Children) {
-                [ValidateSpectreTreeItem]::ValidateItem($child)
-            }
-        }
-    }
-
-    [void]Validate([object] $TreeItem, [EngineIntrinsics]$EngineIntrinsics) {
-        [ValidateSpectreTreeItem]::ValidateItem($TreeItem)
-    }
-}
-
 class ArgumentCompletionsSpectreColors : ArgumentCompleterAttribute {
     ArgumentCompletionsSpectreColors() : base({
             param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)

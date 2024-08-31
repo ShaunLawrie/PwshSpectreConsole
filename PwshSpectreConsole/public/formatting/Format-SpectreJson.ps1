@@ -17,6 +17,42 @@ function Format-SpectreJson {
     .PARAMETER Depth
     The maximum depth of the Json. Default is defined by the version of powershell.
 
+    .PARAMETER NoBorder
+    :::caution
+    This parameter is deprecated and will be removed in the future. It takes no effect from version 2.0.
+    The json output already has no border.
+    :::
+
+    .PARAMETER Border
+    :::caution
+    This parameter is deprecated and will be removed in the future. It takes no effect from version 2.0.
+    To add a border wrap this object in a panel, use `$data | Format-SpectreJson | Format-SpectrePanel`.
+    :::
+
+    .PARAMETER Color
+    :::caution
+    This parameter is deprecated and will be removed in the future. It takes no effect from version 2.0.
+    To add a border with a color use `$data | Format-SpectreJson | Format-SpectrePanel -Color "color"`.
+    :::
+
+    .PARAMETER Title
+    :::caution
+    This parameter is deprecated and will be removed in the future. It takes no effect from version 2.0.
+    To add a border with a title to the json data, use `$data | Format-SpectreJson | Format-SpectrePanel -Header "title"`.
+    :::
+
+    .PARAMETER Width
+    :::caution
+    This parameter is deprecated and will be removed in the future. It takes no effect from version 2.0.
+    To add a border with a width, use `$data | Format-SpectreJson | Format-SpectrePanel -Width 20`.
+    :::
+
+    .PARAMETER Height
+    :::caution
+    This parameter is deprecated and will be removed in the future. It takes no effect from version 2.0.
+    To add a border with a width, use `$data | Format-SpectreJson | Format-SpectrePanel -Height 20`.
+    :::
+
     .PARAMETER JsonStyle
     A hashtable of Spectre Console color names and values to style the Json output.
     e.g.
@@ -33,26 +69,6 @@ function Format-SpectreJson {
         NullStyle      = "Gray"
     }
     ```
-
-    .PARAMETER Border
-    :::caution
-    This parameter is deprecated and will be removed in the future.
-    It takes no effect from version 2.0.
-    To add a border wrap this object in a panel, use the `$data | Format-SpectreJson | Format-SpectrePanel` function.
-    :::
-
-    .PARAMETER Title
-    :::caution
-    This parameter is deprecated and will be removed in the future.
-    It takes no effect from version 2.0.
-    To add a border title to a panel, use the `$data | Format-SpectreJson | Format-SpectrePanel -Header "title"` function.
-    :::
-
-    .PARAMETER NoBorder
-    :::caution
-    This parameter is deprecated and will be removed in the future.
-    It takes no effect from version 2.0.
-    :::
 
     .EXAMPLE
     $data = @(
@@ -77,6 +93,12 @@ function Format-SpectreJson {
         [Parameter(ValueFromPipeline, Mandatory)]
         [object] $Data,
         [int] $Depth,
+        [switch] $NoBorder,
+        [string] $Border,
+        [string] $Color,
+        [string] $Title,
+        [int] $Width,
+        [int] $Height,
         [ValidateSpectreColorTheme()]
         [ColorThemeTransformationAttribute()]
         [hashtable] $JsonStyle = @{
@@ -89,16 +111,9 @@ function Format-SpectreJson {
             NumberStyle    = [Spectre.Console.Color]::Cyan1
             BooleanStyle   = [Spectre.Console.Color]::LightSkyBlue1
             NullStyle      = $script:DefaultValueColor
-        },
-        [string] $Border,
-        [string] $Title,
-        [switch] $NoBorder
+        }
     )
     begin {
-
-        if ($Border -or $Title -or $NoBorder) {
-            Write-Warning "Format-SpectrePanel: The parameters Border, Title, and NoBorder are deprecated and will be removed in the future."
-        }
 
         $requiredJsonStyleKeys = @('MemberStyle', 'BracesStyle', 'BracketsStyle', 'ColonStyle', 'CommaStyle', 'StringStyle', 'NumberStyle', 'BooleanStyle', 'NullStyle')
         if (($requiredJsonStyleKeys | ForEach-Object { $JsonStyle.Keys -contains $_ }) -contains $false) {

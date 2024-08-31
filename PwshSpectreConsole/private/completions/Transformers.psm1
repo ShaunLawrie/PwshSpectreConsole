@@ -23,6 +23,48 @@ class ColorTransformationAttribute : ArgumentTransformationAttribute {
     }
 }
 
+class TreeItemTransformationAttribute : ArgumentTransformationAttribute {
+
+    static[object] TransformItem([object] $TreeItem) {
+        $TransformedTreeItem = @{}
+
+        if ($TreeItem -isnot [hashtable]) {
+            throw "Input for Spectre Tree must be a hashtable with 'Value' (and the optional 'Children') keys"
+        }
+
+        if ($TreeItem.Keys -notcontains "Value" -and $TreeItem.Keys -notcontains "Label") {
+            throw "Input for Spectre Tree must be a hashtable with 'Value' (and the optional 'Children') keys"
+        }
+
+        if ($TreeItem.Keys -contains "Value") {
+            $TransformedTreeItem["Value"] = $TreeItem.Value
+        } else {
+            $TransformedTreeItem["Value"] = $TreeItem.Label
+        }
+
+        if ($null -eq $TransformedTreeItem["Value"]) {
+            throw "Spectre tree value cannot be null"
+        }
+
+        $TransformedTreeItem["Children"] = @()
+
+        if ($TreeItem.Keys -contains "Children") {
+            if ($TreeItem.Children -isnot [array]) {
+                throw "Children must be an array of tree items (hashtables with 'Value' and 'Children' keys)"
+            }
+            foreach ($child in $TreeItem.Children) {
+                $TransformedTreeItem["Children"] += [TreeItemTransformationAttribute]::TransformItem($child)
+            }
+        }
+
+        return $TransformedTreeItem
+    }
+
+    [object] Transform([EngineIntrinsics]$engine, [object]$inputData) {
+        return [TreeItemTransformationAttribute]::TransformItem($inputData)
+    }
+}
+
 class ColorThemeTransformationAttribute : ArgumentTransformationAttribute {
     [object] Transform([EngineIntrinsics]$engine, [object]$inputData) {
         if ($inputData -isnot [hashtable]) {

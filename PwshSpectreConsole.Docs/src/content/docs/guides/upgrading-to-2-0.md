@@ -1,20 +1,19 @@
 ---
 title: Upgrading to 2.0
-description: Breaking changes and stuff.
+description: Breaking and important changes.
 ---
-
-Backwards compatibility was a goal but there are some areas which will have breaking changes when upgrading to 2.0. The flexibility and power of the new renderable objects should make up for the inconvenience of the breaking changes.
 
 ## 💥 Breaking Changes
 
-- **[`Format-SpectreJson`](/reference/formatting/format-spectrejson/) has had parameters removed:**
-  - **-Border**, **-Title**, **-NoBorder** are no longer available.  
-  To wrap the json in a border you can now pipe the output to Format-SpectrePanel e.g. `Format-SpectreJson -Data $data | Format-SpectrePanel`
-- **[`Format-SpectreTree`](/reference/formatting/format-spectretree/) data parameter has changed:**
-  - The input object was previously `@{ Label = "stringlabel"; Children = @() }` but it can now render any Spectre Console renderable object so `Label` is replaced with `Value`.
-- **[`Out-SpectreHost`](/reference/rendering/out-spectrehost/) is required if you want to render an item without additional whitespace:**  
+- **[`Out-SpectreHost`](/reference/rendering/out-spectrehost/) is required if you want to render an item without additional whitespace above and below the item:**  
   - To enable the new features, the way the console handles the default host output has changed. Version 2.0 uses [powershell formatting](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_format.ps1xml?view=powershell-7.4) to render Spectre Console objects. When rendered to the terminal PowerShell pads these with a blank line before and after the renderable item.  
   `$data | Format-SpectrePanel | Out-SpectreHost` will force the object to be rendered without padding.  
+
+## 🗑️ Deprecations
+
+- **[`Format-SpectreJson`](/reference/formatting/format-spectrejson/) has had parameters deprecated:**
+  - `-NoBorder`, `-Border`, `-Color`, `-Title`, `-Width`, and `-Height` parameters no longer take any effect and will be removed in a future version.  
+  To wrap the json in a border you can now pipe the output to Format-SpectrePanel e.g. `Format-SpectreJson -Data $data | Format-SpectrePanel`
 
 ## 🆕 New Features
 

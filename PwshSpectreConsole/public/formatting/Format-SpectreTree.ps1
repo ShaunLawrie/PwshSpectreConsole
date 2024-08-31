@@ -49,7 +49,7 @@ function Format-SpectreTree {
     [Reflection.AssemblyMetadata("title", "Format-SpectreTree")]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
-        [ValidateSpectreTreeItem()]
+        [TreeItemTransformationAttribute()]
         [hashtable] $Data,
         [ValidateSet([SpectreConsoleTreeGuide], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [Alias("Border")]
