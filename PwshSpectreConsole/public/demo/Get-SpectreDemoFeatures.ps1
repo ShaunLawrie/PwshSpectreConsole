@@ -53,10 +53,10 @@ function Get-SpectreDemoFeatures {
     )
 
     # Start the table creation
-    $table = Format-SpectreTable -Data @{
+    $table = Format-SpectreTable -Data ([ordered]@{
         Feature = (Write-SpectreHost "[red]Colors[/]                         " -PassThru) # Force column width to be wide enough for the longest line
         Demo = $colorColumns
-    } -HideHeaders -Border None -Width $demoWidth
+    }) -HideHeaders -Border None -Width $demoWidth
     $table = Add-SpectreTableRow -Table $table -Columns @("", "")
 
     # OS
@@ -91,7 +91,7 @@ function Get-SpectreDemoFeatures {
 
     # Tables and trees
     $embeddedTable = @(
-        @{
+        ([ordered]@{
             Foo = "Baz  "
             Bar = @(
                 (Write-SpectreHost "`n[grey]Overview[/]" -PassThru),
@@ -128,15 +128,15 @@ function Get-SpectreDemoFeatures {
                 (Write-SpectreRule -Color Silver -PassThru),
                 (Write-SpectreHost "[grey]3 Files, 225 KiB[/]" -PassThru)
             ) | Format-SpectreRows
-        },
-        @{
+        }),
+        ([ordered]@{
             Foo = ""
             Bar = ""
-        }
-        @{
+        })
+        ([ordered]@{
             Foo = "Qux"
             Bar = "Corgi"
-        }
+        })
      ) | Format-SpectreTable -Color Yellow -Width ($demoWidth - 22)
     $table = Add-SpectreTableRow -Table $table -Columns @((Write-SpectreHost "[red]Tables and Trees[/]" -PassThru), $embeddedTable)
 

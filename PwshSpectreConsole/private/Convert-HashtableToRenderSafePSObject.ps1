@@ -3,7 +3,7 @@ function Convert-HashtableToRenderSafePSObject {
         [object] $Hashtable,
         [hashtable] $Renderables
     )
-    $customObject = @{}
+    $customObject = [ordered]@{}
     foreach ($item in $Hashtable.GetEnumerator()) {
         if ($item.Value -is [hashtable] -or $item.Value -is [ordered]) {
             $item.Value = Convert-HashtableToRenderSafePSObject -Hashtable $item.Value
