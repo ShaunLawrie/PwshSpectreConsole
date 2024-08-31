@@ -1,10 +1,23 @@
-function Write-SpectreFeatures {
+<#
+.SYNOPSIS
+    Demonstrates the features of Spectre.Console.
 
-    Write-SpectreHost "[underline][yellow]Spectre.Console[/][silver] Features[/][/]" -PassThru | Format-SpectreAligned -VerticalAlignment Middle
-    Write-SpectreHost " "
-    Write-SpectreHost " "
+.DESCRIPTION
+    This script demonstrates the features of Spectre.Console. It shows off the various colors, styles, and other features that Spectre.Console supports.
 
-    $table = @{ Feature = "Feature"; Demo = "Demo" } | Format-SpectreTable -Border None
+.EXAMPLE
+    Get-SpectreDemoFeatures
+#>
+function Get-SpectreDemoFeatures {
+
+    $demoWidth = $Host.UI.RawUI.BufferSize.Width
+
+    $title = Write-SpectreHost "[underline][yellow]Spectre.Console[/][silver] Features[/][/]" -PassThru | Format-SpectreAligned -VerticalAlignment Middle
+    $titleTable = Format-SpectreTable -Data @{
+        Title = $title
+    } -HideHeaders -Border None -Width $demoWidth
+    
+    $titleTable | Format-SpectrePadded -Top 1 -Left 0 -Bottom 0 -Right 0 | Out-SpectreHost
     
     # Colors
     $colors = @()
@@ -19,7 +32,7 @@ function Write-SpectreFeatures {
     # Spectrum
     $spectrumRows = @()
     $brightnesses = 12
-    $hues = 50
+    $hues = $demoWidth - 52
     for ($b = 1; $b -le $brightnesses; $b+=2) {
         $line = ""
         for ($h = 0; $h -lt $hues; $h++) {
@@ -41,7 +54,7 @@ function Write-SpectreFeatures {
     $table = Format-SpectreTable -Data @{
         Feature = (Write-SpectreHost "[red]Colors[/]                         " -PassThru) # Force column width to be wide enough for the longest line
         Demo = $colorColumns
-    } -Expand -HideHeaders -Border None
+    } -HideHeaders -Border None -Width $demoWidth
     $table = Add-SpectreTableRow -Table $table -Columns @("", "")
 
     # OS
@@ -63,7 +76,7 @@ function Write-SpectreFeatures {
         (Write-SpectreHost "[green]$textToWrap[/]" -PassThru | Format-SpectreAligned -HorizontalAlignment Left),
         (Write-SpectreHost "[yellow]$textToWrap[/]" -PassThru | Format-SpectreAligned -HorizontalAlignment Center),
         (Write-SpectreHost "[blue]$textToWrap[/]" -PassThru | Format-SpectreAligned -HorizontalAlignment Right)
-    ) | Format-SpectreGrid -Width 92
+    ) | Format-SpectreGrid -Width $demoWidth
     $wrapRows = $wrapRows | Format-SpectreRows
     $table = Add-SpectreTableRow -Table $table -Columns @((Write-SpectreHost "[red]Wrap[/]" -PassThru), $wrapRows)
     $table = Add-SpectreTableRow -Table $table -Columns @("", "")
@@ -125,7 +138,7 @@ function Write-SpectreFeatures {
             Foo = "Qux"
             Bar = "Corgi"
         }
-     ) | Format-SpectreTable -Color Yellow -Width 90
+     ) | Format-SpectreTable -Color Yellow -Width ($demoWidth - 22)
     $table = Add-SpectreTableRow -Table $table -Columns @((Write-SpectreHost "[red]Tables and Trees[/]" -PassThru), $embeddedTable)
 
     # Charts
@@ -133,13 +146,13 @@ function Write-SpectreFeatures {
         (New-SpectreChartItem -Label "C#" -Value 82 -Color Green),
         (New-SpectreChartItem -Label "PowerShell" -Value 13 -Color Red),
         (New-SpectreChartItem -Label "Bash" -Value 5 -Color Blue)
-    ) | Format-SpectreBreakdownChart -ShowPercentage -Width 41 | Format-SpectrePanel -Border Square -Color Grey -Height 5
+    ) | Format-SpectreBreakdownChart -ShowPercentage -Width ([int](($demoWidth - 30) / 2)) | Format-SpectrePanel -Border Square -Color Grey -Height 5
 
     $barChart = @(
         (New-SpectreChartItem -Label "Apple" -Value 32 -Color Green),
         (New-SpectreChartItem -Label "Oranges" -Value 13 -Color Orange1),
         (New-SpectreChartItem -Label "Bananas" -Value 22 -Color Yellow)
-    ) | Format-SpectreBarChart -Width 41 | Format-SpectrePanel -Border Square -Color Grey
+    ) | Format-SpectreBarChart -Width ([int](($demoWidth - 30) / 2) - 1) | Format-SpectrePanel -Border Square -Color Grey
 
     $chartColumns = Format-SpectreColumns -Data @(
         $breakdownChart,
@@ -167,5 +180,7 @@ function Write-SpectreFeatures {
     $table = Add-SpectreTableRow -Table $table -Columns @((Write-SpectreHost "[red]+ Much More![/]" -PassThru), $more)
     $table = Add-SpectreTableRow -Table $table -Columns @("", "")
 
-    $table
+    $table | Format-SpectrePadded -Top 1 -Left 0 -Bottom 0 -Right 0 | Out-SpectreHost
+
+    Write-SpectreHost " "
 }
