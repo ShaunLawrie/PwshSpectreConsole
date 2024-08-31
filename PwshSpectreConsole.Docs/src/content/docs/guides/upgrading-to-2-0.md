@@ -3,6 +3,14 @@ title: Upgrading to 2.0
 description: Breaking and important changes.
 ---
 
+## 🚀 Check out the Prerelease Build
+
+```powershell
+Install-Module PwshSpectreConsole -Scope CurrentUser -AllowPrerelease
+# or update to the prerelease version
+Update-Module PwshSpectreConsole -Scope CurrentUser -AllowPrerelease
+```
+
 ## 💥 Breaking Changes
 
 - **[`Out-SpectreHost`](/reference/writing/out-spectrehost/) is required if you want to render an item without additional whitespace above and below the item:**  
