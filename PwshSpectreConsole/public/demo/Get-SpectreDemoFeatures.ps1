@@ -82,10 +82,7 @@ function Get-SpectreDemoFeatures {
     $table = Add-SpectreTableRow -Table $table -Columns @("", "")
 
     # Markup
-    $markup = @(
-        (Write-SpectreHost "[violet]Spectre.Console[/] supports a simple bbcode like [bold]markup[/] for [yellow]color[/], [underline]style[/], and emoji! :thumbs_up: :red_apple:" -PassThru),
-        (Write-SpectreHost ":ant: :bear: :baguette_bread: :bus:" -PassThru)
-    ) | Format-SpectreRows
+    $markup = Write-SpectreHost "[violet]Spectre.Console[/] supports a simple bbcode like [bold]markup[/] for [yellow]color[/], [underline]style[/], and emoji! :thumbs_up: :red_apple: :ant: :bear: :baguette_bread: :bus:" -PassThru
 
     $table = Add-SpectreTableRow -Table $table -Columns @((Write-SpectreHost "[red]Markup[/]" -PassThru), $markup)
     $table = Add-SpectreTableRow -Table $table -Columns @("", "")
