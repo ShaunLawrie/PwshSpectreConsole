@@ -14,7 +14,7 @@ function Get-SpectreDemoFeatures {
 
     $demoWidth = Get-HostWidth
 
-    $title = Write-SpectreHost "[underline][yellow]Spectre.Console[/][silver] Features[/][/]" -PassThru | Format-SpectreAligned -VerticalAlignment Middle
+    $title = Write-SpectreHost "[underline][yellow]PwshSpectreConsole[/][silver] Features[/][/]" -PassThru | Format-SpectreAligned -VerticalAlignment Middle
     $titleTable = Format-SpectreTable -Data @{
         Title = $title
     } -HideHeaders -Border None -Width $demoWidth
@@ -142,9 +142,10 @@ function Get-SpectreDemoFeatures {
 
     # Charts
     $breakdownChart = @(
-        (New-SpectreChartItem -Label "C#" -Value 82 -Color Green),
-        (New-SpectreChartItem -Label "PowerShell" -Value 13 -Color Red),
-        (New-SpectreChartItem -Label "Bash" -Value 5 -Color Blue)
+        (New-SpectreChartItem -Label "PowerShell" -Value 70.2 -Color Blue),
+        (New-SpectreChartItem -Label "MDX" -Value 24.7 -Color Red),
+        (New-SpectreChartItem -Label "C#" -Value 3 -Color Green),
+        (New-SpectreChartItem -Label "Astro" -Value 3 -Color Blue)
     ) | Format-SpectreBreakdownChart -ShowPercentage -Width ([int](($demoWidth - 30) / 2)) | Format-SpectrePanel -Border Square -Color Grey -Height 5
 
     $barChart = @(
