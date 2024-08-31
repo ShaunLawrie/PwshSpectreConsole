@@ -1,0 +1,110 @@
+---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
+title: Invoke-SpectreScriptBlockQuietly
+---
+
+
+
+
+
+
+
+import Asciinema from '../../../../components/Asciinema.astro'
+import invokespectrescriptblockquietlyExample1 from '../../../../assets/examples/invokespectrescriptblockquietlyExample1.cast?url'
+
+### Description
+
+This function invokes a script block in a background job and returns the output. It also provides an option to suppress the output even more if there is garbage being printed to stderr if using Level = Quieter.
+
+
+
+---
+
+
+### Examples
+> EXAMPLE 1
+
+```powershell
+$result = Invoke-SpectreCommandWithProgress {
+    param (
+        $Context
+    )
+    $task1 = $Context.AddTask("Starting a process that generates noise")
+    $task1.Increment(50)
+    $value = Invoke-SpectreScriptBlockQuietly -Level Quiet -Command {
+        Write-Output "Things..."
+        Write-Output "And stuff..."
+        Write-Error "This is an error"
+        Start-Sleep -Seconds 3
+        Write-Output "But it shouldn't break progress bar rendering"
+    }
+    $task1.Increment(50)
+    return $value
+}
+Write-SpectreHost "Result: $result"
+```
+<Asciinema
+    src={invokespectrescriptblockquietlyExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+---
+
+
+### Parameters
+#### **Command**
+
+The script block to be invoked.
+
+
+
+
+
+
+|Type           |Required|Position|PipelineInput|
+|---------------|--------|--------|-------------|
+|`[ScriptBlock]`|false   |1       |false        |
+
+
+
+#### **Level**
+
+Suppresses the output by varying amounts.
+
+
+
+Valid Values:
+
+* Quiet
+* Quieter
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |2       |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Invoke-SpectreScriptBlockQuietly [[-Command] <ScriptBlock>] [[-Level] <String>] [<CommonParameters>]
+```

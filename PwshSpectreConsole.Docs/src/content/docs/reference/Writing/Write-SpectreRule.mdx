@@ -57,7 +57,7 @@ The title of the rule.
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
-|`[String]`|true    |1       |false        |
+|`[String]`|false   |1       |false        |
 
 
 
@@ -99,6 +99,17 @@ The color of the rule. The default value is the accent color of the script.
 
 
 
+#### **LineColor**
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Color]`|false   |4       |false        |
+
+
+
 #### **PassThru**
 
 Returns the Spectre Rule object instead of writing it to the console.
@@ -121,5 +132,5 @@ Returns the Spectre Rule object instead of writing it to the console.
 
 ### Syntax
 ```powershell
-Write-SpectreRule [-Title] <String> [[-Alignment] <String>] [[-Color] <Color>] [-PassThru] [<CommonParameters>]
+Write-SpectreRule [[-Title] <String>] [[-Alignment] <String>] [[-Color] <Color>] [[-LineColor] <Color>] [-PassThru] [<CommonParameters>]
 ```
