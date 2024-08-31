@@ -63,6 +63,7 @@ New commandlets to make this PowerShell library compatible with the rest of the 
 - [`Format-SpectreException`](/reference/formatting/format-spectreexception/) - Render an exception with syntax highlighting.
 - [`Invoke-SpectreLive`](/reference/live/invoke-spectrelive) - Run a scriptblock and update a renderable item live in real-time.
 - [`New-SpectreLayout`](/reference/formatting/new-spectrelayout/) - For rendering items in nested layouts.
+- [`Get-SpectreDemoFeatures`](/reference/demo/get-spectredemofeatures/) - A demo of the features of Spectre.Console available in PwshSpectreConsole.
 
 ### Updated Commandlets
 
