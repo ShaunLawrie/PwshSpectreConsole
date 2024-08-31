@@ -1,0 +1,130 @@
+---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
+title: Wait-SpectreJobs
+---
+
+
+
+
+
+
+
+import Asciinema from '../../../../components/Asciinema.astro'
+import waitspectrejobsExample1 from '../../../../assets/examples/waitspectrejobsExample1.cast?url'
+
+### Description
+
+This function waits for Spectre jobs to complete by checking the progress of each job and updating the corresponding task value.
+Adapted from https://key2consulting.com/powershell-how-to-display-job-progress/
+:::note
+This is only used inside `Invoke-SpectreCommandWithProgress` where the Spectre ProgressContext object is exposed.
+:::
+
+
+
+---
+
+
+### Examples
+> EXAMPLE 1
+
+```powershell
+Invoke-SpectreCommandWithProgress -ScriptBlock {
+    param (
+        $Context
+    )
+    $jobs = @()
+    $jobs += Add-SpectreJob -Context $Context -JobName "job 1" -Job (Start-Job { Start-Sleep -Seconds 2 })
+    $jobs += Add-SpectreJob -Context $Context -JobName "job 2" -Job (Start-Job { Start-Sleep -Seconds 4 })
+    Wait-SpectreJobs -Context $Context -Jobs $jobs
+}
+```
+<Asciinema
+    src={waitspectrejobsExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+---
+
+
+### Parameters
+#### **Context**
+
+The Spectre progress context object.
+[https://spectreconsole.net/api/spectre.console/progresscontext/](https://spectreconsole.net/api/spectre.console/progresscontext/)
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Object]`|true    |1       |false        |
+
+
+
+#### **Jobs**
+
+An array of Spectre jobs which are decorated PowerShell jobs.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Array]`|true    |2       |false        |
+
+
+
+#### **TimeoutSeconds**
+
+The maximum number of seconds to wait for the jobs to complete. Defaults to 60 seconds.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |3       |false        |
+
+
+
+#### **EstimatedDurationSeconds**
+
+The estimated duration of the jobs in seconds. This is used to calculate the progress of the jobs if the job progress is not available.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |4       |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Wait-SpectreJobs [-Context] <Object> [-Jobs] <Array> [[-TimeoutSeconds] <Int32>] [[-EstimatedDurationSeconds] <Int32>] [<CommonParameters>]
+```
