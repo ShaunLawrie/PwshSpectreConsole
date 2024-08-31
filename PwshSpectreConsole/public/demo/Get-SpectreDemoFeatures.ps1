@@ -9,8 +9,10 @@
     Get-SpectreDemoFeatures
 #>
 function Get-SpectreDemoFeatures {
+    [Reflection.AssemblyMetadata("title", "Get-SpectreDemoFeatures")]
+    param ()
 
-    $demoWidth = $Host.UI.RawUI.BufferSize.Width
+    $demoWidth = Get-HostWidth
 
     $title = Write-SpectreHost "[underline][yellow]Spectre.Console[/][silver] Features[/][/]" -PassThru | Format-SpectreAligned -VerticalAlignment Middle
     $titleTable = Format-SpectreTable -Data @{
