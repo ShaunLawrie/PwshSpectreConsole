@@ -5,7 +5,7 @@ description: Breaking and important changes.
 
 ## 💥 Breaking Changes
 
-- **[`Out-SpectreHost`](/reference/rendering/out-spectrehost/) is required if you want to render an item without additional whitespace above and below the item:**  
+- **[`Out-SpectreHost`](/reference/writing/out-spectrehost/) is required if you want to render an item without additional whitespace above and below the item:**  
   - To enable the new features, the way the console handles the default host output has changed. Version 2.0 uses [powershell formatting](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_format.ps1xml?view=powershell-7.4) to render Spectre Console objects. When rendered to the terminal PowerShell pads these with a blank line before and after the renderable item.  
   `$data | Format-SpectrePanel | Out-SpectreHost` will force the object to be rendered without padding.  
 
@@ -54,7 +54,7 @@ New commandlets to make this PowerShell library compatible with the rest of the 
 - [`Format-SpectreTextPath`](/reference/formatting/format-spectretextpath/) - Render a file/folder path with syntax highlighting.
 - [`Format-SpectreException`](/reference/formatting/format-spectreexception/) - Render an exception with syntax highlighting.
 - [`Invoke-SpectreLive`](/reference/live/invoke-spectrelive) - Run a scriptblock and update a renderable item live in real-time.
-- [`New-SpectreLayout`](/reference/rendering/new-spectrelayout/) - For rendering items in nested layouts.
+- [`New-SpectreLayout`](/reference/formatting/new-spectrelayout/) - For rendering items in nested layouts.
 
 ### Updated Commandlets
 
