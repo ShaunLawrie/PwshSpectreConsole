@@ -5,6 +5,8 @@ description: Breaking and important changes.
 
 ## 🚀 Check out the Prerelease Build
 
+Install or update to the pre-release version of the module.
+
 ```powershell
 Install-Module PwshSpectreConsole -Scope CurrentUser -AllowPrerelease
 # or update to the prerelease version
