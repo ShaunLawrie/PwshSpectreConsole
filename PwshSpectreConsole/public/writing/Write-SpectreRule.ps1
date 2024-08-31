@@ -26,16 +26,20 @@ function Write-SpectreRule {
     #>
     [Reflection.AssemblyMetadata("title", "Write-SpectreRule")]
     param (
-        [Parameter(Mandatory)]
         [string] $Title,
         [ValidateSet([SpectreConsoleJustify], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Alignment = "Left",
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
         [Spectre.Console.Color] $Color = $script:AccentColor,
+        [Spectre.Console.Color] $LineColor = $script:DefaultValueColor,
         [switch] $PassThru
     )
-    $rule = [Spectre.Console.Rule]::new("[$($Color.ToMarkup())]$Title[/]")
+    $rule = [Spectre.Console.Rule]::new()
+    if ($Title) {
+        $rule.Title = "[$($Color.ToMarkup())]$Title[/]"
+    }
+    $rule.Style = [Spectre.Console.Style]::new($LineColor)
     $rule.Justification = [Spectre.Console.Justify]::$Alignment
 
     if ($PassThru) {

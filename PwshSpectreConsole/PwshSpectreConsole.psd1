@@ -90,7 +90,7 @@ FunctionsToExport = 'Add-SpectreJob', 'Format-SpectreBarChart',
                'Format-SpectreRows', 'Format-SpectrePadded', 'Format-SpectreGrid', 
                'New-SpectreGridRow', 'Format-SpectreTextPath', 'New-SpectreLayout', 
                'Format-SpectreAligned', 'Out-SpectreHost', 'Add-SpectreTableRow', 
-               'Invoke-SpectreLive', 'Format-SpectreException'
+               'Invoke-SpectreLive', 'Format-SpectreException', 'Write-SpectreFeatures'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()

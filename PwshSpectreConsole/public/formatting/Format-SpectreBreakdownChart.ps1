@@ -39,7 +39,8 @@ function Format-SpectreBreakdownChart {
         [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostWidth) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
         [int]$Width = (Get-HostWidth),
         [switch]$HideTags,
-        [Switch]$HideTagValues
+        [switch]$HideTagValues,
+        [switch]$ShowPercentage
     )
     begin {
         $chart = [Spectre.Console.BreakdownChart]::new()
@@ -49,6 +50,9 @@ function Format-SpectreBreakdownChart {
         }
         if ($HideTagValues) {
             $chart.ShowTagValues = $false
+        }
+        if ($ShowPercentage) {
+            $chart = [Spectre.Console.BreakdownChartExtensions]::ShowPercentage($chart)
         }
     }
     process {

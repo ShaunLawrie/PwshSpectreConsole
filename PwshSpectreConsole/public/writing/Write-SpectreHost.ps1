@@ -21,12 +21,17 @@ function Write-SpectreHost {
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
         [object] $Message,
-        [switch] $NoNewline
+        [switch] $NoNewline,
+        [switch] $PassThru
     )
 
     if ($Message -is [Spectre.Console.Rendering.Renderable]) {
         Write-AnsiConsole $Message
         return
+    }
+
+    if ($PassThru) {
+        return [Spectre.Console.Markup]::new($Message)
     }
 
     if ($NoNewline) {
