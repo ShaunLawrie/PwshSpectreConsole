@@ -16,7 +16,7 @@ function Get-SpectreImage {
     .EXAMPLE
     # **Example 1**
     # This example demonstrates how to display an image in the console.
-    Get-SpectreImage -ImagePath "..\..\..\PwshSpectreConsole\private\images\smiley.png" -MaxWidth 40
+    Get-SpectreImage -ImagePath ".\private\images\smiley.png" -MaxWidth 40
     #>
     [Reflection.AssemblyMetadata("title", "Get-SpectreImage")]
     param (
