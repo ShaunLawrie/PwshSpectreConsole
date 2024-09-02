@@ -29,7 +29,12 @@ See https://spectreconsole.net/widgets/columns for more information.
 
 
 ### Examples
-> EXAMPLE 1
+
+
+**Example 1**
+This example demonstrates how to display a collection of strings in columns.
+
+
 
 ```powershell
 @("lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit,", "sed", "do", "eiusmod",
@@ -49,7 +54,12 @@ See https://spectreconsole.net/widgets/columns for more information.
         terminalFontFamily: "'Cascadia Code', monospace"
     }}
 />
-> EXAMPLE 2
+
+
+**Example 2**
+This example demonstrates how to display a collection of panels that are expanded but with normal sized columns.
+
+
 
 ```powershell
 @("left", "middle", "right") | Foreach-Object { $_ | Format-SpectrePanel -Expand } | Format-SpectreColumns
@@ -64,7 +74,12 @@ See https://spectreconsole.net/widgets/columns for more information.
         terminalFontFamily: "'Cascadia Code', monospace"
     }}
 />
-> EXAMPLE 3
+
+
+**Example 3**
+This example demonstrates how to display a collection of panels that are expanded and with expanded columns so it takes up the console width.
+
+
 
 ```powershell
 @("left", "middle", "right") | Foreach-Object { $_ | Format-SpectrePanel -Expand } | Format-SpectreColumns -Expand

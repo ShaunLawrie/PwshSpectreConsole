@@ -32,7 +32,12 @@ This text entry also doesn't allow you to use arrow keys to go back and forwards
 
 
 ### Examples
-> EXAMPLE 1
+
+
+**Example 1**
+This example demonstrates a simple text prompt with a default answer.
+
+
 
 ```powershell
 $name = Read-SpectreText -Question "What's your name?" -DefaultAnswer "Prefer not to say"
@@ -49,7 +54,12 @@ Write-SpectreHost "Your name is '$name'"
         terminalFontFamily: "'Cascadia Code', monospace"
     }}
 />
-> EXAMPLE 2
+
+
+**Example 2**
+This example demonstrates a simple text prompt with a default answer and a color.
+
+
 
 ```powershell
 $favouriteColor = Read-SpectreText -Question "What's your favorite color?" -DefaultAnswer "pink"
@@ -66,7 +76,12 @@ Write-SpectreHost "Your favourite color is '$favouriteColor'"
         terminalFontFamily: "'Cascadia Code', monospace"
     }}
 />
-> EXAMPLE 3
+
+
+**Example 3**
+This example demonstrates a simple text prompt with a default answer, a color, and a list of choices.
+
+
 
 ```powershell
 $favouriteColor = Read-SpectreText -Question "What's your favorite color?" -AnswerColor "Cyan1" -Choices "Black", "Green", "Magenta", "I'll never tell!"

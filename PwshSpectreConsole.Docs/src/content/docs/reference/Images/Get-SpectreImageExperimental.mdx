@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
 title: Get-SpectreImageExperimental
 ---
 
@@ -27,10 +31,15 @@ Experimental features are unstable and subject to change.
 
 
 ### Examples
-> EXAMPLE 1
+
+
+**Example 1**
+This example demonstrates how to display an animated image in the console that loops 4 times.
+
+
 
 ```powershell
-Get-SpectreImageExperimental -ImagePath "..\..\..\PwshSpectreConsole\private\images\harveyspecter.gif" -LoopCount 4 -Width 82
+Get-SpectreImageExperimental -ImagePath ".\private\images\harveyspecter.gif" -LoopCount 4 -Width 82
 ```
 <Asciinema
     src={getspectreimageexperimentalExample1}
@@ -42,10 +51,15 @@ Get-SpectreImageExperimental -ImagePath "..\..\..\PwshSpectreConsole\private\ima
         terminalFontFamily: "'Cascadia Code', monospace"
     }}
 />
-> EXAMPLE 2
+
+
+**Example 2**
+This example demonstrates how to display a static image in the console.
+
+
 
 ```powershell
-Get-SpectreImageExperimental -ImagePath "..\..\..\PwshSpectreConsole\private\images\smiley.png" -Width 80
+Get-SpectreImageExperimental -ImagePath ".\private\images\smiley.png" -Width 80
 ```
 <Asciinema
     src={getspectreimageexperimentalExample2}
