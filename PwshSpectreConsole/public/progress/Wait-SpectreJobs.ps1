@@ -24,6 +24,8 @@ function Wait-SpectreJobs {
     The estimated duration of the jobs in seconds. This is used to calculate the progress of the jobs if the job progress is not available.
 
     .EXAMPLE
+    # **Example 1**
+    # This example demonstrates how to add two jobs to a context and wait for them to complete.
     Invoke-SpectreCommandWithProgress -ScriptBlock {
         param (
             $Context

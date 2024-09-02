@@ -22,6 +22,8 @@ function Read-SpectreConfirm {
     The text and markup to display if the user chooses no. If left undefined, nothing will display.
 
     .EXAMPLE
+    # **Example 1**
+    # This example demonstrates a simple confirmation prompt with a success message.
     $answer = Read-SpectreConfirm -Prompt "Would you like to continue the preview installation of [#7693FF]PowerShell 7?[/]" `
                                   -ConfirmSuccess "Woohoo! The internet awaits your elite development contributions." `
                                   -ConfirmFailure "What kind of monster are you? How could you do this?"

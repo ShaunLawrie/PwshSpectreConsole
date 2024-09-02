@@ -22,6 +22,8 @@ function Invoke-SpectreCommandWithStatus {
     The color of the spinner. Valid values can be found with Get-SpectreDemoColors.
 
     .EXAMPLE
+    # **Example 1**
+    # This example demonstrates how to show a spinner while doing some work. Write-SpectreHost is used to update the host with progress without breaking the spinner animation.
     $result = Invoke-SpectreCommandWithStatus -Spinner "Dots2" -Title "Showing a spinner..." -ScriptBlock {
         # Write updates to the host using Write-SpectreHost
         Start-Sleep -Seconds 1

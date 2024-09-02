@@ -22,6 +22,8 @@ function Set-SpectreColors {
     The default table text color to set. Must be a valid Spectre Console color name. Defaults to "Default" which will be the standard console foreground color.
 
     .EXAMPLE
+    # **Example 1**
+    # This example demonstrates how to set the accent color and default value color for Spectre Console.
     Write-SpectreRule "This is a default rule"
     Set-SpectreColors -AccentColor "Turquoise2"
     Write-SpectreRule "This is a Turquoise2 rule"

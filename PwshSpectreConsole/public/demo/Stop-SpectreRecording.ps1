@@ -14,6 +14,8 @@ function Stop-SpectreRecording {
         .PARAMETER OutputPath
             The path to save the recording to.
         .EXAMPLE
+            # **Example 1**
+            # This example demonstrates how to record the spectre console output.
             $recording = Start-SpectreRecording -RecordingType "Html" -CountdownAndClear
             # Use spectre console functions, these will be recorded
             Write-SpectreHost "Hello [red]world[/]"

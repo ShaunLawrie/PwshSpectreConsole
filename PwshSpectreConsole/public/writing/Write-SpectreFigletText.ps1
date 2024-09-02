@@ -26,9 +26,13 @@ function Write-SpectreFigletText {
     Returns the Spectre Figlet text object instead of writing it to the console.
 
     .EXAMPLE
+    # **Example 1**
+    # This example demonstrates how to write Figlet text to the console.
     Write-SpectreFigletText -Text "Hello Spectre!" -Alignment "Center" -Color "Red"
 
     .EXAMPLE
+    # **Example 2**
+    # This example demonstrates how to write Figlet text to the console using a custom Figlet font.
     Write-SpectreFigletText -Text "Whoa?!" -FigletFontPath "..\assets\3d.flf"
     #>
     [Reflection.AssemblyMetadata("title", "Write-SpectreFigletText")]

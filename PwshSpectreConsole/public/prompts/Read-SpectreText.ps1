@@ -31,16 +31,22 @@ function Read-SpectreText {
     With autocomplete and can tab through the choices.
 
     .EXAMPLE
+    # **Example 1**
+    # This example demonstrates a simple text prompt with a default answer.
     $name = Read-SpectreText -Question "What's your name?" -DefaultAnswer "Prefer not to say"
     # Type "↲" to provide no answer
     Write-SpectreHost "Your name is '$name'"
 
     .EXAMPLE
+    # **Example 2**
+    # This example demonstrates a simple text prompt with a default answer and a color.
     $favouriteColor = Read-SpectreText -Question "What's your favorite color?" -DefaultAnswer "pink"
     # Type "orange", "↲" to enter your favourite color
     Write-SpectreHost "Your favourite color is '$favouriteColor'"
 
     .EXAMPLE
+    # **Example 3**
+    # This example demonstrates a simple text prompt with a default answer, a color, and a list of choices.
     $favouriteColor = Read-SpectreText -Question "What's your favorite color?" -AnswerColor "Cyan1" -Choices "Black", "Green", "Magenta", "I'll never tell!"
     # Type "orange", "↲", "magenta", "↲" to enter text that must match a choice in the choices list, orange will be rejected, magenta will be accepted
     Write-SpectreHost "Your favourite color is '$favouriteColor'"

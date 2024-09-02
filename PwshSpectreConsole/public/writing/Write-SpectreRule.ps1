@@ -22,7 +22,9 @@ function Write-SpectreRule {
     Returns the Spectre Rule object instead of writing it to the console.
 
     .EXAMPLE
-    Write-SpectreRule -Title "My Rule" -Alignment Center -Color Red
+    # **Example 1**
+    # This example demonstrates how to write a rule to the console.
+    Write-SpectreRule -Title "My Rule" -Alignment Center -Color Yellow
     #>
     [Reflection.AssemblyMetadata("title", "Write-SpectreRule")]
     param (

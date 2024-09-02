@@ -10,9 +10,14 @@ function Format-SpectreGrid {
     See https://spectreconsole.net/widgets/grid for more information.
 
     .EXAMPLE
+    # **Example 1**
+    # This example demonstrates how to display a grid of rows using the Spectre Console module with a list of lists.
     Format-SpectreGrid -Data @("hello", "I", "am"), @("a", "grid", "of"), @("rows", "using", "spectre")
 
     .EXAMPLE
+    # **Example 2**
+    # This example demonstrates how to display a grid of rows using the Spectre Console module with a list of `New-SpectreGridRow` objects.
+    # The `New-SpectreGridRow` function is used to create the rows when you want to avoid array collapsing in PowerShell turning your rows into a single array of columns.
     $rows = 4
     $cols = 6
     

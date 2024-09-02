@@ -15,6 +15,8 @@ function Write-SpectreHost {
     If specified, the message will not be followed by a newline character.
 
     .EXAMPLE
+    # **Example 1**
+    # This example demonstrates how to write a message to the console using Spectre Console markup.
     Write-SpectreHost -Message "Hello, [blue underline]world[/]! :call_me_hand:"
     #>
     [Reflection.AssemblyMetadata("title", "Write-SpectreHost")]

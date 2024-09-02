@@ -28,6 +28,8 @@ e.g. in the example below to update the contents of row1 you would use `$root = 
 The minimum size of the layout, this can be used to ensure a layout is at least the minimum width.
 
 .EXAMPLE
+# **Example 1**
+# This example demonstrates how to create a layout with a calendar, a list of files, and a panel with a calendar aligned to the middle and center.
 $calendar = Write-SpectreCalendar -Date (Get-Date) -PassThru
 $files = Get-ChildItem | Format-SpectreTable | Format-SpectreAligned -HorizontalAlignment Right -VerticalAlignment Bottom
 

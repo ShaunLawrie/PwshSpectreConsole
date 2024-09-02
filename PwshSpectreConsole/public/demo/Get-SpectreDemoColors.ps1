@@ -9,6 +9,8 @@
     It also provides information on how to use the colors as parameters for commands or in Spectre Console markup.
 
 .EXAMPLE
+    # **Example 1**
+    # This example demonstrates how to use Get-SpectreDemoColors to display a list of the built-in Spectre Console colors.
     Get-SpectreDemoColors
 #>
 function Get-SpectreDemoColors {

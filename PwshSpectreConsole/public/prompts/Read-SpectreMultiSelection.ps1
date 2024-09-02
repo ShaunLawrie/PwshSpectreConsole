@@ -28,6 +28,8 @@ function Read-SpectreMultiSelection {
     Allow the multi-selection to be submitted without any options chosen.
 
     .EXAMPLE
+    # **Example 1**
+    # This example demonstrates a multi-selection prompt with a custom title and choices.
     $fruits = Read-SpectreMultiSelection -Title "Select your favourite fruits" `
                                           -Choices @("apple", "banana", "orange", "pear", "strawberry", "durian", "lemon") `
                                           -PageSize 4

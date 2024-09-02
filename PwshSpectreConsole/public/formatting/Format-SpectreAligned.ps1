@@ -19,6 +19,8 @@ function Format-SpectreAligned {
     The vertical alignment of the object.
 
     .EXAMPLE
+    # **Example 1**
+    # This example demonstrates how to align a string to the right inside a panel.
     "hello right hand side" | Format-SpectreAligned -HorizontalAlignment Right -VerticalAlignment Middle | Format-SpectrePanel -Expand -Height 9
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectreAligned")]

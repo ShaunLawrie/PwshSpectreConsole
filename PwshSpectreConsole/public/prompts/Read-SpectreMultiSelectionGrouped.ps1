@@ -28,6 +28,8 @@ function Read-SpectreMultiSelectionGrouped {
     Allow the multi-selection to be submitted without any options chosen.
 
     .EXAMPLE
+    # **Example 1**
+    # This example demonstrates a multi-selection prompt with grouped choices.
     $selected = Read-SpectreMultiSelectionGrouped -Title "Select your favorite colors" -PageSize 8 -Choices @(
         @{
             Name = "Primary Colors"

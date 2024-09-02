@@ -33,6 +33,8 @@ The style to use when rendering the exception provided as a hashtable. e.g.
 ```
 
 .EXAMPLE
+# **Example 1**
+# This example demonstrates how to format an exception into a Spectre Console Exception with syntax highlighting.
 try {
     Get-ChildItem -BadParam -ErrorAction Stop
 } catch {

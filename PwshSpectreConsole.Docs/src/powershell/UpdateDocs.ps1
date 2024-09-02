@@ -164,15 +164,19 @@ foreach ($doc in $docs) {
                     Write-Host -ForegroundColor DarkGray "None"
                 }
                 foreach($mock in $mocks.ExportedCommands.Values.Name) {
-                    $originalCommandName = $mock -replace "Mock", ""
+                    $originalCommandName = $mock -replace "Mock"
                     $code = $code -replace $originalCommandName, $mock
+                    $code = $code -replace "function $originalCommandName", "function ${mock}Replaced"
                 }
                 Write-Host "Modified sample:"
                 Write-Host -ForegroundColor DarkGray $code
                 if($code -like "*Write-Error*") {
                     $code = $code -replace "Write-Error", "Write-Host"
                 }
+                Set-Location "$PSScriptRoot/../../../PwshSpectreConsole"
+                Push-Location -StackName "ExampleInvoke"
                 Invoke-Expression $code
+                Pop-Location -StackName "ExampleInvoke"
                 $recording = Stop-SpectreRecording -Title "Example $([int]$example++)"
 
                 $castName = ($doc.Name -replace '.md$', '' -replace '-', '').ToLower() + "Example$example"
@@ -182,6 +186,7 @@ foreach ($doc in $docs) {
                 # Replace the code block with the ascii cast
                 $castTemplate = Get-AsciiCastTemplate -Name $castName
                 $content = $content -replace "(?ms)> EXAMPLE $example.+?(``````.+?``````)", "> EXAMPLE $example`n`n`$1`n$castTemplate"
+                $content = $content -replace "(?ms)(\*\*Example $example\*\*.+?)(``````.+?``````)", "`n`n`$1`n`n`$2`n$castTemplate"
             }
             $content = $content -replace "### Description", "$imports`n### Description"
         } finally {

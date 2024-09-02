@@ -22,6 +22,8 @@ function Start-SpectreRecording {
         .PARAMETER CountdownAndClear
             If this switch is present, the console will be cleared and a countdown will be displayed before the recording starts.
         .EXAMPLE
+            # **Example 1**
+            # This example demonstrates how to record the spectre console output.
             $recording = Start-SpectreRecording -RecordingType "Html" -CountdownAndClear
             # Use spectre console functions, these will be recorded
             Write-SpectreHost "Hello [red]world[/]"

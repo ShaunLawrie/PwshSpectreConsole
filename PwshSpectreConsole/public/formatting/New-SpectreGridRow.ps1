@@ -9,6 +9,8 @@ Creates a new SpectreGridRow object with the specified columns for use in Format
 An array of renderable items containing the data to be displayed in the columns of this row.
 
 .EXAMPLE
+# **Example 1**
+# This example demonstrates how to create a grid with two rows and three columns.
 $columns = @()
 $columns += "Column 1" | Format-SpectrePanel
 $columns += "Column 2" | Format-SpectrePanel

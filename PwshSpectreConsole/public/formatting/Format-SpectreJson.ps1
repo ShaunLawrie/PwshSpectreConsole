@@ -71,6 +71,8 @@ function Format-SpectreJson {
     ```
 
     .EXAMPLE
+    # **Example 1**
+    # This example demonstrates how to format an array of objects into a Spectre Console Json object with syntax highlighting.
     $data = @(
         [pscustomobject]@{
             Name = "John"

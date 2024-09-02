@@ -3,6 +3,7 @@
 # Remember how many times some mocks are called
 $script:mocks = @{
     "Read-SpectrePause" = 1
+    "Get-LastKeyPressed" = 0
 }
 
 function Read-SpectrePauseMock {
@@ -15,6 +16,16 @@ function Read-SpectrePauseMock {
     Write-SpectreHost ("`r" + (" " * $Message.Length))
     Write-SpectreHost ("`e[2A" | Get-SpectreEscapedText)
     $script:mocks["Read-SpectrePause"]++
+}
+
+function Get-LastKeyPressed {
+    Start-Sleep -Milliseconds 1000
+    $keys = @("DownArrow", "DownArrow", "DownArrow", "DownArrow", "DownArrow", "DownArrow", "DownArrow", "DownArrow", "Escape")
+    $selectedKey = $keys[$script:mocks["Get-LastKeyPressed"]]
+    $script:mocks["Get-LastKeyPressed"]++
+    return @{
+        Key = $selectedKey
+    }
 }
 
 function Start-SpectreRecordingMock {
