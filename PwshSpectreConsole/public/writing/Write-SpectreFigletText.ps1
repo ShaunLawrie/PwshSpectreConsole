@@ -33,7 +33,7 @@ function Write-SpectreFigletText {
     .EXAMPLE
     # **Example 2**
     # This example demonstrates how to write Figlet text to the console using a custom Figlet font.
-    Write-SpectreFigletText -Text "Whoa?!" -FigletFontPath "..\assets\3d.flf"
+    Write-SpectreFigletText -Text "Whoa?!" -FigletFontPath "..\PwshSpectreConsole.Docs\src\assets\3d.flf"
     #>
     [Reflection.AssemblyMetadata("title", "Write-SpectreFigletText")]
     param (
