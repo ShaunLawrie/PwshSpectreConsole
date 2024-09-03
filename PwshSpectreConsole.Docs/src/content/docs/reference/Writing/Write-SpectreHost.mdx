@@ -29,7 +29,7 @@ Supported emoji are defined at [https://spectreconsole.net/appendix/emojis](http
 ### Examples
 
 
-**Example 1**
+**Example 1**  
 This example demonstrates how to write a message to the console using Spectre Console markup.
 
 
@@ -94,6 +94,25 @@ If specified, the message will not be followed by a newline character.
 
 
 
+#### **Justify**
+
+Valid Values:
+
+* Left
+* Right
+* Center
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |2       |false        |
+
+
+
 
 
 ---
@@ -101,5 +120,5 @@ If specified, the message will not be followed by a newline character.
 
 ### Syntax
 ```powershell
-Write-SpectreHost [-Message] <Object> [-NoNewline] [-PassThru] [<CommonParameters>]
+Write-SpectreHost [-Message] <Object> [-NoNewline] [-PassThru] [[-Justify] <String>] [<CommonParameters>]
 ```
