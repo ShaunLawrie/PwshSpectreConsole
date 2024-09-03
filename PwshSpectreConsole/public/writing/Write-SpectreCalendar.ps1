@@ -35,12 +35,12 @@ function Write-SpectreCalendar {
     Returns the Spectre Calendar object instead of writing it to the console.
 
     .EXAMPLE
-    # **Example 1**
+    # **Example 1**  
     # This example demonstrates how to write a calendar to the console.
     Write-SpectreCalendar -Date 2024-07-01 -Events @{'2024-07-10' = 'Beach time!'; '2024-07-20' = 'Barbecue' }
 
     .EXAMPLE
-    # **Example 2**
+    # **Example 2**  
     # This example demonstrates how to write a calendar to the console with some event details.
     $events = @{
         '2024-01-10' = 'Hello World!'

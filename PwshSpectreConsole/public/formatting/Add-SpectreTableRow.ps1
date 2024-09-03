@@ -14,8 +14,7 @@ The table to which the row will be added.
 An array of renderable items containing the data to be displayed in the columns of this row.
 
 .EXAMPLE
-# **Example 1**
-# This example demonstrates how to add a row to an existing Spectre Console table.
+# **Example 1**  # This example demonstrates how to add a row to an existing Spectre Console table.
 $data = @(
     [pscustomobject]@{Name="John"; Age=25; City="New York"},
     [pscustomobject]@{Name="Jane"; Age=30; City="Los Angeles"}

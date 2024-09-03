@@ -14,7 +14,7 @@ function Format-SpectreTextPath {
     The directory/file path to format
 
     .EXAMPLE
-    # **Example 1**
+    # **Example 1**  
     # This example demonstrates how to format a PowerShell path as a Spectre Console Path with syntax highlighting.
     Get-Location | Format-SpectreTextPath | Out-SpectreHost
     #>

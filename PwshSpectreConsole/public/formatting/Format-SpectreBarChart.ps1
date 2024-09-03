@@ -23,7 +23,7 @@ function Format-SpectreBarChart {
     Hides the values from being displayed on the chart.
 
     .EXAMPLE
-    # **Example 1**
+    # **Example 1**  
     # This example demonstrates how to display a bar chart of various data points.
     $data = @()
 

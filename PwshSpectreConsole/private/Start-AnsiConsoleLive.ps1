@@ -20,9 +20,9 @@ function Start-AnsiConsoleLive {
     New-Variable -Name $resultVariableName -Scope "Script"
     [Spectre.Console.AnsiConsole]::Live($Data).Start({
             param (
-                $ctx
+                [Spectre.Console.LiveDisplayContext] $Context
             )
-            Set-Variable -Name $resultVariableName -Value (& $ScriptBlock $ctx) -Scope "Script"
+            Set-Variable -Name $resultVariableName -Value (& $ScriptBlock $Context) -Scope "Script"
         })
     return Get-Variable -Name $resultVariableName -ValueOnly
 }

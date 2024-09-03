@@ -1,3 +1,5 @@
+using module "..\..\private\completions\Completers.psm1"
+
 function Write-SpectreHost {
     <#
     .SYNOPSIS
@@ -15,7 +17,7 @@ function Write-SpectreHost {
     If specified, the message will not be followed by a newline character.
 
     .EXAMPLE
-    # **Example 1**
+    # **Example 1**  
     # This example demonstrates how to write a message to the console using Spectre Console markup.
     Write-SpectreHost -Message "Hello, [blue underline]world[/]! :call_me_hand:"
     #>
@@ -24,21 +26,13 @@ function Write-SpectreHost {
         [Parameter(ValueFromPipeline, Mandatory)]
         [object] $Message,
         [switch] $NoNewline,
-        [switch] $PassThru
+        [switch] $PassThru,
+        [ValidateSet([SpectreConsoleJustify], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
+        [string]$Justify = "Left"
     )
-
-    if ($Message -is [Spectre.Console.Rendering.Renderable]) {
-        Write-AnsiConsole $Message
-        return
-    }
-
-    if ($PassThru) {
-        return [Spectre.Console.Markup]::new($Message)
-    }
-
     if ($NoNewline) {
-        Write-SpectreHostInternalMarkup $Message
+        return Write-SpectreHostInternalMarkup $Message -Justify $Justify -PassThru:$PassThru
     } else {
-        Write-SpectreHostInternalMarkupLine $Message
+        return Write-SpectreHostInternalMarkupLine $Message -Justify $Justify -PassThru:$PassThru
     }
 }

@@ -13,7 +13,7 @@ function Get-SpectreEscapedText {
     The text to be escaped.
 
     .EXAMPLE
-    # **Example 1**
+    # **Example 1**  
     # This example demonstrates how to escape text for use in Spectre Console.
     $data = "][[][red]]][[/][][]["
     Format-SpectrePanel -Title "Unescaped data" -Data "I want escaped $($data | Get-SpectreEscapedText) [yellow]and[/] [red]unescaped[/] data"

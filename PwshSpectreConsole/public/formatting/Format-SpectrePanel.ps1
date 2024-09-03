@@ -32,12 +32,12 @@ function Format-SpectrePanel {
     The height of the panel.
 
     .EXAMPLE
-    # **Example 1**
+    # **Example 1**  
     # This example demonstrates how to display a panel with a title and a rounded border.
     Format-SpectrePanel -Data "Hello, world!" -Title "My Panel" -Border "Rounded" -Color "Red"
 
     .EXAMPLE
-    # **Example 2**
+    # **Example 2**  
     # This example demonstrates how to display a panel with a title and a double border that's expanded to take up the whole console width.
     "Hello, big panel!" | Format-SpectrePanel -Title "My Big Panel" -Border "Double" -Color "Magenta1" -Expand
     #>

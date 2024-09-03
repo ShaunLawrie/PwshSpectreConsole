@@ -21,7 +21,7 @@ function Add-SpectreJob {
     The PowerShell job to add to the context.
 
     .EXAMPLE
-    # **Example 1**
+    # **Example 1**  
     # This example demonstrates how to add two jobs to a context and wait for them to complete.
     $jobOutcomes = Invoke-SpectreCommandWithProgress -ScriptBlock {
         param (

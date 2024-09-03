@@ -37,7 +37,7 @@ function Start-SpectreDemo {
     ![Spectre demo animation](/demo.gif)
 
     .EXAMPLE
-    # **Example 1**
+    # **Example 1**  
     # This example demonstrates how to run the PwshSpectreConsole demo.
     Start-SpectreDemo
     #>

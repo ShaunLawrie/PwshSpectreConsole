@@ -7,7 +7,7 @@
     This function invokes a script block in a background job and returns the output. It also provides an option to suppress the output even more if there is garbage being printed to stderr if using Level = Quieter.
 
 .EXAMPLE
-    # **Example 1**
+    # **Example 1**  
     # This example demonstrates how to use this function to suppress all output from a script block so it doesn't break the progress bar.
     $result = Invoke-SpectreCommandWithProgress {
         param (

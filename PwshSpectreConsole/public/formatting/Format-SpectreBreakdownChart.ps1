@@ -23,7 +23,7 @@ function Format-SpectreBreakdownChart {
     Hides the tag values on the chart.
 
     .EXAMPLE
-    # **Example 1**
+    # **Example 1**  
     # This example demonstrates how to display a breakdown chart of various data points.
     $data = @()
 

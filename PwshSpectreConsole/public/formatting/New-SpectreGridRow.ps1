@@ -8,9 +8,11 @@ Creates a new SpectreGridRow object with the specified columns for use in Format
 .PARAMETER Data
 An array of renderable items containing the data to be displayed in the columns of this row.
 
+.PARAMETER Justify
+The justification to apply to each data item in this row. The default is Left.
+
 .EXAMPLE
-# **Example 1**
-# This example demonstrates how to create a grid with two rows and three columns.
+# **Example 1**  # This example demonstrates how to create a grid with two rows and three columns.
 $columns = @()
 $columns += "Column 1" | Format-SpectrePanel
 $columns += "Column 2" | Format-SpectrePanel
@@ -26,7 +28,7 @@ $rows | Format-SpectreGrid
 function New-SpectreGridRow {
     [Reflection.AssemblyMetadata("title", "New-SpectreGridRow")]
     param (
-        [Parameter(Mandatory)]
+        [Parameter(ValueFromPipeline, Mandatory)]
         [array]$Data
     )
 

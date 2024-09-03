@@ -20,7 +20,7 @@ function Format-SpectreTree {
     The color to use for the tree. This can be a Spectre Console color name or a hex color code. Default is the accent color defined in the script.
 
     .EXAMPLE
-    # **Example 1**
+    # **Example 1**  
     # This example demonstrates how to display a tree with multiple children.
     $calendar = Write-SpectreCalendar -Date 2024-07-01 -PassThru
     $data = @{

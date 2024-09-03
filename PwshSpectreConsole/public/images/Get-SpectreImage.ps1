@@ -14,7 +14,7 @@ function Get-SpectreImage {
     The maximum width of the image. If not specified, the image will be displayed at its original size.
 
     .EXAMPLE
-    # **Example 1**
+    # **Example 1**  
     # This example demonstrates how to display an image in the console.
     Get-SpectreImage -ImagePath ".\private\images\smiley.png" -MaxWidth 40
     #>

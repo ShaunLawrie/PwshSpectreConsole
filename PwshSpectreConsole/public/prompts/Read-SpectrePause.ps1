@@ -17,7 +17,7 @@ function Read-SpectrePause {
     # Type "↲" to dismiss the message
 
     .EXAMPLE
-    # **Example 1**
+    # **Example 1**  
     # This example demonstrates how to use the Read-SpectrePause function with the AnyKey parameter.
     Read-SpectrePause -Message "Press the [red]ANY[/] key to continue, when you press it this message will disappear..."
     # Type "x" to dismiss the message

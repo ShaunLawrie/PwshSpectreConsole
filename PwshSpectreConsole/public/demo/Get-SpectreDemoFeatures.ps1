@@ -6,7 +6,7 @@
     This script demonstrates the features of Spectre.Console. It shows off the various colors, styles, and other features that Spectre.Console supports.
 
 .EXAMPLE
-    # **Example 1**
+    # **Example 1**  
     # This example demonstrates how to use Get-SpectreDemoFeatures to display a list of the features of Spectre.Console as seen on the https://spectreconsole.net/ homepage.
     Get-SpectreDemoFeatures
 #>

@@ -14,12 +14,12 @@ function Format-SpectreRows {
     An array of renderable items containing the data to be displayed in the rows.
 
     .EXAMPLE
-    # **Example 1**
+    # **Example 1**  
     # This example demonstrates how to display a collection of strings in rows.
     @("top", "middle", "bottom") | Format-SpectreRows
 
     .EXAMPLE
-    # **Example 2**
+    # **Example 2**  
     # This example demonstrates how to display a collection of renderable items as rows inside a panel, without wrapping the renderables in rows you cannot display them in a panel because a panel only accepts a single item.
     $rows = @()
     for ($i = 0; $i -lt 12; $i+= 4) {

@@ -13,17 +13,17 @@ function Format-SpectrePadded {
     A renderable item to wrap in padding.
 
     .EXAMPLE
-    # **Example 1**
+    # **Example 1**  
     # This example demonstrates how to pad an item with a padding of 1 on all sides
     "Item to pad" | Format-SpectrePadded -Padding 1 | Format-SpectrePanel
 
     .EXAMPLE
-    # **Example 2**
+    # **Example 2**  
     # This example demonstrates how to pad an item with a padding of 4 on all sides
     "Item to pad" | Format-SpectrePadded -Padding 4  | Format-SpectrePanel
 
     .EXAMPLE
-    # **Example 3**
+    # **Example 3**  
     # This example demonstrates how to pad an item with different padding on each side.
     "Item to pad" | Format-SpectrePadded -Top 4 -Left 10 -Right 1 -Bottom 1 | Format-SpectrePanel
     #>

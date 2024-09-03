@@ -16,7 +16,7 @@ function Out-SpectreHost {
     The default host customitem formatter has some restrictions, it needs to be one char less wide than when outputting to the standard console or it will wrap.
 
     .EXAMPLE
-    # **Example 1**
+    # **Example 1**  
     # This example demonstrates how to write a spectre renderable object to the console host.
     $table = Get-ChildItem | Select-Object Name, Length, LastWriteTime | Format-SpectreTable
     $table | Out-SpectreHost

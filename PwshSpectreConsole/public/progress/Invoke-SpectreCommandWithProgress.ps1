@@ -11,7 +11,7 @@ function Invoke-SpectreCommandWithProgress {
     The script block to execute.
 
     .EXAMPLE
-    # **Example 1**
+    # **Example 1**  
     # This example demonstrates a 4-stage process with one loading bar that loads in four chunks.
     Invoke-SpectreCommandWithProgress -ScriptBlock {
         param (
@@ -31,7 +31,7 @@ function Invoke-SpectreCommandWithProgress {
     }
 
     .EXAMPLE
-    # **Example 2**
+    # **Example 2**  
     # This example demonstrates a 2-stage process with two loading bars running in parallel.
     Invoke-SpectreCommandWithProgress -ScriptBlock {
         param (
@@ -64,7 +64,7 @@ function Invoke-SpectreCommandWithProgress {
     }
 
     .EXAMPLE
-    # **Example 3**
+    # **Example 3**  
     # This example demonstrates a task with an unknown (indeterminate) duration.
     $result = Invoke-SpectreCommandWithProgress -ScriptBlock {
         param (
@@ -81,7 +81,7 @@ function Invoke-SpectreCommandWithProgress {
     Write-SpectreHost "Result: $result"
 
     .EXAMPLE
-    # **Example 4**
+    # **Example 4**  
     # This example demonstrates a job with an estimated duration, after the estimated duration has passed the job will switch to an indeterminate state.
     $result = Invoke-SpectreCommandWithProgress -ScriptBlock {
         param (

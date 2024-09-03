@@ -11,7 +11,7 @@
     Limit the number of emoji returned. This is only really useful for generating the help docs.
 
 .EXAMPLE
-    # **Example 1**
+    # **Example 1**  
     # This example demonstrates how to use Get-SpectreDemoEmoji to display a list of the built-in Spectre Console emojis.
     Get-SpectreDemoEmoji -Count 5
 

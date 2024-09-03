@@ -27,12 +27,12 @@ function Get-SpectreImageExperimental {
     The resampling algorithm to use when scaling the image. Valid values are "Bicubic" and "NearestNeighbor". The default value is "Bicubic".
 
     .EXAMPLE
-    # **Example 1**
+    # **Example 1**  
     # This example demonstrates how to display an animated image in the console that loops 4 times.
     Get-SpectreImageExperimental -ImagePath ".\private\images\harveyspecter.gif" -LoopCount 4 -Width 82
 
     .EXAMPLE
-    # **Example 2**
+    # **Example 2**  
     # This example demonstrates how to display a static image in the console.
     Get-SpectreImageExperimental -ImagePath ".\private\images\smiley.png" -Width 80
     #>

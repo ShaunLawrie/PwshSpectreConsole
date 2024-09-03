@@ -20,7 +20,7 @@ function Format-SpectreColumns {
     A switch to expand the columns to fill the available space.
 
     .EXAMPLE
-    # **Example 1**
+    # **Example 1**  
     # This example demonstrates how to display a collection of strings in columns.
     @("lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit,", "sed", "do", "eiusmod",
       "tempor", "incididunt", "ut", "labore", "et", "dolore", "magna", "aliqua.", "Ut", "enim", "ad", "minim",
@@ -30,12 +30,12 @@ function Format-SpectreColumns {
       "cupidatat", "non", "proident", "sunt", "in", "culpa") | Foreach-Object { $_ } | Format-SpectreColumns
 
     .EXAMPLE
-    # **Example 2**
+    # **Example 2**  
     # This example demonstrates how to display a collection of panels that are expanded but with normal sized columns.
     @("left", "middle", "right") | Foreach-Object { $_ | Format-SpectrePanel -Expand } | Format-SpectreColumns
 
     .EXAMPLE
-    # **Example 3**
+    # **Example 3**  
     # This example demonstrates how to display a collection of panels that are expanded and with expanded columns so it takes up the console width.
     @("left", "middle", "right") | Foreach-Object { $_ | Format-SpectrePanel -Expand } | Format-SpectreColumns -Expand
     #>

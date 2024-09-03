@@ -32,14 +32,14 @@ function Read-SpectreSelection {
     The color of the search highlight in the selection prompt. Defaults to a slightly brighter version of the accent color.
 
     .EXAMPLE
-    # **Example 1**
+    # **Example 1**  
     # This example demonstrates a selection prompt with a custom title and choices.
     $color = Read-SpectreSelection -Title "Select your favorite color" -Choices @("Red", "Green", "Blue") -Color "Green"
     # Type "↓", "↓", "↓", "↓", "↲" to wrap around the list and choose green
     Write-SpectreHost "Your chosen color is '$color'"
 
     .EXAMPLE
-    # **Example 2**
+    # **Example 2**  
     # This example demonstrates a selection prompt with a custom title and choices, and search enabled.
     $color = Read-SpectreSelection -Title "Select your favorite color" -Choices @("Blue", "Bluer", "Blue-est") -EnableSearch
     # Type "b", "l", "u", "e", "r", "↲" to choose "Bluer"
