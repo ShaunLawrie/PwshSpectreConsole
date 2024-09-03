@@ -29,12 +29,17 @@ This is only used inside `Invoke-SpectreCommandWithProgress` where the Spectre P
 
 
 ### Examples
-> EXAMPLE 1
+
+
+**Example 1**
+This example demonstrates how to add two jobs to a context and wait for them to complete.
+
+
 
 ```powershell
 $jobOutcomes = Invoke-SpectreCommandWithProgress -ScriptBlock {
     param (
-        $Context
+        [Spectre.Console.ProgressContext] $Context
     )
     $jobs = @()
     $jobs += Add-SpectreJob -Context $Context -JobName "job 1" -Job (Start-Job { Start-Sleep -Seconds 2 })

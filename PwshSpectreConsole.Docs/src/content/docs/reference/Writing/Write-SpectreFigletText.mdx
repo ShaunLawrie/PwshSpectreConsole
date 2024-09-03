@@ -26,7 +26,12 @@ This function writes a Spectre Console Figlet text to the console. The text can 
 
 
 ### Examples
-> EXAMPLE 1
+
+
+**Example 1**
+This example demonstrates how to write Figlet text to the console.
+
+
 
 ```powershell
 Write-SpectreFigletText -Text "Hello Spectre!" -Alignment "Center" -Color "Red"
@@ -41,10 +46,15 @@ Write-SpectreFigletText -Text "Hello Spectre!" -Alignment "Center" -Color "Red"
         terminalFontFamily: "'Cascadia Code', monospace"
     }}
 />
-> EXAMPLE 2
+
+
+**Example 2**
+This example demonstrates how to write Figlet text to the console using a custom Figlet font.
+
+
 
 ```powershell
-Write-SpectreFigletText -Text "Whoa?!" -FigletFontPath "..\assets\3d.flf"
+Write-SpectreFigletText -Text "Whoa?!" -FigletFontPath "..\PwshSpectreConsole.Docs\src\assets\3d.flf"
 ```
 <Asciinema
     src={writespectrefiglettextExample2}

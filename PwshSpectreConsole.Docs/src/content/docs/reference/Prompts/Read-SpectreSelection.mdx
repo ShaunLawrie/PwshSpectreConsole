@@ -27,7 +27,12 @@ With the `-EnableSearch` switch, the user can search for choices in the selectio
 
 
 ### Examples
-> EXAMPLE 1
+
+
+**Example 1**
+This example demonstrates a selection prompt with a custom title and choices.
+
+
 
 ```powershell
 $color = Read-SpectreSelection -Title "Select your favorite color" -Choices @("Red", "Green", "Blue") -Color "Green"
@@ -44,7 +49,12 @@ Write-SpectreHost "Your chosen color is '$color'"
         terminalFontFamily: "'Cascadia Code', monospace"
     }}
 />
-> EXAMPLE 2
+
+
+**Example 2**
+This example demonstrates a selection prompt with a custom title and choices, and search enabled.
+
+
 
 ```powershell
 $color = Read-SpectreSelection -Title "Select your favorite color" -Choices @("Blue", "Bluer", "Blue-est") -EnableSearch

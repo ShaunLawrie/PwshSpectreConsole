@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
 title: Read-SpectrePause
 ---
 
@@ -38,14 +42,19 @@ Read-SpectrePause -Message "Press the [red]enter[/] key to continue, when you pr
         terminalFontFamily: "'Cascadia Code', monospace"
     }}
 />
-> EXAMPLE 2
+
+
+**Example 1**
+This example demonstrates how to use the Read-SpectrePause function with the AnyKey parameter.
+
+
 
 ```powershell
 Read-SpectrePause -Message "Press the [red]ANY[/] key to continue, when you press it this message will disappear..."
 # Type "x" to dismiss the message
 ```
 <Asciinema
-    src={readspectrepauseExample2}
+    src={readspectrepauseExample1}
     settings={{
         loop: false,
         terminalLineHeight: 1.1,
