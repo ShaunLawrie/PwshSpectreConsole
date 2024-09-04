@@ -7,7 +7,8 @@ function Invoke-SpectreCommandWithStatus {
     Invokes a script block with a Spectre status spinner.
 
     .DESCRIPTION
-    This function starts a Spectre status spinner with the specified title and spinner type, and invokes the specified script block. The spinner will continue to spin until the script block completes.
+    This function starts a Spectre status spinner with the specified title and spinner type, and invokes the specified script block. The spinner will continue to spin until the script block completes.  
+    See https://spectreconsole.net/live/status for more information.
 
     .PARAMETER ScriptBlock
     The script block to invoke.

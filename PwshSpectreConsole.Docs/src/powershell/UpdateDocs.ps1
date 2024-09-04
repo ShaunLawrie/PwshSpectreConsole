@@ -22,12 +22,24 @@ Import-Module "$PSScriptRoot\..\..\..\PwshSpectreConsole\PwshSpectreConsole.psd1
 Import-Module "$PSScriptRoot\Helpers.psm1" -Force
 Import-Module "$PSScriptRoot\Mocks.psm1" -Force
 
-# Ignore update tags for these
+# Ignore update tags for these, remove them from the list if they are updated this just makes it easy to bypass the "updated" tag
 $ignoreUpdatesFor = @(
     "Format-SpectreBarChart",
     "Format-SpectreBreakdownChart",
     "Format-SpectrePanel",
-    "Format-SpectreTable"
+    "Format-SpectreTable",
+    "Get-SpectreDemoEmoji",
+    "Start-SpectreDemo",
+    "New-SpectreChartItem",
+    "Get-SpectreImage",
+    "Get-SpectreImageExperimental",
+    "Add-SpectreJob",
+    "Invoke-SpectreCommandWithProgress",
+    "Invoke-SpectreCommandWithStatus",
+    "Invoke-SpectreScriptBlockQuietly",
+    "Wait-SpectreJobs",
+    "Read-SpectrePause",
+    "Get-SpectreEscapedText"
 )
 
 # Git user details for github action commits

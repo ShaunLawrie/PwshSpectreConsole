@@ -34,6 +34,8 @@ function Write-SpectreRule {
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
         [Spectre.Console.Color] $Color = $script:AccentColor,
+        [ColorTransformationAttribute()]
+        [ArgumentCompletionsSpectreColors()]
         [Spectre.Console.Color] $LineColor = $script:DefaultValueColor,
         [switch] $PassThru
     )

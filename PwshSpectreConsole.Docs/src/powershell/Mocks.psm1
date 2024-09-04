@@ -4,6 +4,7 @@
 $script:mocks = @{
     "Read-SpectrePause" = 1
     "Get-LastKeyPressed" = 0
+    "Get-LastChatKeyPressed" = 0
 }
 
 function Read-SpectrePauseMock {
@@ -25,6 +26,33 @@ function Get-LastKeyPressed {
     $script:mocks["Get-LastKeyPressed"]++
     return @{
         Key = $selectedKey
+    }
+}
+
+function Get-LastChatKeyPressedMock {
+    $keys = @("H", "e", "l", "l", "o", " ", "w", "o", "r", "l", "d!", "Enter",
+              "T", "h", "a", "n", "k", "s", " ", "f", "o", "r", " ", "t", "h", "e", " ", "d", "e", "m", "o", "Enter", "ctrl-c")
+
+    if ($script:mocks["Get-LastChatKeyPressed"] -eq 0) {
+        Start-Sleep -Seconds 4
+    } else {
+        Start-Sleep -Milliseconds 250
+    }
+
+    $selectedKey = $keys[$script:mocks["Get-LastChatKeyPressed"]]
+    $script:mocks["Get-LastChatKeyPressed"]++
+
+    if ($selectedKey -eq "ctrl-c") {
+        return @{
+            Key = "C"
+            KeyChar = "C"
+            Modifiers = "Control"
+        }
+    }
+
+    return @{
+        Key = $selectedKey
+        KeyChar = $selectedKey
     }
 }
 
