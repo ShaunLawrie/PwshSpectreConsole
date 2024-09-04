@@ -39,7 +39,10 @@ $ignoreUpdatesFor = @(
     "Invoke-SpectreScriptBlockQuietly",
     "Wait-SpectreJobs",
     "Read-SpectrePause",
-    "Get-SpectreEscapedText"
+    "Get-SpectreEscapedText",
+    "Set-SpectreColors",
+    "Start-SpectreRecording",
+    "Stop-SpectreRecording"
 )
 
 # Git user details for github action commits
