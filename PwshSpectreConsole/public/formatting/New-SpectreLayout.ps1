@@ -30,7 +30,7 @@ The minimum size of the layout, this can be used to ensure a layout is at least 
 .EXAMPLE
 # **Example 1**  # This example demonstrates how to create a layout with a calendar, a list of files, and a panel with a calendar aligned to the middle and center.
 $calendar = Write-SpectreCalendar -Date (Get-Date) -PassThru
-$files = Get-ChildItem | Format-SpectreTable | Format-SpectreAligned -HorizontalAlignment Right -VerticalAlignment Bottom
+$files = Get-ChildItem | Select-Object Name, LastWriteTime -First 3 | Format-SpectreTable | Format-SpectreAligned -HorizontalAlignment Right -VerticalAlignment Bottom
 
 $panel1 = $files | Format-SpectrePanel -Header "panel 1 (align bottom right)" -Expand -Color Green
 $panel2 = "hello row 2" | Format-SpectrePanel -Header "panel 2" -Expand -Color Blue
