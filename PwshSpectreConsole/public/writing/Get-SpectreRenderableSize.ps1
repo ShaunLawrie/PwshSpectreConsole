@@ -25,7 +25,7 @@ function Get-SpectreRenderableSize {
     Write-SpectreHost "Panel width: $($panelSize.Width), height: $($panelSize.Height)"
     $panel | Out-SpectreHost
     #>
-    [Reflection.AssemblyMetadata("title", "Get-SpectreWidgetHeight")]
+    [Reflection.AssemblyMetadata("title", "Get-SpectreRenderableSize")]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
         [Spectre.Console.Rendering.Renderable] $Renderable,
