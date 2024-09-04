@@ -6,29 +6,20 @@ function Write-SpectreHostInternalMarkup {
         [Parameter(Mandatory)]
         [string] $Message,
         [ValidateSet([SpectreConsoleJustify], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
-        [string]$Justify = "Left",
+        [string] $Justify = "Left",
+        [switch] $NoNewline,
         [switch] $PassThru
     )
+
+    # Add a newline character to the end of the message if NoNewline is not specified
+    if (-not $NoNewline) {
+        $Message = $Message.TrimEnd() + "`n"
+    }
+
     $output = [Spectre.Console.Markup]::new($Message)
     $output.Justification = [Spectre.Console.Justify]::$Justify
     if ($PassThru) {
         return $output
     }
     [Spectre.Console.AnsiConsole]::Write($output)
-}
-
-function Write-SpectreHostInternalMarkupLine {
-    param (
-        [Parameter(Mandatory)]
-        [string] $Message,
-        [ValidateSet([SpectreConsoleJustify], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
-        [string]$Justify = "Left",
-        [switch] $PassThru
-    )
-    $output = [Spectre.Console.Markup]::new($Message)
-    $output.Justification = [Spectre.Console.Justify]::$Justify
-    if ($PassThru) {
-        return $output
-    }
-    [Spectre.Console.AnsiConsole]::WriteLine($output)
 }

@@ -30,9 +30,5 @@ function Write-SpectreHost {
         [ValidateSet([SpectreConsoleJustify], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string]$Justify = "Left"
     )
-    if ($NoNewline) {
-        return Write-SpectreHostInternalMarkup $Message -Justify $Justify -PassThru:$PassThru
-    } else {
-        return Write-SpectreHostInternalMarkupLine $Message -Justify $Justify -PassThru:$PassThru
-    }
+    return Write-SpectreHostInternalMarkup $Message -Justify $Justify -PassThru:$PassThru -NoNewline:$NoNewline
 }

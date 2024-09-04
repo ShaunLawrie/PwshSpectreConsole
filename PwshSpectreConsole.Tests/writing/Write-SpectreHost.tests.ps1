@@ -11,23 +11,22 @@ Describe "Write-SpectreHost" {
             $testMessage | Out-Null
             Mock Write-SpectreHostInternalMarkup {
                 $Message | Should -Be $testMessage
-                [Spectre.Console.AnsiConsoleExtensions]::Markup($testConsole, $Message)
-            }
-            Mock Write-SpectreHostInternalMarkupLine {
-                $Message | Should -Be $testMessage
-                [Spectre.Console.AnsiConsoleExtensions]::MarkupLine($testConsole, $Message)
+                if (-not $NoNewline) {
+                    $Message = $Message.TrimEnd() + "`n"
+                }
+                $testConsole.Write([Spectre.Console.Markup]::new($Message))
             }
         }
 
         It "writes a message" {
             Write-SpectreHost -Message $testMessage
-            Assert-MockCalled -CommandName "Write-SpectreHostInternalMarkupLine" -Times 1 -Exactly
+            Assert-MockCalled -CommandName "Write-SpectreHostInternalMarkup" -Times 1 -Exactly
             $testConsole.Output.Split("`n").Count | Should -Be 2
         }
 
         It "accepts pipeline input" {
             $testMessage | Write-SpectreHost
-            Assert-MockCalled -CommandName "Write-SpectreHostInternalMarkupLine" -Times 1 -Exactly
+            Assert-MockCalled -CommandName "Write-SpectreHostInternalMarkup" -Times 1 -Exactly
             $testConsole.Output.Split("`n").Count | Should -Be 2
         }
 
