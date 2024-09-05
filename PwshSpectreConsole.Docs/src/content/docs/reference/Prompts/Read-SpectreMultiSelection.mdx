@@ -33,7 +33,7 @@ This example demonstrates a multi-selection prompt with a custom title and choic
 
 
 ```powershell
-$fruits = Read-SpectreMultiSelection -Title "Select your favourite fruits" `
+$fruits = Read-SpectreMultiSelection -Message "Select your favourite fruits" `
                                       -Choices @("apple", "banana", "orange", "pear", "strawberry", "durian", "lemon") `
                                       -PageSize 4
 # Type "↓", "<space>", "↓", "↓", "<space>", "↓", "<space>", "↲" to choose banana, pear and strawberry
@@ -55,7 +55,7 @@ Write-SpectreHost "Your favourite fruits are $($fruits -join ', ')"
 
 
 ### Parameters
-#### **Title**
+#### **Message**
 
 The title of the prompt. Defaults to "What are your favourite [Spectre.Console.Color]?".
 
@@ -64,9 +64,9 @@ The title of the prompt. Defaults to "What are your favourite [Spectre.Console.C
 
 
 
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[String]`|false   |1       |false        |
+|Type      |Required|Position|PipelineInput|Aliases                      |
+|----------|--------|--------|-------------|-----------------------------|
+|`[String]`|false   |1       |false        |Title<br/>Question<br/>Prompt|
 
 
 
@@ -81,7 +81,7 @@ The list of choices to display in the selection prompt. ChoiceLabelProperty is r
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
-|`[Array]`|false   |2       |false        |
+|`[Array]`|true    |2       |false        |
 
 
 
@@ -163,5 +163,5 @@ Allow the multi-selection to be submitted without any options chosen.
 
 ### Syntax
 ```powershell
-Read-SpectreMultiSelection [[-Title] <String>] [[-Choices] <Array>] [[-ChoiceLabelProperty] <String>] [[-Color] <Color>] [[-PageSize] <Int32>] [[-TimeoutSeconds] <Int32>] [-AllowEmpty] [<CommonParameters>]
+Read-SpectreMultiSelection [[-Message] <String>] [-Choices] <Array> [[-ChoiceLabelProperty] <String>] [[-Color] <Color>] [[-PageSize] <Int32>] [[-TimeoutSeconds] <Int32>] [-AllowEmpty] [<CommonParameters>]
 ```
