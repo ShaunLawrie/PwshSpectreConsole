@@ -102,7 +102,7 @@ class RenderableTransformationAttribute : ArgumentTransformationAttribute {
         }
 
         # For others just dump them as either strings formatted with markup which are easy to identify by the closing tag [/] or as plain text
-        if ($InputData -like "*[/]*") {
+        if ($InputData -like "*[/]*" -or $InputData -like "*:*:*") {
             return [Spectre.Console.Markup]::new($InputData)
         } else {
             return [Spectre.Console.Text]::new(($InputData | Out-String -NoNewline))

@@ -14,6 +14,23 @@
 :root {
   --sl-sidebar-width: 28rem;
   --sl-content-width: 80rem;
+  --sl-color-bg-sidebar: transparent;
+  --sl-color-bg: #020617;
+  --sl-color-bg-nav: #01030e;
+  --astro-code-color-background: #0f0829;
+  --background-radial: radial-gradient(circle, rgb(16, 0, 31) 0%, rgba(1, 3, 14, 1) 100%);
+}
+
+:root[data-theme="light"] {
+  --sl-color-bg-sidebar: transparent;
+  --sl-color-bg: #f9f9f9;
+  --sl-color-bg-nav: rgb(244, 232, 255);
+  --astro-code-color-background: #f9f9f9;
+  --background-radial: radial-gradient(circle, rgb(255, 255, 255) 0%, rgb(249, 243, 255) 100%);
+}
+
+body {
+  background: var(--background-radial);
 }
 
 @media (min-width: 50rem) {

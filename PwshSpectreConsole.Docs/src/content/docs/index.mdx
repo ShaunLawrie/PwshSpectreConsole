@@ -3,7 +3,7 @@ title: PwshSpectreConsole
 description: A PowerShell module that provides a Spectre.Console wrapper for PowerShell.
 template: splash
 hero:
-  tagline: A module of convenience functions to make it easy to use <a class="text-slate-700 dark:text-slate-100" href="https://spectreconsole.net/">Spectre.Console</a> in PowerShell.
+  tagline: A module to help you build pretty scripts with <a class="text-slate-700 dark:text-slate-100" href="https://spectreconsole.net/">Spectre.Console</a> in PowerShell.
   image:
     file: ../../assets/logo.png
   actions:
@@ -17,9 +17,10 @@ hero:
 ---
 
 import TerminalPreview from '../../components/TerminalPreview.astro'
+import './src/styles/homepage.css'
 
 ```powershell
-PS> Set-SpectreColors -AccentColor HotPink
-PS> Read-SpectreSelection -Title "What's for [hot_pink]dinner[/]?" -Choices @("Sushi", "Pizza", "Burgers", "Tacos")
+":face_with_tongue: What's for dinner?" | Format-SpectrePanel -Expand
+Read-SpectreSelection -Choices @("Sushi", "Pizza", "Burgers", "Tacos")
 ```
-<TerminalPreview />
+<TerminalPreview speed={1000} />

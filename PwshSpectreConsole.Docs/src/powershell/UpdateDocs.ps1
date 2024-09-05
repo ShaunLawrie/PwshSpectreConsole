@@ -191,6 +191,7 @@ foreach ($doc in $docs) {
                 Set-Location "$PSScriptRoot/../../../PwshSpectreConsole"
                 Push-Location -StackName "ExampleInvoke"
                 Invoke-Expression $code
+                Set-SpectreColors -AccentColor "Turquoise2"
                 Pop-Location -StackName "ExampleInvoke"
                 $recording = Stop-SpectreRecording -Title "Example $([int]$example++)"
 

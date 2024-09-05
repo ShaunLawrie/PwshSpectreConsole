@@ -1,53 +1,38 @@
 ---
+import fs from 'fs';
+const framesDirectory = './src/components/frames/';
+
+const frame1 = fs.readFileSync(`${framesDirectory}/terminal-preview-1.html`, 'utf8');
+const frame2 = fs.readFileSync(`${framesDirectory}/terminal-preview-2.html`, 'utf8');
+const frame3 = fs.readFileSync(`${framesDirectory}/terminal-preview-3.html`, 'utf8');
+const frame4 = fs.readFileSync(`${framesDirectory}/terminal-preview-4.html`, 'utf8');
+
+let frames = JSON.stringify([
+    frame1,
+    frame2,
+    frame3,
+    frame4
+]);
+
 const { speed } = Astro.props;
 ---
 
-<animated-terminal class="animated-terminal mt-0" data-speed={speed}>
-
-    <div class="mt-6 overflow-hidden" data-terminal-frame>
-        <pre class="font-mono bg-slate-50 dark:bg-slate-950">
-What's for <span class="text-pink-500">dinner</span>?
-&nbsp;
-<span class="text-pink-500">&gt; Sushi</span>
+<animated-terminal class="animated-terminal mt-0" data-speed={speed} data-frames={frames}>
+    <div class="mt-6">
+        <div id="terminal-wrapper" class="mt-0 overflow-hidden">
+            <div class="spectre-panel">
+<pre>
+😛 What's for dinner?
+</pre>
+</div>
+<pre class="spectre-selection">
+<span class="terminal-preview-accent">&gt; Sushi</span>
 &nbsp;&nbsp;Pizza
 &nbsp;&nbsp;Burgers</span>
 &nbsp;
 <span class="text-slate-600">(Move up and down to reveal more choices)</span></pre>
+        </div>
     </div>
-    
-    <div class="mt-6 overflow-hidden hidden" data-terminal-frame>
-        <pre class="font-mono bg-slate-50 dark:bg-slate-950">
-What's for <span class="text-pink-500">dinner</span>?
-&nbsp;
-&nbsp;&nbsp;Sushi
-<span class="text-pink-500">&gt; Pizza</span>
-&nbsp;&nbsp;Burgers
-&nbsp;
-<span class="text-slate-600">(Move up and down to reveal more choices)</span></pre>
-    </div>
-
-    <div class="mt-6 overflow-hidden hidden" data-terminal-frame>
-        <pre class="font-mono bg-slate-50 dark:bg-slate-950">
-What's for <span class="text-pink-500">dinner</span>?
-&nbsp;
-&nbsp;&nbsp;Pizza
-<span class="text-pink-500">&gt; Burgers</span>
-&nbsp;&nbsp;Tacos
-&nbsp;
-<span class="text-slate-600">(Move up and down to reveal more choices)</span></pre>
-    </div>
-
-    <div class="mt-6 overflow-hidden hidden" data-terminal-frame>
-        <pre class="font-mono bg-slate-50 dark:bg-slate-950">
-What's for <span class="text-pink-500">dinner</span>?
-&nbsp;
-&nbsp;&nbsp;Pizza
-&nbsp;&nbsp;Burgers</span>
-<span class="text-pink-500">&gt; Tacos</span>
-&nbsp;
-<span class="text-slate-600">(Move up and down to reveal more choices)</span></pre>
-    </div>
-    
 </animated-terminal>
 
 <script>
@@ -55,33 +40,26 @@ What's for <span class="text-pink-500">dinner</span>?
         constructor() {
             super();
 
+            // Get a reference to the terminal-wrapper id
+            const terminalWrapper = this.querySelector('#terminal-wrapper');
+
             // Get all frames in the terminal
-            const frames = document.querySelectorAll('[data-terminal-frame]');
+            const frames = JSON.parse(this.getAttribute('data-frames') || '[]');
 
             // Get speed converted to a number
             const speed = parseInt(this.getAttribute('data-speed') || '1000');
 
             // Remember the current frame
-            let currentFrame = 0;
-            let totalFrames = 0;
+            let currentFrame = 1;
+            
+            if (terminalWrapper !== null) {
+                // Every {speed} milliseconds show the next frame
+                setInterval(() => {
 
-            // Every {speed} milliseconds show the next frame
-            setInterval(() => {
-                frames.forEach((frame, index) => {
-                    if (index === currentFrame) {
-                        console.log(`Showing frame ${index}`);
-                        frame.classList.remove('hidden');
-                    } else {
-                        console.log(`Hiding frame ${index}`);
-                        frame.classList.contains('hidden') || frame.classList.add('hidden');
-                    }
-                });
-
-                console.log(`Current frame: ${currentFrame}`);
-                currentFrame = (currentFrame + 1) % frames.length;
-                totalFrames++;
-            }, speed);
-
+                    terminalWrapper.innerHTML = frames[currentFrame];
+                    currentFrame = (currentFrame + 1) % frames.length;
+                }, speed);
+            }
         }
     }
 
