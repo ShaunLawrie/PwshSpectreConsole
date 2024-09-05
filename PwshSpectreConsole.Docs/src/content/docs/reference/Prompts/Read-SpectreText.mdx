@@ -40,7 +40,7 @@ This example demonstrates a simple text prompt with a default answer.
 
 
 ```powershell
-$name = Read-SpectreText -Question "What's your name?" -DefaultAnswer "Prefer not to say"
+$name = Read-SpectreText -Message "What's your name?" -DefaultAnswer "Prefer not to say"
 # Type "↲" to provide no answer
 Write-SpectreHost "Your name is '$name'"
 ```
@@ -62,7 +62,7 @@ This example demonstrates a simple text prompt with a default answer and a color
 
 
 ```powershell
-$favouriteColor = Read-SpectreText -Question "What's your favorite color?" -DefaultAnswer "pink"
+$favouriteColor = Read-SpectreText -Message "What's your favorite color?" -DefaultAnswer "pink"
 # Type "orange", "↲" to enter your favourite color
 Write-SpectreHost "Your favourite color is '$favouriteColor'"
 ```
@@ -84,7 +84,7 @@ This example demonstrates a simple text prompt with a default answer, a color, a
 
 
 ```powershell
-$favouriteColor = Read-SpectreText -Question "What's your favorite color?" -AnswerColor "Cyan1" -Choices "Black", "Green", "Magenta", "I'll never tell!"
+$favouriteColor = Read-SpectreText -Message "What's your favorite color?" -AnswerColor "Cyan1" -Choices "Black", "Green", "Magenta", "I'll never tell!"
 # Type "orange", "↲", "magenta", "↲" to enter text that must match a choice in the choices list, orange will be rejected, magenta will be accepted
 Write-SpectreHost "Your favourite color is '$favouriteColor'"
 ```
@@ -104,7 +104,7 @@ Write-SpectreHost "Your favourite color is '$favouriteColor'"
 
 
 ### Parameters
-#### **Question**
+#### **Message**
 
 The question to prompt the user with.
 
@@ -113,9 +113,9 @@ The question to prompt the user with.
 
 
 
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[String]`|false   |1       |false        |
+|Type      |Required|Position|PipelineInput|Aliases                      |
+|----------|--------|--------|-------------|-----------------------------|
+|`[String]`|true    |1       |false        |Title<br/>Question<br/>Prompt|
 
 
 
@@ -198,5 +198,5 @@ With autocomplete and can tab through the choices.
 
 ### Syntax
 ```powershell
-Read-SpectreText [[-Question] <String>] [[-DefaultAnswer] <String>] [[-AnswerColor] <Color>] [-AllowEmpty] [[-TimeoutSeconds] <Int32>] [[-Choices] <String[]>] [<CommonParameters>]
+Read-SpectreText [-Message] <String> [[-DefaultAnswer] <String>] [[-AnswerColor] <Color>] [-AllowEmpty] [[-TimeoutSeconds] <Int32>] [[-Choices] <String[]>] [<CommonParameters>]
 ```

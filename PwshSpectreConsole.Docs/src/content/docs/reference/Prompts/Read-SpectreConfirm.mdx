@@ -33,7 +33,7 @@ This example demonstrates a simple confirmation prompt with a success message.
 
 
 ```powershell
-$answer = Read-SpectreConfirm -Prompt "Would you like to continue the preview installation of [#7693FF]PowerShell 7?[/]" `
+$answer = Read-SpectreConfirm -Message "Would you like to continue the preview installation of [#7693FF]PowerShell 7?[/]" `
                               -ConfirmSuccess "Woohoo! The internet awaits your elite development contributions." `
                               -ConfirmFailure "What kind of monster are you? How could you do this?"
 # Type "y", "↲" to accept the prompt
@@ -55,7 +55,7 @@ Write-Host "Your answer was '$answer'"
 
 
 ### Parameters
-#### **Prompt**
+#### **Message**
 
 The prompt to display to the user. The default value is "Do you like cute animals?".
 
@@ -64,9 +64,9 @@ The prompt to display to the user. The default value is "Do you like cute animal
 
 
 
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[String]`|false   |1       |false        |
+|Type      |Required|Position|PipelineInput|Aliases                      |
+|----------|--------|--------|-------------|-----------------------------|
+|`[String]`|true    |1       |false        |Title<br/>Question<br/>Prompt|
 
 
 
@@ -152,5 +152,5 @@ The text and markup to display if the user chooses no. If left undefined, nothin
 
 ### Syntax
 ```powershell
-Read-SpectreConfirm [[-Prompt] <String>] [[-DefaultAnswer] <String>] [[-ConfirmSuccess] <String>] [[-ConfirmFailure] <String>] [[-TimeoutSeconds] <Int32>] [[-Color] <Color>] [<CommonParameters>]
+Read-SpectreConfirm [-Message] <String> [[-DefaultAnswer] <String>] [[-ConfirmSuccess] <String>] [[-ConfirmFailure] <String>] [[-TimeoutSeconds] <Int32>] [[-Color] <Color>] [<CommonParameters>]
 ```
