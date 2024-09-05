@@ -26,3 +26,7 @@ Check out the contributing guide [here](/CONTRIBUTING.md).
 Full documentation is at [https://pwshspectreconsole.com/](https://pwshspectreconsole.com/)
 
 [![image](/PwshSpectreConsole/private/images/webpreview.png)](https://pwshspectreconsole.com/)
+
+### Prerelease Documentation
+
+Prerelease documentation is at [https://prerelease.pwshspectreconsole.com/](https://prerelease.pwshspectreconsole.com/)
