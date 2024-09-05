@@ -54,9 +54,9 @@ function Start-SpectreDemo {
     Write-Host ""
 
     Write-SpectreRule "PwshSpectreConsole Intro" -Color ([Spectre.Console.Color]::SteelBlue1)
-    Write-SpectreHost "`nPwshSpectreConsole is an opinionated wrapper for the awesome Spectre.Console library. It's opinionated in that I have not just exposed the internals of Spectre Console to PowerShell but have wrapped them in a way that makes them work better in the PowerShell ecosystem (in my opinion 😜)."
+    Write-SpectreHost "`nPwshSpectreConsole is a wrapper for the awesome Spectre.Console library. The internals of Spectre Console have not just been exposed to PowerShell but have wrapped them in a way that makes them work better in the PowerShell ecosystem."
     Write-SpectreHost "`nSpectre Console is mostly an async library and it leans heavily on types and extension methods in C# which are very verbose to work with in PowerShell so this module hides away some of the complexity."
-    Write-SpectreHost "`nThe module doesn't expose the full feature set of Spectre.Console because the scope of the library is huge and I've focused on the features that I use to enhance my scripts."
+    Write-SpectreHost "`nThe module exposes all core functionality of Spectre.Console but not all configuration options may be available. Feel free to open an issue on the Github repo if you would like to see something added."
     Write-Host ""
     if (![Spectre.Console.AnsiConsole]::Console.Profile.Capabilities.Unicode) {
         Write-Warning "To enable all features of Spectre.Console you need to enable Unicode support in your PowerShell profile by adding the following to your profile at $PROFILE. See https://spectreconsole.net/best-practices for more info.`n`n`$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding`n"
@@ -329,5 +329,23 @@ Write-SpectreHost "I'm Harvey Specter. Are you after a Specter consult or a Spec
     Invoke-Expression $example
 
     Read-SpectrePause
+    Clear-Host
+
+    if ($host.UI.RawUI.WindowSize.Width -lt 120) {
+        Write-SpectreFigletText "Pwsh + Spectre!"
+    } else {
+        Write-SpectreFigletText "Welcome to PwshSpectreConsole!"
+    }
     Write-Host ""
+
+    Write-SpectreRule "PwshSpectreConsole Outro" -Color ([Spectre.Console.Color]::SteelBlue1)
+
+    Get-SpectreDemoFeatures
+
+    @(
+        (Write-SpectreHost "Thanks for checking out the PwshSpectreConsole demo!" -PassThru | Format-SpectrePadded -Top 1 -Left 0 -Right 0 -Bottom 1),
+        (Write-SpectreHost "There are more examples and documentation at [blue]https://pwshspectreconsole.com/[/]" -PassThru),
+        (Write-SpectreHost "You can also check out the original dotnet library documentation at [blue]https://spectreconsole.net/[/]" -PassThru),
+        (Write-SpectreHost "Have fun :waving_hand:" -PassThru | Format-SpectrePadded -Top 1 -Left 0 -Right 0 -Bottom 1)
+    ) | Format-SpectreRows | Format-SpectrePanel -Expand
 }
