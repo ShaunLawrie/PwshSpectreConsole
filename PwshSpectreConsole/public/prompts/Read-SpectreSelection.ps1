@@ -10,7 +10,7 @@ function Read-SpectreSelection {
     This function displays a selection prompt using Spectre Console. The user can select an option from the list of choices provided. The function returns the selected option.  
     With the `-EnableSearch` switch, the user can search for choices in the selection prompt by typing the characters instead of just typing up and down arrows.
 
-    .PARAMETER Title
+    .PARAMETER Message
     The title of the selection prompt.
 
     .PARAMETER Choices
@@ -34,21 +34,23 @@ function Read-SpectreSelection {
     .EXAMPLE
     # **Example 1**  
     # This example demonstrates a selection prompt with a custom title and choices.
-    $color = Read-SpectreSelection -Title "Select your favorite color" -Choices @("Red", "Green", "Blue") -Color "Green"
+    $color = Read-SpectreSelection -Message "Select your favorite color" -Choices @("Red", "Green", "Blue") -Color "Green"
     # Type "↓", "↓", "↓", "↓", "↲" to wrap around the list and choose green
     Write-SpectreHost "Your chosen color is '$color'"
 
     .EXAMPLE
     # **Example 2**  
     # This example demonstrates a selection prompt with a custom title and choices, and search enabled.
-    $color = Read-SpectreSelection -Title "Select your favorite color" -Choices @("Blue", "Bluer", "Blue-est") -EnableSearch
+    $color = Read-SpectreSelection -Message "Select your favorite color" -Choices @("Blue", "Bluer", "Blue-est") -EnableSearch
     # Type "b", "l", "u", "e", "r", "↲" to choose "Bluer"
     Write-SpectreHost "Your chosen color is '$color'"
     #>
     [Reflection.AssemblyMetadata("title", "Read-SpectreSelection")]
     param (
-        [string] $Title = "What's your favourite colour [$($script:AccentColor.ToMarkup())]option[/]?",
-        [array] $Choices = @("red", "green", "blue"),
+        [Alias("Title", "Question", "Prompt")]
+        [string] $Message,
+        [Parameter(Mandatory)]
+        [array] $Choices,
         [string] $ChoiceLabelProperty,
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
@@ -73,7 +75,9 @@ function Read-SpectreSelection {
     }
 
     $spectrePrompt = [Spectre.Console.SelectionPromptExtensions]::AddChoices($spectrePrompt, [string[]]$choiceLabels)
-    $spectrePrompt.Title = $Title
+    if ($Message) {
+        $spectrePrompt.Title = $Message
+    }
     $spectrePrompt.PageSize = $PageSize
     $spectrePrompt.WrapAround = $true
     $spectrePrompt.HighlightStyle = [Spectre.Console.Style]::new($Color)

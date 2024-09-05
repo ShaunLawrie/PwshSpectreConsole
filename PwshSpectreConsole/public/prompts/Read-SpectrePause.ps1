@@ -26,6 +26,7 @@ function Read-SpectrePause {
     #>
     [Reflection.AssemblyMetadata("title", "Read-SpectrePause")]
     param (
+        [Alias("Title", "Question", "Prompt")]
         [string] $Message = "[$($script:DefaultValueColor.ToMarkup())]Press [$($script:AccentColor.ToMarkup())]<enter>[/] to continue[/]",
         [switch] $AnyKey,
         [switch] $NoNewline

@@ -9,7 +9,7 @@ function Read-SpectreMultiSelection {
     .DESCRIPTION
     This function displays a multi-selection prompt using Spectre Console and returns the selected choices. The prompt allows the user to select one or more choices from a list of options. The function supports customizing the title, choices, choice label property, color, and page size of the prompt.
 
-    .PARAMETER Title
+    .PARAMETER Message
     The title of the prompt. Defaults to "What are your favourite [Spectre.Console.Color]?".
 
     .PARAMETER Choices
@@ -30,7 +30,7 @@ function Read-SpectreMultiSelection {
     .EXAMPLE
     # **Example 1**  
     # This example demonstrates a multi-selection prompt with a custom title and choices.
-    $fruits = Read-SpectreMultiSelection -Title "Select your favourite fruits" `
+    $fruits = Read-SpectreMultiSelection -Message "Select your favourite fruits" `
                                           -Choices @("apple", "banana", "orange", "pear", "strawberry", "durian", "lemon") `
                                           -PageSize 4
     # Type "↓", "<space>", "↓", "↓", "<space>", "↓", "<space>", "↲" to choose banana, pear and strawberry
@@ -38,8 +38,10 @@ function Read-SpectreMultiSelection {
     #>
     [Reflection.AssemblyMetadata("title", "Read-SpectreMultiSelection")]
     param (
-        [string] $Title = "What are your favourite [$($script:AccentColor.ToMarkup())]colors[/]?",
-        [array] $Choices = @("red", "orange", "yellow", "green", "blue", "indigo", "violet"),
+        [Alias("Title", "Question", "Prompt")]
+        [string] $Message,
+        [Parameter(Mandatory)]
+        [array] $Choices,
         [string] $ChoiceLabelProperty,
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
@@ -65,7 +67,9 @@ function Read-SpectreMultiSelection {
     }
 
     $spectrePrompt = [Spectre.Console.MultiSelectionPromptExtensions]::AddChoices($spectrePrompt, [string[]]$choiceLabels)
-    $spectrePrompt.Title = $Title
+    if ($Message) {
+        $spectrePrompt.Title = $Message
+    }
     $spectrePrompt.PageSize = $PageSize
     $spectrePrompt.WrapAround = $true
     $spectrePrompt.Required = !$AllowEmpty

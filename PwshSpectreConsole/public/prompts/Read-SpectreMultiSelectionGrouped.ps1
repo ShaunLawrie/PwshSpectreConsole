@@ -9,7 +9,7 @@ function Read-SpectreMultiSelectionGrouped {
     .DESCRIPTION
     Displays a multi-selection prompt with grouped choices and returns the selected choices. The prompt allows the user to select one or more choices from a list of options. The choices can be grouped into categories, and the user can select choices from each category.
 
-    .PARAMETER Title
+    .PARAMETER Message
     The title of the prompt. The default value is "What are your favourite [Spectre.Console.Color]?".
 
     .PARAMETER Choices
@@ -30,7 +30,7 @@ function Read-SpectreMultiSelectionGrouped {
     .EXAMPLE
     # **Example 1**  
     # This example demonstrates a multi-selection prompt with grouped choices.
-    $selected = Read-SpectreMultiSelectionGrouped -Title "Select your favorite colors" -PageSize 8 -Choices @(
+    $selected = Read-SpectreMultiSelectionGrouped -Message "Select your favorite colors" -PageSize 8 -Choices @(
         @{
             Name = "Primary Colors"
             Choices = @("Red", "Blue", "Yellow")
@@ -45,17 +45,10 @@ function Read-SpectreMultiSelectionGrouped {
     #>
     [Reflection.AssemblyMetadata("title", "Read-SpectreMultiSelectionGrouped")]
     param (
-        [string] $Title = "What are your favourite [$($script:AccentColor.ToMarkup())]colors[/]?",
-        [array] $Choices = @(
-            @{
-                Name    = "The rainbow"
-                Choices = @("red", "orange", "yellow", "green", "blue", "indigo", "violet")
-            },
-            @{
-                Name    = "The other colors"
-                Choices = @("black", "grey", "white")
-            }
-        ),
+        [Alias("Title", "Question", "Prompt")]
+        [string] $Message,
+        [Parameter(Mandatory)]
+        [array] $Choices,
         [string] $ChoiceLabelProperty,
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
@@ -88,7 +81,9 @@ function Read-SpectreMultiSelectionGrouped {
         $spectrePrompt = [Spectre.Console.MultiSelectionPromptExtensions]::AddChoiceGroup($spectrePrompt, $group.Name, [string[]]$choiceLabels)
     }
 
-    $spectrePrompt.Title = $Title
+    if ($Message) {
+        $spectrePrompt.Title = $Message
+    }
     $spectrePrompt.PageSize = $PageSize
     $spectrePrompt.WrapAround = $true
     $spectrePrompt.Required = !$AllowEmpty
