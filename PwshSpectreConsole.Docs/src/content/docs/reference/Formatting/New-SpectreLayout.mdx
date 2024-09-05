@@ -34,7 +34,7 @@ You can only have either rows OR columns in a layout and can compose layouts of 
 
 ```powershell
 $calendar = Write-SpectreCalendar -Date (Get-Date) -PassThru
-$files = Get-ChildItem | Format-SpectreTable | Format-SpectreAligned -HorizontalAlignment Right -VerticalAlignment Bottom
+$files = Get-ChildItem | Select-Object Name, LastWriteTime -First 3 | Format-SpectreTable | Format-SpectreAligned -HorizontalAlignment Right -VerticalAlignment Bottom
 $panel1 = $files | Format-SpectrePanel -Header "panel 1 (align bottom right)" -Expand -Color Green
 $panel2 = "hello row 2" | Format-SpectrePanel -Header "panel 2" -Expand -Color Blue
 $panel3 = $calendar | Format-SpectreAligned | Format-SpectrePanel -Header "panel 3 (align middle center)" -Expand -Color Yellow
