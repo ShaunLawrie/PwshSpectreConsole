@@ -33,7 +33,7 @@ export default defineConfig({
             },
             {
               label: "Upgrading to v2",
-              link: "/guides/upgrading-to-2-0/",
+              link: "/guides/upgrading-to-v2/",
               badge: {
                 text: "New",
                 variant: "tip",

@@ -42,7 +42,7 @@ function Format-SpectreRows {
                 if ($dataItem -is [Spectre.Console.Rendering.Renderable]) {
                     $rowItems += $dataItem
                 } elseif ($dataItem -is [string]) {
-                    $rowItems += [Spectre.Console.Text]::new($dataItem)
+                    $rowItems += $dataItem | ConvertTo-Renderable
                 } else {
                     throw "Data item must be a spectre renderable object or string"
                 }
@@ -51,7 +51,7 @@ function Format-SpectreRows {
             if ($Data -is [Spectre.Console.Rendering.Renderable]) {
                 $rowItems += $Data
             } elseif ($Data -is [string]) {
-                $rowItems += [Spectre.Console.Text]::new($Data)
+                $rowItems += $Data | ConvertTo-Renderable
             } else {
                 throw "Data item must be a spectre renderable object or string"
             }

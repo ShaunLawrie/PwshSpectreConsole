@@ -5,12 +5,13 @@ description: Breaking and important changes.
 
 ## 🚀 Check out the Prerelease Build
 
-Install or update to the pre-release version of the module.
+Install or update to the latest version of the module.
 
 ```powershell
-Install-Module PwshSpectreConsole -Scope CurrentUser -AllowPrerelease
-# or update to the prerelease version
-Update-Module PwshSpectreConsole -Scope CurrentUser -AllowPrerelease
+# Install the latest version
+Install-Module PwshSpectreConsole -Scope CurrentUser
+# or update your existing version to the latest
+Update-Module PwshSpectreConsole -Scope CurrentUser
 ```
 
 ## 💥 Breaking Changes
@@ -50,7 +51,15 @@ $fruits = @(
 } | Format-SpectreTable -Color Cyan1
 ```
 
-### New Commandlets
+### Live Rendering
+
+The `Invoke-SpectreLive` function allows you to run a scriptblock and update a renderable item live in real-time. This allow you to build simple terminal user interfaces or live updating dashboards.  
+
+See the documentation for [`Invoke-SpectreLive`](/reference/live/invoke-spectrelive/) for more information and examples.  
+
+![Filebrowser example](../../../../public/filebrowser.gif)
+
+### All New Commandlets
 
 New commandlets to make this PowerShell library compatible with the rest of the Spectre.Console C# library:
 
