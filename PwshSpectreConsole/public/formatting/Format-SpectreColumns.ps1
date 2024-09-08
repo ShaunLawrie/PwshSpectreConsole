@@ -54,19 +54,15 @@ function Format-SpectreColumns {
             foreach ($dataItem in $Data) {
                 if ($dataItem -is [Spectre.Console.Rendering.Renderable]) {
                     $columnItems += $dataItem
-                } elseif ($dataItem -is [string]) {
-                    $columnItems += [Spectre.Console.Text]::new($dataItem)
                 } else {
-                    throw "Data item must be a spectre renderable object or string"
+                    $columnItems += $dataItem | ConvertTo-Renderable
                 }
             }
         } else {
             if ($Data -is [Spectre.Console.Rendering.Renderable]) {
                 $columnItems += $Data
-            } elseif ($Data -is [string]) {
-                $columnItems += [Spectre.Console.Text]::new($Data)
             } else {
-                throw "Data item must be a spectre renderable object or string"
+                $columnItems += $Data | ConvertTo-Renderable
             }
         }
     }

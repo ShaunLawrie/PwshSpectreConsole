@@ -3,9 +3,7 @@ title: Upgrading to v2
 description: Breaking and important changes.
 ---
 
-## 🚀 Check out the Prerelease Build
-
-Install or update to the latest version of the module.
+## 🚀 Get the New Version
 
 ```powershell
 # Install the latest version

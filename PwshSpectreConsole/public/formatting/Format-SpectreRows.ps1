@@ -41,19 +41,15 @@ function Format-SpectreRows {
             foreach ($dataItem in $Data) {
                 if ($dataItem -is [Spectre.Console.Rendering.Renderable]) {
                     $rowItems += $dataItem
-                } elseif ($dataItem -is [string]) {
-                    $rowItems += $dataItem | ConvertTo-Renderable
                 } else {
-                    throw "Data item must be a spectre renderable object or string"
+                    $rowItems += $dataItem | ConvertTo-Renderable
                 }
             }
         } else {
             if ($Data -is [Spectre.Console.Rendering.Renderable]) {
                 $rowItems += $Data
-            } elseif ($Data -is [string]) {
-                $rowItems += $Data | ConvertTo-Renderable
             } else {
-                throw "Data item must be a spectre renderable object or string"
+                $rowItems += $Data | ConvertTo-Renderable
             }
         }
     }
