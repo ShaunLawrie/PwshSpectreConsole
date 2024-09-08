@@ -22,8 +22,9 @@ function Format-SpectreRows {
     # **Example 2**  
     # This example demonstrates how to display a collection of renderable items as rows inside a panel, without wrapping the renderables in rows you cannot display them in a panel because a panel only accepts a single item.
     $rows = @()
+    $bigText = "lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa"
     for ($i = 0; $i -lt 12; $i+= 4) {
-        $rows += "lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa" | Format-SpectrePadded -Left $i -Top 0 -Bottom 0 -Right 0
+        $rows += $bigText | Format-SpectrePadded -Left $i -Top 0 -Bottom 0 -Right 0
     }
     $rows | Format-SpectreRows | Format-SpectrePanel
     #>

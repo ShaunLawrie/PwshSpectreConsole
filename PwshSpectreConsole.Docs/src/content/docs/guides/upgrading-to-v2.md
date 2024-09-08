@@ -55,7 +55,7 @@ The `Invoke-SpectreLive` function allows you to run a scriptblock and update a r
 
 See the documentation for [`Invoke-SpectreLive`](/reference/live/invoke-spectrelive/) for more information and examples.  
 
-![Filebrowser example](/public/filebrowser.gif)
+![Filebrowser example](/filebrowser.gif)
 
 ### All New Commandlets
 
