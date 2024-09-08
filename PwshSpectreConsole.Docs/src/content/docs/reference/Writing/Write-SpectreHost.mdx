@@ -1,6 +1,9 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
 title: Write-SpectreHost
-description: The Write-SpectreHost function writes a message to the console using Spectre Console. It supports ANSI markup and can optionally append a newline character to the end of the message.
 ---
 
 
@@ -24,7 +27,12 @@ Supported emoji are defined at [https://spectreconsole.net/appendix/emojis](http
 
 
 ### Examples
-> EXAMPLE 1
+
+
+**Example 1**  
+This example demonstrates how to write a message to the console using Spectre Console markup.
+
+
 
 ```powershell
 Write-SpectreHost -Message "Hello, [blue underline]world[/]! :call_me_hand:"
@@ -56,7 +64,7 @@ The message to write to the console.
 
 |Type      |Required|Position|PipelineInput |
 |----------|--------|--------|--------------|
-|`[String]`|true    |1       |true (ByValue)|
+|`[Object]`|true    |1       |true (ByValue)|
 
 
 
@@ -75,6 +83,36 @@ If specified, the message will not be followed by a newline character.
 
 
 
+#### **PassThru**
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|false   |named   |false        |
+
+
+
+#### **Justify**
+
+Valid Values:
+
+* Left
+* Right
+* Center
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |2       |false        |
+
+
+
 
 
 ---
@@ -82,5 +120,5 @@ If specified, the message will not be followed by a newline character.
 
 ### Syntax
 ```powershell
-Write-SpectreHost [-Message] <String> [-NoNewline] [<CommonParameters>]
+Write-SpectreHost [-Message] <Object> [-NoNewline] [-PassThru] [[-Justify] <String>] [<CommonParameters>]
 ```

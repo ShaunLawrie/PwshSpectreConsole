@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
 title: Format-SpectreJson
 ---
 
@@ -13,7 +17,9 @@ import formatspectrejsonExample1 from '../../../../assets/examples/formatspectre
 
 ### Description
 
-This function takes an array of objects and converts them into Json using the Spectre Console Json Library.
+This function takes an objects and converts them into syntax highlighted Json using the Spectre Console Json Library.  
+Thanks to [trackd](https://github.com/trackd) for adding this!  
+See https://spectreconsole.net/widgets/json for more information.
 
 
 
@@ -21,7 +27,12 @@ This function takes an array of objects and converts them into Json using the Sp
 
 
 ### Examples
-> EXAMPLE 1
+
+
+**Example 1**  
+This example demonstrates how to format an array of objects into a Spectre Console Json object with syntax highlighting.
+
+
 
 ```powershell
 $data = @(
@@ -38,7 +49,7 @@ $data = @(
         }
     }
 )
-Format-SpectreJson -Data $data -Title "Employee Data" -Border "Rounded" -Color "Green"
+Format-SpectreJson -Data $data
 ```
 <Asciinema
     src={formatspectrejsonExample1}
@@ -86,24 +97,12 @@ The maximum depth of the Json. Default is defined by the version of powershell.
 
 
 
-#### **Title**
-
-The title of the Json.
-
-
-
-
-
-
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[String]`|false   |3       |false        |
-
-
-
 #### **NoBorder**
 
-If specified, the Json will not be surrounded by a border.
+:::caution
+This parameter is deprecated and will be removed in the future. It takes no effect from version 2.0.
+The json output already has no border.
+:::
 
 
 
@@ -118,18 +117,28 @@ If specified, the Json will not be surrounded by a border.
 
 #### **Border**
 
-The border style of the Json. Default is "Rounded".
+:::caution
+This parameter is deprecated and will be removed in the future. It takes no effect from version 2.0.
+To add a border wrap this object in a panel, use `$data | Format-SpectreJson | Format-SpectrePanel`.
+:::
 
 
 
-Valid Values:
 
-* Ascii
-* Double
-* Heavy
-* None
-* Rounded
-* Square
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |3       |false        |
+
+
+
+#### **Color**
+
+:::caution
+This parameter is deprecated and will be removed in the future. It takes no effect from version 2.0.
+To add a border with a color use `$data | Format-SpectreJson | Format-SpectrePanel -Color "color"`.
+:::
 
 
 
@@ -142,24 +151,30 @@ Valid Values:
 
 
 
-#### **Color**
+#### **Title**
 
-The color of the Json border. Default is the accent color of the script.
+:::caution
+This parameter is deprecated and will be removed in the future. It takes no effect from version 2.0.
+To add a border with a title to the json data, use `$data | Format-SpectreJson | Format-SpectrePanel -Header "title"`.
+:::
 
 
 
 
 
 
-|Type     |Required|Position|PipelineInput|
-|---------|--------|--------|-------------|
-|`[Color]`|false   |5       |false        |
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |5       |false        |
 
 
 
 #### **Width**
 
-The width of the Json panel.
+:::caution
+This parameter is deprecated and will be removed in the future. It takes no effect from version 2.0.
+To add a border with a width, use `$data | Format-SpectreJson | Format-SpectrePanel -Width 20`.
+:::
 
 
 
@@ -174,7 +189,10 @@ The width of the Json panel.
 
 #### **Height**
 
-The height of the Json panel.
+:::caution
+This parameter is deprecated and will be removed in the future. It takes no effect from version 2.0.
+To add a border with a width, use `$data | Format-SpectreJson | Format-SpectrePanel -Height 20`.
+:::
 
 
 
@@ -187,14 +205,32 @@ The height of the Json panel.
 
 
 
-#### **Expand**
+#### **JsonStyle**
+
+A hashtable of Spectre Console color names and values to style the Json output.
+e.g.
+```
+@{
+    MemberStyle    = "Yellow"
+    BracesStyle    = "Red"
+    BracketsStyle  = "Orange1"
+    ColonStyle     = "White"
+    CommaStyle     = "White"
+    StringStyle    = "White"
+    NumberStyle    = "Red"
+    BooleanStyle   = "LightSkyBlue1"
+    NullStyle      = "Gray"
+}
+```
 
 
 
 
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[Switch]`|false   |named   |false        |
+
+
+|Type         |Required|Position|PipelineInput|
+|-------------|--------|--------|-------------|
+|`[Hashtable]`|false   |8       |false        |
 
 
 
@@ -205,5 +241,5 @@ The height of the Json panel.
 
 ### Syntax
 ```powershell
-Format-SpectreJson [-Data] <Object> [[-Depth] <Int32>] [[-Title] <String>] [-NoBorder] [[-Border] <String>] [[-Color] <Color>] [[-Width] <Int32>] [[-Height] <Int32>] [-Expand] [<CommonParameters>]
+Format-SpectreJson [-Data] <Object> [[-Depth] <Int32>] [-NoBorder] [[-Border] <String>] [[-Color] <String>] [[-Title] <String>] [[-Width] <Int32>] [[-Height] <Int32>] [[-JsonStyle] <Hashtable>] [<CommonParameters>]
 ```

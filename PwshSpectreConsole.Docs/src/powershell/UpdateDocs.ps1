@@ -4,7 +4,8 @@ param(
     [string]$Branch = "dev",
     [switch]$NonInteractive,
     [switch]$NoBuild,
-    [switch]$NoCommit
+    [switch]$NoCommit,
+    [string]$TargetFunction
 )
 
 $ErrorActionPreference = "Stop"
@@ -15,11 +16,34 @@ if($helpOut.Version.ToString() -ne "0.5") {
     throw "Must be run with HelpOut v0.5"
 }
 
-& "$PSScriptRoot\..\..\..\PwshSpectreConsole\Build.ps1"
+& "$PSScriptRoot\..\..\..\PwshSpectreConsole\Build.ps1" -NoReinstall
 
 Import-Module "$PSScriptRoot\..\..\..\PwshSpectreConsole\PwshSpectreConsole.psd1" -Force
 Import-Module "$PSScriptRoot\Helpers.psm1" -Force
 Import-Module "$PSScriptRoot\Mocks.psm1" -Force
+
+# Ignore update tags for these, remove them from the list if they are updated this just makes it easy to bypass the "updated" tag
+$ignoreUpdatesFor = @(
+    "Format-SpectreBarChart",
+    "Format-SpectreBreakdownChart",
+    "Format-SpectrePanel",
+    "Format-SpectreTable",
+    "Get-SpectreDemoEmoji",
+    "Start-SpectreDemo",
+    "New-SpectreChartItem",
+    "Get-SpectreImage",
+    "Get-SpectreImageExperimental",
+    "Add-SpectreJob",
+    "Invoke-SpectreCommandWithProgress",
+    "Invoke-SpectreCommandWithStatus",
+    "Invoke-SpectreScriptBlockQuietly",
+    "Wait-SpectreJobs",
+    "Read-SpectrePause",
+    "Get-SpectreEscapedText",
+    "Set-SpectreColors",
+    "Start-SpectreRecording",
+    "Stop-SpectreRecording"
+)
 
 # Git user details for github action commits
 $env:GIT_COMMITTER_NAME = 'Shaun Lawrie (via GitHub Actions)'
@@ -65,6 +89,10 @@ Update-HashFilesInGit -StagingPath $stagingPath -OutputPath $outputPath -NoCommi
 # Format the files for astro
 $docs = Get-ChildItem $stagingPath -Filter "*.md" -Recurse | Where-Object { $_.Name -like "*-*" }
 $mocks = Get-Module "Mocks"
+if (![string]::IsNullOrEmpty($TargetFunction)) {
+    Write-Host "Filtering to only include help for function $TargetFunction"
+    $docs = $docs | Where-Object { $_.Name -like "*$TargetFunction*" }
+}
 foreach ($doc in $docs) {
     $content = Get-Content $doc.FullName -Raw
 
@@ -86,11 +114,9 @@ foreach ($doc in $docs) {
 
     # Work out the tag to apply to the current help file
     $tag = $null
-    if ($content -like "*This is experimental*") {
-        $tag = "Experimental"
-    } elseif([string]::IsNullOrEmpty($created) -or ((Get-Date) - ([datetime]$created)).TotalDays -lt $recentThresholdDays) {
+    if([string]::IsNullOrEmpty($created) -or ((Get-Date) - ([datetime]$created)).TotalDays -lt $recentThresholdDays) {
         $tag = "New"
-    } elseif (((Get-Date) - ([datetime]$modified)).TotalDays -lt $recentThresholdDays) {
+    } elseif ((((Get-Date) - ([datetime]$modified)).TotalDays -lt $recentThresholdDays) -and $ignoreUpdatesFor -notcontains $commandName) {
         $tag = "Updated"
     }
     Write-Host "File $($doc.Name) was last modified on $modified and created on $created, using tag $tag"
@@ -115,6 +141,10 @@ foreach ($doc in $docs) {
         try {
             Set-Location $PSScriptRoot
             $imports = "import Asciinema from '../../../../components/Asciinema.astro'`n"
+            # Demo colors is annoying and needs a darker foreground color
+            if ($doc.Name -like "*DemoColors*") {
+                $imports = "<style>{`` div.asciinema-player-theme-spectre { --term-color-0: #000000; } ``}</style>`n`n" + $imports
+            }
             foreach($codeBlock in $codeBlocksExcludingSyntaxSection) {
                 $code = $codeBlock -replace '(?s)```powershell', ''
                 $code = $code -replace '```', ''
@@ -122,7 +152,7 @@ foreach ($doc in $docs) {
 
                 # Extract the input comments
                 $inputs = $code | Select-String '# Type (".+")'
-                $specialChars = @("↑", "↓", "↲", "¦", "<space>")
+                $specialChars = @("↑", "↓", "↲", "<space>")
                 $inputDelay = Get-Random -Minimum 500 -Maximum 1000
                 $typingDelay = Get-Random -Minimum 50 -Maximum 200
                 $recordingConsole = Start-SpectreRecording -RecordingType "asciinema" -Width 110 -Height 48
@@ -149,15 +179,20 @@ foreach ($doc in $docs) {
                     Write-Host -ForegroundColor DarkGray "None"
                 }
                 foreach($mock in $mocks.ExportedCommands.Values.Name) {
-                    $originalCommandName = $mock -replace "Mock", ""
+                    $originalCommandName = $mock -replace "Mock"
                     $code = $code -replace $originalCommandName, $mock
+                    $code = $code -replace "function $originalCommandName", "function ${mock}Replaced"
                 }
                 Write-Host "Modified sample:"
                 Write-Host -ForegroundColor DarkGray $code
                 if($code -like "*Write-Error*") {
                     $code = $code -replace "Write-Error", "Write-Host"
                 }
+                Set-Location "$PSScriptRoot/../../../PwshSpectreConsole"
+                Push-Location -StackName "ExampleInvoke"
                 Invoke-Expression $code
+                Set-SpectreColors -AccentColor "Blue"
+                Pop-Location -StackName "ExampleInvoke"
                 $recording = Stop-SpectreRecording -Title "Example $([int]$example++)"
 
                 $castName = ($doc.Name -replace '.md$', '' -replace '-', '').ToLower() + "Example$example"
@@ -167,6 +202,7 @@ foreach ($doc in $docs) {
                 # Replace the code block with the ascii cast
                 $castTemplate = Get-AsciiCastTemplate -Name $castName
                 $content = $content -replace "(?ms)> EXAMPLE $example.+?(``````.+?``````)", "> EXAMPLE $example`n`n`$1`n$castTemplate"
+                $content = $content -replace "(?ms)(\*\*Example $example\*\*.+?)(``````.+?``````)", "`n`n`$1`n`n`$2`n$castTemplate"
             }
             $content = $content -replace "### Description", "$imports`n### Description"
         } finally {
@@ -180,7 +216,7 @@ foreach ($doc in $docs) {
 }
 
 # Copy the files into the output directory in a way that doesn't crash the astro dev server
-Update-HelpFiles -StagingPath $stagingPath -AsciiCastOutputPath $asciiCastOutputPath -OutputPath $outputPath -NoCommit:$NoCommit
+Update-HelpFiles -StagingPath $stagingPath -AsciiCastOutputPath $asciiCastOutputPath -OutputPath $outputPath -NoCommit:$NoCommit -TargetFunction $TargetFunction
 
 # Set some overrides to indicate it's the pre-release site
 if($Branch -eq "prerelease") {

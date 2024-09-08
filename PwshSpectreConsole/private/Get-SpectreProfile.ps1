@@ -1,9 +1,8 @@
-using namespace Spectre.Console
 
 function Get-SpectreProfile {
     [CmdletBinding()]
     param ()
-    $object = [AnsiConsole]::Profile
+    $object = [Spectre.Console.AnsiConsole]::Profile
     return [PSCustomObject]@{
         Enrichers             = $object.Enrichers -join ', '
         ColorSystem           = $object.Capabilities.ColorSystem

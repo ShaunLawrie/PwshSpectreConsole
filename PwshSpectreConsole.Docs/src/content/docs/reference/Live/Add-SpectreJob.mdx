@@ -1,0 +1,118 @@
+---
+title: Add-SpectreJob
+---
+
+
+
+
+
+
+
+import Asciinema from '../../../../components/Asciinema.astro'
+import addspectrejobExample1 from '../../../../assets/examples/addspectrejobExample1.cast?url'
+
+### Description
+
+This function adds a Spectre job to the list of jobs you want to wait for with Wait-SpectreJobs.  
+To retrieve the outcome of the job you need to use the standard PowerShell Receive-Job cmdlet.
+:::note
+This is only used inside `Invoke-SpectreCommandWithProgress` where the Spectre ProgressContext object is exposed.
+:::
+
+
+
+---
+
+
+### Examples
+
+
+**Example 1**  
+This example demonstrates how to add two jobs to a context and wait for them to complete.
+
+
+
+```powershell
+$jobOutcomes = Invoke-SpectreCommandWithProgress -ScriptBlock {
+    param (
+        [Spectre.Console.ProgressContext] $Context
+    )
+    $jobs = @()
+    $jobs += Add-SpectreJob -Context $Context -JobName "job 1" -Job (Start-Job { Start-Sleep -Seconds 2 })
+    $jobs += Add-SpectreJob -Context $Context -JobName "job 2" -Job (Start-Job { Start-Sleep -Seconds 4 })
+    Wait-SpectreJobs -Context $Context -Jobs $jobs
+    return $jobs.Job
+}
+$jobOutcomes | Format-SpectreTable -Property Id, Name, PSJobTypeName, State, Command
+```
+<Asciinema
+    src={addspectrejobExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+---
+
+
+### Parameters
+#### **Context**
+
+The Spectre context to add the job to. The context object is only available inside Invoke-SpectreCommandWithProgress.
+[https://spectreconsole.net/api/spectre.console/progresscontext/](https://spectreconsole.net/api/spectre.console/progresscontext/)
+
+
+
+
+
+
+|Type               |Required|Position|PipelineInput|
+|-------------------|--------|--------|-------------|
+|`[ProgressContext]`|true    |1       |false        |
+
+
+
+#### **JobName**
+
+The name of the job to add.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|true    |2       |false        |
+
+
+
+#### **Job**
+
+The PowerShell job to add to the context.
+
+
+
+
+
+
+|Type   |Required|Position|PipelineInput|
+|-------|--------|--------|-------------|
+|`[Job]`|true    |3       |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Add-SpectreJob [-Context] <ProgressContext> [-JobName] <String> [-Job] <Job> [<CommonParameters>]
+```

@@ -1,4 +1,3 @@
-using namespace Spectre.Console
 
 function Get-SpectreImage {
     <#
@@ -15,7 +14,9 @@ function Get-SpectreImage {
     The maximum width of the image. If not specified, the image will be displayed at its original size.
 
     .EXAMPLE
-    Get-SpectreImage -ImagePath "..\..\..\PwshSpectreConsole\private\images\smiley.png" -MaxWidth 40
+    # **Example 1**  
+    # This example demonstrates how to display an image in the console.
+    Get-SpectreImage -ImagePath ".\private\images\smiley.png" -MaxWidth 40
     #>
     [Reflection.AssemblyMetadata("title", "Get-SpectreImage")]
     param (
@@ -27,9 +28,10 @@ function Get-SpectreImage {
         throw "The specified image path '$resolvedImagePath' does not exist."
     }
 
-    $image = [CanvasImage]::new($imagePathResolved)
+    $image = [Spectre.Console.CanvasImage]::new($imagePathResolved)
     if ($MaxWidth) {
         $image.MaxWidth = $MaxWidth
     }
-    Write-AnsiConsole $image
+    
+    return $image
 }

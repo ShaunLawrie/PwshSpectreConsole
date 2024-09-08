@@ -1,0 +1,7 @@
+[38;5;15mParameterBindingException[0m: [38;5;9mA parameter cannot be found that matches parameter [0m
+[38;5;9mname 'BadParam'.[0m
+  [38;5;8mat[0m [38;5;145mvoid[0m [38;5;175mCheckActionPreference[0m[38;5;8m([0m[38;5;145mFunctionContext[0m [38;5;8mfuncContext[0m, [38;5;145mException[0m [38;5;8mexception[0m
+     [38;5;8m)[0m                                                                          
+  [38;5;8mat[0m [38;5;145mint[0m [38;5;175mRun[0m[38;5;8m([0m[38;5;145mInterpretedFrame[0m [38;5;8mframe)[0m                                            
+  [38;5;8mat[0m [38;5;145mint[0m [38;5;175mRun[0m[38;5;8m([0m[38;5;145mInterpretedFrame[0m [38;5;8mframe)[0m                                            
+  [38;5;8mat[0m [38;5;145mint[0m [38;5;175mRun[0m[38;5;8m([0m[38;5;145mInterpretedFrame[0m [38;5;8mframe)[0m                                            

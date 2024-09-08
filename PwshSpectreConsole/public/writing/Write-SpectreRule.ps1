@@ -1,5 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
-using namespace Spectre.Console
+using module "..\..\private\completions\Transformers.psm1"
 
 function Write-SpectreRule {
     <#
@@ -18,20 +18,37 @@ function Write-SpectreRule {
     .PARAMETER Color
     The color of the rule. The default value is the accent color of the script.
 
+    .PARAMETER PassThru
+    Returns the Spectre Rule object instead of writing it to the console.
+
     .EXAMPLE
-    Write-SpectreRule -Title "My Rule" -Alignment Center -Color Red
+    # **Example 1**  
+    # This example demonstrates how to write a rule to the console.
+    Write-SpectreRule -Title "My Rule" -Alignment Center -Color Yellow
     #>
     [Reflection.AssemblyMetadata("title", "Write-SpectreRule")]
     param (
-        [Parameter(Mandatory)]
         [string] $Title,
         [ValidateSet([SpectreConsoleJustify], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Alignment = "Left",
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $Color = $script:AccentColor
+        [Spectre.Console.Color] $Color = $script:AccentColor,
+        [ColorTransformationAttribute()]
+        [ArgumentCompletionsSpectreColors()]
+        [Spectre.Console.Color] $LineColor = $script:DefaultValueColor,
+        [switch] $PassThru
     )
-    $rule = [Rule]::new("[$($Color.ToMarkup())]$Title[/]")
-    $rule.Justification = [Justify]::$Alignment
+    $rule = [Spectre.Console.Rule]::new()
+    if ($Title) {
+        $rule.Title = "[$($Color.ToMarkup())]$Title[/]"
+    }
+    $rule.Style = [Spectre.Console.Style]::new($LineColor)
+    $rule.Justification = [Spectre.Console.Justify]::$Alignment
+
+    if ($PassThru) {
+        return $rule
+    }
+
     Write-AnsiConsole $rule
 }

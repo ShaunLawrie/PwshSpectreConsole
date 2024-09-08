@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
 title: Read-SpectreText
 ---
 
@@ -28,10 +32,15 @@ This text entry also doesn't allow you to use arrow keys to go back and forwards
 
 
 ### Examples
-> EXAMPLE 1
+
+
+**Example 1**  
+This example demonstrates a simple text prompt with a default answer.
+
+
 
 ```powershell
-$name = Read-SpectreText -Question "What's your name?" -DefaultAnswer "Prefer not to say"
+$name = Read-SpectreText -Message "What's your name?" -DefaultAnswer "Prefer not to say"
 # Type "↲" to provide no answer
 Write-SpectreHost "Your name is '$name'"
 ```
@@ -45,10 +54,15 @@ Write-SpectreHost "Your name is '$name'"
         terminalFontFamily: "'Cascadia Code', monospace"
     }}
 />
-> EXAMPLE 2
+
+
+**Example 2**  
+This example demonstrates a simple text prompt with a default answer and a color.
+
+
 
 ```powershell
-$favouriteColor = Read-SpectreText -Question "What's your favorite color?" -DefaultAnswer "pink"
+$favouriteColor = Read-SpectreText -Message "What's your favorite color?" -DefaultAnswer "pink"
 # Type "orange", "↲" to enter your favourite color
 Write-SpectreHost "Your favourite color is '$favouriteColor'"
 ```
@@ -62,10 +76,15 @@ Write-SpectreHost "Your favourite color is '$favouriteColor'"
         terminalFontFamily: "'Cascadia Code', monospace"
     }}
 />
-> EXAMPLE 3
+
+
+**Example 3**  
+This example demonstrates a simple text prompt with a default answer, a color, and a list of choices.
+
+
 
 ```powershell
-$favouriteColor = Read-SpectreText -Question "What's your favorite color?" -AnswerColor "Cyan1" -Choices "Black", "Green", "Magenta", "I'll never tell!"
+$favouriteColor = Read-SpectreText -Message "What's your favorite color?" -AnswerColor "Cyan1" -Choices "Black", "Green", "Magenta", "I'll never tell!"
 # Type "orange", "↲", "magenta", "↲" to enter text that must match a choice in the choices list, orange will be rejected, magenta will be accepted
 Write-SpectreHost "Your favourite color is '$favouriteColor'"
 ```
@@ -85,7 +104,7 @@ Write-SpectreHost "Your favourite color is '$favouriteColor'"
 
 
 ### Parameters
-#### **Question**
+#### **Message**
 
 The question to prompt the user with.
 
@@ -94,9 +113,9 @@ The question to prompt the user with.
 
 
 
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[String]`|false   |1       |false        |
+|Type      |Required|Position|PipelineInput|Aliases                      |
+|----------|--------|--------|-------------|-----------------------------|
+|`[String]`|true    |1       |false        |Title<br/>Question<br/>Prompt|
 
 
 
@@ -145,6 +164,17 @@ If specified, the user can provide an empty answer.
 
 
 
+#### **TimeoutSeconds**
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |4       |false        |
+
+
+
 #### **Choices**
 
 An array of choices that the user can choose from. If specified, the user will be prompted with a list of choices to choose from, with validation.
@@ -157,7 +187,7 @@ With autocomplete and can tab through the choices.
 
 |Type        |Required|Position|PipelineInput|
 |------------|--------|--------|-------------|
-|`[String[]]`|false   |4       |false        |
+|`[String[]]`|false   |5       |false        |
 
 
 
@@ -168,5 +198,5 @@ With autocomplete and can tab through the choices.
 
 ### Syntax
 ```powershell
-Read-SpectreText [[-Question] <String>] [[-DefaultAnswer] <String>] [[-AnswerColor] <Color>] [-AllowEmpty] [[-Choices] <String[]>] [<CommonParameters>]
+Read-SpectreText [-Message] <String> [[-DefaultAnswer] <String>] [[-AnswerColor] <Color>] [-AllowEmpty] [[-TimeoutSeconds] <Int32>] [[-Choices] <String[]>] [<CommonParameters>]
 ```

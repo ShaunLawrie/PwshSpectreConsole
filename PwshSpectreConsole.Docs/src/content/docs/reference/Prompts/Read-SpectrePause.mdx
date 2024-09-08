@@ -22,7 +22,12 @@ The Read-SpectrePause function pauses the script execution and waits for user in
 
 
 ### Examples
-> EXAMPLE 1
+
+
+**Example 1**  
+This example demonstrates how to use the Read-SpectrePause function.
+
+
 
 ```powershell
 Read-SpectrePause -Message "Press the [red]enter[/] key to continue, when you press it this message will disappear..."
@@ -38,10 +43,15 @@ Read-SpectrePause -Message "Press the [red]enter[/] key to continue, when you pr
         terminalFontFamily: "'Cascadia Code', monospace"
     }}
 />
-> EXAMPLE 2
+
+
+**Example 2**  
+This example demonstrates how to use the Read-SpectrePause function with the AnyKey parameter.
+
+
 
 ```powershell
-Read-SpectrePause -Message "Press the [red]ANY[/] key to continue, when you press it this message will disappear..."
+Read-SpectrePause -Message "Press the [red]ANY[/] key to continue, when you press it this message will disappear..." -AnyKey
 # Type "x" to dismiss the message
 ```
 <Asciinema
@@ -69,9 +79,9 @@ The message to display to the user. The default message is "[default value color
 
 
 
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[String]`|false   |1       |false        |
+|Type      |Required|Position|PipelineInput|Aliases                      |
+|----------|--------|--------|-------------|-----------------------------|
+|`[String]`|false   |1       |false        |Title<br/>Question<br/>Prompt|
 
 
 

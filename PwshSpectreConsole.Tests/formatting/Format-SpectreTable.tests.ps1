@@ -28,13 +28,17 @@ Describe "Format-SpectreTable" {
 
         It "Should create a table when default display members for a command are required" {
             $testData = Get-ChildItem "$PSScriptRoot"
-            Format-SpectreTable -Data $testData -Border $testBorder -Color $testColor
+            $table = Format-SpectreTable -Data $testData -Border $testBorder -Color $testColor
+            $table | Should -BeOfType [Spectre.Console.Table]
+            $table | Out-SpectreHost
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
         }
 
         It "Should create a table when default display members for a command are required and input is piped" {
             $testData = Get-ChildItem "$PSScriptRoot"
-            $testData | Format-SpectreTable -Border $testBorder -Color $testColor
+            $table = $testData | Format-SpectreTable -Border $testBorder -Color $testColor
+            $table | Should -BeOfType [Spectre.Console.Table]
+            $table | Out-SpectreHost
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
         }
 
@@ -96,14 +100,14 @@ Describe "Format-SpectreTable" {
         It "Should be able to create a new table cell with spectre markup" {
             $rawString = "hello spectremarkup world"
             $ansiString = "hello [red]spectremarkup[/] world"
-            $result = New-TableCell -String $ansiString -AllowMarkup
+            $result = New-TableCell -CellData $ansiString -AllowMarkup
             $result | Should -BeOfType [Spectre.Console.Markup]
             $result.Length | Should -Be $rawString.Length
         }
 
         It "Should be able to create a new table cell without spectre markup by default" {
             $ansiString = "hello [red]spectremarkup[/] world"
-            $result = New-TableCell -String $ansiString
+            $result = New-TableCell -CellData $ansiString
             $result | Should -BeOfType [Spectre.Console.Text]
             $result.Length | Should -Be $ansiString.Length
         }
@@ -129,7 +133,9 @@ Describe "Format-SpectreTable" {
             $testBorder = 'Markdown'
             $testData = Get-ChildItem "$PSScriptRoot"
             $verification = $testdata | Format-Table | Get-TableHeader
-            Format-SpectreTable -Data $testData -Border $testBorder -Color $testColor
+            $table = Format-SpectreTable -Data $testData -Border $testBorder -Color $testColor
+            $table | Should -BeOfType [Spectre.Console.Table]
+            $table | Out-SpectreHost
             $testResult = $testConsole.Output
             $rows = $testResult -split "\r?\n" | Select-Object -Skip 1 -SkipLast 2
             $header = $rows[0]
@@ -151,7 +157,9 @@ Describe "Format-SpectreTable" {
             $testBorder = 'Markdown'
             $testColor = $null
             Write-Debug "Setting testcolor to $testColor"
-            Format-SpectreTable -Data $testData -Border $testBorder -HideHeaders -Property Group
+            $table = Format-SpectreTable -Data $testData -Border $testBorder -HideHeaders -Property Group
+            $table | Should -BeOfType [Spectre.Console.Table]
+            $table | Out-SpectreHost
             $testResult = $testConsole.Output | StripAnsi
             $clean = $testResult -replace '\s+|\|'
             $clean | Should -Be '{1}'
@@ -163,7 +171,9 @@ Describe "Format-SpectreTable" {
             $testBorder = 'Markdown'
             $testColor = $null
             Write-Debug "Setting testcolor to $testColor"
-            $testData | Format-SpectreTable ProcessName, @{Label = "TotalRunningTime"; Expression = { (Get-Date) - $_.StartTime } } -Border $testBorder
+            $table = $testData | Format-SpectreTable ProcessName, @{Label = "TotalRunningTime"; Expression = { (Get-Date) - $_.StartTime } } -Border $testBorder
+            $table | Should -BeOfType [Spectre.Console.Table]
+            $table | Out-SpectreHost
             $testResult = $testConsole.Output
             $obj = $testResult -split "\r?\n" | Select-Object -Skip 1 -SkipLast 2
             $deconstructed = $obj -split '\|' | StripAnsi | ForEach-Object {
@@ -181,7 +191,7 @@ Describe "Format-SpectreTable" {
             Mock Write-AnsiConsole {
                 $testConsole.Write($RenderableObject)
             }
-            [pscustomobject]@{
+            $table = [pscustomobject]@{
                 "Name"  = "Test 1"
                 "Value" = 10
                 "Color" = "Turquoise2"
@@ -195,6 +205,8 @@ Describe "Format-SpectreTable" {
                 "Color" = "Turquoise2"
             } | Format-SpectreTable -Border "Rounded" -Color "Turquoise2"
 
+            $table | Should -BeOfType [Spectre.Console.Table]
+            $table | Out-SpectreHost
             { Assert-OutputMatchesSnapshot -SnapshotName "Format-SpectreTable" -Output $testConsole.Output } | Should -Not -Throw
         }
     }

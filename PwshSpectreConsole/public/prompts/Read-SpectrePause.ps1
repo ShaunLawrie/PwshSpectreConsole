@@ -13,15 +13,20 @@ function Read-SpectrePause {
     Indicates whether to write a newline character before displaying the message. By default, a newline character is written.
 
     .EXAMPLE
+    # **Example 1**  
+    # This example demonstrates how to use the Read-SpectrePause function.
     Read-SpectrePause -Message "Press the [red]enter[/] key to continue, when you press it this message will disappear..."
     # Type "↲" to dismiss the message
 
     .EXAMPLE
-    Read-SpectrePause -Message "Press the [red]ANY[/] key to continue, when you press it this message will disappear..."
+    # **Example 2**  
+    # This example demonstrates how to use the Read-SpectrePause function with the AnyKey parameter.
+    Read-SpectrePause -Message "Press the [red]ANY[/] key to continue, when you press it this message will disappear..." -AnyKey
     # Type "x" to dismiss the message
     #>
     [Reflection.AssemblyMetadata("title", "Read-SpectrePause")]
     param (
+        [Alias("Title", "Question", "Prompt")]
         [string] $Message = "[$($script:DefaultValueColor.ToMarkup())]Press [$($script:AccentColor.ToMarkup())]<enter>[/] to continue[/]",
         [switch] $AnyKey,
         [switch] $NoNewline

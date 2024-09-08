@@ -8,15 +8,16 @@ export default defineConfig({
   integrations: [
     starlight({
       title: "PwshSpectreConsole",
-      editLink: {
-        baseUrl:
-          "https://github.com/ShaunLawrie/PwshSpectreConsole/edit/main/PwshSpectreConsole.Docs/",
-      },
       favicon: "/favicon.png",
       customCss: ["./src/tailwind.css"],
       social: {
+        rss: "https://shaunlawrie.com/rss.xml",
         github: "https://github.com/ShaunLawrie/PwshSpectreConsole",
-        twitter: "https://twitter.com/Shaun_Lawrie",
+        "x.com": "https://twitter.com/Shaun_Lawrie",
+        youtube: "https://www.youtube.com/@shaunlawrie",
+      },
+      components: {
+        Head: './src/components/Head.astro',
       },
       sidebar: [
         {
@@ -29,6 +30,14 @@ export default defineConfig({
             {
               label: "Getting Started",
               link: "/guides/get-started/",
+            },
+            {
+              label: "Upgrading to v2",
+              link: "/guides/upgrading-to-v2/",
+              badge: {
+                text: "New",
+                variant: "tip",
+              },
             },
             {
               label: "FAQs",

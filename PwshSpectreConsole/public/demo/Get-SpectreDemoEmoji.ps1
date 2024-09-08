@@ -1,4 +1,3 @@
-using namespace Spectre.Console
 
 <#
 .SYNOPSIS
@@ -12,6 +11,8 @@ using namespace Spectre.Console
     Limit the number of emoji returned. This is only really useful for generating the help docs.
 
 .EXAMPLE
+    # **Example 1**  
+    # This example demonstrates how to use Get-SpectreDemoEmoji to display a list of the built-in Spectre Console emojis.
     Get-SpectreDemoEmoji -Count 5
 
 .NOTES
@@ -26,10 +27,10 @@ function Get-SpectreDemoEmoji {
     )
 
     Write-SpectreHost " "
-    Write-SpectreRule "`nGeneral"
+    Write-SpectreRule "`nEmoji"
     Write-SpectreHost " "
     
-    $emojiCollection = [Emoji+Known] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
+    $emojiCollection = [Spectre.Console.Emoji+Known] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
     if($Count) {
         $emojiCollection = $emojiCollection | Select-Object -First $Count
     }

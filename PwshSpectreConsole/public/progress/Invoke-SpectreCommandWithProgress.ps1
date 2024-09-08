@@ -4,17 +4,21 @@ function Invoke-SpectreCommandWithProgress {
     Invokes a Spectre command with a progress bar.
 
     .DESCRIPTION
-    This function takes a script block as a parameter and executes it while displaying a progress bar. The context and task objects are defined at [https://spectreconsole.net/api/spectre.console/progresscontext/](https://spectreconsole.net/api/spectre.console/progresscontext/).
-    The context requires at least one task to be added for progress to be displayed. The task object is used to update the progress bar by calling the Increment() method or other methods defined in Spectre console [https://spectreconsole.net/api/spectre.console/progresstask/](https://spectreconsole.net/api/spectre.console/progresstask/).
+    This function takes a script block as a parameter and executes it while displaying a progress bar. The context and task objects are defined at [https://spectreconsole.net/api/spectre.console/progresscontext/](https://spectreconsole.net/api/spectre.console/progresscontext/).  
+    The context requires at least one task to be added for progress to be displayed. The task object is used to update the progress bar by calling the `Increment()` method or other methods defined in Spectre console [https://spectreconsole.net/api/spectre.console/progresstask/](https://spectreconsole.net/api/spectre.console/progresstask/).  
+    See https://spectreconsole.net/live/progress for more information.
 
     .PARAMETER ScriptBlock
     The script block to execute.
 
     .EXAMPLE
+    # **Example 1**  
+    # This example demonstrates a 4-stage process with one loading bar that loads in four chunks.
     Invoke-SpectreCommandWithProgress -ScriptBlock {
         param (
-            $Context
+            [Spectre.Console.ProgressContext] $Context
         )
+        # AddTask() returns a https://spectreconsole.net/api/spectre.console/progresstask/ object
         $task1 = $Context.AddTask("A 4-stage process")
         Start-Sleep -Seconds 1
         $task1.Increment(25)
@@ -28,8 +32,12 @@ function Invoke-SpectreCommandWithProgress {
     }
 
     .EXAMPLE
+    # **Example 2**  
+    # This example demonstrates a 2-stage process with two loading bars running in parallel.
     Invoke-SpectreCommandWithProgress -ScriptBlock {
-        param ( $Context )
+        param (
+            [Spectre.Console.ProgressContext] $Context
+        )
         
         $jobs = @()
         $jobs += Add-SpectreJob -Context $Context -JobName "Drawing a picture" -Job (
@@ -57,8 +65,12 @@ function Invoke-SpectreCommandWithProgress {
     }
 
     .EXAMPLE
+    # **Example 3**  
+    # This example demonstrates a task with an unknown (indeterminate) duration.
     $result = Invoke-SpectreCommandWithProgress -ScriptBlock {
-        param ( $Context )
+        param (
+            [Spectre.Console.ProgressContext] $Context
+        )
         
         $task1 = $Context.AddTask("Task with unknown duration")
         $task1.IsIndeterminate = $true
@@ -70,8 +82,12 @@ function Invoke-SpectreCommandWithProgress {
     Write-SpectreHost "Result: $result"
 
     .EXAMPLE
+    # **Example 4**  
+    # This example demonstrates a job with an estimated duration, after the estimated duration has passed the job will switch to an indeterminate state.
     $result = Invoke-SpectreCommandWithProgress -ScriptBlock {
-        param ( $Context )
+        param (
+            [Spectre.Console.ProgressContext] $Context
+        )
         
         $job = Add-SpectreJob -Context $Context -JobName "Doing some work" -Job (
             Start-Job {

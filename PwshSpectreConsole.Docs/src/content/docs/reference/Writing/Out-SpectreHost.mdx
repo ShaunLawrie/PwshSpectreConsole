@@ -1,0 +1,94 @@
+---
+sidebar:
+  badge:
+    text: New
+    variant: tip
+title: Out-SpectreHost
+---
+
+
+
+
+
+
+
+import Asciinema from '../../../../components/Asciinema.astro'
+import outspectrehostExample1 from '../../../../assets/examples/outspectrehostExample1.cast?url'
+
+### Description
+
+Out-SpectreHost writes a spectre renderable object to the console host.  
+This function is used to output spectre renderables to the console when you want to avoid the additional newlines that the PowerShell formatter adds.
+
+
+
+---
+
+
+### Examples
+
+
+**Example 1**  
+This example demonstrates how to write a spectre renderable object to the console host.
+
+
+
+```powershell
+$table = Get-ChildItem | Select-Object Name, Length, LastWriteTime | Format-SpectreTable
+$table | Out-SpectreHost
+```
+<Asciinema
+    src={outspectrehostExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+---
+
+
+### Parameters
+#### **Data**
+
+The data to write to the console.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput |
+|----------|--------|--------|--------------|
+|`[Object]`|true    |1       |true (ByValue)|
+
+
+
+#### **CustomItemFormatter**
+
+The default host customitem formatter has some restrictions, it needs to be one char less wide than when outputting to the standard console or it will wrap.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|false   |named   |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Out-SpectreHost [-Data] <Object> [-CustomItemFormatter] [<CommonParameters>]
+```

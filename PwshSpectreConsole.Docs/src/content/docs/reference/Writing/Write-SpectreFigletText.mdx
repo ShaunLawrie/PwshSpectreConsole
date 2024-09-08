@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
 title: Write-SpectreFigletText
 ---
 
@@ -22,7 +26,12 @@ This function writes a Spectre Console Figlet text to the console. The text can 
 
 
 ### Examples
-> EXAMPLE 1
+
+
+**Example 1**  
+This example demonstrates how to write Figlet text to the console.
+
+
 
 ```powershell
 Write-SpectreFigletText -Text "Hello Spectre!" -Alignment "Center" -Color "Red"
@@ -37,10 +46,15 @@ Write-SpectreFigletText -Text "Hello Spectre!" -Alignment "Center" -Color "Red"
         terminalFontFamily: "'Cascadia Code', monospace"
     }}
 />
-> EXAMPLE 2
+
+
+**Example 2**  
+This example demonstrates how to write Figlet text to the console using a custom Figlet font.
+
+
 
 ```powershell
-Write-SpectreFigletText -Text "Whoa?!" -FigletFontPath "..\assets\3d.flf"
+Write-SpectreFigletText -Text "Whoa?!" -FigletFontPath "..\PwshSpectreConsole.Docs\src\assets\3d.flf"
 ```
 <Asciinema
     src={writespectrefiglettextExample2}
@@ -127,6 +141,21 @@ The figlet font format is usually *.flf, see https://spectreconsole.net/widgets/
 
 
 
+#### **PassThru**
+
+Returns the Spectre Figlet text object instead of writing it to the console.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|false   |named   |false        |
+
+
+
 
 
 ---
@@ -134,5 +163,5 @@ The figlet font format is usually *.flf, see https://spectreconsole.net/widgets/
 
 ### Syntax
 ```powershell
-Write-SpectreFigletText [[-Text] <String>] [[-Alignment] <String>] [[-Color] <Color>] [[-FigletFontPath] <String>] [<CommonParameters>]
+Write-SpectreFigletText [[-Text] <String>] [[-Alignment] <String>] [[-Color] <Color>] [[-FigletFontPath] <String>] [-PassThru] [<CommonParameters>]
 ```

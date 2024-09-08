@@ -1,5 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
-using namespace Spectre.Console
+using module "..\..\private\completions\Transformers.psm1"
 
 function Invoke-SpectreCommandWithStatus {
     <#
@@ -7,7 +7,8 @@ function Invoke-SpectreCommandWithStatus {
     Invokes a script block with a Spectre status spinner.
 
     .DESCRIPTION
-    This function starts a Spectre status spinner with the specified title and spinner type, and invokes the specified script block. The spinner will continue to spin until the script block completes.
+    This function starts a Spectre status spinner with the specified title and spinner type, and invokes the specified script block. The spinner will continue to spin until the script block completes.  
+    See https://spectreconsole.net/live/status for more information.
 
     .PARAMETER ScriptBlock
     The script block to invoke.
@@ -22,6 +23,8 @@ function Invoke-SpectreCommandWithStatus {
     The color of the spinner. Valid values can be found with Get-SpectreDemoColors.
 
     .EXAMPLE
+    # **Example 1**  
+    # This example demonstrates how to show a spinner while doing some work. Write-SpectreHost is used to update the host with progress without breaking the spinner animation.
     $result = Invoke-SpectreCommandWithStatus -Spinner "Dots2" -Title "Showing a spinner..." -ScriptBlock {
         # Write updates to the host using Write-SpectreHost
         Start-Sleep -Seconds 1
@@ -46,12 +49,12 @@ function Invoke-SpectreCommandWithStatus {
         [string] $Title,
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $Color = $script:AccentColor
+        [Spectre.Console.Color] $Color = $script:AccentColor
     )
     $splat = @{
         Title        = $Title
-        Spinner      = [Spinner+Known]::$Spinner
-        SpinnerStyle = [Style]::new($Color)
+        Spinner      = [Spectre.Console.Spinner+Known]::$Spinner
+        SpinnerStyle = [Spectre.Console.Style]::new($Color)
         ScriptBlock  = $ScriptBlock
     }
     Start-AnsiConsoleStatus @splat

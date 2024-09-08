@@ -1,0 +1,98 @@
+---
+sidebar:
+  badge:
+    text: New
+    variant: tip
+title: Add-SpectreTableRow
+---
+
+
+
+
+
+
+
+import Asciinema from '../../../../components/Asciinema.astro'
+import addspectretablerowExample1 from '../../../../assets/examples/addspectretablerowExample1.cast?url'
+
+### Description
+
+Adds a row to a Spectre Console table. The number of columns in the row must match the number of columns in the table.
+
+
+
+---
+
+
+### Examples
+
+
+**Example 1**  # This example demonstrates how to add a row to an existing Spectre Console table.
+
+
+
+```powershell
+$data = @(
+    [pscustomobject]@{Name="John"; Age=25; City="New York"},
+    [pscustomobject]@{Name="Jane"; Age=30; City="Los Angeles"}
+)
+$table = Format-SpectreTable -Data $data
+$table | Out-SpectreHost
+$table = Add-SpectreTableRow -Table $table -Columns "Shaun", 99, "Wellington"
+$table | Out-SpectreHost
+```
+<Asciinema
+    src={addspectretablerowExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+---
+
+
+### Parameters
+#### **Table**
+
+The table to which the row will be added.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Table]`|true    |1       |false        |
+
+
+
+#### **Columns**
+
+An array of renderable items containing the data to be displayed in the columns of this row.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput |
+|---------|--------|--------|--------------|
+|`[Array]`|false   |2       |true (ByValue)|
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Add-SpectreTableRow [-Table] <Table> [[-Columns] <Array>] [<CommonParameters>]
+```

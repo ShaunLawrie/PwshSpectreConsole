@@ -1,0 +1,123 @@
+---
+sidebar:
+  badge:
+    text: New
+    variant: tip
+title: Format-SpectreAligned
+---
+
+
+
+
+
+
+
+import Asciinema from '../../../../components/Asciinema.astro'
+import formatspectrealignedExample1 from '../../../../assets/examples/formatspectrealignedExample1.cast?url'
+
+### Description
+
+This wraps a renderable object in a Spectre Console Aligned object. This allows you to align the object horizontally and vertically within a space. Aligned objects are always expanded so they take up all available horizontal space.
+
+
+
+---
+
+
+### Examples
+
+
+**Example 1**  
+This example demonstrates how to align a string to the right inside a panel.
+
+
+
+```powershell
+"hello right hand side" | Format-SpectreAligned -HorizontalAlignment Right -VerticalAlignment Middle | Format-SpectrePanel -Expand -Height 9
+```
+<Asciinema
+    src={formatspectrealignedExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+---
+
+
+### Parameters
+#### **Data**
+
+The renderable object to align.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput |
+|----------|--------|--------|--------------|
+|`[Object]`|true    |1       |true (ByValue)|
+
+
+
+#### **HorizontalAlignment**
+
+The horizontal alignment of the object.
+
+
+
+Valid Values:
+
+* Left
+* Center
+* Right
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |2       |false        |
+
+
+
+#### **VerticalAlignment**
+
+The vertical alignment of the object.
+
+
+
+Valid Values:
+
+* Top
+* Middle
+* Bottom
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |3       |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Format-SpectreAligned [-Data] <Object> [[-HorizontalAlignment] <String>] [[-VerticalAlignment] <String>] [<CommonParameters>]
+```

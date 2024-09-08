@@ -17,7 +17,7 @@ namespace PwshSpectreConsole.Recording
     // https://github.com/spectreconsole/spectre.console/blob/main/resources/scripts/Generator/Commands/AsciiCast/AsciiCastOut.cs
     internal class AsciiCastWriter : TextWriter
     {
-        private StringBuilder _builder = new StringBuilder();
+        private StringBuilder _builder = new();
         private decimal _firstTick;
 
         public AsciiCastWriter()
@@ -50,7 +50,7 @@ namespace PwshSpectreConsole.Recording
     public class AsciiCastInput : IAnsiConsoleInput
     {
         private readonly Queue<(ConsoleKeyInfo?, int)> _input;
-        private readonly Random _random = new Random();
+        private readonly Random _random = new();
         private int _keyEntries = 0;
 
         public AsciiCastInput()
@@ -125,7 +125,7 @@ namespace PwshSpectreConsole.Recording
 
             var result = _input.Dequeue();
 
-            System.Threading.Thread.Sleep(result.Item2);
+            Thread.Sleep(result.Item2);
             return result.Item1;
         }
 
@@ -145,8 +145,10 @@ namespace PwshSpectreConsole.Recording
 
         public RecordingConsole(int width, int height)
         {
-            var profileEnrichment = new ProfileEnrichment();
-            profileEnrichment.UseDefaultEnrichers = false;
+            var profileEnrichment = new ProfileEnrichment
+            {
+                UseDefaultEnrichers = false
+            };
 
             var asciiCast = new AsciiCastWriter();
             var output = new AnsiConsoleOutput(asciiCast);
@@ -186,7 +188,6 @@ namespace PwshSpectreConsole.Recording
             }
             var KeyEntries = Input.KeyEntries;
             var countOfNewlines = Regex.Matches(json, @"\\n").Count;
-            var jsonStrippedOfNewlines = Regex.Replace(json, @"(\\r)?\\n", "");
             var totalLines = countOfNewlines - countOfCursorUps + KeyEntries + 2;
             string header = $"{{\"version\": 2, \"width\": {_ansiConsole.Profile.Width}, \"height\": {totalLines}, \"title\": \"{JsonEncodedText.Encode(title)}\", \"env\": {{\"TERM\": \"Spectre.Console\"}}}}";
             return $"{header}{Environment.NewLine}{json}{Environment.NewLine}";

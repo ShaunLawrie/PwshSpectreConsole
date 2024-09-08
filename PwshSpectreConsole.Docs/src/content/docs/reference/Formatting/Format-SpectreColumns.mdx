@@ -1,0 +1,156 @@
+---
+sidebar:
+  badge:
+    text: New
+    variant: tip
+title: Format-SpectreColumns
+---
+
+
+
+
+
+
+
+import Asciinema from '../../../../components/Asciinema.astro'
+import formatspectrecolumnsExample1 from '../../../../assets/examples/formatspectrecolumnsExample1.cast?url'
+import formatspectrecolumnsExample2 from '../../../../assets/examples/formatspectrecolumnsExample2.cast?url'
+import formatspectrecolumnsExample3 from '../../../../assets/examples/formatspectrecolumnsExample3.cast?url'
+
+### Description
+
+This function creates a spectre columns widget that renders a collection of renderables in autosized columns to the console.  
+Columns can contain renderable items.  
+See https://spectreconsole.net/widgets/columns for more information.
+
+
+
+---
+
+
+### Examples
+
+
+**Example 1**  
+This example demonstrates how to display a collection of strings in columns.
+
+
+
+```powershell
+@("lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit,", "sed", "do", "eiusmod",
+  "tempor", "incididunt", "ut", "labore", "et", "dolore", "magna", "aliqua.", "Ut", "enim", "ad", "minim",
+  "veniam,", "quis", "nostrud", "exercitation", "ullamco", "laboris", "nisi", "ut", "aliquip", "ex", "ea",
+  "commodo", "consequat", "duis", "aute", "irure", "dolor", "in", "reprehenderit", "in", "voluptate", "velit",
+  "esse", "cillum", "dolore", "eu", "fugiat", "nulla", "pariatur", "excepteur", "sint", "occaecat",
+  "cupidatat", "non", "proident", "sunt", "in", "culpa") | Foreach-Object { $_ } | Format-SpectreColumns
+```
+<Asciinema
+    src={formatspectrecolumnsExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+**Example 2**  
+This example demonstrates how to display a collection of panels that are expanded but with normal sized columns.
+
+
+
+```powershell
+@("left", "middle", "right") | Foreach-Object { $_ | Format-SpectrePanel -Expand } | Format-SpectreColumns
+```
+<Asciinema
+    src={formatspectrecolumnsExample2}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+**Example 3**  
+This example demonstrates how to display a collection of panels that are expanded and with expanded columns so it takes up the console width.
+
+
+
+```powershell
+@("left", "middle", "right") | Foreach-Object { $_ | Format-SpectrePanel -Expand } | Format-SpectreColumns -Expand
+```
+<Asciinema
+    src={formatspectrecolumnsExample3}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+---
+
+
+### Parameters
+#### **Data**
+
+An array of objects containing the data to be displayed in the columns.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput |
+|----------|--------|--------|--------------|
+|`[Object]`|true    |1       |true (ByValue)|
+
+
+
+#### **Padding**
+
+The padding to apply to the columns.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |2       |false        |
+
+
+
+#### **Expand**
+
+A switch to expand the columns to fill the available space.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|false   |named   |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Format-SpectreColumns [-Data] <Object> [[-Padding] <Int32>] [-Expand] [<CommonParameters>]
+```

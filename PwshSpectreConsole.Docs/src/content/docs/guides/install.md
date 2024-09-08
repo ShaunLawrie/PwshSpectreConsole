@@ -32,7 +32,7 @@ Instead of this:
  2. Install a NerdFont, a font with additional visual characters. I use "Cascadia Cove NF" from [https://www.nerdfonts.com/](https://www.nerdfonts.com/)
  3. Enable full unicode by adding the following as the **FIRST LINE** in your `$PROFILE` file:
 
-    ```pwsh
+    ```powershell
     $OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
     ```
 

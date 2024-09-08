@@ -1,4 +1,3 @@
-using namespace Spectre.Console
 
 function Get-SpectreEscapedText {
     <#
@@ -14,6 +13,8 @@ function Get-SpectreEscapedText {
     The text to be escaped.
 
     .EXAMPLE
+    # **Example 1**  
+    # This example demonstrates how to escape text for use in Spectre Console.
     $data = "][[][red]]][[/][][]["
     Format-SpectrePanel -Title "Unescaped data" -Data "I want escaped $($data | Get-SpectreEscapedText) [yellow]and[/] [red]unescaped[/] data"
     #>
@@ -22,5 +23,5 @@ function Get-SpectreEscapedText {
         [Parameter(ValueFromPipeline, Mandatory)]
         [string] $Text
     )
-    return [Markup]::Escape($Text)
+    return [Spectre.Console.Markup]::Escape($Text)
 }

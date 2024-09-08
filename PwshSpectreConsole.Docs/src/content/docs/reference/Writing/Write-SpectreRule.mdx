@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
 title: Write-SpectreRule
 ---
 
@@ -21,10 +25,15 @@ The Write-SpectreRule function writes a Spectre horizontal-rule to the console w
 
 
 ### Examples
-> EXAMPLE 1
+
+
+**Example 1**  
+This example demonstrates how to write a rule to the console.
+
+
 
 ```powershell
-Write-SpectreRule -Title "My Rule" -Alignment Center -Color Red
+Write-SpectreRule -Title "My Rule" -Alignment Center -Color Yellow
 ```
 <Asciinema
     src={writespectreruleExample1}
@@ -53,7 +62,7 @@ The title of the rule.
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
-|`[String]`|true    |1       |false        |
+|`[String]`|false   |1       |false        |
 
 
 
@@ -95,6 +104,32 @@ The color of the rule. The default value is the accent color of the script.
 
 
 
+#### **LineColor**
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Color]`|false   |4       |false        |
+
+
+
+#### **PassThru**
+
+Returns the Spectre Rule object instead of writing it to the console.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|false   |named   |false        |
+
+
+
 
 
 ---
@@ -102,5 +137,5 @@ The color of the rule. The default value is the accent color of the script.
 
 ### Syntax
 ```powershell
-Write-SpectreRule [-Title] <String> [[-Alignment] <String>] [[-Color] <Color>] [<CommonParameters>]
+Write-SpectreRule [[-Title] <String>] [[-Alignment] <String>] [[-Color] <Color>] [[-LineColor] <Color>] [-PassThru] [<CommonParameters>]
 ```

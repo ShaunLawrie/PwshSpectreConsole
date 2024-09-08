@@ -5,9 +5,9 @@
 [![GitHub license](https://img.shields.io/github/license/ShaunLawrie/PwshSpectreConsole)](https://github.com/ShaunLawrie/PwshSpectreConsole/blob/main/LICENSE)
 
 PwshSpectreConsole is a wrapper for the [awesome Spectre.Console library](https://spectreconsole.net/).
-Spectre Console is mostly an async library and it leans heavily on types and extension methods in C# which are very verbose to work with in PowerShell so this module hides away some of the complexity.  
+Spectre Console is a dotnet library and it leans heavily on types and extension methods in C# which are very verbose to work with in PowerShell so this module hides away some of the complexity.  
 
-The module doesn't expose the full feature-set of Spectre.Console because the scope of the library is huge and I've focused on the features that I can use to enhance my scripts. If you have a feature request, please raise an issue on the GitHub repo or open a PR.
+The module has access to all features available in Spectre.Console.
 
 ## Installation
 
@@ -16,8 +16,17 @@ Install-Module PwshSpectreConsole -Scope CurrentUser
 Start-SpectreDemo
 ```
 
+## Contributing
+
+If you have a feature request, please raise an issue on the GitHub repo or open a PR.
+Check out the contributing guide [here](/CONTRIBUTING.md).
+
 ## Documentation
 
 Full documentation is at [https://pwshspectreconsole.com/](https://pwshspectreconsole.com/)
 
-[![image](/PwshSpectreConsole/private/images/webpreview.png)](https://pwshspectreconsole.com/)
+![image](https://github.com/user-attachments/assets/6773469b-b91e-4129-afca-6d4bc64246d7)
+
+### Prerelease Documentation
+
+Prerelease documentation is at [https://prerelease.pwshspectreconsole.com/](https://prerelease.pwshspectreconsole.com/)

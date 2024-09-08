@@ -1,5 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
-using namespace Spectre.Console
+using module "..\..\private\completions\Transformers.psm1"
 
 function Set-SpectreColors {
     <#
@@ -22,6 +22,8 @@ function Set-SpectreColors {
     The default table text color to set. Must be a valid Spectre Console color name. Defaults to "Default" which will be the standard console foreground color.
 
     .EXAMPLE
+    # **Example 1**  
+    # This example demonstrates how to set the accent color and default value color for Spectre Console.
     Write-SpectreRule "This is a default rule"
     Set-SpectreColors -AccentColor "Turquoise2"
     Write-SpectreRule "This is a Turquoise2 rule"
@@ -32,16 +34,16 @@ function Set-SpectreColors {
     param (
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $AccentColor = "Blue",
+        [Spectre.Console.Color] $AccentColor = "Blue",
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $DefaultValueColor = "Grey",
+        [Spectre.Console.Color] $DefaultValueColor = "Grey",
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $DefaultTableHeaderColor = [Color]::Default,
+        [Spectre.Console.Color] $DefaultTableHeaderColor = [Spectre.Console.Color]::Default,
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $DefaultTableTextColor = [Color]::Default
+        [Spectre.Console.Color] $DefaultTableTextColor = [Spectre.Console.Color]::Default
     )
     $script:AccentColor = $AccentColor
     $script:DefaultValueColor = $DefaultValueColor

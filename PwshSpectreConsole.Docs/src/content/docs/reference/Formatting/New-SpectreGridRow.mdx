@@ -1,0 +1,85 @@
+---
+sidebar:
+  badge:
+    text: New
+    variant: tip
+title: New-SpectreGridRow
+---
+
+
+
+
+
+
+
+import Asciinema from '../../../../components/Asciinema.astro'
+import newspectregridrowExample1 from '../../../../assets/examples/newspectregridrowExample1.cast?url'
+
+### Description
+
+Creates a new SpectreGridRow object with the specified columns for use in Format-SpectreGrid. PowerShell collapses nested arrays, so you must use this function to create an array of SpectreGridRow objects to provide to Format-SpectreGrid.
+
+
+
+---
+
+
+### Examples
+
+
+**Example 1**  # This example demonstrates how to create a grid with two rows and three columns.
+
+
+
+```powershell
+$columns = @()
+$columns += "Column 1" | Format-SpectrePanel
+$columns += "Column 2" | Format-SpectrePanel
+$columns += "Column 3" | Format-SpectrePanel
+$rows = @(
+  (New-SpectreGridRow -Data $columns),
+  (New-SpectreGridRow -Data $columns)
+)
+
+$rows | Format-SpectreGrid
+```
+<Asciinema
+    src={newspectregridrowExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+---
+
+
+### Parameters
+#### **Data**
+
+An array of renderable items containing the data to be displayed in the columns of this row.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput |
+|---------|--------|--------|--------------|
+|`[Array]`|true    |1       |true (ByValue)|
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+New-SpectreGridRow [-Data] <Array> [<CommonParameters>]
+```

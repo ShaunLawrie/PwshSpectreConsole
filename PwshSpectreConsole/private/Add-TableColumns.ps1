@@ -1,13 +1,12 @@
-﻿using namespace Spectre.Console
-
+﻿
 function Add-TableColumns {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)]
-        [Table] $table,
+        [Spectre.Console.Table] $table,
         [Collections.Specialized.OrderedDictionary] $FormatData,
         [String] $Title,
-        [Color] $Color = [Color]::Default,
+        [Spectre.Console.Color] $Color = [Spectre.Console.Color]::Default,
         [Switch] $Scalar,
         [Switch] $Wrap
     )
@@ -28,13 +27,13 @@ function Add-TableColumns {
             $lookup = $FormatData[$key]
             Write-Debug "Adding column from formatdata: $($lookup.GetEnumerator())"
             $table.AddColumn("[$($Color.ToMarkup())]$($lookup.Label)[/]") | Out-Null
-            $table.Columns[-1].Padding = [Padding]::new(1, 0, 1, 0)
+            $table.Columns[-1].Padding = [Spectre.Console.Padding]::new(1, 0, 1, 0)
             if ($lookup.width -gt 0) {
                 # width 0 is autosize, select the last entry in the column list
                 $table.Columns[-1].Width = $lookup.Width
             }
             if ($lookup.Alignment -ne 'undefined') {
-                $table.Columns[-1].Alignment = [Justify]::$lookup.Alignment
+                $table.Columns[-1].Alignment = [Spectre.Console.Justify]::$lookup.Alignment
             }
             if (-Not $Wrap) {
                 # https://github.com/spectreconsole/spectre.console/issues/1185

@@ -1,5 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
-using namespace Spectre.Console
+using module "..\..\private\completions\Transformers.psm1"
 
 function Read-SpectreText {
     <#
@@ -14,7 +14,7 @@ function Read-SpectreText {
     This text entry also doesn't allow you to use arrow keys to go back and forwards through the text you're entering.
     :::
 
-    .PARAMETER Question
+    .PARAMETER Message
     The question to prompt the user with.
 
     .PARAMETER DefaultAnswer
@@ -31,41 +31,50 @@ function Read-SpectreText {
     With autocomplete and can tab through the choices.
 
     .EXAMPLE
-    $name = Read-SpectreText -Question "What's your name?" -DefaultAnswer "Prefer not to say"
+    # **Example 1**  
+    # This example demonstrates a simple text prompt with a default answer.
+    $name = Read-SpectreText -Message "What's your name?" -DefaultAnswer "Prefer not to say"
     # Type "↲" to provide no answer
     Write-SpectreHost "Your name is '$name'"
 
     .EXAMPLE
-    $favouriteColor = Read-SpectreText -Question "What's your favorite color?" -DefaultAnswer "pink"
+    # **Example 2**  
+    # This example demonstrates a simple text prompt with a default answer and a color.
+    $favouriteColor = Read-SpectreText -Message "What's your favorite color?" -DefaultAnswer "pink"
     # Type "orange", "↲" to enter your favourite color
     Write-SpectreHost "Your favourite color is '$favouriteColor'"
 
     .EXAMPLE
-    $favouriteColor = Read-SpectreText -Question "What's your favorite color?" -AnswerColor "Cyan1" -Choices "Black", "Green", "Magenta", "I'll never tell!"
+    # **Example 3**  
+    # This example demonstrates a simple text prompt with a default answer, a color, and a list of choices.
+    $favouriteColor = Read-SpectreText -Message "What's your favorite color?" -AnswerColor "Cyan1" -Choices "Black", "Green", "Magenta", "I'll never tell!"
     # Type "orange", "↲", "magenta", "↲" to enter text that must match a choice in the choices list, orange will be rejected, magenta will be accepted
     Write-SpectreHost "Your favourite color is '$favouriteColor'"
     #>
     [Reflection.AssemblyMetadata("title", "Read-SpectreText")]
     param (
-        [string] $Question = "What's your name?",
+        [Parameter(Mandatory)]
+        [Alias("Title", "Question", "Prompt")]
+        [string] $Message,
         [string] $DefaultAnswer,
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $AnswerColor,
+        [Spectre.Console.Color] $AnswerColor,
         [switch] $AllowEmpty,
+        [int] $TimeoutSeconds,
         [string[]] $Choices
     )
-    $spectrePrompt = [TextPrompt[string]]::new($Question, [System.StringComparer]::InvariantCultureIgnoreCase)
-    $spectrePrompt.DefaultValueStyle = [Style]::new($script:DefaultValueColor)
+    $spectrePrompt = [Spectre.Console.TextPrompt[string]]::new($Message, [System.StringComparer]::InvariantCultureIgnoreCase)
+    $spectrePrompt.DefaultValueStyle = [Spectre.Console.Style]::new($script:DefaultValueColor)
     if ($DefaultAnswer) {
-        $spectrePrompt = [TextPromptExtensions]::DefaultValue($spectrePrompt, $DefaultAnswer)
+        $spectrePrompt = [Spectre.Console.TextPromptExtensions]::DefaultValue($spectrePrompt, $DefaultAnswer)
     }
     if ($AnswerColor) {
-        $spectrePrompt.PromptStyle = [Style]::new($AnswerColor)
+        $spectrePrompt.PromptStyle = [Spectre.Console.Style]::new($AnswerColor)
     }
     $spectrePrompt.AllowEmpty = $AllowEmpty
     if ($null -ne $Choices) {
-        $spectrePrompt = [TextPromptExtensions]::AddChoices($spectrePrompt, $Choices)
+        $spectrePrompt = [Spectre.Console.TextPromptExtensions]::AddChoices($spectrePrompt, $Choices)
     }
-    return Invoke-SpectrePromptAsync -Prompt $spectrePrompt
+    return Invoke-SpectrePromptAsync -Prompt $spectrePrompt -TimeoutSeconds $TimeoutSeconds
 }

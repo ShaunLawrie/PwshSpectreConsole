@@ -30,18 +30,24 @@ Describe "Format-SpectreBarChart" {
         }
 
         It "Should create a bar chart with correct width" {
-            Format-SpectreBarChart -Data $testData -Title $testTitle -Width $testWidth
+            $chart = Format-SpectreBarChart -Data $testData -Title $testTitle -Width $testWidth
+            $chart | Should -BeOfType [Spectre.Console.BarChart]
+            $chart | Out-SpectreHost
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
         }
 
         It "Should handle piped input correctly" {
-            $testData | Format-SpectreBarChart -Title $testTitle -Width $testWidth
+            $chart = $testData | Format-SpectreBarChart -Title $testTitle -Width $testWidth
+            $chart | Should -BeOfType [Spectre.Console.BarChart]
+            $chart | Out-SpectreHost
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
         }
         
         It "Should handle single input correctly" {
             $testData = New-SpectreChartItem -Label (Get-RandomString) -Value (Get-Random -Minimum -100 -Maximum 100) -Color (Get-RandomColor)
-            Format-SpectreBarChart -Data $testData -Title $testTitle -Width $testWidth
+            $chart = Format-SpectreBarChart -Data $testData -Title $testTitle -Width $testWidth
+            $chart | Should -BeOfType [Spectre.Console.BarChart]
+            $chart | Out-SpectreHost
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
         }
 
@@ -54,7 +60,9 @@ Describe "Format-SpectreBarChart" {
 
                 $testConsole.Write($RenderableObject)
             }
-            Format-SpectreBarChart -Data $testData -Width $testWidth
+            $chart = Format-SpectreBarChart -Data $testData -Width $testWidth
+            $chart | Should -BeOfType [Spectre.Console.BarChart]
+            $chart | Out-SpectreHost
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
         }
 
@@ -67,7 +75,9 @@ Describe "Format-SpectreBarChart" {
 
                 $testConsole.Write($RenderableObject)
             }
-            Format-SpectreBarChart -Data $testData
+            $chart = Format-SpectreBarChart -Data $testData
+            $chart | Should -BeOfType [Spectre.Console.BarChart]
+            $chart | Out-SpectreHost
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
         }
 
@@ -82,7 +92,10 @@ Describe "Format-SpectreBarChart" {
                 (New-SpectreChartItem -Label "Test 2" -Value 20 -Color "#ff0000"),
                 (New-SpectreChartItem -Label "Test 3" -Value 30 -Color "Turquoise2")
             )
-            Format-SpectreBarChart -Data $testData
+            $chart = Format-SpectreBarChart -Data $testData
+            $chart | Should -BeOfType [Spectre.Console.BarChart]
+            $chart | Out-SpectreHost
+            Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
             { Assert-OutputMatchesSnapshot -SnapshotName "Format-SpectreBarChart" -Output $testConsole.Output } | Should -Not -Throw
         }
     }

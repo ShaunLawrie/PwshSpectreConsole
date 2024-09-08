@@ -1,0 +1,39 @@
+:root {
+    --sl-sidebar-width: 28rem;
+    --sl-content-width: 80rem;
+    --sl-color-bg-sidebar: #020617;
+    --sl-color-bg: #11001f;
+    --sl-color-bg-nav: #01030e;
+    --astro-code-color-background: transparent;
+    --sl-color-gray-5: transparent;
+}
+
+.terminal-preview {
+    @apply font-mono bg-slate-50 dark:bg-slate-950 rounded-lg;
+    border-color: rgba(189, 83, 238, 1.0)!important;
+    border-width: 2px!important;
+}
+
+.terminal-preview-accent {
+    @apply text-purple-500;
+}
+
+.action.primary {
+    @apply bg-purple-800 text-white rounded-xl;
+}
+
+.spectre-panel {
+    @apply rounded-xl border-2 border-purple-500;
+}
+
+.spectre-panel > pre {
+    @apply border-none;
+}
+
+.spectre-selection {
+    border: none!important;
+}
+
+.hero {
+  @apply pb-6;
+}

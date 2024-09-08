@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
 title: Write-SpectreCalendar
 ---
 
@@ -22,7 +26,12 @@ Writes a Spectre Console Calendar text to the console.
 
 
 ### Examples
-> EXAMPLE 1
+
+
+**Example 1**  
+This example demonstrates how to write a calendar to the console.
+
+
 
 ```powershell
 Write-SpectreCalendar -Date 2024-07-01 -Events @{'2024-07-10' = 'Beach time!'; '2024-07-20' = 'Barbecue' }
@@ -37,7 +46,12 @@ Write-SpectreCalendar -Date 2024-07-01 -Events @{'2024-07-10' = 'Beach time!'; '
         terminalFontFamily: "'Cascadia Code', monospace"
     }}
 />
-> EXAMPLE 2
+
+
+**Example 2**  
+This example demonstrates how to write a calendar to the console with some event details.
+
+
 
 ```powershell
 $events = @{
@@ -199,6 +213,21 @@ Hides the header of the calendar. (Date)
 
 
 
+#### **PassThru**
+
+Returns the Spectre Calendar object instead of writing it to the console.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|false   |named   |false        |
+
+
+
 
 
 ---
@@ -206,5 +235,5 @@ Hides the header of the calendar. (Date)
 
 ### Syntax
 ```powershell
-Write-SpectreCalendar [[-Date] <DateTime>] [[-Alignment] <String>] [[-Color] <Color>] [[-Border] <String>] [[-Culture] <CultureInfo>] [[-Events] <Hashtable>] [-HideHeader] [<CommonParameters>]
+Write-SpectreCalendar [[-Date] <DateTime>] [[-Alignment] <String>] [[-Color] <Color>] [[-Border] <String>] [[-Culture] <CultureInfo>] [[-Events] <Hashtable>] [-HideHeader] [-PassThru] [<CommonParameters>]
 ```

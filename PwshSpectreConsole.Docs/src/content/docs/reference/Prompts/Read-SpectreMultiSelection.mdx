@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
 title: Read-SpectreMultiSelection
 ---
 
@@ -21,10 +25,15 @@ This function displays a multi-selection prompt using Spectre Console and return
 
 
 ### Examples
-> EXAMPLE 1
+
+
+**Example 1**  
+This example demonstrates a multi-selection prompt with a custom title and choices.
+
+
 
 ```powershell
-$fruits = Read-SpectreMultiSelection -Title "Select your favourite fruits" `
+$fruits = Read-SpectreMultiSelection -Message "Select your favourite fruits" `
                                       -Choices @("apple", "banana", "orange", "pear", "strawberry", "durian", "lemon") `
                                       -PageSize 4
 # Type "↓", "<space>", "↓", "↓", "<space>", "↓", "<space>", "↲" to choose banana, pear and strawberry
@@ -46,18 +55,18 @@ Write-SpectreHost "Your favourite fruits are $($fruits -join ', ')"
 
 
 ### Parameters
-#### **Title**
+#### **Message**
 
-The title of the prompt. Defaults to "What are your favourite [color]?".
-
-
+The title of the prompt. Defaults to "What are your favourite [Spectre.Console.Color]?".
 
 
 
 
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[String]`|false   |1       |false        |
+
+
+|Type      |Required|Position|PipelineInput|Aliases                      |
+|----------|--------|--------|-------------|-----------------------------|
+|`[String]`|false   |1       |false        |Title<br/>Question<br/>Prompt|
 
 
 
@@ -72,7 +81,7 @@ The list of choices to display in the selection prompt. ChoiceLabelProperty is r
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
-|`[Array]`|false   |2       |false        |
+|`[Array]`|true    |2       |false        |
 
 
 
@@ -121,6 +130,17 @@ The number of choices to display per page. Defaults to 5.
 
 
 
+#### **TimeoutSeconds**
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |6       |false        |
+
+
+
 #### **AllowEmpty**
 
 Allow the multi-selection to be submitted without any options chosen.
@@ -143,5 +163,5 @@ Allow the multi-selection to be submitted without any options chosen.
 
 ### Syntax
 ```powershell
-Read-SpectreMultiSelection [[-Title] <String>] [[-Choices] <Array>] [[-ChoiceLabelProperty] <String>] [[-Color] <Color>] [[-PageSize] <Int32>] [-AllowEmpty] [<CommonParameters>]
+Read-SpectreMultiSelection [[-Message] <String>] [-Choices] <Array> [[-ChoiceLabelProperty] <String>] [[-Color] <Color>] [[-PageSize] <Int32>] [[-TimeoutSeconds] <Int32>] [-AllowEmpty] [<CommonParameters>]
 ```

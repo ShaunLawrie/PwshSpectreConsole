@@ -1,0 +1,108 @@
+---
+sidebar:
+  badge:
+    text: New
+    variant: tip
+title: Format-SpectreTextPath
+---
+
+
+
+
+
+
+
+import Asciinema from '../../../../components/Asciinema.astro'
+import formatspectretextpathExample1 from '../../../../assets/examples/formatspectretextpathExample1.cast?url'
+
+### Description
+
+Formats a path into a Spectre Console Path which supports highlighting and truncating.  
+See https://spectreconsole.net/widgets/text-path for more information.
+
+
+
+---
+
+
+### Examples
+
+
+**Example 1**  
+This example demonstrates how to format a PowerShell path as a Spectre Console Path with syntax highlighting.
+
+
+
+```powershell
+Get-Location | Format-SpectreTextPath | Out-SpectreHost
+```
+<Asciinema
+    src={formatspectretextpathExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+---
+
+
+### Parameters
+#### **Path**
+
+The directory/file path to format
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput |
+|----------|--------|--------|--------------|
+|`[String]`|true    |1       |true (ByValue)|
+
+
+
+#### **Alignment**
+
+Valid Values:
+
+* Left
+* Right
+* Center
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |2       |false        |
+
+
+
+#### **PathStyle**
+
+
+
+
+|Type         |Required|Position|PipelineInput|
+|-------------|--------|--------|-------------|
+|`[Hashtable]`|false   |3       |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Format-SpectreTextPath [-Path] <String> [[-Alignment] <String>] [[-PathStyle] <Hashtable>] [<CommonParameters>]
+```

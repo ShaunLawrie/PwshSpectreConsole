@@ -1,4 +1,3 @@
-using namespace Spectre.Console
 
 <#
 .SYNOPSIS
@@ -9,61 +8,57 @@ using namespace Spectre.Console
     The Get-SpectreDemoColors function retrieves a list of Spectre Console colors and displays them with their corresponding markup. 
     It also provides information on how to use the colors as parameters for commands or in Spectre Console markup.
 
-.PARAMETER Count
-    Limit the number of colors returned. This is only really useful for generating the help docs.
-
 .EXAMPLE
-    Get-SpectreDemoColors -Count 4
+    # **Example 1**  
+    # This example demonstrates how to use Get-SpectreDemoColors to display a list of the built-in Spectre Console colors.
+    Get-SpectreDemoColors
 #>
 function Get-SpectreDemoColors {
     [Reflection.AssemblyMetadata("title", "Get-SpectreDemoColors")]
-    param (
-        [int] $Count
-    )
-    
-    Write-SpectreHost " "
-    Write-SpectreRule "Colors"
-    Write-SpectreHost " "
+    param ()
 
-    $colors = [Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
-    if($Count) {
-        $colors = $colors | Select-Object -First $Count
-    }
-    $colors = $colors | ForEach-Object {
-        $prefix = ($_ -replace '[_0-9]+', '')
-        $numeric = ($_ -replace '^[^0-9]+', '')
-        $value = 0
-        if ([string]::IsNullOrEmpty($numeric)) {
-            $value = 0.0
-        } else {
-            $numericParts = $numeric.Split('_')
-            if ($numericParts.Count -lt 2) {
-                $value = [double]"$($numericParts[0]).9"
-            } else {
-                $value = [double]"$($numericParts[0]).$($numericParts[1])"
-            }
-        }
+    Write-SpectreHost " "
+    $width = Get-HostWidth
+    $remainder = $width
+    $colors = [Spectre.Console.Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
+    $sortableColors = $colors | ForEach-Object {
+        $color = [Spectre.Console.Color]::$_
+        $hsv = Convert-RgbToHsv -Red $color.R -Green $color.G -Blue $color.B
         return [pscustomobject]@{
-            Name    = $_
-            Prefix  = $prefix
-            Numeric = $value
+            Name = $_
+            Color = $color
+            Saturation = $hsv[1]
+            ColorCategory = Get-ColorCategory -Hue $hsv[0] -Saturation $hsv[1] -Value $hsv[2]
+            Lightness = Get-ColorLightness -Red $color.R -Green $color.G -Blue $color.B
         }
-    } | Sort-Object -Property @{Expression = "Prefix" }, @{Expression = "Numeric" } | Select-Object -ExpandProperty Name
-
-    $maxLength = $colors | Measure-Object -Maximum -Property Length | Select-Object -ExpandProperty Maximum
-
-    foreach ($color in $colors) {
-        $total = [Color]::$color | Select-Object @{ Name = "Total"; Expression = { $_.R + $_.G + $_.B } } | Select-Object -ExpandProperty Total
-        $textColor = "white"
-        if ($total -gt 280) {
-            $textColor = "black"
-        }
-        
-        Write-SpectreHost -NoNewline "[$textColor on $color] $($color.PadRight($maxLength)) [/] "
-        Write-SpectreHost ("[$color]$color[/]")
     }
+    $colorCategories = $sortableColors | Group-Object ColorCategory
+    $colorCategories | ForEach-Object {
+        if ($_.Name -like "00 Grey*") {
+            $sorted = $_.Group | Sort-Object -Property Lightness
+        } else {
+            $sorted = $_.Group | Sort-Object -Property Saturation -Descending
+        }
 
-    Write-SpectreHost " "
+        $sorted | ForEach-Object {
+            $colorName = $_.Name
+            $spaceRequired = $colorName.Length + 3
+            $remainder -= $spaceRequired
+            if ($remainder -le 0) {
+                Write-SpectreHost "`n"
+                $remainder = $width - $spaceRequired
+            }
+
+            $foreground = if (($_.Color.R + $_.Color.G + $_.Color.B) -gt 280) {
+                "black"
+            } else {
+                "white"
+            }
+
+            Write-SpectreHost "[$foreground on #$($_.Color.ToHex())] $($_.Name) [/] " -NoNewline
+        }
+    }
+    Write-SpectreHost "`n"
     Write-SpectreRule "Help"
     Write-SpectreHost " "
 

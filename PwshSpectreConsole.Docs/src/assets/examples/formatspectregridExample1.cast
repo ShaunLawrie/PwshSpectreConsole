@@ -1,0 +1,4 @@
+{"version": 2, "width": 110, "height": 5, "title": "Example 0", "env": {"TERM": "Spectre.Console"}}
+[0, "o", "hello  I      am       \r\na      grid   of       \r\nrows   using  spectre  \r\n"]
+
+

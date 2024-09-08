@@ -1,0 +1,118 @@
+---
+sidebar:
+  badge:
+    text: New
+    variant: tip
+title: Format-SpectreGrid
+---
+
+
+
+
+
+
+
+import Asciinema from '../../../../components/Asciinema.astro'
+import formatspectregridExample1 from '../../../../assets/examples/formatspectregridExample1.cast?url'
+import formatspectregridExample2 from '../../../../assets/examples/formatspectregridExample2.cast?url'
+
+### Description
+
+Formats data into a Spectre Console grid. The grid can be used to display data in a tabular format but it's not as flexible as the Layout widget.  
+See https://spectreconsole.net/widgets/grid for more information.
+
+
+
+---
+
+
+### Examples
+
+
+**Example 1**  
+This example demonstrates how to display a grid of rows using the Spectre Console module with a list of lists.
+
+
+
+```powershell
+Format-SpectreGrid -Data @("hello", "I", "am"), @("a", "grid", "of"), @("rows", "using", "spectre")
+```
+<Asciinema
+    src={formatspectregridExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+**Example 2**  
+This example demonstrates how to display a grid of rows using the Spectre Console module with a list of `New-SpectreGridRow` objects.
+The `New-SpectreGridRow` function is used to create the rows when you want to avoid array collapsing in PowerShell turning your rows into a single array of columns.
+
+
+
+```powershell
+$rows = 4
+$cols = 6
+$gridRows = @()
+for ($row = 1; $row -le $rows; $row++) {
+    $columns = @()
+    for ($col = 1; $col -le $cols; $col++) {
+        $columns += "Row $row, Col $col" | Format-SpectrePanel
+    }
+    $gridRows += New-SpectreGridRow $columns
+}
+
+$gridRows | Format-SpectreGrid
+```
+<Asciinema
+    src={formatspectregridExample2}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+---
+
+
+### Parameters
+#### **Data**
+
+
+
+
+|Type      |Required|Position|PipelineInput |
+|----------|--------|--------|--------------|
+|`[Object]`|true    |1       |true (ByValue)|
+
+
+
+#### **Width**
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |2       |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Format-SpectreGrid [-Data] <Object> [[-Width] <Int32>] [<CommonParameters>]
+```

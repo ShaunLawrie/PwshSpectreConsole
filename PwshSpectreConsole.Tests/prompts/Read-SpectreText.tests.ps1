@@ -25,7 +25,7 @@ Describe "Read-SpectreText" {
         }
 
         It "can allow an empty answer" {
-            Read-SpectreText -AllowEmpty
+            Read-SpectreText -Message "What?" -AllowEmpty
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
         }
 

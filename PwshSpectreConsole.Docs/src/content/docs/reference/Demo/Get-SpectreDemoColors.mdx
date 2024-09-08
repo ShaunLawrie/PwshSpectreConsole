@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
 title: Get-SpectreDemoColors
 ---
 
@@ -7,6 +11,8 @@ title: Get-SpectreDemoColors
 
 
 
+
+<style>{` div.asciinema-player-theme-spectre { --term-color-0: #000000; } `}</style>
 
 import Asciinema from '../../../../components/Asciinema.astro'
 import getspectredemocolorsExample1 from '../../../../assets/examples/getspectredemocolorsExample1.cast?url'
@@ -22,10 +28,15 @@ It also provides information on how to use the colors as parameters for commands
 
 
 ### Examples
-> EXAMPLE 1
+
+
+**Example 1**  
+This example demonstrates how to use Get-SpectreDemoColors to display a list of the built-in Spectre Console colors.
+
+
 
 ```powershell
-Get-SpectreDemoColors -Count 4
+Get-SpectreDemoColors
 ```
 <Asciinema
     src={getspectredemocolorsExample1}
@@ -42,28 +53,7 @@ Get-SpectreDemoColors -Count 4
 ---
 
 
-### Parameters
-#### **Count**
-
-Limit the number of colors returned. This is only really useful for generating the help docs.
-
-
-
-
-
-
-|Type     |Required|Position|PipelineInput|
-|---------|--------|--------|-------------|
-|`[Int32]`|false   |1       |false        |
-
-
-
-
-
----
-
-
 ### Syntax
 ```powershell
-Get-SpectreDemoColors [[-Count] <Int32>] [<CommonParameters>]
+Get-SpectreDemoColors [<CommonParameters>]
 ```

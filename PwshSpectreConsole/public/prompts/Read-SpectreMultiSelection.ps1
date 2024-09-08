@@ -1,5 +1,5 @@
 using module "..\..\private\completions\Completers.psm1"
-using namespace Spectre.Console
+using module "..\..\private\completions\Transformers.psm1"
 
 function Read-SpectreMultiSelection {
     <#
@@ -9,8 +9,8 @@ function Read-SpectreMultiSelection {
     .DESCRIPTION
     This function displays a multi-selection prompt using Spectre Console and returns the selected choices. The prompt allows the user to select one or more choices from a list of options. The function supports customizing the title, choices, choice label property, color, and page size of the prompt.
 
-    .PARAMETER Title
-    The title of the prompt. Defaults to "What are your favourite [color]?".
+    .PARAMETER Message
+    The title of the prompt. Defaults to "What are your favourite [Spectre.Console.Color]?".
 
     .PARAMETER Choices
     The list of choices to display in the selection prompt. ChoiceLabelProperty is required if the choices are complex objects rather than an array of strings.
@@ -28,7 +28,9 @@ function Read-SpectreMultiSelection {
     Allow the multi-selection to be submitted without any options chosen.
 
     .EXAMPLE
-    $fruits = Read-SpectreMultiSelection -Title "Select your favourite fruits" `
+    # **Example 1**  
+    # This example demonstrates a multi-selection prompt with a custom title and choices.
+    $fruits = Read-SpectreMultiSelection -Message "Select your favourite fruits" `
                                           -Choices @("apple", "banana", "orange", "pear", "strawberry", "durian", "lemon") `
                                           -PageSize 4
     # Type "↓", "<space>", "↓", "↓", "<space>", "↓", "<space>", "↲" to choose banana, pear and strawberry
@@ -36,16 +38,19 @@ function Read-SpectreMultiSelection {
     #>
     [Reflection.AssemblyMetadata("title", "Read-SpectreMultiSelection")]
     param (
-        [string] $Title = "What are your favourite [$($script:AccentColor.ToMarkup())]colors[/]?",
-        [array] $Choices = @("red", "orange", "yellow", "green", "blue", "indigo", "violet"),
+        [Alias("Title", "Question", "Prompt")]
+        [string] $Message,
+        [Parameter(Mandatory)]
+        [array] $Choices,
         [string] $ChoiceLabelProperty,
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Color] $Color = $script:AccentColor,
+        [Spectre.Console.Color] $Color = $script:AccentColor,
         [int] $PageSize = 5,
+        [int] $TimeoutSeconds,
         [switch] $AllowEmpty
     )
-    $spectrePrompt = [MultiSelectionPrompt[string]]::new()
+    $spectrePrompt = [Spectre.Console.MultiSelectionPrompt[string]]::new()
 
     $choiceLabels = $Choices
     $choiceObjects = $Choices | Where-Object { $_ -isnot [string] }
@@ -61,15 +66,17 @@ function Read-SpectreMultiSelection {
         throw "You have duplicate labels in your select list, this is ambiguous so a selection cannot be made"
     }
 
-    $spectrePrompt = [MultiSelectionPromptExtensions]::AddChoices($spectrePrompt, [string[]]$choiceLabels)
-    $spectrePrompt.Title = $Title
+    $spectrePrompt = [Spectre.Console.MultiSelectionPromptExtensions]::AddChoices($spectrePrompt, [string[]]$choiceLabels)
+    if ($Message) {
+        $spectrePrompt.Title = $Message
+    }
     $spectrePrompt.PageSize = $PageSize
     $spectrePrompt.WrapAround = $true
     $spectrePrompt.Required = !$AllowEmpty
-    $spectrePrompt.HighlightStyle = [Style]::new($Color)
+    $spectrePrompt.HighlightStyle = [Spectre.Console.Style]::new($Color)
     $spectrePrompt.InstructionsText = "[$($script:DefaultValueColor.ToMarkup())](Press [$($script:AccentColor.ToMarkup())]space[/] to toggle a choice and press [$($script:AccentColor.ToMarkup())]<enter>[/] to submit your answer)[/]"
     $spectrePrompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
-    $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt
+    $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt -TimeoutSeconds $TimeoutSeconds
 
     if ($ChoiceLabelProperty) {
         $selected = $Choices | Where-Object { $selected -contains $_.$ChoiceLabelProperty }

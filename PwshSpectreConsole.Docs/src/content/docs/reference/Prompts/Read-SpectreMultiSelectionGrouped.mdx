@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
 title: Read-SpectreMultiSelectionGrouped
 ---
 
@@ -21,10 +25,15 @@ Displays a multi-selection prompt with grouped choices and returns the selected 
 
 
 ### Examples
-> EXAMPLE 1
+
+
+**Example 1**  
+This example demonstrates a multi-selection prompt with grouped choices.
+
+
 
 ```powershell
-$selected = Read-SpectreMultiSelectionGrouped -Title "Select your favorite colors" -PageSize 8 -Choices @(
+$selected = Read-SpectreMultiSelectionGrouped -Message "Select your favorite colors" -PageSize 8 -Choices @(
     @{
         Name = "Primary Colors"
         Choices = @("Red", "Blue", "Yellow")
@@ -53,18 +62,18 @@ Write-SpectreHost "Your favourite colors are $($selected -join ', ')"
 
 
 ### Parameters
-#### **Title**
+#### **Message**
 
-The title of the prompt. The default value is "What are your favourite [color]?".
-
-
+The title of the prompt. The default value is "What are your favourite [Spectre.Console.Color]?".
 
 
 
 
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[String]`|false   |1       |false        |
+
+
+|Type      |Required|Position|PipelineInput|Aliases                      |
+|----------|--------|--------|-------------|-----------------------------|
+|`[String]`|false   |1       |false        |Title<br/>Question<br/>Prompt|
 
 
 
@@ -79,7 +88,7 @@ An array of choice groups. Each group is a hashtable with two keys: "Name" and "
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
-|`[Array]`|false   |2       |false        |
+|`[Array]`|true    |2       |false        |
 
 
 
@@ -128,6 +137,17 @@ The number of choices to display per page. The default value is 10.
 
 
 
+#### **TimeoutSeconds**
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |6       |false        |
+
+
+
 #### **AllowEmpty**
 
 Allow the multi-selection to be submitted without any options chosen.
@@ -150,5 +170,5 @@ Allow the multi-selection to be submitted without any options chosen.
 
 ### Syntax
 ```powershell
-Read-SpectreMultiSelectionGrouped [[-Title] <String>] [[-Choices] <Array>] [[-ChoiceLabelProperty] <String>] [[-Color] <Color>] [[-PageSize] <Int32>] [-AllowEmpty] [<CommonParameters>]
+Read-SpectreMultiSelectionGrouped [[-Message] <String>] [-Choices] <Array> [[-ChoiceLabelProperty] <String>] [[-Color] <Color>] [[-PageSize] <Int32>] [[-TimeoutSeconds] <Int32>] [-AllowEmpty] [<CommonParameters>]
 ```
