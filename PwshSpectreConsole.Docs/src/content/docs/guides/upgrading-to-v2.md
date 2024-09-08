@@ -30,7 +30,7 @@ Update-Module PwshSpectreConsole -Scope CurrentUser
 
 Renderables are objects that can be rendered to the console. Most functions now return a renderable object instead of writing directly to the console host. This allows you to assign the output of a function to a variable and use it in other functions or redirect the output to a file. The renderable objects can also be used as inputs to other Spectre Console functions so you can build complex layouts.
 
-![renderable items inside tables](../../../../public/2-0-tables.png)
+![renderable items inside tables](/public/2-0-tables.png)
 
 ```powershell
 # Example of using renderable objects inside a table
