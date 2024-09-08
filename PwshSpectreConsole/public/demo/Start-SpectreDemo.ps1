@@ -347,5 +347,5 @@ Write-SpectreHost "I'm Harvey Specter. Are you after a Specter consult or a Spec
         (Write-SpectreHost "There are more examples and documentation at [blue]https://pwshspectreconsole.com/[/]" -PassThru),
         (Write-SpectreHost "You can also check out the original dotnet library documentation at [blue]https://spectreconsole.net/[/]" -PassThru),
         (Write-SpectreHost "Have fun :waving_hand:" -PassThru | Format-SpectrePadded -Top 1 -Left 0 -Right 0 -Bottom 1)
-    ) | Format-SpectreRows | Format-SpectrePanel -Expand
+    ) | Format-SpectreRows
 }
