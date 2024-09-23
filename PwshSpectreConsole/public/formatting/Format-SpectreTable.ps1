@@ -178,9 +178,9 @@ function Format-SpectreTable {
         }
         if ($FormatTableParams.Keys.Count -gt 0) {
             Write-Debug "Using Format-Table with parameters: $($FormatTableParams.Keys -join ', ')"
-            $collector = $collector | Format-Table @FormatTableParams
+            $collector = $collector | Format-Table @FormatTableParams *
         } else {
-            $collector = $collector | Format-Table
+            $collector = $collector | Format-Table *
         }
         if (-Not $collector.shapeInfo) {
             # scalar array, no header
