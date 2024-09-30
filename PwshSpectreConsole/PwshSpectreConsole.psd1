@@ -15,7 +15,7 @@ RootModule = 'PwshSpectreConsole'
 ModuleVersion = '2.1.2'
 
 # Supported PSEditions
-# CompatiblePSEditions = @()
+CompatiblePSEditions = 'Core'
 
 # ID used to uniquely identify this module
 GUID = '8c5ca00d-7f0f-4179-98bf-bdaebceaebc0'
