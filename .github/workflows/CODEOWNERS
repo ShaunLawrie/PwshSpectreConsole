@@ -1,0 +1,2 @@
+# Codeowners approval is required to modify any of the github actions stuff
+/.github/ @ShaunLawrie
