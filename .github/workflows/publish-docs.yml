@@ -9,6 +9,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     name: Deploy
+    environment: prod
     if: github.repository_owner == 'ShaunLawrie'
     steps:
       - name: Checkout

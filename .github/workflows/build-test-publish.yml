@@ -1,6 +1,4 @@
 name: Publish to PSGallery
-env:
-  PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
 on:
   push:
     branches:
@@ -13,6 +11,9 @@ permissions:
 jobs:
   publish-to-psgallery:
     name: Publish
+    environment: prod
+    env:
+      PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.repository_owner == 'ShaunLawrie'
     steps:
@@ -57,6 +58,9 @@ jobs:
 
   publish-prerelease-to-psgallery:
     name: Publish Prerelease
+    environment: prod
+    env:
+      PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/prerelease' && github.repository_owner == 'ShaunLawrie'
     steps:
@@ -112,7 +116,7 @@ jobs:
           } else {
             Write-Host "Bumping version from $version to $newVersion"
             Update-ModuleManifest -Path .\PwshSpectreConsole\PwshSpectreConsole.psd1 -ModuleVersion $newVersion
-            git config --global user.name 'Shaun Lawrie (via GitHub Actions)'
+            git config --global user.name 'PwshSpectreConsole (via GitHub Actions)'
             git config --global user.email 'shaun.r.lawrie@gmail.com'
             git add PwshSpectreConsole/PwshSpectreConsole.psd1
             git commit -m "[skip ci] Bump version to $newVersion"
