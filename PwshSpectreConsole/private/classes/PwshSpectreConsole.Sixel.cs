@@ -29,7 +29,7 @@ namespace PwshSpectreConsole.Sixel
       MemoryStream buffer = new();
       StreamWriter writer = new(buffer, Encoding.UTF8);
       writer.Write($"\u001BP0;1;8q\"1;1;{image.Width};{image.Height}");
-      // Process pixel rows and generate palette
+      writer.Write("#0;2;0;0;0");
       image.ProcessPixelRows(accessor =>
       {
         for (int y = 0; y < accessor.Height; y++)
@@ -50,7 +50,7 @@ namespace PwshSpectreConsole.Sixel
               writer.Write($"#{value};2;{r};{g};{b}");
             }
             int colorId = pixel.A == 0 ? 0 : value;
-            // we only add to the buffer once we see a new color. just add the repeat counter to the last pixel.
+            // we only add to the buffer once we see a new color.
             if (colorId == lastPixel || repeatCounter == 0)
             {
               lastPixel = colorId;
@@ -68,7 +68,7 @@ namespace PwshSpectreConsole.Sixel
             lastPixel = colorId;
             repeatCounter = 1;
           }
-          // this is the last pixel in the row.. i think its needed. it looks weird i know.
+          // this is the last pixel in the row..
           if (repeatCounter > 1)
           {
             writer.Write($"#{lastPixel}!{repeatCounter}{c}");

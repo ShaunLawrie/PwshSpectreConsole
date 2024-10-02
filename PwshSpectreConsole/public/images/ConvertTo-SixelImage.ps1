@@ -33,25 +33,29 @@ function ConvertTo-SixelImage {
     [Reflection.AssemblyMetadata('title', 'ConvertTo-SixelImage')]
     param(
         [Parameter(ValueFromPipelineByPropertyName, ParameterSetName = 'ImagePath', Mandatory, Position = 0)]
-        [Alias('Fullname')]
+        [Alias('Fullname','Path')]
         [string] $ImagePath,
         [Parameter(ValueFromPipelineByPropertyName, ParameterSetName = 'Uri', Mandatory, Position = 0)]
-        [Alias('Uri')]
+        [Alias('Uri','Url')]
         [uri] $ImageUrl,
         [int] $Width = 400,
-        [int] $MaxColors = 256
+        [int] $MaxColors
     )
     process {
         try {
             if ($ImageUrl) {
                 $ImagePath = New-TemporaryFile
-                Invoke-WebRequest -Uri $ImageUrl -OutFile $ImagePath
+                Invoke-WebRequest -Uri $ImageUrl -OutFile $ImagePath -ErrorAction Stop
             }
-            $imagePathResolved = Resolve-Path $ImagePath
-            if (-not (Test-Path $imagePathResolved)) {
-                throw "The specified image path '$resolvedImagePath' does not exist."
+            $imagePathResolved = Resolve-Path $ImagePath -ErrorAction Stop
+            if (-not $MaxColors) {
+                # rgb
+                $MaxColors = 16777216
             }
             [PwshSpectreConsole.Sixel.Convert]::ImgToSixel($imagePathResolved, $Width, $MaxColors)
+        }
+        catch {
+            Write-Error $_
         }
         finally {
             if ($ImageUrl) {
