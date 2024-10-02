@@ -39,7 +39,7 @@ function ConvertTo-SixelImage {
         [Alias('Uri','Url')]
         [uri] $ImageUrl,
         [int] $Width = 400,
-        [int] $MaxColors
+        [int] $MaxColors = 16777216 # should we default to 256?
     )
     process {
         try {
@@ -48,10 +48,6 @@ function ConvertTo-SixelImage {
                 Invoke-WebRequest -Uri $ImageUrl -OutFile $ImagePath -ErrorAction Stop
             }
             $imagePathResolved = Resolve-Path $ImagePath -ErrorAction Stop
-            if (-not $MaxColors) {
-                # rgb
-                $MaxColors = 16777216
-            }
             [PwshSpectreConsole.Sixel.Convert]::ImgToSixel($imagePathResolved, $Width, $MaxColors)
         }
         catch {
