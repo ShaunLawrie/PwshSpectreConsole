@@ -24,7 +24,7 @@ jobs:
       - name: Version Bump
         shell: pwsh
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.PIPELINE_PAT }}
         run: |
           $ErrorActionPreference = "Stop"
           & .\PwshSpectreConsole\Build.ps1
@@ -71,7 +71,7 @@ jobs:
       - name: Version Bump and Publish
         shell: pwsh
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.PIPELINE_PAT }}
         run: |
           $ErrorActionPreference = "Stop"
 
