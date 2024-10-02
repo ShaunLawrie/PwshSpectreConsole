@@ -116,7 +116,7 @@ jobs:
           } else {
             Write-Host "Bumping version from $version to $newVersion"
             Update-ModuleManifest -Path .\PwshSpectreConsole\PwshSpectreConsole.psd1 -ModuleVersion $newVersion
-            git config --global user.name 'PwshSpectreConsole (via GitHub Actions)'
+            git config --global user.name 'Shaun Lawrie (via GitHub Actions)'
             git config --global user.email 'shaun.r.lawrie@gmail.com'
             git add PwshSpectreConsole/PwshSpectreConsole.psd1
             git commit -m "[skip ci] Bump version to $newVersion"
