@@ -60,6 +60,9 @@ namespace PwshSpectreConsole.Sixel
           {
             if (!palette.TryGetValue(pixel, out int value))
             {
+              // for each new color, we add it to the palette.
+              // give it an index and write the color to the buffer.
+              // it uses rgb 0-100 "intensity" instead of normal rgb 0-255
               value = colorIndex++;
               palette[pixel] = value;
               int r = (int)Math.Round(pixel.R / 255.0 * 100);
