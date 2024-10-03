@@ -29,4 +29,4 @@ Full documentation is at [https://pwshspectreconsole.com/](https://pwshspectreco
 
 ### Prerelease Documentation
 
-Prerelease documentation is at [https://prerelease.pwshspectreconsole.com/](https://prerelease.pwshspectreconsole.com/)
+Prerelease documentation is at [https://prerelease.pwshspectreconsole.com/](https://prerelease.pwshspectreconsole.com/)  

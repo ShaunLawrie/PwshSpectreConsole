@@ -1,6 +1,4 @@
 name: Publish to PSGallery
-env:
-  PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
 on:
   push:
     branches:
@@ -13,6 +11,9 @@ permissions:
 jobs:
   publish-to-psgallery:
     name: Publish
+    environment: prod
+    env:
+      PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.repository_owner == 'ShaunLawrie'
     steps:
@@ -20,10 +21,11 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          token: ${{ secrets.PIPELINE_PAT }}
       - name: Version Bump
         shell: pwsh
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.PIPELINE_PAT }}
         run: |
           $ErrorActionPreference = "Stop"
           & .\PwshSpectreConsole\Build.ps1
@@ -57,6 +59,9 @@ jobs:
 
   publish-prerelease-to-psgallery:
     name: Publish Prerelease
+    environment: prod
+    env:
+      PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/prerelease' && github.repository_owner == 'ShaunLawrie'
     steps:
@@ -64,10 +69,11 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          token: ${{ secrets.PIPELINE_PAT }}
       - name: Version Bump and Publish
         shell: pwsh
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.PIPELINE_PAT }}
         run: |
           $ErrorActionPreference = "Stop"
 
