@@ -17,13 +17,16 @@ using SixLabors.ImageSharp.Processing.Processors.Quantization;
 //  '-' DECGNL - Graphics Next Line
 // '+'  Undocumented home command (VT240 only)
 // '"'  DECGRA - Set Raster Attributes
-
+// https://www.digiater.nl/openvms/decus/vax90b1/krypton-nasa/all-about-sixels.text
+// https://github.com/hackerb9/vt340test/blob/main/docs/standards/graphicrenditions.md
 namespace PwshSpectreConsole.Sixel
 {
   public class Convert
   {
-    private const string SixelStart = "\u001BP0;1;8q\"1;1";
-    private const string SixelEnd = "\u001B\\";
+    // testing..
+    // private const string SixelStart = "\u001BP0;1;8q\"1;1";
+    private const string SixelStart = "\u001BP0;1q\"1;1;";
+    private const string SixelEnd = "\u001b\\";
     private const string SixelDECGNL = "-";
     private const string SixelDECGCR = "$";
 
@@ -31,23 +34,30 @@ namespace PwshSpectreConsole.Sixel
     {
       using var image = Image.Load<Rgba32>(filename);
       int scaledHeight = (int)Math.Round((double)image.Height / image.Width * width);
+
       image.Mutate(ctx =>
       {
-        ctx.Resize(width, scaledHeight, KnownResamplers.NearestNeighbor);
-        QuantizerOptions quantizerOptions = new()
+        ResizeOptions resizeOptions = new ResizeOptions
+        {
+          Sampler = KnownResamplers.NearestNeighbor,
+          PremultiplyAlpha = false,
+          Size = new Size(width, scaledHeight)
+        };
+        ctx.Resize(resizeOptions);
+        QuantizerOptions quantizerOptions = new QuantizerOptions
         {
           MaxColors = maxColors
         };
         ctx.Quantize(new OctreeQuantizer(quantizerOptions));
       });
       Dictionary<Rgba32, int> palette = [];
-      int colorIndex = 1;
+      int colorCounter = 1;
       MemoryStream buffer = new();
       StreamWriter writer = new(buffer, Encoding.UTF8);
       // enter sixel mode, set raster attributes (width, height)
       writer.Write($"{SixelStart};{image.Width};{image.Height}");
       // TODO: fix transparency..
-      // writer.Write("#0;2;0;0;0");
+      // writer.Write("#0;1;0;0;0");
       image.ProcessPixelRows(accessor =>
       {
         for (int y = 0; y < accessor.Height; y++)
@@ -58,19 +68,19 @@ namespace PwshSpectreConsole.Sixel
           int repeatCounter = 0;
           foreach (ref Rgba32 pixel in pixelRow)
           {
-            if (!palette.TryGetValue(pixel, out int value))
+            if (!palette.TryGetValue(pixel, out int colorIndex))
             {
               // for each new color, we add it to the palette.
               // give it an index and write the color to the buffer.
               // it uses rgb 0-100 "intensity" instead of normal rgb 0-255
-              value = colorIndex++;
-              palette[pixel] = value;
+              colorIndex = colorCounter++;
+              palette[pixel] = colorIndex;
               int r = (int)Math.Round(pixel.R / 255.0 * 100);
               int g = (int)Math.Round(pixel.G / 255.0 * 100);
               int b = (int)Math.Round(pixel.B / 255.0 * 100);
-              writer.Write($"#{value};2;{r};{g};{b}");
+              writer.Write($"#{colorIndex};2;{r};{g};{b}");
             }
-            int colorId = pixel.A == 0 ? 0 : value;
+            int colorId = pixel.A == 0 ? 0 : colorIndex;
             // we only add to the buffer once we see a new color.
             if (colorId == lastColor || repeatCounter == 0)
             {
