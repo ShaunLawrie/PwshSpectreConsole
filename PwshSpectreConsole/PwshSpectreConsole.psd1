@@ -91,7 +91,7 @@ FunctionsToExport = 'Add-SpectreJob', 'Format-SpectreBarChart',
                'New-SpectreGridRow', 'Format-SpectreTextPath', 'New-SpectreLayout',
                'Format-SpectreAligned', 'Out-SpectreHost', 'Add-SpectreTableRow',
                'Invoke-SpectreLive', 'Format-SpectreException',
-               'Get-SpectreDemoFeatures', 'Get-SpectreRenderableSize','ConvertTo-SixelImage'
+               'Get-SpectreDemoFeatures', 'Get-SpectreRenderableSize','ConvertTo-Sixel'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
@@ -100,7 +100,7 @@ CmdletsToExport = @()
 VariablesToExport = '*'
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-AliasesToExport = 'fst', 'fsj'
+AliasesToExport = 'fst', 'fsj','cts'
 
 # DSC resources to export from this module
 # DscResourcesToExport = @()
