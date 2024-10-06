@@ -3,6 +3,7 @@ function Get-SpectreProfile {
     [CmdletBinding()]
     param ()
     $object = [Spectre.Console.AnsiConsole]::Profile
+    $testTerminal = Get-TerminalCapabilities
     return [PSCustomObject]@{
         Enrichers             = $object.Enrichers -join ', '
         ColorSystem           = $object.Capabilities.ColorSystem
@@ -19,5 +20,6 @@ function Get-SpectreProfile {
         PSStyle               = $PSStyle.OutputRendering
         ConsoleOutputEncoding = [console]::OutputEncoding
         ConsoleInputEncoding  = [console]::InputEncoding
+        DA1                   = $testTerminal
     }
 }

@@ -22,3 +22,9 @@ foreach ($directory in @('private', 'public')) {
         . $_.FullName
     }
 }
+
+$script:SpectreProfile = Get-SpectreProfile
+if ($script:SpectreProfile.Encoding -ne 'Unicode (UTF-8)' -and -Not $env:IgnoreSpectreEncoding) {
+    $utf8 = '$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = [System.Text.UTF8Encoding]::new()'
+    Write-Warning "Spectre.Console is not using UTF-8 encoding, this disables certain functionality, consider adding `n$utf8`nto your profile, to suppress this warning set the environment variable '`$env:IgnoreSpectreEncoding=`$true'"
+}
