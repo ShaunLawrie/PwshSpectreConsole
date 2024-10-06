@@ -1,0 +1,44 @@
+﻿---
+title: ConvertTo-Sixel
+---
+
+
+
+
+
+
+
+### Description
+
+Converts an Image to Sixel format.
+
+Supports bmp, gif, jpeg, pbm, png, tiff, tga, webp.
+
+![xkcd](/sixel_xkcd.png)
+![Chibi Avatar](/sixel_powershell_chibi_avatar.png)
+
+:::caution
+This is experimental.
+Experimental features are unstable and subject to change.
+:::
+
+---
+
+
+### Examples
+**Example 1**
+  Convert a local file to Sixel format.
+
+
+```powershell
+    ConvertTo-Sixel -Path ".\private\images\smiley.png"
+```
+
+### Examples
+**Example 2**
+  Convert a online image.
+
+```powershell
+    ConvertTo-Sixel -Uri 'https://imgs.xkcd.com/comics/git_commit.png' -Width 439
+```
+---

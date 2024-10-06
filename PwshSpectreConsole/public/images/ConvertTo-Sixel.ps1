@@ -2,6 +2,7 @@ function ConvertTo-Sixel {
     <#
     .SYNOPSIS
     Converts an Image to Sixel format.
+    Supports bmp, gif, jpeg, pbm, png, tiff, tga, webp.
 
     .DESCRIPTION
 
@@ -31,11 +32,12 @@ function ConvertTo-Sixel {
 
     .EXAMPLE
     # **Example 1**
+    # This example demonstrates how to display an image in the console from a local file.
     ConvertTo-Sixel -Path ".\private\images\smiley.png"
 
     .EXAMPLE
     # **Example 2**
-    # This example demonstrates how to display an image in the console.
+    # This example demonstrates how to display an image in the console from a URL.
     ConvertTo-Sixel -Uri 'https://imgs.xkcd.com/comics/git_commit.png' -Width 439
     #>
     [Reflection.AssemblyMetadata('title', 'ConvertTo-Sixel')]
