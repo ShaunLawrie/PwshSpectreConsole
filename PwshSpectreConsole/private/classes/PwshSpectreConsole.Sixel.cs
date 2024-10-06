@@ -29,6 +29,7 @@ namespace PwshSpectreConsole.Sixel
     private const string SixelEnd = "\u001b\\";
     private const string SixelDECGNL = "-";
     private const string SixelDECGCR = "$";
+    private const char SixelEmpty = '?';
 
     public static string ImgToSixel(string filename, int width, int maxColors)
     {
@@ -55,9 +56,10 @@ namespace PwshSpectreConsole.Sixel
       MemoryStream buffer = new();
       StreamWriter writer = new(buffer, Encoding.UTF8);
       // enter sixel mode, set raster attributes (width, height)
-      writer.Write($"{SixelStart};{image.Width};{image.Height}");
-      // TODO: fix transparency..
-      // writer.Write("#0;1;0;0;0");
+      writer.Write($"{SixelStart}{image.Width};{image.Height}");
+      // This is a color to represent transparency, it won't actually be printed, the sixel-pixel will be
+      // turned off but it needs to be in the palette to make it easy to work with.
+      writer.Write("#0;2;100;0;0");
       image.ProcessPixelRows(accessor =>
       {
         for (int y = 0; y < accessor.Height; y++)
@@ -90,11 +92,11 @@ namespace PwshSpectreConsole.Sixel
             }
             if (repeatCounter > 1)
             {
-              writer.Write($"#{lastColor}!{repeatCounter}{c}");
+              writer.Write($"#{lastColor}!{repeatCounter}{((lastColor == 0) ? SixelEmpty : c)}");
             }
             else
             {
-              writer.Write($"#{lastColor}{c}");
+              writer.Write($"#{lastColor}{((lastColor == 0) ? SixelEmpty : c)}");
             }
             lastColor = colorId;
             repeatCounter = 1;
@@ -102,11 +104,11 @@ namespace PwshSpectreConsole.Sixel
           // this is the last pixel in the row..
           if (repeatCounter > 1)
           {
-            writer.Write($"#{lastColor}!{repeatCounter}{c}");
+            writer.Write($"#{lastColor}!{repeatCounter}{((lastColor == 0) ? SixelEmpty : c)}");
           }
           else
           {
-            writer.Write($"#{lastColor}{c}");
+            writer.Write($"#{lastColor}{((lastColor == 0) ? SixelEmpty : c)}");
           }
           // carriage return
           writer.Write(SixelDECGCR);
