@@ -33,6 +33,7 @@ $ignoreUpdatesFor = @(
     "New-SpectreChartItem",
     "Get-SpectreImage",
     "Get-SpectreImageExperimental",
+    "ConvertTo-Sixel",
     "Add-SpectreJob",
     "Invoke-SpectreCommandWithProgress",
     "Invoke-SpectreCommandWithStatus",
@@ -105,7 +106,7 @@ foreach ($doc in $docs) {
 
     # Remove the synopsis, the description is good enough
     $content = $content -replace "(?ms)^^### Synopsis.+?#", '#'
-    
+
     # Get last modified date of file from git (the path is relative to this file)
     $gitCommitDates = Get-GitCommitDatesForHashFile -Name $doc.Name -OutputPath $outputPath
     $modified = $gitCommitDates | Select-Object -First 1
@@ -120,7 +121,7 @@ foreach ($doc in $docs) {
         $tag = "Updated"
     }
     Write-Host "File $($doc.Name) was last modified on $modified and created on $created, using tag $tag"
-    
+
     # Add the tag to the top of the file
     if($tag) {
         $tagYaml = Get-Tag -Tag $tag
@@ -210,7 +211,7 @@ foreach ($doc in $docs) {
             [Spectre.Console.AnsiConsole]::Console = $originalConsole
         }
     }
-    
+
     # Write out the formatted file
     $content | Out-File $doc.FullName -NoNewline
 }
@@ -227,7 +228,7 @@ if($Branch -eq "prerelease") {
 }
 
 if($NoBuild) {
-    return 
+    return
 }
 
 # Build the docs site
