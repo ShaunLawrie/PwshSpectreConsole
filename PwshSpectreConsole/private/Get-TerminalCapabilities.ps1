@@ -35,32 +35,19 @@ function Get-TerminalCapabilities {
         64 = 'VT100'
         65 = 'VT520'
     }
-    <#
-    below is workaround for a bug in WT.. i think?.. replace when fixed.
+
     [console]::Write([char]27 + '[c')
-    $response = while ([console]::KeyAvailable) {
-        $char = [console]::ReadKey($true).KeyChar
-        $char
-        if ($char -eq 'c') {
-            break
-        }
-    }
-    #>
-    $timer = [System.Diagnostics.Stopwatch]::StartNew()
-    [console]::Write([char]27 + '[c')
-    $response = while ($true) {
+    $char = $null
+    $response = do {
             $char = [console]::ReadKey($true).KeyChar
             $char
-            if ($char -eq 'c' -or $timer.Elapsed.TotalSeconds -gt 1) {
-                break
-            }
-        }
-    $timer = $null
+    } while ($char -ne 'c' -and [Console]::KeyAvailable)
+
     $response = -join ($response -replace [char]27, [char]9243)
     $DA1 = [ordered]@{}
-    ([int[]] $Modes = $response -split ';' -replace '\D') | Where-Object { $_ -lt 60 } | ForEach-Object {
-        if ($lookup.ContainsKey($_)) {
-            $DA1[$lookup[$_]] = $true
+    $response -split ';' -replace '\D' | Where-Object { $_ -lt 60 } | ForEach-Object {
+        if ($lookup.ContainsKey([int]$_)) {
+            $DA1[$lookup[[int]$_]] = $true
         }
         else {
             $DA1["Unknown mode $_"] = $true
