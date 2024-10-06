@@ -55,11 +55,13 @@ function ConvertTo-Sixel {
     begin {
         if (-Not $Force -And -Not $script:SpectreProfile.DA1.Sixel) {
             $errorMessage = @(
-                "Sixel not supported by your terminal"
+                "Sixel not supported by your terminal,"
                 if ($env:WT_SESSION) {
-                    'Upgrade to latest Windows Terminal Preview (v1.22.2702+)'
+                    'upgrade to latest Windows Terminal Preview (v1.22.2702+)'
                 }
-                "`nto override DA1 detection use -Force (for testing..)"
+                else {
+                    'to override DA1 detection use -Force (for testing..)'
+                }
             ) -join ' '
             $PSCmdlet.ThrowTerminatingError(
                 [System.Management.Automation.ErrorRecord]::new(
