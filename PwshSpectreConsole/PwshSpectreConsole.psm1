@@ -29,6 +29,6 @@ if ($script:SpectreProfile.Unicode -eq $false -and -Not $env:IgnoreSpectreEncodi
         "Your session is currently using encoding '{0}', this disables certain functionality as SpectreConsole requires UTF8 encoding, consider adding
         '`$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = [System.Text.UTF8Encoding]::new()' to your `$profile
         to suppress this warning set the environment variable '`$env:IgnoreSpectreEncoding=`$true'
-        Note: this needs to be set before import the module"
+        Note: this needs to be set before importing the module"
     ) -f $script:SpectreProfile.Encoding | Write-Warning
 }
