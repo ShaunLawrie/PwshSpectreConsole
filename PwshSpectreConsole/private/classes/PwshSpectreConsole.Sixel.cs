@@ -19,110 +19,189 @@ using SixLabors.ImageSharp.Processing.Processors.Quantization;
 // '"'  DECGRA - Set Raster Attributes
 // https://www.digiater.nl/openvms/decus/vax90b1/krypton-nasa/all-about-sixels.text
 // https://github.com/hackerb9/vt340test/blob/main/docs/standards/graphicrenditions.md
-namespace PwshSpectreConsole.Sixel
+namespace PwshSpectreConsole.Sixel;
+
+public class Convert
 {
-  public class Convert
+  private static readonly StringBuilder SixelBuilder = new();
+  private const char SixelEmpty = '?';
+  private const char SixelDECGNL = '-';
+  private const char SixelDECGCR = '$';
+  private const string SixelStart = $"\u001BP0;1q\"1;1;";
+  private const string SixelEnd = "\u001b\\";
+  private const string TransparentColor = "#0;2;100;0;0";
+  private static readonly ResizeOptions ResizeOptions = new()
   {
-    // testing..
-    // private const string SixelStart = "\u001BP0;1;8q\"1;1";
-    private const string SixelStart = "\u001BP0;1q\"1;1;";
-    private const string SixelEnd = "\u001b\\";
-    private const string SixelDECGNL = "-";
-    private const string SixelDECGCR = "$";
-    private const char SixelEmpty = '?';
+    Sampler = KnownResamplers.NearestNeighbor,
+    PremultiplyAlpha = false
+  };
 
-    public static string ImgToSixel(string filename, int width, int maxColors)
+  private static readonly QuantizerOptions QuantizerOptions = new()
+  {
+    MaxColors = 256
+  };
+  public static string ImgToSixel(string filename, int maxColors)
+  {
+    try
     {
-      using var image = Image.Load<Rgba32>(filename);
+      using var image = LoadImage(filename);
+      // we always need to mutate the colors.. but maybe not always width.
+      MutateColors(image, maxColors);
+      RenderImage(image);
+      return SixelBuilder.ToString();
+    }
+    finally
+    {
+      SixelBuilder.Clear();
+    }
+  }
+  public static string ImgToSixel(string filename, int maxColors, int width)
+  {
+    try
+    {
+      using var image = LoadImage(filename);
       int scaledHeight = (int)Math.Round((double)image.Height / image.Width * width);
+      // we always need to mutate the colors.. but maybe not always width.
+      MutateSizeAndColors(image, width, scaledHeight, maxColors);
+      RenderImage(image);
+      return SixelBuilder.ToString();
+    }
+    finally
+    {
+      SixelBuilder.Clear();
+    }
+  }
+  private static void MutateSizeAndColors(Image<Rgba32> image, int width, int scaledHeight, int maxColors)
+  {
+    image.Mutate(ctx =>
+    {
+      ResizeOptions.Size = new Size(width, scaledHeight);
+      ctx.Resize(ResizeOptions);
+      QuantizerOptions.MaxColors = maxColors;
+      ctx.Quantize(new OctreeQuantizer(QuantizerOptions));
+    });
+  }
+  private static void MutateColors(Image<Rgba32> image, int maxColors)
+  {
+    image.Mutate(ctx =>
+    {
+      QuantizerOptions.MaxColors = maxColors;
+      ctx.Quantize(new OctreeQuantizer(QuantizerOptions));
+    });
+  }
 
-      image.Mutate(ctx =>
+  private static Image<Rgba32> LoadImage(string filename)
+  {
+    return Image.Load<Rgba32>(filename);
+  }
+  private static void RenderImage(Image<Rgba32> image)
+  {
+    Dictionary<Rgba32, int> palette = new();
+    int colorCounter = 1;
+    SixelBuilder.Append(SixelStart)
+                .Append(image.Width)
+                .Append(';')
+                .Append(image.Height)
+                .Append(TransparentColor);
+    image.ProcessPixelRows(accessor =>
+    {
+      for (int y = 0; y < accessor.Height; y++)
       {
-        ResizeOptions resizeOptions = new ResizeOptions
+        Span<Rgba32> pixelRow = accessor.GetRowSpan(y);
+        char c = (char)('?' + (1 << (y % 6)));
+        int lastColor = -1;
+        int repeatCounter = 0;
+
+        foreach (ref Rgba32 pixel in pixelRow)
         {
-          Sampler = KnownResamplers.NearestNeighbor,
-          PremultiplyAlpha = false,
-          Size = new Size(width, scaledHeight)
-        };
-        ctx.Resize(resizeOptions);
-        QuantizerOptions quantizerOptions = new QuantizerOptions
-        {
-          MaxColors = maxColors
-        };
-        ctx.Quantize(new OctreeQuantizer(quantizerOptions));
-      });
-      Dictionary<Rgba32, int> palette = [];
-      int colorCounter = 1;
-      MemoryStream buffer = new();
-      StreamWriter writer = new(buffer, Encoding.UTF8);
-      // enter sixel mode, set raster attributes (width, height)
-      writer.Write($"{SixelStart}{image.Width};{image.Height}");
-      // This is a color to represent transparency, it won't actually be printed, the sixel-pixel will be
-      // turned off but it needs to be in the palette to make it easy to work with.
-      writer.Write("#0;2;100;0;0");
-      image.ProcessPixelRows(accessor =>
-      {
-        for (int y = 0; y < accessor.Height; y++)
-        {
-          Span<Rgba32> pixelRow = accessor.GetRowSpan(y);
-          char c = (char)('?' + (1 << (y % 6)));
-          int lastColor = -1;
-          int repeatCounter = 0;
-          foreach (ref Rgba32 pixel in pixelRow)
+          if (!palette.TryGetValue(pixel, out int colorIndex))
           {
-            if (!palette.TryGetValue(pixel, out int colorIndex))
-            {
-              // for each new color, we add it to the palette.
-              // give it an index and write the color to the buffer.
-              // it uses rgb 0-100 "intensity" instead of normal rgb 0-255
-              colorIndex = colorCounter++;
-              palette[pixel] = colorIndex;
-              int r = (int)Math.Round(pixel.R / 255.0 * 100);
-              int g = (int)Math.Round(pixel.G / 255.0 * 100);
-              int b = (int)Math.Round(pixel.B / 255.0 * 100);
-              writer.Write($"#{colorIndex};2;{r};{g};{b}");
-            }
-            int colorId = pixel.A == 0 ? 0 : colorIndex;
-            // we only add to the buffer once we see a new color.
-            if (colorId == lastColor || repeatCounter == 0)
-            {
-              lastColor = colorId;
-              repeatCounter++;
-              continue;
-            }
-            if (repeatCounter > 1)
-            {
-              writer.Write($"#{lastColor}!{repeatCounter}{((lastColor == 0) ? SixelEmpty : c)}");
-            }
-            else
-            {
-              writer.Write($"#{lastColor}{((lastColor == 0) ? SixelEmpty : c)}");
-            }
-            lastColor = colorId;
-            repeatCounter = 1;
+            colorIndex = colorCounter++;
+            palette[pixel] = colorIndex;
+            AddColorToPalette(pixel, colorIndex);
           }
-          // this is the last pixel in the row..
+
+          int colorId = pixel.A == 0 ? 0 : colorIndex;
+
+          if (colorId == lastColor || repeatCounter == 0)
+          {
+            lastColor = colorId;
+            repeatCounter++;
+            continue;
+          }
+
           if (repeatCounter > 1)
           {
-            writer.Write($"#{lastColor}!{repeatCounter}{((lastColor == 0) ? SixelEmpty : c)}");
+            AppendRepeatEntry(lastColor, repeatCounter, c);
           }
           else
           {
-            writer.Write($"#{lastColor}{((lastColor == 0) ? SixelEmpty : c)}");
+            AppendSixelEntry(lastColor, c);
           }
-          // carriage return
-          writer.Write(SixelDECGCR);
-          if (y % 6 == 5)
-          {
-            // next line
-            writer.Write(SixelDECGNL);
-          }
+
+          lastColor = colorId;
+          repeatCounter = 1;
         }
-      });
-      // exit sixel mode
-      writer.Write(SixelEnd);
-      writer.Flush();
-      return Encoding.UTF8.GetString(buffer.ToArray());
-    }
+
+        if (repeatCounter > 1)
+        {
+          AppendRepeatEntry(lastColor, repeatCounter, c);
+        }
+        else
+        {
+          AppendSixelEntry(lastColor, c);
+        }
+
+        AppendCarriageReturn();
+        if (y % 6 == 5)
+        {
+          AppendNextLine();
+        }
+      }
+    });
+    // Exit sixel mode
+    SixelBuilder.Append(SixelEnd);
+  }
+
+  private static void AddColorToPalette(Rgba32 pixel, int colorIndex)
+  {
+    int r = (int)Math.Round(pixel.R / 255.0 * 100);
+    int g = (int)Math.Round(pixel.G / 255.0 * 100);
+    int b = (int)Math.Round(pixel.B / 255.0 * 100);
+
+    SixelBuilder.Append('#')
+                .Append(colorIndex)
+                .Append(";2;")
+                .Append(r)
+                .Append(';')
+                .Append(g)
+                .Append(';')
+                .Append(b);
+  }
+
+  private static void AppendRepeatEntry(int color, int repeatCounter, char e)
+  {
+    SixelBuilder.Append('#')
+                .Append(color)
+                .Append('!')
+                .Append(repeatCounter)
+                .Append(color != 0 ? e : SixelEmpty);
+  }
+
+  private static void AppendSixelEntry(int color, char e)
+  {
+    SixelBuilder.Append('#')
+                .Append(color)
+                .Append(color != 0 ? e : SixelEmpty);
+  }
+
+  private static void AppendCarriageReturn()
+  {
+    SixelBuilder.Append(SixelDECGCR);
+  }
+
+  private static void AppendNextLine()
+  {
+    SixelBuilder.Append(SixelDECGNL);
   }
 }

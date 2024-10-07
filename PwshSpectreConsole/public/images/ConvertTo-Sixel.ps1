@@ -50,7 +50,7 @@ function ConvertTo-Sixel {
         [Parameter(ParameterSetName = 'Url', Mandatory, Position = 0)]
         [Alias('Uri')]
         [uri] $Url,
-        [int] $Width = 400,
+        [int] $Width,
         [int] $MaxColors = 256,
         [switch] $Force
     )
@@ -61,9 +61,7 @@ function ConvertTo-Sixel {
                 if ($env:WT_SESSION) {
                     'upgrade to latest Windows Terminal Preview (v1.22.2702+)'
                 }
-                else {
-                    'to override DA1 detection use -Force (for testing..)'
-                }
+                'to override DA1 detection use -Force (for testing..)'
             ) -join ' '
             $PSCmdlet.ThrowTerminatingError(
                 [System.Management.Automation.ErrorRecord]::new(
@@ -82,7 +80,12 @@ function ConvertTo-Sixel {
                 Invoke-WebRequest -Uri $Url -OutFile $Path -ErrorAction Stop
             }
             $PathResolved = Resolve-Path $Path -ErrorAction Stop
-            [PwshSpectreConsole.Sixel.Convert]::ImgToSixel($PathResolved, $Width, $MaxColors)
+            if ($Width) {
+                [PwshSpectreConsole.Sixel.Convert]::ImgToSixel($PathResolved, $MaxColors, $Width)
+            }
+            else {
+                [PwshSpectreConsole.Sixel.Convert]::ImgToSixel($PathResolved, $MaxColors)
+            }
         } catch {
             Write-Error $_
         } finally {
