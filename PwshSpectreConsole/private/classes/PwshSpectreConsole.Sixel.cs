@@ -97,11 +97,7 @@ public class Convert
   {
     Dictionary<Rgba32, int> palette = new();
     int colorCounter = 1;
-    SixelBuilder.Append(SixelStart)
-                .Append(image.Width)
-                .Append(';')
-                .Append(image.Height)
-                .Append(TransparentColor);
+    StartSixel(image.Width, image.Height);
     image.ProcessPixelRows(accessor =>
     {
       for (int y = 0; y < accessor.Height; y++)
@@ -205,5 +201,13 @@ public class Convert
   private static void AppendExitSixel()
   {
     SixelBuilder.Append(SixelEnd);
+  }
+  private static void StartSixel(int width, int height)
+  {
+    SixelBuilder.Append(SixelStart)
+                .Append(width)
+                .Append(';')
+                .Append(height)
+                .Append(TransparentColor);
   }
 }
