@@ -42,10 +42,10 @@ public class Convert
   };
   public static string ImgToSixel(string filename, int maxColors)
   {
+    // we always need to mutate the colors.. but maybe not always width.
     try
     {
       using var image = LoadImage(filename);
-      // we always need to mutate the colors.. but maybe not always width.
       MutateColors(image, maxColors);
       RenderImage(image);
       return SixelBuilder.ToString();
@@ -61,7 +61,6 @@ public class Convert
     {
       using var image = LoadImage(filename);
       int scaledHeight = (int)Math.Round((double)image.Height / image.Width * width);
-      // we always need to mutate the colors.. but maybe not always width.
       MutateSizeAndColors(image, width, scaledHeight, maxColors);
       RenderImage(image);
       return SixelBuilder.ToString();
@@ -159,8 +158,7 @@ public class Convert
         }
       }
     });
-    // Exit sixel mode
-    SixelBuilder.Append(SixelEnd);
+    AppendExitSixel();
   }
 
   private static void AddColorToPalette(Rgba32 pixel, int colorIndex)
@@ -203,5 +201,9 @@ public class Convert
   private static void AppendNextLine()
   {
     SixelBuilder.Append(SixelDECGNL);
+  }
+  private static void AppendExitSixel()
+  {
+    SixelBuilder.Append(SixelEnd);
   }
 }
