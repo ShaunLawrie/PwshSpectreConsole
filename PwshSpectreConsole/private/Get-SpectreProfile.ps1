@@ -12,8 +12,6 @@ function Get-SpectreProfile {
         Links                 = $object.Capabilities.Links
         Legacy                = $object.Capabilities.Legacy
         Interactive           = $object.Capabilities.Interactive
-        Terminal              = $object.out.IsTerminal
-        Writer                = $object.Out.Writer
         Width                 = $object.Width
         Height                = $object.Height
         Encoding              = $object.Encoding.EncodingName

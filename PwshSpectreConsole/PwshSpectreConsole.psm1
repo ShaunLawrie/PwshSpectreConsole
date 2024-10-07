@@ -24,7 +24,11 @@ foreach ($directory in @('private', 'public')) {
 }
 
 $script:SpectreProfile = Get-SpectreProfile
-if ($script:SpectreProfile.Encoding -ne 'Unicode (UTF-8)' -and -Not $env:IgnoreSpectreEncoding) {
-    $utf8 = '$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = [System.Text.UTF8Encoding]::new()'
-    Write-Warning "Spectre.Console is not using UTF-8 encoding, this disables certain functionality, consider adding `n$utf8`nto your profile, to suppress this warning set the environment variable '`$env:IgnoreSpectreEncoding=`$true'"
+if ($script:SpectreProfile.Unicode -eq $false -and -Not $env:IgnoreSpectreEncoding) {
+    @(
+        "Your session is currently using encoding '{0}', this disables certain functionality as SpectreConsole requires UTF8 encoding, consider adding
+        '`$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = [System.Text.UTF8Encoding]::new()' to your `$profile
+        to suppress this warning set the environment variable '`$env:IgnoreSpectreEncoding=`$true'
+        Note: this needs to be set before import the module"
+    ) -f $script:SpectreProfile.Encoding | Write-Warning
 }
