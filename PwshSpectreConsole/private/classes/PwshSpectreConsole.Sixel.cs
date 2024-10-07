@@ -27,7 +27,7 @@ public class Convert
   private const char SixelEmpty = '?';
   private const char SixelDECGNL = '-';
   private const char SixelDECGCR = '$';
-  private const string SixelStart = $"\u001BP0;1q\"1;1;";
+  private const string SixelStart = "\u001BP0;1q\"1;1;";
   private const string SixelEnd = "\u001b\\";
   private const string TransparentColor = "#0;2;100;0;0";
   private static readonly ResizeOptions ResizeOptions = new()
