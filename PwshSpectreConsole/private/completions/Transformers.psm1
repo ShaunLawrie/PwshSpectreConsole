@@ -103,7 +103,18 @@ class RenderableTransformationAttribute : ArgumentTransformationAttribute {
 
         # For others just dump them as either strings formatted with markup which are easy to identify by the closing tag [/] or as plain text
         if ($InputData -like "*[/]*" -or $InputData -like "*:*:*") {
-            return [Spectre.Console.Markup]::new($InputData)
+            try {
+                $markup = [Spectre.Console.Markup]::new($InputData)
+                return $markup
+            } catch {
+                throw @(
+                    "`n`nYour input includes Spectre Console markup characters (see https://spectreconsole.net/markup).",
+                    "Escape the special characters in the input before using it in a Spectre Console function using the Get-SpectreEscapedText function.",
+                    "",
+                    "  e.g. `$myEscapedInput = Get-SpectreEscapedText '$InputData'",
+                    "`n"
+                ) -join "`n"
+            }
         } else {
             return [Spectre.Console.Text]::new(($InputData | Out-String -NoNewline))
         }
