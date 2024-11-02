@@ -160,7 +160,7 @@ Invoke-SpectreLive -Data $layout -ScriptBlock {
 Set-SpectreColors -AccentColor DeepPink1
 
 # Build root layout scaffolding for:
-# .--------------------------------.
+# +--------------------------------+
 # |             Title              | <- Update-TitleComponent will render the title
 # |--------------------------------|
 # |                                | <- Update-MessageListComponent will display the list of messages here
