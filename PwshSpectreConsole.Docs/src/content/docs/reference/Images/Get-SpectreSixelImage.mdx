@@ -1,0 +1,70 @@
+---
+sidebar:
+  badge:
+    text: New
+    variant: tip
+title: Get-SpectreSixelImage
+---
+
+
+
+
+
+
+
+### Description
+
+Displays an image in the console using SixelImage, this requires Windows Terminal Preview or another Sixel compatible terminal.  
+![Spectre Sixel Example](/sixel.png)
+
+This uses a forked copy of Spectre.Console because Sixel is not supported yet https://github.com/spectreconsole/spectre.console/discussions/1671  
+:::caution
+This is experimental.  
+Experimental features are unstable and subject to change.
+:::
+
+
+
+---
+
+
+### Parameters
+#### **ImagePath**
+
+The path to the image file to be displayed. This can be a local file path or a URL.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|true    |1       |false        |
+
+
+
+#### **MaxWidth**
+
+The maximum width of the image in character cells. If not specified, the image will be displayed at its original size or to fit inside the terminal width.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |2       |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Get-SpectreSixelImage [-ImagePath] <String> [[-MaxWidth] <Int32>] [<CommonParameters>]
+```

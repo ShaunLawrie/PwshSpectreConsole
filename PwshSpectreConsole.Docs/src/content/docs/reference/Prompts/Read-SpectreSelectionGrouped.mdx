@@ -1,0 +1,182 @@
+---
+sidebar:
+  badge:
+    text: New
+    variant: tip
+title: Read-SpectreSelectionGrouped
+---
+
+
+
+
+
+
+
+import Asciinema from '../../../../components/Asciinema.astro'
+import readspectreselectiongroupedExample1 from '../../../../assets/examples/readspectreselectiongroupedExample1.cast?url'
+
+### Description
+
+This function displays a selection prompt using Spectre Console. The user can select an option from the list of choices provided. The function returns the selected option.  
+With the `-EnableSearch` switch, the user can search for choices in the selection prompt by typing the characters instead of just typing up and down arrows.
+
+
+
+---
+
+
+### Examples
+
+
+**Example 1**  
+This example demonstrates a selection prompt with a custom title and choices.
+
+
+
+```powershell
+$choices = @{
+    "Reds" = @("Crimson", "Ruby", "Scarlet")
+    "Greens" = @("Lime", "Emerald", "Jade")
+    "Blues" = @("Azure", "Cerulean", "Sapphire")
+}
+$color = Read-SpectreSelectionGrouped -Message "Select your favorite color" -Choices $choices -Color "Green"
+# Type "↓", "↓", "↓", "↓", "↲" to wrap around the list and choose green
+Write-SpectreHost "Your chosen color is '$color'"
+```
+<Asciinema
+    src={readspectreselectiongroupedExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+---
+
+
+### Parameters
+#### **Message**
+
+The title of the selection prompt.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|Aliases                      |
+|----------|--------|--------|-------------|-----------------------------|
+|`[String]`|false   |1       |false        |Title<br/>Question<br/>Prompt|
+
+
+
+#### **Choices**
+
+
+
+
+|Type         |Required|Position|PipelineInput|
+|-------------|--------|--------|-------------|
+|`[Hashtable]`|true    |2       |false        |
+
+
+
+#### **ChoiceLabelProperty**
+
+If the object is complex then the property of the choice object to use as the label in the selection prompt is required.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |3       |false        |
+
+
+
+#### **Color**
+
+The color of the selected option in the selection prompt.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Color]`|false   |4       |false        |
+
+
+
+#### **PageSize**
+
+The number of choices to display per page in the selection prompt.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |5       |false        |
+
+
+
+#### **EnableSearch**
+
+If this switch is present, the user can search for choices in the selection prompt by typing the characters instead of just typing up and down arrows.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|false   |named   |false        |
+
+
+
+#### **TimeoutSeconds**
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |6       |false        |
+
+
+
+#### **SearchHighlightColor**
+
+The color of the search highlight in the selection prompt. Defaults to a slightly brighter version of the accent color.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Color]`|false   |7       |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Read-SpectreSelectionGrouped [[-Message] <String>] [-Choices] <Hashtable> [[-ChoiceLabelProperty] <String>] [[-Color] <Color>] [[-PageSize] <Int32>] [-EnableSearch] [[-TimeoutSeconds] <Int32>] [[-SearchHighlightColor] <Color>] [<CommonParameters>]
+```
