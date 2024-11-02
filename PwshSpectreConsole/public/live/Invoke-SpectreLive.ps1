@@ -84,6 +84,8 @@ function Get-PreviewPanel {
     $result = ""
     if ($item -is [System.IO.DirectoryInfo]) {
         $result = "[grey]$($SelectedFile.Name) is a directory.[/]"
+    } elseif ($item.Name -match "\.(jpg|jpeg|png|gif)$") {
+        $result = Get-SpectreSixelImage $item.FullName
     } else {
         try {
             $content = Get-Content -Path $item.FullName -Raw -ErrorAction Stop

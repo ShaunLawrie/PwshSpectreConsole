@@ -90,3 +90,11 @@ if (Test-Path $testingInstallLocation) {
     Remove-Item $testingInstallLocation -Recurse -Force
 }
 Install-SpectreConsole -InstallLocation $installLocation -TestingInstallLocation $testingInstallLocation -CsharpProjectLocation $csharpProjectLocation -Version $Version
+$overridesPath = (Join-Path $PSScriptRoot "overrides")
+Write-Host "Checking for overrides in $overridesPath"
+$overrides = Get-ChildItem -Path $overridesPath -File -Recurse -Filter "*.dll"
+foreach ($override in $overrides) {
+    $destination = Join-Path $installLocation $override.FullName.Replace($overridesPath, "")
+    Write-Warning "OVERRIDE: Copying $override to $destination"
+    Copy-Item -Path $override.FullName -Destination $destination -Recurse
+}

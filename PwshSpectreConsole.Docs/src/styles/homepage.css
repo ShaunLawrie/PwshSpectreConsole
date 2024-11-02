@@ -4,7 +4,6 @@
     --sl-color-bg-sidebar: #020617;
     --sl-color-bg: #11001f;
     --sl-color-bg-nav: #01030e;
-    --astro-code-color-background: transparent;
     --sl-color-gray-5: transparent;
 }
 
@@ -18,8 +17,12 @@
     @apply text-purple-500;
 }
 
-.action.primary {
-    @apply bg-purple-800 text-white rounded-xl;
+.sl-link-button.primary {
+    @apply bg-purple-800 text-white rounded-xl border-none;
+}
+
+.sl-link-button.primary:hover {
+    @apply bg-purple-400;
 }
 
 .spectre-panel {
@@ -32,6 +35,14 @@
 
 .spectre-selection {
     border: none!important;
+}
+
+figcaption, .expressive-code .copy {
+    display: none!important;
+}
+
+.expressive-code .frame pre {
+    background: transparent!important;
 }
 
 .hero {
