@@ -13,7 +13,7 @@ export default defineConfig({
       social: {
         rss: "https://shaunlawrie.com/rss.xml",
         github: "https://github.com/ShaunLawrie/PwshSpectreConsole",
-        "x.com": "https://twitter.com/Shaun_Lawrie",
+        blueSky: "https://bsky.app/profile/shaunlawrie.com",
         youtube: "https://www.youtube.com/@shaunlawrie",
       },
       components: {

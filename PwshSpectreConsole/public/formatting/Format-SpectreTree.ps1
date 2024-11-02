@@ -58,13 +58,12 @@ function Format-SpectreTree {
         [string] $Guide = "Line",
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
-        [Spectre.Console.Color] $Color = $script:AccentColor,
-        [switch] $Expand
+        [Spectre.Console.Color] $Color = $script:AccentColor
     )
 
     $tree = [Spectre.Console.Tree]::new($Data.Value)
     $tree.Guide = [Spectre.Console.TreeGuide]::$Guide
-    $tree.Expanded = $Expand
+    $tree.Expanded = $true
 
     if ($Data.Children) {
         Add-SpectreTreeNode -Node $tree -Children $Data.Children

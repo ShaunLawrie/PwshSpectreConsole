@@ -82,7 +82,7 @@ function Write-SpectreCalendar {
             $eventDate = $event.Name -as [datetime]
             $calendar = [Spectre.Console.CalendarExtensions]::AddCalendarEvent($calendar, $event.value, $eventDate.Year, $eventDate.Month, $eventDate.Day)
         }
-        $outputData += $calendar.CalendarEvents | Sort-Object -Property Day | Format-SpectreTable -Border $Border -Color $Color
+        $outputData += $calendar.CalendarEvents | Sort-Object -Property Day | Format-SpectreTable -Property Description, Year, Month, Day -Border $Border -Color $Color
     }
 
     if ($PassThru) {
