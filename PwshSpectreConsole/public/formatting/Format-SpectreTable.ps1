@@ -132,7 +132,8 @@ function Format-SpectreTable {
         [int] $Width,
         [switch] $HideHeaders,
         [String] $Title,
-        [switch] $AllowMarkup
+        [switch] $AllowMarkup,
+        [switch] $Expand
     )
     begin {
         Write-Debug "Module: $($ExecutionContext.SessionState.Module.Name) Command: $($MyInvocation.MyCommand.Name) Param: $($PSBoundParameters.GetEnumerator())"
@@ -152,6 +153,7 @@ function Format-SpectreTable {
             'Wrap' { $tableoptions.Wrap = $true ; $FormatTableParams.Wrap = $true }
             'View' { $FormatTableParams.View = $View }
             'Property' { $FormatTableParams.Property = $Property }
+            'Expand' { $table.Expand = $Expand }
         }
     }
     process {

@@ -9,6 +9,15 @@ function Format-SpectreGrid {
     Formats data into a Spectre Console grid. The grid can be used to display data in a tabular format but it's not as flexible as the Layout widget.  
     See https://spectreconsole.net/widgets/grid for more information.
 
+    .PARAMETER Data
+    The data to be displayed in the grid. This can be a list of lists or a list of `New-SpectreGridRow` objects.
+
+    .PARAMETER Width
+    The width of the grid. If not specified, the grid width will be automatic.
+
+    .PARAMETER Padding
+    The padding to apply to the grid items. The default is 1.
+
     .EXAMPLE
     # **Example 1**  
     # This example demonstrates how to display a grid of rows using the Spectre Console module with a list of lists.
@@ -37,7 +46,8 @@ function Format-SpectreGrid {
         [Parameter(ValueFromPipeline, Mandatory)]
         [GridRowTransformationAttribute()]
         [object]$Data,
-        [int] $Width
+        [int] $Width,
+        [int] $Padding = 1
     )
 
     begin {
@@ -47,6 +57,7 @@ function Format-SpectreGrid {
             $grid.Width = $Width
         }
         $grid.Alignment = [Spectre.Console.Justify]::$Justify
+        $col = [Spectre.Console.GridColumn]::new()
         $grid = $grid.AddColumn()
     }
 
@@ -55,7 +66,7 @@ function Format-SpectreGrid {
             foreach ($row in $Data) {
                 if (!$columnsSet) {
                     0..($row.Count() - 1) | ForEach-Object {
-                        $grid = $grid.AddColumn()
+                        $grid = $grid.AddColumn($col)
                     }
                     $columnsSet = $true
                 }
@@ -64,7 +75,7 @@ function Format-SpectreGrid {
         } else {
             if (!$columnsSet) {
                 0..($row.Count() - 1) | ForEach-Object {
-                    $grid = $grid.AddColumn()
+                    $grid = $grid.AddColumn($col)
                 }
                 $columnsSet = $true
             }
