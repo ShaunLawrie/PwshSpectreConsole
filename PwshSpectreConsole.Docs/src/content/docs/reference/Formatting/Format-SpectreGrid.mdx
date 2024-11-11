@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
 title: Format-SpectreGrid
 ---
 
@@ -83,6 +87,10 @@ $gridRows | Format-SpectreGrid
 ### Parameters
 #### **Data**
 
+The data to be displayed in the grid. This can be a list of lists or a list of `New-SpectreGridRow` objects.
+
+
+
 
 
 
@@ -94,12 +102,31 @@ $gridRows | Format-SpectreGrid
 
 #### **Width**
 
+The width of the grid. If not specified, the grid width will be automatic.
+
+
+
 
 
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
 |`[Int32]`|false   |2       |false        |
+
+
+
+#### **Padding**
+
+The padding to apply to the grid items. The default is 1.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |3       |false        |
 
 
 
@@ -110,5 +137,5 @@ $gridRows | Format-SpectreGrid
 
 ### Syntax
 ```powershell
-Format-SpectreGrid [-Data] <Object> [[-Width] <Int32>] [<CommonParameters>]
+Format-SpectreGrid [-Data] <Object> [[-Width] <Int32>] [[-Padding] <Int32>] [<CommonParameters>]
 ```
