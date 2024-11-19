@@ -76,3 +76,7 @@ function Stop-SpectreRecordingMock {
     $result += '</pre>'
     return $result
 }
+
+function Test-SpectreSixelSupportMock {
+    return $false
+}

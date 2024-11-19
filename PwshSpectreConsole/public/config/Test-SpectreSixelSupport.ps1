@@ -7,6 +7,7 @@ function Test-SpectreSixelSupport {
         Windows Terminal Preview and other terminals support sixel, see https://www.arewesixelyet.com/ for more.  
         Returns $true if the terminal supports Sixel graphics, otherwise $false.  
     .EXAMPLE
+        # **Check if the terminal supports Sixel graphics**  
         if (Test-SpectreSixelSupport) {
             Write-SpectreHost "Sixel graphics are supported :)"
         } else {
