@@ -3,7 +3,7 @@ $script:Groups = @(
     @{ Name = "Formatting/"; Matches = @("layout", "format-", "new-spectrechartitem", "new-spectregridrow", "add-spectretablerow") }
     @{ Name = "Images/"; Matches = @("image") }
     @{ Name = "Writing/"; Matches = @("out-", "write-", "escaped", "size") }
-    @{ Name = "Config/"; Matches = @("set-", "recording") }
+    @{ Name = "Config/"; Matches = @("set-", "recording", 'test-spectresixelsupport') }
     @{ Name = "Demo/"; Matches = @("spectredemo") }
     @{ Name = "Live/"; Matches = @("live", "invoke-spectrecommand", "invoke-spectreprogress",  "job", "spectrescriptblock") }
 )
@@ -23,7 +23,8 @@ function Get-Group {
     param (
         [string] $Name
     )
-    $group = @{ Name = "/" }
+    # Default group
+    $group = @{ Name = "Config/" }
     foreach ($testGroup in $script:Groups) {
         foreach ($match in $testGroup.Matches) {
             if ($Name -like "*$match*") {
