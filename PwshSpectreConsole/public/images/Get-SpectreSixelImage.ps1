@@ -28,7 +28,7 @@ function Get-SpectreSixelImage {
         [int] $MaxWidth = (Get-HostWidth)
     )
 
-    if (!(Test-SixelCapabilities)) {
+    if (!(Test-SpectreSixelSupport)) {
         # check if it's windows terminal or not
         if ($env:WT_SESSION) {
             Write-SpectreHost "[yellow]WARNING: Sixel graphics are only supported in Windows Terminal Preview[/]" -PassThru
