@@ -216,11 +216,6 @@ if($Branch -eq "prerelease") {
     $astroConfig = $astroConfig -replace 'title: "PwshSpectreConsole"', 'title: "PwshSpectreConsole (Pre-release)"'
     $astroConfig = $astroConfig -replace 'https://pwshspectreconsole.com', 'https://prerelease.pwshspectreconsole.com'
     Set-Content -Path $astroConfigPath -Value $astroConfig
-
-    $astroSitemapConfig = "$PSScriptRoot\..\..\public\robots.txt"
-    $astroSitemap = Get-Content -Path $astroSitemapConfig -Raw
-    $astroSitemap = $astroSitemap -replace 'https://pwshspectreconsole.com', 'https://prerelease.pwshspectreconsole.com'
-    Set-Content -Path $astroSitemapConfig -Value $astroSitemap
 }
 
 if($NoBuild) {

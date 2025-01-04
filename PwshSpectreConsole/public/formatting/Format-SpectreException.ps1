@@ -33,11 +33,32 @@ The style to use when rendering the exception provided as a hashtable. e.g.
 ```
 
 .EXAMPLE
-# **Example 1**  # This example demonstrates how to format an exception into a Spectre Console Exception with syntax highlighting.
+# **Example 1**  
+# This example demonstrates how to format an exception into a Spectre Console Exception with syntax highlighting.
 try {
     Get-ChildItem -BadParam -ErrorAction Stop
 } catch {
     $_ | Format-SpectreException -ExceptionFormat ShortenEverything
+}
+
+.EXAMPLE
+# **Example 2**
+# This example uses custom formatting for the exception.
+try {
+    Get-ChildItem -BadParam -ErrorAction Stop
+} catch {
+    $_ | Format-SpectreException -ExceptionStyle @{
+        Message        = "#00ff00"
+        Exception      = "white"
+        Method         = "#ff0000 on orange1"
+        ParameterType  = "blue"
+        ParameterName  = "silver"
+        Parenthesis    = "silver"
+        Path           = "Yellow"
+        LineNumber     = "blue"
+        Dimmed         = "grey"
+        NonEmphasized  = "silver"
+    }
 }
 #>
 function Format-SpectreException {
