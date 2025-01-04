@@ -107,6 +107,30 @@ The maximum width of the image. If not specified, the image will be displayed at
 
 
 
+#### **Format**
+
+The preferred format to use when rendering the image.  
+If not specified, the image will be rendered using Sixel if the terminal supports it, otherwise it will use Canvas.
+
+
+
+Valid Values:
+
+* Auto
+* Sixel
+* Canvas
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |3       |false        |
+
+
+
 
 
 ---
@@ -114,5 +138,5 @@ The maximum width of the image. If not specified, the image will be displayed at
 
 ### Syntax
 ```powershell
-Get-SpectreImage [[-ImagePath] <String>] [[-MaxWidth] <Int32>] [<CommonParameters>]
+Get-SpectreImage [[-ImagePath] <String>] [[-MaxWidth] <Int32>] [[-Format] <String>] [<CommonParameters>]
 ```
