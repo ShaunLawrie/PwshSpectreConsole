@@ -57,7 +57,7 @@ sidebar:
     variant: caution
 "@
 
-$script:DangerTag = @"
+$script:DeprecatedTag = @"
 sidebar:
   badge:
     text: Deprecated
@@ -73,14 +73,14 @@ sidebar:
 #>
 function Get-Tag {
     param (
-        [ValidateSet("New", "Updated", "Experimental", "Danger")]
+        [ValidateSet("New", "Updated", "Experimental", "Deprecated")]
         [string] $Tag
     )
     switch ($Tag) {
         "New" { return $script:NewTag }
         "Updated" { return $script:UpdatedTag }
         "Experimental" { return $script:ExperimentalTag }
-        "Deprecated" { return $script:DangerTag }
+        "Deprecated" { return $script:DeprecatedTag }
     }
 }
 
