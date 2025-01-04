@@ -27,7 +27,12 @@ Returns $true if the terminal supports Sixel graphics, otherwise $false.
 
 
 ### Examples
-**Check if the terminal supports Sixel graphics**  
+
+
+**Example 1**  
+This example demonstrates how to set the accent color and default value color for Spectre Console.  
+
+
 
 ```powershell
 if (Test-SpectreSixelSupport) {
@@ -36,6 +41,16 @@ if (Test-SpectreSixelSupport) {
     Write-SpectreHost "Sixel graphics are not supported :("
 }
 ```
+<Asciinema
+    src={testspectresixelsupportExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
 
 
 ---
