@@ -125,3 +125,8 @@ a > code[data-theme="light"] {
   --sl-color-border-badge: transparent!important;
   color:rgba(255, 166, 0, 1.0)!important;
 }
+
+.danger, .danger[data-theme="light"] {
+  --sl-color-bg-badge: transparent!important;
+  color:rgba(238, 83, 137, 1.0)!important;
+}

@@ -8,10 +8,9 @@ function Get-SpectreImage {
     .DESCRIPTION
     Displays an image in the console using CanvasImage or SixelImage if the terminal supports Sixel.  
     The image can be resized to a maximum width if desired.  
+
+    Windows Terminal supports Sixel in the [latest preview builds](https://apps.microsoft.com/detail/9n8g5rfz9xk3) so it will be available in the production builds soon 🤞  
     See https://www.arewesixelyet.com/ for Sixel support status for your terminal.  
-      
-    For SixelImage, the image will be displayed in the terminal using Sixel graphics which has a much higher resolution than CanvasImage.  
-    ![Spectre Sixel Example](/sixel.png)
 
     .PARAMETER ImagePath
     The path to the image file to be displayed, as a local path or remote path using http/https.
@@ -21,8 +20,26 @@ function Get-SpectreImage {
 
     .EXAMPLE
     # **Example 1**  
-    # This example demonstrates how to display an image in the console.
+    # When Sixel is not supported the image will use the standard Canvas renderer which draws the image using character cells to represent the image.
     Get-SpectreImage -ImagePath ".\private\images\smiley.png" -MaxWidth 40
+
+    .EXAMPLE
+    # **Example 2**  
+    # For Sixel images, the image returned by `Get-SpectreImage` will render a new frame every time it's drawn so if it's an animated GIF it will appear animated if you render it repeatedly and move the cursor back to the same start position before each image output.  
+    #   
+    # ![Spectre Sixel Example](/lapras-terminal.gif)
+    #   
+    NORECORDING
+    $image = Get-SpectreImage ".\private\images\lapras-pokemon.gif" -MaxWidth 50
+
+    Clear-Host
+    [Console]::CursorVisible = $false
+
+    for($frame = 0; $frame -lt 100; $frame++) {
+        [Console]::SetCursorPosition(0, 0)
+        $image | Format-SpectrePanel -Title "Frame: $frame" -Color White | Out-SpectreHost
+        Start-Sleep -Milliseconds 150
+    }
     #>
     [Reflection.AssemblyMetadata("title", "Get-SpectreImage")]
     param (

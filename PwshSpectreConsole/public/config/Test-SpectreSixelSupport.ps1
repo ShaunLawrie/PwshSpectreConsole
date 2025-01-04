@@ -7,11 +7,12 @@ function Test-SpectreSixelSupport {
         Windows Terminal Preview and other terminals support sixel, see https://www.arewesixelyet.com/ for more.  
         Returns $true if the terminal supports Sixel graphics, otherwise $false.  
     .EXAMPLE
-        # **Check if the terminal supports Sixel graphics**  
+        # **Example 1**  
+        # This example demonstrates how to set the accent color and default value color for Spectre Console.  
         if (Test-SpectreSixelSupport) {
             Write-SpectreHost "Sixel graphics are supported :)"
         } else {
-            Write-SpectreHost "Sixel graphics are not supported :("
+            Write-SpectreHost "Sixel graphics are not supported because this ran in Github Actions :("
         }
     #>
     [Reflection.AssemblyMetadata("title", "Test-SpectreSixelSupport")]

@@ -131,6 +131,12 @@ foreach ($doc in $docs) {
                 $imports = "<style>{`` div.asciinema-player-theme-spectre { --term-color-0: #000000; } ``}</style>`n`n" + $imports
             }
             foreach($codeBlock in $codeBlocksExcludingSyntaxSection) {
+                if ($codeBlock -like "*NORECORDING*") {
+                    $content = $content -replace "NORECORDING`n", ""
+                    $content = $content -replace "(?ms)> EXAMPLE $example.+?(``````.+?``````)", "> EXAMPLE $example`n`n`$1`n"
+                    $content = $content -replace "(?ms)(\*\*Example $example\*\*.+?)(``````.+?``````)", "`n`n`$1`n`n`$2`n"
+                    continue
+                }
                 $code = $codeBlock -replace '(?s)```powershell', ''
                 $code = $code -replace '```', ''
                 $code = $code.Trim()
@@ -208,7 +214,13 @@ if($Branch -eq "prerelease") {
     $astroConfigPath = "$PSScriptRoot\..\..\astro.config.mjs"
     $astroConfig = Get-Content -Path $astroConfigPath -Raw
     $astroConfig = $astroConfig -replace 'title: "PwshSpectreConsole"', 'title: "PwshSpectreConsole (Pre-release)"'
+    $astroConfig = $astroConfig -replace 'https://pwshspectreconsole.com', 'https://prerelease.pwshspectreconsole.com'
     Set-Content -Path $astroConfigPath -Value $astroConfig
+
+    $astroSitemapConfig = "$PSScriptRoot\..\..\public\robots.txt"
+    $astroSitemap = Get-Content -Path $astroSitemapConfig -Raw
+    $astroSitemap = $astroSitemap -replace 'https://pwshspectreconsole.com', 'https://prerelease.pwshspectreconsole.com'
+    Set-Content -Path $astroSitemapConfig -Value $astroSitemap
 }
 
 if($NoBuild) {
