@@ -16,6 +16,10 @@ function Test-SpectreSixelSupport {
     #>
     [Reflection.AssemblyMetadata("title", "Test-SpectreSixelSupport")]
     param ()
-    $response = Get-ControlSequenceResponse -ControlSequence "[c"
-    return $response.Contains(";4;")
+    try {
+        $response = Get-ControlSequenceResponse -ControlSequence "[c"
+        return $response.Contains(";4;")
+    } catch {
+        return $false
+    }
 }
