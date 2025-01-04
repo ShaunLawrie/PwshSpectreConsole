@@ -1,4 +1,4 @@
 {"version": 2, "width": 110, "height": 3, "title": "Example 0", "env": {"TERM": "Spectre.Console"}}
-[0, "o", "Sixel graphics are not supported :(\r\n"]
+[0, "o", "Sixel graphics are not supported because this ran in Github Actions :(\r\n"]
 
 
