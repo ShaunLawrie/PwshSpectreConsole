@@ -23,27 +23,10 @@ Import-Module "$PSScriptRoot\Helpers.psm1" -Force
 Import-Module "$PSScriptRoot\Mocks.psm1" -Force
 
 # Ignore update tags for these, remove them from the list if they are updated this just makes it easy to bypass the "updated" tag
-$ignoreUpdatesFor = @(
-    "Format-SpectreBarChart",
-    "Format-SpectreBreakdownChart",
-    "Format-SpectrePanel",
-    "Format-SpectreTable",
-    "Get-SpectreDemoEmoji",
-    "Start-SpectreDemo",
-    "New-SpectreChartItem",
-    "Get-SpectreImage",
-    "Get-SpectreImageExperimental",
-    "Add-SpectreJob",
-    "Invoke-SpectreCommandWithProgress",
-    "Invoke-SpectreCommandWithStatus",
-    "Invoke-SpectreScriptBlockQuietly",
-    "Wait-SpectreJobs",
-    "Read-SpectrePause",
-    "Get-SpectreEscapedText",
-    "Set-SpectreColors",
-    "Start-SpectreRecording",
-    "Stop-SpectreRecording"
-)
+$ignoreUpdatesFor = @()
+
+# Mark these as deprecated
+$deprecated = @("Get-SpectreImageExperimental")
 
 # Git user details for github action commits
 $env:GIT_COMMITTER_NAME = 'Shaun Lawrie (via GitHub Actions)'
@@ -114,7 +97,9 @@ foreach ($doc in $docs) {
 
     # Work out the tag to apply to the current help file
     $tag = $null
-    if([string]::IsNullOrEmpty($created) -or ((Get-Date) - ([datetime]$created)).TotalDays -lt $recentThresholdDays) {
+    if ($deprecated -contains $commandName) {
+        $tag = "Deprecated"
+    } elseif([string]::IsNullOrEmpty($created) -or ((Get-Date) - ([datetime]$created)).TotalDays -lt $recentThresholdDays) {
         $tag = "New"
     } elseif ((((Get-Date) - ([datetime]$modified)).TotalDays -lt $recentThresholdDays) -and $ignoreUpdatesFor -notcontains $commandName) {
         $tag = "Updated"

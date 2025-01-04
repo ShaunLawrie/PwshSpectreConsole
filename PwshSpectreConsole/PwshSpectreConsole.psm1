@@ -28,6 +28,10 @@ if ($script:SpectreProfile.Unicode -eq $true -or $env:IgnoreSpectreConsoleEncodi
     return $script:SpectreConsole
 }
 
+if ($env:IgnoreSpectreEncoding -eq $true) {
+    return
+}
+
 @"
 [white]Your terminal host is currently using encoding '$($SpectreProfile.Encoding)' which limits Spectre Console functionality.
 

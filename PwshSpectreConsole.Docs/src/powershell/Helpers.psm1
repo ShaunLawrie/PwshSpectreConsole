@@ -57,6 +57,13 @@ sidebar:
     variant: caution
 "@
 
+$script:DangerTag = @"
+sidebar:
+  badge:
+    text: Deprecated
+    variant: danger
+"@
+
 <#
 .SYNOPSIS
     Returns the yaml to inject for a specific tag.
@@ -66,13 +73,14 @@ sidebar:
 #>
 function Get-Tag {
     param (
-        [ValidateSet("New", "Updated", "Experimental")]
+        [ValidateSet("New", "Updated", "Experimental", "Danger")]
         [string] $Tag
     )
     switch ($Tag) {
         "New" { return $script:NewTag }
         "Updated" { return $script:UpdatedTag }
         "Experimental" { return $script:ExperimentalTag }
+        "Deprecated" { return $script:DangerTag }
     }
 }
 

@@ -14,7 +14,7 @@ function Test-SpectreSixelSupport {
             Write-SpectreHost "Sixel graphics are not supported :("
         }
     #>
-    [Reflection.AssemblyMetadata("title", "Set-SpectreColors")]
+    [Reflection.AssemblyMetadata("title", "Test-SpectreSixelSupport")]
     param ()
     $response = Get-ControlSequenceResponse -ControlSequence "[c"
     return $response.Contains(";4;")
