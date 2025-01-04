@@ -18,6 +18,10 @@ function Get-SpectreImage {
     .PARAMETER MaxWidth
     The maximum width of the image. If not specified, the image will be displayed at its original size.
 
+    .PARAMETER Format
+    The preferred format to use when rendering the image.  
+    If not specified, the image will be rendered using Sixel if the terminal supports it, otherwise it will use Canvas.
+
     .EXAMPLE
     # **Example 1**  
     # When Sixel is not supported the image will use the standard Canvas renderer which draws the image using character cells to represent the image.
@@ -44,7 +48,9 @@ function Get-SpectreImage {
     [Reflection.AssemblyMetadata("title", "Get-SpectreImage")]
     param (
         [string] $ImagePath,
-        [int] $MaxWidth
+        [int] $MaxWidth,
+        [ValidateSet("Auto", "Sixel", "Canvas")]
+        [string] $Format = "Auto"
     )
 
     if ($ImagePath.StartsWith("http://") -or $ImagePath.StartsWith("https://")) {
@@ -61,7 +67,22 @@ function Get-SpectreImage {
         throw "The specified image path '$resolvedImagePath' does not exist."
     }
 
-    $image = (Test-SpectreSixelSupport) ? [Spectre.Console.SixelImage]::new($imagePathResolved) : [Spectre.Console.CanvasImage]::new($imagePathResolved)
+    $image = $null
+    if ($Format -eq "Auto") {
+        if (Test-SpectreSixelSupport) {
+            $image = [Spectre.Console.SixelImage]::new($imagePathResolved)
+        } else {
+            $image = [Spectre.Console.CanvasImage]::new($imagePathResolved)
+        }
+    } elseif ($Format -eq "Sixel") {
+        if (Test-SpectreSixelSupport) {
+            $image = [Spectre.Console.SixelImage]::new($imagePathResolved)
+        } else {
+            throw "Sixel format is not supported in this terminal."
+        }
+    } elseif ($Format -eq "Canvas") {
+        $image = [Spectre.Console.CanvasImage]::new($imagePathResolved)
+    }
 
     if ($MaxWidth) {
         $image.MaxWidth = $MaxWidth
