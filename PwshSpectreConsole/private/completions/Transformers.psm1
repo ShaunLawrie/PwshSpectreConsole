@@ -23,6 +23,26 @@ class ColorTransformationAttribute : ArgumentTransformationAttribute {
     }
 }
 
+class StyleTransformationAttribute : ArgumentTransformationAttribute {
+
+    static [object] TransformItem([object]$inputData) {
+        if ($InputData -is [Spectre.Console.Style]) {
+            return $InputData
+        }
+        if ($InputData -is [Spectre.Console.Color]) {
+            return [Spectre.Console.Style]::new($InputData)
+        }
+        if ($InputData -is [String]) {
+            return [Spectre.Console.Style]::Parse($InputData)
+        }
+        throw [System.ArgumentException]::new("Cannot convert $($inputData.GetType().FullName) '$InputData' to [Spectre.Console.Color]")
+    }
+
+    [object] Transform([EngineIntrinsics]$engine, [object]$inputData) {
+        return [StyleTransformationAttribute]::TransformItem($inputData)
+    }
+}
+
 class TreeItemTransformationAttribute : ArgumentTransformationAttribute {
 
     static[object] TransformItem([object] $TreeItem) {
@@ -72,13 +92,8 @@ class ColorThemeTransformationAttribute : ArgumentTransformationAttribute {
         }
         $outputData = @{}
         foreach ($color in $inputData.GetEnumerator()) {
-            $colorValue = [ColorTransformationAttribute]::TransformItem($color.Value)
-            if ($null -ne $colorValue) {
-                $outputData[$color.Key] = $colorValue
-            } else {
-                $spectreColors = [Spectre.Console.Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
-                throw "Invalid color value '$($color.Value)' for key '$($color.Key)' could not be mapped to one of the list of valid Spectre colors ['$($spectreColors -join ''', ''')']"
-            }
+            $styleValue = [StyleTransformationAttribute]::TransformItem($color.Value)
+            $outputData[$color.Key] = $styleValue
         }
         return $outputData
     }

@@ -78,16 +78,16 @@ function Format-SpectreException {
     $exceptionSettings = [Spectre.Console.ExceptionSettings]::new()
     $exceptionSettings.Format = [Spectre.Console.ExceptionFormats]::$ExceptionFormat
     $exceptionSettings.Style = [Spectre.Console.ExceptionStyle]::new()
-    $exceptionSettings.Style.Message = [Spectre.Console.Style]::new($ExceptionStyle.Message)
-    $exceptionSettings.Style.Exception = [Spectre.Console.Style]::new($ExceptionStyle.Exception)
-    $exceptionSettings.Style.Method = [Spectre.Console.Style]::new($ExceptionStyle.Method)
-    $exceptionSettings.Style.ParameterType = [Spectre.Console.Style]::new($ExceptionStyle.ParameterType)
-    $exceptionSettings.Style.ParameterName = [Spectre.Console.Style]::new($ExceptionStyle.ParameterName)
-    $exceptionSettings.Style.Parenthesis = [Spectre.Console.Style]::new($ExceptionStyle.Parenthesis)
-    $exceptionSettings.Style.Path = [Spectre.Console.Style]::new($ExceptionStyle.Path)
-    $exceptionSettings.Style.LineNumber = [Spectre.Console.Style]::new($ExceptionStyle.LineNumber)
-    $exceptionSettings.Style.Dimmed = [Spectre.Console.Style]::new($ExceptionStyle.Dimmed)
-    $exceptionSettings.Style.NonEmphasized = [Spectre.Console.Style]::new($ExceptionStyle.NonEmphasized)
+    $exceptionSettings.Style.Message = $ExceptionStyle.Message
+    $exceptionSettings.Style.Exception = $ExceptionStyle.Exception
+    $exceptionSettings.Style.Method = $ExceptionStyle.Method
+    $exceptionSettings.Style.ParameterType = $ExceptionStyle.ParameterType
+    $exceptionSettings.Style.ParameterName = $ExceptionStyle.ParameterName
+    $exceptionSettings.Style.Parenthesis = $ExceptionStyle.Parenthesis
+    $exceptionSettings.Style.Path = $ExceptionStyle.Path
+    $exceptionSettings.Style.LineNumber = $ExceptionStyle.LineNumber
+    $exceptionSettings.Style.Dimmed = $ExceptionStyle.Dimmed
+    $exceptionSettings.Style.NonEmphasized = $ExceptionStyle.NonEmphasized
 
     return [Spectre.Console.ExceptionExtensions]::GetRenderable($exceptionObject, $exceptionSettings)
 }

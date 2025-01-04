@@ -41,10 +41,10 @@ function Format-SpectreTextPath {
 
     $textPath = [Spectre.Console.TextPath]::new($Path)
     $textPath.Justification = [Spectre.Console.Justify]::$Alignment
-    $textPath = [Spectre.Console.TextPathExtensions]::RootColor($textPath, $PathStyle.RootColor)
-    $textPath = [Spectre.Console.TextPathExtensions]::SeparatorColor($textPath, $PathStyle.SeparatorColor)
-    $textPath = [Spectre.Console.TextPathExtensions]::StemColor($textPath, $PathStyle.StemColor)
-    $textPath = [Spectre.Console.TextPathExtensions]::LeafColor($textPath, $PathStyle.LeafColor)
+    $textPath.RootStyle = $PathStyle.RootColor
+    $textPath.SeparatorStyle = $PathStyle.SeparatorColor
+    $textPath.StemStyle = $PathStyle.StemColor
+    $textPath.LeafStyle = $PathStyle.LeafColor
 
     return $textPath
 }
