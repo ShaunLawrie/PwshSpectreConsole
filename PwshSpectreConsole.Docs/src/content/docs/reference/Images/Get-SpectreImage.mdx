@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
 title: Get-SpectreImage
 ---
 
@@ -13,7 +17,12 @@ import getspectreimageExample1 from '../../../../assets/examples/getspectreimage
 
 ### Description
 
-Displays an image in the console using CanvasImage. The image can be resized to a maximum width if desired.
+Displays an image in the console using CanvasImage or SixelImage if the terminal supports Sixel.  
+The image can be resized to a maximum width if desired.  
+See https://www.arewesixelyet.com/ for Sixel support status for your terminal.  
+  
+For SixelImage, the image will be displayed in the terminal using Sixel graphics which has a much higher resolution than CanvasImage.  
+![Spectre Sixel Example](/sixel.png)
 
 
 
@@ -49,7 +58,7 @@ Get-SpectreImage -ImagePath ".\private\images\smiley.png" -MaxWidth 40
 ### Parameters
 #### **ImagePath**
 
-The path to the image file to be displayed.
+The path to the image file to be displayed, as a local path or remote path using http/https.
 
 
 

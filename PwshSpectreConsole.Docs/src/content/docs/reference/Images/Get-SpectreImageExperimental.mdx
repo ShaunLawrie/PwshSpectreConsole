@@ -1,0 +1,169 @@
+---
+sidebar:
+  badge:
+    text: Deprecated
+    variant: danger
+title: Get-SpectreImageExperimental
+---
+
+
+
+
+
+
+
+import Asciinema from '../../../../components/Asciinema.astro'
+import getspectreimageexperimentalExample1 from '../../../../assets/examples/getspectreimageexperimentalExample1.cast?url'
+import getspectreimageexperimentalExample2 from '../../../../assets/examples/getspectreimageexperimentalExample2.cast?url'
+
+### Description
+
+This function loads an image from a file and displays it in the console using block characters and ANSI escape codes. The image is scaled to fit within the specified maximum width while maintaining its aspect ratio. If the image is an animated GIF, each frame is displayed in sequence.  
+The images rendered by this experimental function are not handled by Spectre Console, it's using a PowerShell script to render the image in a higher resolution than Spectre.Console does by using half-block characters.
+:::danger
+This has been deprecated and will be removed in PwshSpectreConsole v3.0.  
+:::
+
+
+
+---
+
+
+### Examples
+
+
+**Example 1**  
+This example demonstrates how to display an animated image in the console that loops 4 times.
+
+
+
+```powershell
+Get-SpectreImageExperimental -ImagePath ".\private\images\harveyspecter.gif" -LoopCount 4 -Width 82
+```
+<Asciinema
+    src={getspectreimageexperimentalExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+**Example 2**  
+This example demonstrates how to display a static image in the console.
+
+
+
+```powershell
+Get-SpectreImageExperimental -ImagePath ".\private\images\smiley.png" -Width 80
+```
+<Asciinema
+    src={getspectreimageexperimentalExample2}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+---
+
+
+### Parameters
+#### **ImagePath**
+
+The path to the image file to display.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |1       |false        |
+
+
+
+#### **ImageUrl**
+
+The URL to the image file to display. If specified, the image is downloaded to a temporary file and then displayed.
+
+
+
+
+
+
+|Type   |Required|Position|PipelineInput|
+|-------|--------|--------|-------------|
+|`[Uri]`|false   |2       |false        |
+
+
+
+#### **Width**
+
+The width of the image in characters. The image is scaled to fit within this width while maintaining its aspect ratio.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |3       |false        |
+
+
+
+#### **LoopCount**
+
+The number of times to repeat the animation. The default value is 0, which means the animation will repeat forever. Press ctrl-c to stop the animation.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |4       |false        |
+
+
+
+#### **Resampler**
+
+The resampling algorithm to use when scaling the image. Valid values are "Bicubic" and "NearestNeighbor". The default value is "Bicubic".
+
+
+
+Valid Values:
+
+* Bicubic
+* NearestNeighbor
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |5       |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Get-SpectreImageExperimental [[-ImagePath] <String>] [[-ImageUrl] <Uri>] [[-Width] <Int32>] [[-LoopCount] <Int32>] [[-Resampler] <String>] [<CommonParameters>]
+```
