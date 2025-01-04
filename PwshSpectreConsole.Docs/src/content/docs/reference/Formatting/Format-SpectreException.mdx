@@ -14,6 +14,7 @@ title: Format-SpectreException
 
 import Asciinema from '../../../../components/Asciinema.astro'
 import formatspectreexceptionExample1 from '../../../../assets/examples/formatspectreexceptionExample1.cast?url'
+import formatspectreexceptionExample2 from '../../../../assets/examples/formatspectreexceptionExample2.cast?url'
 
 ### Description
 
@@ -28,7 +29,8 @@ See https://spectreconsole.net/exceptions for more information.
 ### Examples
 
 
-**Example 1**  # This example demonstrates how to format an exception into a Spectre Console Exception with syntax highlighting.
+**Example 1**  
+This example demonstrates how to format an exception into a Spectre Console Exception with syntax highlighting.
 
 
 
@@ -41,6 +43,41 @@ try {
 ```
 <Asciinema
     src={formatspectreexceptionExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+**Example 2**
+This example uses custom formatting for the exception.
+
+
+
+```powershell
+try {
+    Get-ChildItem -BadParam -ErrorAction Stop
+} catch {
+    $_ | Format-SpectreException -ExceptionStyle @{
+        Message        = "#00ff00"
+        Exception      = "white"
+        Method         = "#ff0000 on orange1"
+        ParameterType  = "blue"
+        ParameterName  = "silver"
+        Parenthesis    = "silver"
+        Path           = "Yellow"
+        LineNumber     = "blue"
+        Dimmed         = "grey"
+        NonEmphasized  = "silver"
+    }
+}
+```
+<Asciinema
+    src={formatspectreexceptionExample2}
     settings={{
         loop: false,
         terminalLineHeight: 1.1,

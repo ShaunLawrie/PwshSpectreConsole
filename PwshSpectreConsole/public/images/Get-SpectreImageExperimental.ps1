@@ -6,9 +6,8 @@ function Get-SpectreImageExperimental {
     .DESCRIPTION
     This function loads an image from a file and displays it in the console using block characters and ANSI escape codes. The image is scaled to fit within the specified maximum width while maintaining its aspect ratio. If the image is an animated GIF, each frame is displayed in sequence.  
     The images rendered by this experimental function are not handled by Spectre Console, it's using a PowerShell script to render the image in a higher resolution than Spectre.Console does by using half-block characters.
-    :::caution
-    This is experimental.  
-    Experimental features are unstable and subject to change.
+    :::danger
+    This has been deprecated and will be removed in PwshSpectreConsole v3.0.  
     :::
 
     .PARAMETER ImagePath
@@ -45,6 +44,8 @@ function Get-SpectreImageExperimental {
         [ValidateSet("Bicubic", "NearestNeighbor")]
         [string] $Resampler = "Bicubic"
     )
+
+    Write-Warning "Get-SpectreImageExperimental has been deprecated and will be removed in PwshSpectreConsole v3.0. Use Get-SpectreImage instead."
 
     $spectreConsole = [Spectre.Console.AnsiConsole]::Console
     $spectreConsoleHeight = $spectreConsole.Profile.Height

@@ -35,9 +35,15 @@ function Write-AnsiConsole {
     }
 
     $script:SpectreConsole.Write($RenderableObject)
-    $output = $script:SpectreConsoleWriter.ToString()
-    
-    $output.ToString().TrimEnd()
-    
+    $output = $script:SpectreConsoleWriter.ToString().TrimEnd()
     $null = $script:SpectreConsoleWriter.GetStringBuilder().Clear()
+
+    # If it contains sixel data and is from the custom item formatter then we need to write it to the console directly :(
+    # I'm not sure why this is the case but it's the only way to get the sixel data to render correctly at the moment
+    if ($output -like "*P0;1q*" -and $CustomItemFormatter) {
+        "`n" + $output + "`e[2A" | Out-Host
+        return
+    } else {
+        return $output
+    }
 }

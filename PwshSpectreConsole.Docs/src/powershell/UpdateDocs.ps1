@@ -23,27 +23,10 @@ Import-Module "$PSScriptRoot\Helpers.psm1" -Force
 Import-Module "$PSScriptRoot\Mocks.psm1" -Force
 
 # Ignore update tags for these, remove them from the list if they are updated this just makes it easy to bypass the "updated" tag
-$ignoreUpdatesFor = @(
-    "Format-SpectreBarChart",
-    "Format-SpectreBreakdownChart",
-    "Format-SpectrePanel",
-    "Format-SpectreTable",
-    "Get-SpectreDemoEmoji",
-    "Start-SpectreDemo",
-    "New-SpectreChartItem",
-    "Get-SpectreImage",
-    "Get-SpectreImageExperimental",
-    "Add-SpectreJob",
-    "Invoke-SpectreCommandWithProgress",
-    "Invoke-SpectreCommandWithStatus",
-    "Invoke-SpectreScriptBlockQuietly",
-    "Wait-SpectreJobs",
-    "Read-SpectrePause",
-    "Get-SpectreEscapedText",
-    "Set-SpectreColors",
-    "Start-SpectreRecording",
-    "Stop-SpectreRecording"
-)
+$ignoreUpdatesFor = @()
+
+# Mark these as deprecated
+$deprecated = @("Get-SpectreImageExperimental")
 
 # Git user details for github action commits
 $env:GIT_COMMITTER_NAME = 'Shaun Lawrie (via GitHub Actions)'
@@ -114,7 +97,9 @@ foreach ($doc in $docs) {
 
     # Work out the tag to apply to the current help file
     $tag = $null
-    if([string]::IsNullOrEmpty($created) -or ((Get-Date) - ([datetime]$created)).TotalDays -lt $recentThresholdDays) {
+    if ($deprecated -contains $commandName) {
+        $tag = "Deprecated"
+    } elseif([string]::IsNullOrEmpty($created) -or ((Get-Date) - ([datetime]$created)).TotalDays -lt $recentThresholdDays) {
         $tag = "New"
     } elseif ((((Get-Date) - ([datetime]$modified)).TotalDays -lt $recentThresholdDays) -and $ignoreUpdatesFor -notcontains $commandName) {
         $tag = "Updated"
@@ -146,6 +131,12 @@ foreach ($doc in $docs) {
                 $imports = "<style>{`` div.asciinema-player-theme-spectre { --term-color-0: #000000; } ``}</style>`n`n" + $imports
             }
             foreach($codeBlock in $codeBlocksExcludingSyntaxSection) {
+                if ($codeBlock -like "*NORECORDING*") {
+                    $content = $content -replace "NORECORDING`n", ""
+                    $content = $content -replace "(?ms)> EXAMPLE $example.+?(``````.+?``````)", "> EXAMPLE $example`n`n`$1`n"
+                    $content = $content -replace "(?ms)(\*\*Example $example\*\*.+?)(``````.+?``````)", "`n`n`$1`n`n`$2`n"
+                    continue
+                }
                 $code = $codeBlock -replace '(?s)```powershell', ''
                 $code = $code -replace '```', ''
                 $code = $code.Trim()
@@ -223,6 +214,7 @@ if($Branch -eq "prerelease") {
     $astroConfigPath = "$PSScriptRoot\..\..\astro.config.mjs"
     $astroConfig = Get-Content -Path $astroConfigPath -Raw
     $astroConfig = $astroConfig -replace 'title: "PwshSpectreConsole"', 'title: "PwshSpectreConsole (Pre-release)"'
+    $astroConfig = $astroConfig -replace 'https://pwshspectreconsole.com', 'https://prerelease.pwshspectreconsole.com'
     Set-Content -Path $astroConfigPath -Value $astroConfig
 }
 

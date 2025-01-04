@@ -22,3 +22,26 @@ foreach ($directory in @('private', 'public')) {
         . $_.FullName
     }
 }
+
+$script:SpectreProfile = Get-SpectreProfile
+if ($script:SpectreProfile.Unicode -eq $true -or $env:IgnoreSpectreConsoleEncoding) {
+    return $script:SpectreConsole
+}
+
+if ($env:IgnoreSpectreEncoding -eq $true) {
+    return
+}
+
+@"
+[white]Your terminal host is currently using encoding '$($SpectreProfile.Encoding)' which limits Spectre Console functionality.
+
+To enable UTF-8 output in your terminal, add the following line at the top of your PowerShell `$PROFILE file and restart the terminal:
+[Orange1 on Grey15]$('$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = [System.Text.UTF8Encoding]::new()' | Get-SpectreEscapedText)[/]
+
+If you don't want to enable UTF-8, you can suppress this warning with the environment variable [Orange1 on Grey15]`$env:IgnoreSpectreEncoding = `$true[/] instead.
+
+For more details see:
+ - https://github.com/ShaunLawrie/PwshSpectreConsole/issues/46
+ - https://spectreconsole.net/best-practices#configuring-the-windows-terminal-for-unicode-and-emoji-support
+ - https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_profiles[/]
+"@ | Format-SpectrePanel -Title "[Orange1] PwshSpectreConsole Warning [/]" -Color OrangeRed1 -Expand | Out-Host

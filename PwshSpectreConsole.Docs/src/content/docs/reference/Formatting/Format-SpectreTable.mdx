@@ -349,6 +349,21 @@ Allow Spectre markup in the table elements e.g. [green]message[/].
 
 
 
+#### **Expand**
+
+Take up all of the horizontal space available.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|false   |named   |false        |
+
+
+
 
 
 ---
@@ -356,11 +371,11 @@ Allow Spectre markup in the table elements e.g. [green]message[/].
 
 ### Syntax
 ```powershell
-Format-SpectreTable -Data <Object> [-Wrap] [-Border <String>] [-Color <Color>] [-HeaderColor <Color>] [-TextColor <Color>] [-Width <Int32>] [-HideHeaders] [-Title <String>] [-AllowMarkup] [<CommonParameters>]
+Format-SpectreTable -Data <Object> [-Wrap] [-Border <String>] [-Color <Color>] [-HeaderColor <Color>] [-TextColor <Color>] [-Width <Int32>] [-HideHeaders] [-Title <String>] [-AllowMarkup] [-Expand] [<CommonParameters>]
 ```
 ```powershell
-Format-SpectreTable -Data <Object> [[-Property] <Object[]>] [-Wrap] [-Border <String>] [-Color <Color>] [-HeaderColor <Color>] [-TextColor <Color>] [-Width <Int32>] [-HideHeaders] [-Title <String>] [-AllowMarkup] [<CommonParameters>]
+Format-SpectreTable -Data <Object> [[-Property] <Object[]>] [-Wrap] [-Border <String>] [-Color <Color>] [-HeaderColor <Color>] [-TextColor <Color>] [-Width <Int32>] [-HideHeaders] [-Title <String>] [-AllowMarkup] [-Expand] [<CommonParameters>]
 ```
 ```powershell
-Format-SpectreTable -Data <Object> [-Wrap] [-View <String>] [-Border <String>] [-Color <Color>] [-HeaderColor <Color>] [-TextColor <Color>] [-Width <Int32>] [-HideHeaders] [-Title <String>] [-AllowMarkup] [<CommonParameters>]
+Format-SpectreTable -Data <Object> [-Wrap] [-View <String>] [-Border <String>] [-Color <Color>] [-HeaderColor <Color>] [-TextColor <Color>] [-Width <Int32>] [-HideHeaders] [-Title <String>] [-AllowMarkup] [-Expand] [<CommonParameters>]
 ```

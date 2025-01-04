@@ -1,10 +1,12 @@
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
+import sitemap from '@astrojs/sitemap';
 
 import tailwind from "@astrojs/tailwind";
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://pwshspectreconsole.com",
   integrations: [
     starlight({
       title: "PwshSpectreConsole",
@@ -13,7 +15,7 @@ export default defineConfig({
       social: {
         rss: "https://shaunlawrie.com/rss.xml",
         github: "https://github.com/ShaunLawrie/PwshSpectreConsole",
-        "x.com": "https://twitter.com/Shaun_Lawrie",
+        blueSky: "https://bsky.app/profile/shaunlawrie.com",
         youtube: "https://www.youtube.com/@shaunlawrie",
       },
       components: {
@@ -34,10 +36,6 @@ export default defineConfig({
             {
               label: "Upgrading to v2",
               link: "/guides/upgrading-to-v2/",
-              badge: {
-                text: "New",
-                variant: "tip",
-              },
             },
             {
               label: "FAQs",
@@ -56,5 +54,6 @@ export default defineConfig({
     tailwind({
       applyBaseStyles: false,
     }),
+    sitemap(),
   ]
 });

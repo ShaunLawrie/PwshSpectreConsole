@@ -1,8 +1,4 @@
 ---
-sidebar:
-  badge:
-    text: Updated
-    variant: note
 title: Invoke-SpectreLive
 ---
 
@@ -118,6 +114,8 @@ function Get-PreviewPanel {
     $result = ""
     if ($item -is [System.IO.DirectoryInfo]) {
         $result = "[grey]$($SelectedFile.Name) is a directory.[/]"
+    } elseif ($item.Name -match "\.(jpg|jpeg|png|gif)$") {
+        $result = Get-SpectreSixelImage $item.FullName
     } else {
         try {
             $content = Get-Content -Path $item.FullName -Raw -ErrorAction Stop
@@ -206,7 +204,7 @@ This is a simple example of creating a chat application. In this example a diffe
 Set-SpectreColors -AccentColor DeepPink1
 
 # Build root layout scaffolding for:
-# .--------------------------------.
+# +--------------------------------+
 # |             Title              | <- Update-TitleComponent will render the title
 # |--------------------------------|
 # |                                | <- Update-MessageListComponent will display the list of messages here

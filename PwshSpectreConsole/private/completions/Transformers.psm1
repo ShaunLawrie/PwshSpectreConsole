@@ -23,6 +23,26 @@ class ColorTransformationAttribute : ArgumentTransformationAttribute {
     }
 }
 
+class StyleTransformationAttribute : ArgumentTransformationAttribute {
+
+    static [object] TransformItem([object]$inputData) {
+        if ($InputData -is [Spectre.Console.Style]) {
+            return $InputData
+        }
+        if ($InputData -is [Spectre.Console.Color]) {
+            return [Spectre.Console.Style]::new($InputData)
+        }
+        if ($InputData -is [String]) {
+            return [Spectre.Console.Style]::Parse($InputData)
+        }
+        throw [System.ArgumentException]::new("Cannot convert $($inputData.GetType().FullName) '$InputData' to [Spectre.Console.Color]")
+    }
+
+    [object] Transform([EngineIntrinsics]$engine, [object]$inputData) {
+        return [StyleTransformationAttribute]::TransformItem($inputData)
+    }
+}
+
 class TreeItemTransformationAttribute : ArgumentTransformationAttribute {
 
     static[object] TransformItem([object] $TreeItem) {
@@ -72,13 +92,8 @@ class ColorThemeTransformationAttribute : ArgumentTransformationAttribute {
         }
         $outputData = @{}
         foreach ($color in $inputData.GetEnumerator()) {
-            $colorValue = [ColorTransformationAttribute]::TransformItem($color.Value)
-            if ($null -ne $colorValue) {
-                $outputData[$color.Key] = $colorValue
-            } else {
-                $spectreColors = [Spectre.Console.Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
-                throw "Invalid color value '$($color.Value)' for key '$($color.Key)' could not be mapped to one of the list of valid Spectre colors ['$($spectreColors -join ''', ''')']"
-            }
+            $styleValue = [StyleTransformationAttribute]::TransformItem($color.Value)
+            $outputData[$color.Key] = $styleValue
         }
         return $outputData
     }
@@ -103,7 +118,18 @@ class RenderableTransformationAttribute : ArgumentTransformationAttribute {
 
         # For others just dump them as either strings formatted with markup which are easy to identify by the closing tag [/] or as plain text
         if ($InputData -like "*[/]*" -or $InputData -like "*:*:*") {
-            return [Spectre.Console.Markup]::new($InputData)
+            try {
+                $markup = [Spectre.Console.Markup]::new($InputData)
+                return $markup
+            } catch {
+                throw @(
+                    "`n`nYour input includes Spectre Console markup characters (see https://spectreconsole.net/markup).",
+                    "Escape the special characters in the input before using it in a Spectre Console function using the Get-SpectreEscapedText function.",
+                    "",
+                    "  e.g. `$myEscapedInput = Get-SpectreEscapedText '$InputData'",
+                    "`n"
+                ) -join "`n"
+            }
         } else {
             return [Spectre.Console.Text]::new(($InputData | Out-String -NoNewline))
         }

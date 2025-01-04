@@ -56,7 +56,7 @@ function Format-SpectrePanel {
         [Spectre.Console.Color] $Color = $script:AccentColor,
         [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostWidth) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console width.")]
         [int]$Width,
-        [ValidateScript({ $_ -gt 0 -and $_ -le (Get-HostHeight) }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative or exceed console height.")]
+        [ValidateScript({ $_ -gt 0 }, ErrorMessage = "Value '{0}' is invalid. Cannot be negative.")]
         [int]$Height
     )
     
