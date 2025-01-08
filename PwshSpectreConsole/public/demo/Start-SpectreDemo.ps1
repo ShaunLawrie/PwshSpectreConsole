@@ -81,7 +81,7 @@ $answer = Read-SpectreConfirm -Prompt "Do you like cute animals?" -DefaultAnswer
     Clear-Host
 
     $example = @'
-$choices = @("Sushi", "Tacos", "Pad Thai", "Lobster", "Falafel", "Chicken Parmesan", "Ramen", "Fish and Chips", "Biryani", "Croissants", "Enchiladas", "Shepherd's Pie", "Gyoza", "Fajitas", "Samosas", "Bruschetta", "Paella", "Hamburger", "Poutine", "Ceviche")
+$choices = @("Pizza", "Sushi", "Tacos", "Pad Thai", "Lobster", "Falafel", "Chicken Parmesan", "Ramen", "Fish and Chips", "Biryani", "Croissants", "Enchiladas", "Shepherd's Pie", "Gyoza", "Fajitas", "Samosas", "Bruschetta", "Paella", "Hamburger", "Poutine", "Ceviche")
 
 $food = Read-SpectreSelection `
             -Title "What's your favourite [blue]food[/]?" `
