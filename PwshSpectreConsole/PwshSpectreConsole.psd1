@@ -76,8 +76,7 @@ FormatsToProcess = 'PwshSpectreConsole.format.ps1xml'
 FunctionsToExport = 'Add-SpectreJob', 'Format-SpectreBarChart', 
                'Format-SpectreBreakdownChart', 'Format-SpectrePanel', 
                'Format-SpectreTable', 'Format-SpectreTree', 'Get-SpectreEscapedText', 
-               'Get-SpectreImage', 'Get-SpectreImageExperimental', 
-               'Invoke-SpectreCommandWithProgress', 
+               'Get-SpectreImage', 'Invoke-SpectreCommandWithProgress', 
                'Invoke-SpectreCommandWithStatus', 'Read-SpectreMultiSelection', 
                'Read-SpectreMultiSelectionGrouped', 'Read-SpectrePause', 
                'Read-SpectreSelection', 'Read-SpectreText', 'Set-SpectreColors', 
@@ -101,7 +100,7 @@ CmdletsToExport = @()
 VariablesToExport = '*'
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-AliasesToExport = 'fst', 'fsj'
+AliasesToExport = 'fst', 'fsj', 'Get-SpectreImageExperimental'
 
 # DSC resources to export from this module
 # DscResourcesToExport = @()
