@@ -40,7 +40,7 @@ if ($WhatIfPreference) {
 # If last commit was the version bump, skip it
 $lastCommitUser = git log -1 --pretty=%aN
 if ($lastCommitUser -like "*via GitHub Actions*") {
-    Write-Host "Last commit was a version bump, skipping version bump this time around"
+    Write-Host "Last commit was a github actions push, skipping version bump this time around"
     return
 }
 

@@ -126,7 +126,7 @@ function Update-HashFilesInGit {
             if(!$NoCommit) {
                 Write-Host "Committing hash files"
                 git add "*.sha256" *>$null
-                git commit -m "[skip ci] Update doc hashfiles" *>$null
+                git commit -m "Update doc hashfiles" *>$null
             } else {
                 Write-Host "Skipping commit of hash files"
             }
@@ -189,7 +189,7 @@ function Update-HelpFiles {
                 Set-Location $AsciiCastOutputPath
                 Write-Host "Committing cast files"
                 git add "*.cast" *>$null
-                git commit -m "[skip ci] Update docs" *>$null
+                git commit -m "Update docs" *>$null
             } else {
                 Write-Host "Skipping commit of mdx and cast files"
             }
