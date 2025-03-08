@@ -4,6 +4,10 @@ on:
     branches:
       - main
       - prerelease
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - prerelease
 
 permissions:
   contents: write
