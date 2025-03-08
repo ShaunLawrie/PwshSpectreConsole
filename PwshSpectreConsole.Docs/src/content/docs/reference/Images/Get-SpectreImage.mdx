@@ -86,24 +86,24 @@ The path to the image file to be displayed, as a local path or remote path using
 
 
 
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[String]`|true    |1       |false        |
+|Type      |Required|Position|PipelineInput|Aliases |
+|----------|--------|--------|-------------|--------|
+|`[String]`|true    |1       |false        |ImageUrl|
 
 
 
-#### **MaxWidth**
+#### **Width**
 
-The maximum width of the image. If not specified, the image will be displayed at its original size.
-
-
+The maximum width of the image in character cells. If not specified, the image will be displayed at its original size.
 
 
 
 
-|Type     |Required|Position|PipelineInput|
-|---------|--------|--------|-------------|
-|`[Int32]`|false   |2       |false        |
+
+
+|Type     |Required|Position|PipelineInput|Aliases |
+|---------|--------|--------|-------------|--------|
+|`[Int32]`|false   |2       |false        |MaxWidth|
 
 
 
@@ -138,5 +138,5 @@ Valid Values:
 
 ### Syntax
 ```powershell
-Get-SpectreImage [-ImagePath] <String> [[-MaxWidth] <Int32>] [[-Format] <String>] [<CommonParameters>]
+Get-SpectreImage [-ImagePath] <String> [[-Width] <Int32>] [[-Format] <String>] [<CommonParameters>]
 ```

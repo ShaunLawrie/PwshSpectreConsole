@@ -1,12 +1,12 @@
 {"version": 2, "width": 110, "height": 8, "title": "Example 0", "env": {"TERM": "Spectre.Console"}}
 [0, "o", "\u001B[?25lSelect your favorite color\r\n                          \r\n\u001B[38;5;2m\u003E Red\u001B[0m                     \r\n  Green                   \r\n  Blue                    "]
-[0, "o", "\r\u001B[4ASelect your favorite color\r\n                          \r\n\u001B[38;5;2m\u003E Red\u001B[0m                     \r\n  Green                   \r\n  Blue                    "]
-[0.458, "o", "\r\u001B[4ASelect your favorite color\r\n                          \r\n  Red                     \r\n\u001B[38;5;2m\u003E Green\u001B[0m                   \r\n  Blue                    "]
-[1.064, "o", "\r\u001B[4ASelect your favorite color\r\n                          \r\n  Red                     \r\n  Green                   \r\n\u001B[38;5;2m\u003E Blue\u001B[0m                    "]
-[1.546, "o", "\r\u001B[4ASelect your favorite color\r\n                          \r\n\u001B[38;5;2m\u003E Red\u001B[0m                     \r\n  Green                   \r\n  Blue                    "]
-[2.187, "o", "\r\u001B[4ASelect your favorite color\r\n                          \r\n  Red                     \r\n\u001B[38;5;2m\u003E Green\u001B[0m                   \r\n  Blue                    "]
-[2.814, "o", "\r\u001B[2K\u001B[1A\u001B[2K\u001B[1A\u001B[2K\u001B[1A\u001B[2K\u001B[1A\u001B[2K"]
-[2.814, "o", "\u001B[?25h"]
-[2.814, "o", "Your chosen color is \u0027Green\u0027\r\n"]
+[0.001, "o", "\r\u001B[4ASelect your favorite color\r\n                          \r\n\u001B[38;5;2m\u003E Red\u001B[0m                     \r\n  Green                   \r\n  Blue                    "]
+[0.873, "o", "\r\u001B[4ASelect your favorite color\r\n                          \r\n  Red                     \r\n\u001B[38;5;2m\u003E Green\u001B[0m                   \r\n  Blue                    "]
+[1.873, "o", "\r\u001B[4ASelect your favorite color\r\n                          \r\n  Red                     \r\n  Green                   \r\n\u001B[38;5;2m\u003E Blue\u001B[0m                    "]
+[2.764, "o", "\r\u001B[4ASelect your favorite color\r\n                          \r\n\u001B[38;5;2m\u003E Red\u001B[0m                     \r\n  Green                   \r\n  Blue                    "]
+[3.552, "o", "\r\u001B[4ASelect your favorite color\r\n                          \r\n  Red                     \r\n\u001B[38;5;2m\u003E Green\u001B[0m                   \r\n  Blue                    "]
+[4.309, "o", "\r\u001B[2K\u001B[1A\u001B[2K\u001B[1A\u001B[2K\u001B[1A\u001B[2K\u001B[1A\u001B[2K"]
+[4.309, "o", "\u001B[?25h"]
+[4.309, "o", "Your chosen color is \u0027Green\u0027\r\n"]
 
 
