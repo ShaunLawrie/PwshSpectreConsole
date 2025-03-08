@@ -13,6 +13,21 @@ function Format-SpectreTextPath {
     .PARAMETER Path
     The directory/file path to format
 
+    .PARAMETER Alignment
+    The alignment of the path. Defaults to "Left".
+
+    .PARAMETER PathStyle
+    A hashtable of Spectre Console colors or color names to style the path output.
+    e.g.
+    ```
+    @{
+        RootColor      = [Spectre.Console.Color]::Cyan2
+        SeparatorColor = [Spectre.Console.Color]::Aqua
+        StemColor      = [Spectre.Console.Color]::Orange1
+        LeafColor      = "HotPink"
+    }
+    ```
+
     .EXAMPLE
     # **Example 1**  
     # This example demonstrates how to format a PowerShell path as a Spectre Console Path with syntax highlighting.
@@ -24,7 +39,6 @@ function Format-SpectreTextPath {
         [string] $Path,
         [ValidateSet([SpectreConsoleJustify], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Alignment = "Left",
-        [ValidateSpectreColorTheme()]
         [ColorThemeTransformationAttribute()]
         [hashtable] $PathStyle = @{
             RootColor      = $script:AccentColor

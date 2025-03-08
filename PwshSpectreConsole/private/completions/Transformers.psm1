@@ -35,7 +35,7 @@ class StyleTransformationAttribute : ArgumentTransformationAttribute {
         if ($InputData -is [String]) {
             return [Spectre.Console.Style]::Parse($InputData)
         }
-        throw [System.ArgumentException]::new("Cannot convert $($inputData.GetType().FullName) '$InputData' to [Spectre.Console.Color]")
+        throw [System.ArgumentException]::new("Cannot convert $($inputData.GetType().FullName) '$InputData' to [Spectre.Console.Style]")
     }
 
     [object] Transform([EngineIntrinsics]$engine, [object]$inputData) {

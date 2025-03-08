@@ -1,4 +1,3 @@
-using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Format-SpectreJson {
@@ -101,7 +100,6 @@ function Format-SpectreJson {
         [string] $Title,
         [int] $Width,
         [int] $Height,
-        [ValidateSpectreColorTheme()]
         [ColorThemeTransformationAttribute()]
         [hashtable] $JsonStyle = @{
             MemberStyle    = $script:AccentColor
