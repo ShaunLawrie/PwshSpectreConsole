@@ -62,8 +62,11 @@ if ($WhatIfPreference) {
     git config --global user.name 'Shaun Lawrie (via GitHub Actions)'
     git config --global user.email 'shaun.r.lawrie@gmail.com'
     git add (Join-Path $RepositoryRoot "PwshSpectreConsole" "PwshSpectreConsole.psd1")
-    git commit -m "Bump version to $newVersion"
-    git push
+    $changes = git diff --cached --name-only
+    if ($changes) {
+        git commit -m "Bump version to $newVersion"
+        git push
+    }
 }
 
 # Add pre-release label if applicable
