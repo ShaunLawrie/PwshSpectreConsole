@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
 title: Format-SpectreTextPath
 ---
 
@@ -65,6 +69,10 @@ The directory/file path to format
 
 #### **Alignment**
 
+The alignment of the path. Defaults to "Left".
+
+
+
 Valid Values:
 
 * Left
@@ -83,6 +91,19 @@ Valid Values:
 
 
 #### **PathStyle**
+
+A hashtable of Spectre Console colors or color names to style the path output.
+e.g.
+```
+@{
+    RootColor      = [Spectre.Console.Color]::Cyan2
+    SeparatorColor = [Spectre.Console.Color]::Aqua
+    StemColor      = [Spectre.Console.Color]::Orange1
+    LeafColor      = "HotPink"
+}
+```
+
+
 
 
 

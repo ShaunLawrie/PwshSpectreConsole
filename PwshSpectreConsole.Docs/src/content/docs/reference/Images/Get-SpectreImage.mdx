@@ -88,7 +88,7 @@ The path to the image file to be displayed, as a local path or remote path using
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
-|`[String]`|false   |1       |false        |
+|`[String]`|true    |1       |false        |
 
 
 
@@ -138,5 +138,5 @@ Valid Values:
 
 ### Syntax
 ```powershell
-Get-SpectreImage [[-ImagePath] <String>] [[-MaxWidth] <Int32>] [[-Format] <String>] [<CommonParameters>]
+Get-SpectreImage [-ImagePath] <String> [[-MaxWidth] <Int32>] [[-Format] <String>] [<CommonParameters>]
 ```

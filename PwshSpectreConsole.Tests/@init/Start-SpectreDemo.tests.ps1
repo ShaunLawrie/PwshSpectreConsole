@@ -1,4 +1,7 @@
 Remove-Module PwshSpectreConsole -Force -ErrorAction SilentlyContinue
+
+$env:IgnoreSpectreEncoding = $true
+
 try {
     Import-Module "$PSScriptRoot\..\..\PwshSpectreConsole\PwshSpectreConsole.psd1" -Force
 } catch {

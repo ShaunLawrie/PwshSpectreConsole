@@ -47,6 +47,7 @@ function Get-SpectreImage {
     #>
     [Reflection.AssemblyMetadata("title", "Get-SpectreImage")]
     param (
+        [Parameter(Mandatory)]
         [string] $ImagePath,
         [int] $MaxWidth,
         [ValidateSet("Auto", "Sixel", "Canvas")]

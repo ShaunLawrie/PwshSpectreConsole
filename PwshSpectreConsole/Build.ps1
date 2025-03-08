@@ -1,3 +1,4 @@
+[CmdletBinding(SupportsShouldProcess = $true)]
 param (
     [string] $Version = "0.49.1",
     [int] $DotnetSdkMajorVersion = 8,
@@ -37,7 +38,19 @@ function Install-SpectreConsole {
 
     Write-Verbose "Finding imagesharp dependency"
     $nuspec = [xml](Get-Content (Join-Path $libPath "Spectre.Console.ImageSharp.nuspec"))
-    $imageSharpVersion = (($nuspec.package.metadata.dependencies.group | Where-Object { $_.targetFramework -eq ".NETStandard2.0" }).dependency | Where-Object { $_.id -eq "SixLabors.ImageSharp" }).version
+    $imageSharpVersion = (($nuspec.package.metadata.dependencies.group | Where-Object { $_.targetFramework -eq "net$DotnetSdkMajorVersion.0" }).dependency | Where-Object { $_.id -eq "SixLabors.ImageSharp" }).version
+
+    if ($null -eq $imageSharpVersion) {
+        throw "Could not find SixLabors.ImageSharp dependency in Spectre.Console.ImageSharp.nuspec"
+    }
+
+    # https://github.com/advisories/GHSA-2cmq-823j-5qj8/
+    $imageSharpVersionSemver = [semver]$imageSharpVersion
+    $patchedVersion = [semver]"3.1.7"
+    if ($imageSharpVersionSemver -lt $patchedVersion) {
+        Write-Warning "ImageSharp version $imageSharpVersion is vulnerable to CVE-2023-45147, updating to $patchedVersion"
+        $imageSharpVersion = $patchedVersion.ToString()
+    }
 
     $libPath = Join-Path $InstallLocation "SixLabors.ImageSharp"
     New-Item -Path $libPath -ItemType "Directory" -Force | Out-Null
@@ -82,6 +95,11 @@ if ((Test-Path $installLocation) -or (Test-Path $testingInstallLocation) -and $N
     Write-Host "Spectre.Console already installed, skipping"
     return
 } 
+
+if ($WhatIfPreference) {
+    Write-Host "WhatIf: Would have installed the Spectre.Console packages"
+    return
+}
 
 if (Test-Path $installLocation) {
     Remove-Item $installLocation -Recurse -Force

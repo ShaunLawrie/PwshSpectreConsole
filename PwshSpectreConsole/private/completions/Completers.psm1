@@ -1,41 +1,5 @@
 using namespace System.Management.Automation
 
-class ValidateSpectreColor : ValidateArgumentsAttribute {
-
-    static[void]ValidateItem([object] $ItemColor) {
-        # Handle hex colors
-        if ($ItemColor -match '^#[A-Fa-f0-9]{6}$') {
-            return
-        }
-        # Handle an explicitly defined spectre color object
-        if ($ItemColor -is [Spectre.Console.Color]) {
-            return
-        }
-        $spectreColors = [Spectre.Console.Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
-        $result = $spectreColors -contains $ItemColor
-        if ($result -eq $false) {
-            throw "'$ItemColor' is not in the list of valid Spectre colors ['$($spectreColors -join ''', ''')']"
-        }
-    }
-
-    ValidateSpectreColor() : base() { }
-    [void]Validate([object] $Color, [EngineIntrinsics]$EngineIntrinsics) {
-        [ValidateSpectreColor]::ValidateItem($Color)
-    }
-}
-
-class ValidateSpectreColorTheme : ValidateArgumentsAttribute {
-    ValidateSpectreColorTheme() : base() { }
-    [void]Validate([object] $Colors, [EngineIntrinsics]$EngineIntrinsics) {
-        if ($Colors -isnot [hashtable]) {
-            throw "Color theme must be a hashtable of Spectre Console color names and values"
-        }
-        foreach ($color in $Colors.GetEnumerator()) {
-            [ValidateSpectreColor]::ValidateItem($color.Value)
-        }
-    }
-}
-
 class ArgumentCompletionsSpectreColors : ArgumentCompleterAttribute {
     ArgumentCompletionsSpectreColors() : base({
             param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)

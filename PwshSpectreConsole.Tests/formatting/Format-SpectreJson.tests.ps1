@@ -106,5 +106,26 @@ Describe "Format-SpectreJson" {
             $json | Out-SpectreHost
             { Assert-OutputMatchesSnapshot -SnapshotName "Format-SpectreJson" -Output $testConsole.Output } | Should -Not -Throw
         }
+
+        It "Should format with a custom format" {
+            Mock Write-AnsiConsole {
+                $RenderableObject | Should -BeOfType [Spectre.Console.Json.JsonText]
+                $testConsole.Write($RenderableObject)
+            }
+            $json = Format-SpectreJson -Data $testData -JsonStyle @{
+                MemberStyle    = [Spectre.Console.Color]::Cyan1
+                BracesStyle    = [Spectre.Console.Color]::Cyan1
+                BracketsStyle  = [Spectre.Console.Color]::Orange1
+                ColonStyle     = [Spectre.Console.Color]::Cyan1
+                CommaStyle     = [Spectre.Console.Color]::Cyan1
+                StringStyle    = [Spectre.Console.Color]::White
+                NumberStyle    = [Spectre.Console.Color]::Cyan1
+                BooleanStyle   = [Spectre.Console.Color]::LightSkyBlue1
+                NullStyle      = [Spectre.Console.Color]::Grey
+            }
+            $json | Should -BeOfType [Spectre.Console.Json.JsonText]
+            $json | Out-SpectreHost
+            { Assert-OutputMatchesSnapshot -SnapshotName "Format-SpectreJsonCustom" -Output $testConsole.Output } | Should -Not -Throw
+        }
     }
 }
