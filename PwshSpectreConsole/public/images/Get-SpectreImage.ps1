@@ -15,8 +15,8 @@ function Get-SpectreImage {
     .PARAMETER ImagePath
     The path to the image file to be displayed, as a local path or remote path using http/https.
 
-    .PARAMETER Width
-    The maximum width of the image in character cells. If not specified, the image will be displayed at its original size.
+    .PARAMETER MaxWidth
+    The maximum width of the image. If not specified, the image will be displayed at its original size.
 
     .PARAMETER Format
     The preferred format to use when rendering the image.  
@@ -46,13 +46,10 @@ function Get-SpectreImage {
     }
     #>
     [Reflection.AssemblyMetadata("title", "Get-SpectreImage")]
-    [Alias('Get-SpectreImageExperimental')] # Old version of the function
     param (
         [Parameter(Mandatory)]
-        [Alias("ImageUrl")]
         [string] $ImagePath,
-        [Alias("MaxWidth")]
-        [int] $Width,
+        [int] $MaxWidth,
         [ValidateSet("Auto", "Sixel", "Canvas")]
         [string] $Format = "Auto"
     )
@@ -88,19 +85,9 @@ function Get-SpectreImage {
         $image = [Spectre.Console.CanvasImage]::new($imagePathResolved)
     }
 
-    if ($Width) {
-        # Canvas image widths are double-cells, so divide by 2
-        if ($image -is [Spectre.Console.CanvasImage]) {
-            $Width = [int]($Width / 2)
-        }
-        $image.MaxWidth = $Width
+    if ($MaxWidth) {
+        $image.MaxWidth = $MaxWidth
     }
     
-    # For compatibilities sake keep the experimental version of the function working
-    if ($MyInvocation.Line -like "*Get-SpectreImageExperimental*") {
-        Write-Warning "Get-SpectreImageExperimental has been removed, please update your scripts to use Get-SpectreImage instead."
-        $image | Out-SpectreHost
-    } else {
-        return $image | Out-SpectreHost
-    }
+    return $image
 }
