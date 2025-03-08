@@ -98,6 +98,7 @@ if ($WhatIfPreference) {
     }
 }
 
+$deploymentRequired = $false
 if ($Type -eq "prerelease") {
     if ($WhatIfPreference) {
         Write-Host "WhatIf: Would have published prerelease docs"
@@ -108,7 +109,17 @@ if ($Type -eq "prerelease") {
 
         # Push any docs changes
         git push
+
+        $deploymentRequired = $true
     }
+}
+
+if ($deploymentRequired) {
+    # Set a github step output docs-require-deployment to true
+    "docs-require-deployment=true" >> $env:GITHUB_OUTPUT
+} else {
+    # Set a github step output docs-require-deployment to false
+    "docs-require-deployment=false" >> $env:GITHUB_OUTPUT
 }
 
 Write-Host "Version bump and publish completed."

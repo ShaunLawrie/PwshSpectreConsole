@@ -14,8 +14,13 @@ runs:
   using: "composite"
   steps:
     - name: Version Bump and Publish
+      id: version-bump-and-publish
       shell: pwsh
       env:
         PSGALLERY_API_KEY: ${{ inputs.psgallery-api-key }}
         GH_TOKEN: ${{ inputs.github-token }}
       run: "& '${{ github.action_path }}/action.ps1' -RepositoryRoot '${{ github.workspace }}' -Type '${{ inputs.publish-type }}'"
+outputs:
+  docs-require-deployment:
+    description: Whether the docs require deployment
+    value: ${{ steps.version-bump-and-publish.outputs.docs-require-deployment }}

@@ -49,6 +49,7 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.PIPELINE_PAT }}
       - name: Version Bump and Publish
+        id: version-bump-and-publish
         uses: ./.github/actions/version-bump-and-publish
         with:
           psgallery-api-key: ${{ secrets.PSGALLERY_API_KEY }}
@@ -56,6 +57,7 @@ jobs:
           publish-type: prerelease
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
+        if: steps.version-bump-and-publish.outputs.docs-require-deployment == 'true'
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
@@ -67,14 +69,3 @@ jobs:
         with:
           name: Snapshots
           path: PwshSpectreConsole.Tests/@snapshots/*.txt
-
-  check-jobs:
-    name: Check Jobs
-    runs-on: ubuntu-latest
-    needs: [ publish-to-psgallery, publish-prerelease-to-psgallery ]
-    if: github.repository_owner == 'ShaunLawrie'
-    steps:
-      - name: Verify no jobs failed
-        run: exit ${{ contains(needs.*.result, 'failure') && 1 || 0 }}
-      - name: Verify at least one job succeeded
-        run: exit ${{ contains(needs.*.result, 'success') && 0 || 1 }}
