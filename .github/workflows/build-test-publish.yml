@@ -25,8 +25,8 @@ jobs:
       - name: Version Bump and Publish
         uses: ./.github/actions/version-bump-and-publish
         with:
-          psgallery-api-token: ${{ secrets.PSGALLERY_API_KEY }}
-          gh-token: ${{ secrets.PIPELINE_PAT }}
+          psgallery-api-key: ${{ secrets.PSGALLERY_API_KEY }}
+          github-token: ${{ secrets.PIPELINE_PAT }}
           publish-type: stable
       - name: Upload Snapshots
         if: failure()
@@ -51,8 +51,8 @@ jobs:
       - name: Version Bump and Publish
         uses: ./.github/actions/version-bump-and-publish
         with:
-          psgallery-api-token: ${{ secrets.PSGALLERY_API_KEY }}
-          gh-token: ${{ secrets.PIPELINE_PAT }}
+          psgallery-api-key: ${{ secrets.PSGALLERY_API_KEY }}
+          github-token: ${{ secrets.PIPELINE_PAT }}
           publish-type: prerelease
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
