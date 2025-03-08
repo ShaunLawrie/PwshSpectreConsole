@@ -1,0 +1,21 @@
+name: Version Bump and Publish
+description: Bump the version of the module and publish it to PSGallery
+inputs:
+  psgallery-api-key:
+    description: The API key for PSGallery
+    required: true
+  github-token:
+    description: The GitHub token for authentication
+    required: true
+  publish-type:
+    description: The type of release e.g. stable or prerelease
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Version Bump and Publish
+      shell: pwsh
+      env:
+        PSGALLERY_API_KEY: ${{ inputs.psgallery-api-key }}
+        GH_TOKEN: ${{ inputs.github-token }}
+      run: "& '${{ github.action_path }}/action.ps1' -RepositoryRoot '${{ github.workspace }}' -Type '${{ inputs.publish-type }}'"

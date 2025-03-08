@@ -1,3 +1,4 @@
+[CmdletBinding(SupportsShouldProcess = $true)]
 param (
     [string] $Version = "0.49.1",
     [int] $DotnetSdkMajorVersion = 8,
@@ -82,6 +83,11 @@ if ((Test-Path $installLocation) -or (Test-Path $testingInstallLocation) -and $N
     Write-Host "Spectre.Console already installed, skipping"
     return
 } 
+
+if ($WhatIfPreference) {
+    Write-Host "WhatIf: Would have installed the Spectre.Console packages"
+    return
+}
 
 if (Test-Path $installLocation) {
     Remove-Item $installLocation -Recurse -Force
