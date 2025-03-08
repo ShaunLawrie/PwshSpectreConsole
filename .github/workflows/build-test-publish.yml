@@ -22,34 +22,12 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ secrets.PIPELINE_PAT }}
-      - name: Version Bump
-        shell: pwsh
-        env:
-          GH_TOKEN: ${{ secrets.PIPELINE_PAT }}
-        run: |
-          $ErrorActionPreference = "Stop"
-          & .\PwshSpectreConsole\Build.ps1
-          $env:PSModulePath = @($env:PSModulePath, ".\PwshSpectreConsole\") -join ":"
-          Invoke-Pester -CI -ExcludeTag "ExcludeCI"
-          $version = Get-Module PwshSpectreConsole -ListAvailable | Sort-Object -Property Version -Descending | Select-Object -First 1 -ExpandProperty Version
-          if($null -eq $version) { throw "Failed to load version" }
-          $onlineVersion = Find-Module -Name PwshSpectreConsole -RequiredVersion $version -ErrorAction SilentlyContinue
-          $newVersion = [version]::new($version.Major, $version.Minor, $version.Build)
-          if($null -eq $onlineVersion) {
-            Write-Warning "Online version doesn't exist, this version $newVersion will be published without a version bump"
-          } else {
-            $newVersion = [version]::new($version.Major, $version.Minor, $version.Build + 1)
-            Write-Host "Bumping version from $version to $newVersion"
-            Update-ModuleManifest -Path .\PwshSpectreConsole\PwshSpectreConsole.psd1 -ModuleVersion $newVersion
-            git config --global user.name 'Shaun Lawrie (via GitHub Actions)'
-            git config --global user.email 'shaun.r.lawrie@gmail.com'
-            git add PwshSpectreConsole/PwshSpectreConsole.psd1
-            git commit -m "[skip ci] Bump version to $newVersion"
-            git push
-          }
-          Import-Module .\PwshSpectreConsole\PwshSpectreConsole.psd1 -Force
-          Publish-Module -Name PwshSpectreConsole -Exclude "Build.ps1" -NugetApiKey $env:PSGALLERY_API_KEY
-          gh release create "v$newVersion" --target main --generate-notes
+      - name: Version Bump and Publish
+        uses: ./.github/actions/version-bump-and-publish
+        with:
+          psgallery-api-token: ${{ secrets.PSGALLERY_API_KEY }}
+          gh-token: ${{ secrets.PIPELINE_PAT }}
+          publish-type: stable
       - name: Upload Snapshots
         if: failure()
         uses: actions/upload-artifact@v4
@@ -71,76 +49,11 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.PIPELINE_PAT }}
       - name: Version Bump and Publish
-        shell: pwsh
-        env:
-          GH_TOKEN: ${{ secrets.PIPELINE_PAT }}
-        run: |
-          $ErrorActionPreference = "Stop"
-
-          & ./PwshSpectreConsole/Build.ps1
-          $env:PSModulePath = @($env:PSModulePath, ".\PwshSpectreConsole\") -join ":"
-          Invoke-Pester -CI -ExcludeTag "ExcludeCI"
-          $version = Get-Module PwshSpectreConsole -ListAvailable | Sort-Object -Property Version -Descending | Select-Object -First 1 -ExpandProperty Version
-          if($null -eq $version) { throw "Failed to load version" }
-          $onlineVersions = Find-Module -Name PwshSpectreConsole -AllowPrerelease -AllVersions
-
-          $latestStableVersion = $onlineVersions | Where-Object { $_.Version -notlike "*prerelease*" } | Sort-Object { [version]$_.Version } -Descending | Select-Object -First 1 -ExpandProperty Version
-          $latestStableVersion = [version]$latestStableVersion
-          $latestPrereleaseVersion = $onlineVersions | Where-Object { $_.Version -like "*prerelease*" } | Sort-Object {
-            $version = [version]$_.Version.Split("-")[0]
-            $version = [version]::new($version.Major, $version.Minor, $version.Build, ($_.Version.Split("-")[1] -replace "prerelease", ""))
-            return $version
-          } -Descending | Select-Object -First 1 -ExpandProperty Version
-          $latestPrereleaseTag = $latestPrereleaseVersion.Split("-prerelease")[1] # format is like -prerelease6, output here is just 6
-          $latestPrereleaseVersion = [version]$latestPrereleaseVersion.Split("-prerelease")[0]
-
-          # Jump to package version if it's been bumped beyond the latest prerelease version
-          $currentVersion = [version]::new($version.Major, $version.Minor, $version.Build)
-          if ($latestPrereleaseVersion -lt $currentVersion) {
-            Write-Host "Latest prerelease version is less than the latest stable version, jumping to $currentVersion"
-            $newPrereleaseTag = "prerelease001"
-            $newVersion = $currentVersion
-          } elseif ($latestPrereleaseVersion -eq $currentVersion) {
-            Write-Host "Latest prerelease version is the same as the latest stable version, bumping prerelease tag"
-            $newPrereleaseTag = "prerelease" + (([int]$latestPrereleaseTag) + 1).ToString("000")
-            $newVersion = $currentVersion
-          } else {
-            # Generate a new prerelease name, psgallery only allows characters 'a-zA-Z0-9' and a hyphen ('-') at the beginning of the prerelease string
-            $newPrereleaseTag = "prerelease" + (([int]$latestPrereleaseTag) + 1).ToString("000")
-
-            # Prerelease will always be at least one minor version above the latest published stable version so when it's merged to main the minor version will get bumped
-            # To bump a major version the manifest would be edited manually to vnext.0.0 before merging to main
-            $newVersion = [version]::new($latestPrereleaseVersion.Major, $latestPrereleaseVersion.Minor + 1, 0)
-          }
-
-          if($newVersion -eq $oldVersion) {
-            Write-Host "Version is not being bumped in prerelease"
-          } else {
-            Write-Host "Bumping version from $version to $newVersion"
-            Update-ModuleManifest -Path .\PwshSpectreConsole\PwshSpectreConsole.psd1 -ModuleVersion $newVersion
-            git config --global user.name 'Shaun Lawrie (via GitHub Actions)'
-            git config --global user.email 'shaun.r.lawrie@gmail.com'
-            git add PwshSpectreConsole/PwshSpectreConsole.psd1
-            git commit -m "Bump version to $newVersion"
-            git push
-          }
-
-          # Mark as prerelease
-          Update-ModuleManifest -Path .\PwshSpectreConsole\PwshSpectreConsole.psd1 -PrivateData @{ Prerelease = "$newPrereleaseTag" }
-
-          # Publish pre-release version
-          Import-Module .\PwshSpectreConsole\PwshSpectreConsole.psd1 -Force
-          Publish-Module -Name PwshSpectreConsole -Exclude "Build.ps1" -NugetApiKey $env:PSGALLERY_API_KEY -AllowPrerelease
-
-          # Create a gh release for it
-          gh release create "v$newVersion-$newPrereleaseTag" --target prerelease --generate-notes --prerelease
-
-          # Publish prerelease docs
-          Install-Module HelpOut -Scope CurrentUser -RequiredVersion 0.5 -Force
-          & .\PwshSpectreConsole.Docs\src\powershell\UpdateDocs.ps1 -NonInteractive -Branch "prerelease"
-
-          # Push any docs changes
-          git push
+        uses: ./.github/actions/version-bump-and-publish
+        with:
+          psgallery-api-token: ${{ secrets.PSGALLERY_API_KEY }}
+          gh-token: ${{ secrets.PIPELINE_PAT }}
+          publish-type: prerelease
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
@@ -154,3 +67,14 @@ jobs:
         with:
           name: Snapshots
           path: PwshSpectreConsole.Tests/@snapshots/*.txt
+
+  check-jobs:
+    name: Check Jobs
+    runs-on: ubuntu-latest
+    needs: [ publish-to-psgallery, publish-prerelease-to-psgallery ]
+    if: github.repository_owner == 'ShaunLawrie'
+    steps:
+      - name: Verify no jobs failed
+        run: exit ${{ contains(needs.*.result, 'failure') && 1 || 0 }}
+      - name: Verify at least one job succeeded
+        run: exit ${{ contains(needs.*.result, 'success') && 0 || 1 }}
