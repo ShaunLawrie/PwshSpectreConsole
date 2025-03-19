@@ -18,11 +18,11 @@ function Get-ControlSequenceResponse {
         [Parameter(Mandatory)]
         [string] $ControlSequence
     )
-    $response = ""
-    Write-Host -NoNewline "`e$ControlSequence"
-    do {
-        $c = [Console]::ReadKey($true).KeyChar
-        $response += $c
-    } while ($c -ne "c" -and [Console]::KeyAvailable)
-    return $response
+    $char = $null
+    [console]::Write([char]27 + $ControlSequence)
+    $response = do {
+            $char = [console]::ReadKey($true).KeyChar
+            $char
+        } while ($char -ne 'c' -and [Console]::KeyAvailable)
+    return -join $response
 }
