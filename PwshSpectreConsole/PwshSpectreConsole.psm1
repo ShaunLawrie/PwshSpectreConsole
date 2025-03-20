@@ -23,6 +23,9 @@ foreach ($directory in @('private', 'public')) {
     }
 }
 
+# cache the DA1 response.
+$script:TerminalSupportsSixel = Test-SpectreSixelSupport
+
 $script:SpectreProfile = Get-SpectreProfile
 if ($script:SpectreProfile.Unicode -eq $true -or $env:IgnoreSpectreConsoleEncoding) {
     return $script:SpectreConsole
