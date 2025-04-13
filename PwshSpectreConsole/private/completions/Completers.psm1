@@ -2,9 +2,23 @@ using namespace System.Management.Automation
 
 class ArgumentCompletionsSpectreColors : ArgumentCompleterAttribute {
     ArgumentCompletionsSpectreColors() : base({
-            param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)
-            $options = [Spectre.Console.Color] | Get-Member -Static -Type Properties | Select-Object -ExpandProperty Name
-            return $options | Where-Object { $_ -like "$wordToComplete*" }
+            param(
+                [string] $commandName,
+                [string] $parameterName,
+                [string] $wordToComplete,
+                [Language.CommandAst] $commandAst,
+                [System.Collections.IDictionary] $fakeBoundParameters
+            )
+            foreach ($Color in ([Spectre.Console.Color] | Get-Member -Static -Type Properties).Name) {
+                if ($Color -like "$wordToComplete*") {
+                    [CompletionResult]::new(
+                        <# completionText #> [Spectre.Console.Color]::$Color,
+                        <# listItemText #>   ([Spectre.Console.Markup]::new($Color, [Spectre.Console.Style]::new([Spectre.Console.Color]::$Color)) | Out-SpectreHost),
+                        <# resultType #>     'ParameterValue',
+                        <# toolTip #>        $Color
+                    )
+                }
+            }
         }) { }
 }
 
