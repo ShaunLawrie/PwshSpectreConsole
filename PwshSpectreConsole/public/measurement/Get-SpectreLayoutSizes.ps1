@@ -1,0 +1,54 @@
+function Get-SpectreLayoutSizes {
+    <#
+    .SYNOPSIS
+    Gets the width and height of all of the layouts in a Spectre Console Layout.
+
+    .DESCRIPTION
+    The Get-SpectreLayoutSizes function gets the height of a Spectre Console layout object and all of its children. The result is a hashtable where you can access the size details for each layout object by its name.  
+    When using sizes you need to be aware that this may include the size of the border if you specified one so you may need to subtract the border size from the total dimensions.
+
+    .PARAMETER Layout
+    The root layout to calculate the size for including all of its children.
+
+    .EXAMPLE
+    # **Example 1**  
+    # This example calculates the heights of all the layouts in a layout tree and tells you how high the content layout will be.
+
+    $layout = New-SpectreLayout -Name "root" -Rows @(
+        # Row 1
+        (New-SpectreLayout -Name "title" -Ratio 1 -Data ("Title goes here" | Format-SpectrePanel -Expand)),
+        # Row 2 should be bigger
+        (New-SpectreLayout -Name "content" -Ratio 3 -Data ("Content goes here" |  Format-SpectrePanel -Expand))
+    )
+
+    $sizes = $layout | Get-SpectreLayoutSizes
+    $contentHeight = $sizes["content"].Height
+    $contentWidth = $sizes["content"].Width
+
+    Write-SpectreHost "Content height: $contentHeight"
+    Write-SpectreHost "Content width: $contentHeight"
+    $layout | Out-SpectreHost
+    
+    #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/writing/get-spectrelayoutsizes/')]
+    [Reflection.AssemblyMetadata("title", "Get-SpectreLayoutSizes")]
+    param (
+        [Parameter(ValueFromPipeline, Mandatory)]
+        [Spectre.Console.Layout] $Layout
+    )
+    
+    $size = [Spectre.Console.Size]::new($script:SpectreConsole.Profile.Width, $script:SpectreConsole.Profile.Height)
+    $renderOptions = [Spectre.Console.Rendering.RenderOptions]::new(
+        $script:SpectreConsole.Profile.Capabilities,
+        $size
+    )
+
+    $regions = $layout.GetLayoutRegions($renderOptions, $renderOptions.ConsoleSize.Width)
+
+    $regionsTable = @{}
+    $regions.GetEnumerator() | Foreach-Object {
+       $regionsTable[$_.Key] = $_.Value
+    }
+    
+    return $regionsTable
+}
