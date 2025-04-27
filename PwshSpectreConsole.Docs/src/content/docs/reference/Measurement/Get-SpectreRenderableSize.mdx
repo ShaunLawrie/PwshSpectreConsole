@@ -1,0 +1,112 @@
+---
+sidebar:
+  badge:
+    text: New
+    variant: tip
+title: Get-SpectreRenderableSize
+---
+
+
+
+
+
+
+
+import Asciinema from '../../../../components/Asciinema.astro'
+import getspectrerenderablesizeExample1 from '../../../../assets/examples/getspectrerenderablesizeExample1.cast?url'
+
+### Description
+
+The Get-SpectreRenderableSize function gets the height of a Spectre Console renderable object. The width and height is estimated.  
+This method of size calculation is not perfect, but it is a good approximation for most use cases. There are factors outside of the control of this function that can affect the size of the widget once it's rendered to the console.  
+The size of a containing object can influence the size of the widget when it's expandable. If you know the width and height of a container that this widget will be rendered inside you can provide that as a parameter to get a more accurate size.
+
+
+
+---
+
+
+### Examples
+
+
+**Example 1**  
+This example calculates the height of a small panel
+
+
+
+```powershell
+$panel = "hello`nworld" | Format-SpectrePanel
+$panelSize = $panel | Get-SpectreRenderableSize
+Write-SpectreHost "Panel width: $($panelSize.Width), height: $($panelSize.Height)"
+$panel | Out-SpectreHost
+```
+<Asciinema
+    src={getspectrerenderablesizeExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+---
+
+
+### Parameters
+#### **Renderable**
+
+The widget to calculate the size of.
+
+
+
+
+
+
+|Type          |Required|Position|PipelineInput |
+|--------------|--------|--------|--------------|
+|`[Renderable]`|true    |1       |true (ByValue)|
+
+
+
+#### **ContainerHeight**
+
+The height of the container that the widget will be rendered inside.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |2       |false        |
+
+
+
+#### **ContainerWidth**
+
+The width of the container that the widget will be rendered inside.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |3       |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Get-SpectreRenderableSize [-Renderable] <Renderable> [[-ContainerHeight] <Int32>] [[-ContainerWidth] <Int32>] [<CommonParameters>]
+```
