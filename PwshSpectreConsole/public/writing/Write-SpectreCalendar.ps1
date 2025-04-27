@@ -2,6 +2,7 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Write-SpectreCalendar {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/writing/write-spectrecalendar/')]
     <#
     .SYNOPSIS
     Writes a Spectre Console Calendar text to the console.

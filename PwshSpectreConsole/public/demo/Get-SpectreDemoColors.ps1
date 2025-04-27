@@ -14,6 +14,7 @@
     Get-SpectreDemoColors
 #>
 function Get-SpectreDemoColors {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/demo/get-spectredemocolors/')]
     [Reflection.AssemblyMetadata("title", "Get-SpectreDemoColors")]
     param ()
 

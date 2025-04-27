@@ -1,6 +1,7 @@
 using module "..\..\private\completions\Completers.psm1"
 
 function Write-SpectreHost {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/writing/write-spectrehost/')]
     <#
     .SYNOPSIS
     Writes a message to the console using Spectre Console markup.

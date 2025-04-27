@@ -1,4 +1,5 @@
 function Invoke-SpectreCommandWithProgress {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/progress/invoke-spectrecommandwithprogress/')]
     <#
     .SYNOPSIS
     Invokes a Spectre command with a progress bar.

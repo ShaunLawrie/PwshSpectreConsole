@@ -1,6 +1,7 @@
 using module "..\..\private\completions\Transformers.psm1"
 
 function Format-SpectreGrid {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectregrid/')]
     <#
     .SYNOPSIS
     Formats data into a Spectre Console grid.

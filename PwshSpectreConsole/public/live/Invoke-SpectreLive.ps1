@@ -328,7 +328,7 @@ Invoke-SpectreLive -Data $layout -ScriptBlock {
 }
 #>
 function Invoke-SpectreLive {
-    [Reflection.AssemblyMetadata("title", "Invoke-SpectreLive")]
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/live/invoke-spectrelive/')]
     param (
         [Parameter(ValueFromPipeline)]
         [RenderableTransformationAttribute()]

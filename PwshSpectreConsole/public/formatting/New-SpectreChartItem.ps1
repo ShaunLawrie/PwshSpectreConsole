@@ -30,6 +30,7 @@ Write-SpectreHost "`nGenerate a breakdown chart`n"
 $data | Format-SpectreBreakdownChart
 #>
 function New-SpectreChartItem {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/new-spectrechartitem/')]
     [Reflection.AssemblyMetadata("title", "New-SpectreChartItem")]
     param (
         [Parameter(Mandatory)]

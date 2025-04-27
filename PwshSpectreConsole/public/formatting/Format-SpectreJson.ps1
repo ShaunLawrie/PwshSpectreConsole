@@ -1,6 +1,7 @@
 using module "..\..\private\completions\Transformers.psm1"
 
 function Format-SpectreJson {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectrejson/')]
     <#
     .SYNOPSIS
     Formats an array of objects into a Spectre Console Json.  
@@ -87,6 +88,43 @@ function Format-SpectreJson {
         }
     )
     Format-SpectreJson -Data $data
+
+    .EXAMPLE
+    # **Example 2**  
+    # This example demonstrates how to display json string data using Format-SpectreJson.
+    $jsonString = @{
+        Name = 'Alice'
+        Age = 30
+        Skills = @('PowerShell', 'Spectre.Console')
+    } | ConvertTo-Json
+    
+    # Display the JSON string using Format-SpectreJson
+    $jsonString | Format-SpectreJson
+
+    .EXAMPLE
+    # **Example 3**  
+    # This example demonstrates how to display the contents of one or more JSON files directly using Format-SpectreJson.  
+    
+    # Create temporary JSON files for demonstration, use a random execution ID to avoid reading random json files from the temp directory.
+    $executionId = [guid]::NewGuid().ToString()
+    $tempJson1 = (New-TemporaryFile).FullName -replace '.tmp$', ".$executionId.json"
+    $tempJson2 = (New-TemporaryFile).FullName -replace '.tmp$', ".$executionId.json"
+    
+    @{
+        Name = 'Alice'
+        Age = 30
+        Skills = @('PowerShell', 'Spectre.Console')
+    } | ConvertTo-Json | Set-Content -Path $tempJson1
+    
+    @{
+        Name = 'Bob'
+        Age = 35
+        Skills = @('C#', 'JavaScript')
+    } | ConvertTo-Json | Set-Content -Path $tempJson2
+    
+    # Display the JSON files directly using Get-ChildItem and Format-SpectreJson
+    $parent = Split-Path $tempJson1 -Parent
+    Get-ChildItem $parent -Filter "*.$executionId.json" | Format-SpectreJson
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectreJson")]
     [Alias('fsj')]

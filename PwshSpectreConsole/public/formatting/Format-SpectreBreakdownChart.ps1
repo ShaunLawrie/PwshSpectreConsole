@@ -2,6 +2,7 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Format-SpectreBreakdownChart {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectrebreakdownchart/')]
     <#
     .SYNOPSIS
     Formats data into a breakdown chart.

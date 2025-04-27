@@ -28,6 +28,7 @@
     Write-SpectreHost "Result: $result"
 #>
 function Invoke-SpectreScriptBlockQuietly {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/progress/invoke-spectrescriptblockquietly/')]
     [Reflection.AssemblyMetadata("title", "Invoke-SpectreScriptBlockQuietly")]
     param (
         # The script block to be invoked.

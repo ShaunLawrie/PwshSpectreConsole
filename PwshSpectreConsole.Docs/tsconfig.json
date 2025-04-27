@@ -1,4 +1,4 @@
 {
-  "extends": "astro/tsconfigs/strictest",
+  "extends": "./node_modules/astro/tsconfigs/strictest.json",
   "exclude": ["astro.config.mjs", "tailwind.config.mjs"]
 }

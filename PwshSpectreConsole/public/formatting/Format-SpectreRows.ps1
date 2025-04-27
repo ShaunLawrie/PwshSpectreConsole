@@ -1,6 +1,7 @@
 using module "..\..\private\completions\Completers.psm1"
 
 function Format-SpectreRows {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectrerows/')]
     <#
     .SYNOPSIS
     Renders a collection of renderables in rows to the console.

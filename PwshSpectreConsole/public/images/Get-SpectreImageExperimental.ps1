@@ -1,4 +1,5 @@
 function Get-SpectreImageExperimental {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/images/get-spectreimageexperimental/')]
     <#
     .SYNOPSIS
     Displays an image in the console using block characters and ANSI escape codes.

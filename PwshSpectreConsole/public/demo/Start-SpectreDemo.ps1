@@ -27,6 +27,7 @@ function Write-SpectreExample {
 }
 
 function Start-SpectreDemo {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/demo/start-spectredemo/')]
     <#
     .SYNOPSIS
     Runs a demo of the PwshSpectreConsole module.
