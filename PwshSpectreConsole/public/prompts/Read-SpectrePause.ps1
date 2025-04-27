@@ -1,4 +1,5 @@
 function Read-SpectrePause {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/prompts/read-spectrepause/')]
     <#
     .SYNOPSIS
     Pauses the script execution and waits for user input to continue.

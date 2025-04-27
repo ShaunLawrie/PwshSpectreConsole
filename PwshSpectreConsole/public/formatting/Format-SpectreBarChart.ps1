@@ -2,6 +2,7 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Format-SpectreBarChart {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectrebarchart/')]
     <#
     .SYNOPSIS
     Formats and displays a bar chart using the Spectre Console module.

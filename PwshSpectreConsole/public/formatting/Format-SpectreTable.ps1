@@ -2,6 +2,7 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Format-SpectreTable {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectretable/')]
     <#
     .SYNOPSIS
     Formats an array of objects into a Spectre Console table.

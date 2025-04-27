@@ -1,4 +1,5 @@
 function Get-SpectreRenderableSize {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/writing/get-spectrerenderablesize/')]
     <#
     .SYNOPSIS
     Gets the width and height of a Spectre Console widget.

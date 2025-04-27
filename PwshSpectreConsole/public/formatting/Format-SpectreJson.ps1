@@ -1,6 +1,7 @@
 using module "..\..\private\completions\Transformers.psm1"
 
 function Format-SpectreJson {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectrejson/')]
     <#
     .SYNOPSIS
     Formats an array of objects into a Spectre Console Json.  

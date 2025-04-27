@@ -2,6 +2,7 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Read-SpectreMultiSelectionGrouped {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/prompts/read-spectremultiselectiongrouped/')]
     <#
     .SYNOPSIS
     Displays a multi-selection prompt with grouped choices and returns the selected choices.

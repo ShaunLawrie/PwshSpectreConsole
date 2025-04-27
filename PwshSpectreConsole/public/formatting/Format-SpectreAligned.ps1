@@ -2,6 +2,7 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Format-SpectreAligned {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectrealigned/')]
     <#
     .SYNOPSIS
     Wraps a renderable object in a Spectre Console Aligned object.

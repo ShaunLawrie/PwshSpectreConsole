@@ -2,6 +2,7 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Read-SpectreMultiSelection {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/prompts/read-spectremultiselection/')]
     <#
     .SYNOPSIS
     Displays a multi-selection prompt using Spectre Console and returns the selected choices.

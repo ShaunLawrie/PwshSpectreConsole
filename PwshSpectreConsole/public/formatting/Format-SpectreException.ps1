@@ -62,6 +62,7 @@ try {
 }
 #>
 function Format-SpectreException {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectreexception/')]
     [Reflection.AssemblyMetadata("title", "Format-SpectreException")]
     param(
         [Parameter(ValueFromPipeline, Mandatory)]

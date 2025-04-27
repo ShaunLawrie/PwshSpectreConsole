@@ -2,6 +2,7 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Format-SpectrePanel {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectrepanel/')]
     <#
     .SYNOPSIS
     Formats a string as a Spectre Console panel with optional title, border, and color.

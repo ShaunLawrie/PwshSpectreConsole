@@ -1,4 +1,5 @@
 function Add-SpectreJob {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/progress/add-spectrejob/')]
     <#
     .SYNOPSIS
     Adds a Spectre job to a list of jobs.
