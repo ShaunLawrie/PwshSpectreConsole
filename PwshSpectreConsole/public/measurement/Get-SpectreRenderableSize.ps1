@@ -8,7 +8,7 @@ function Get-SpectreRenderableSize {
     This method of size calculation is not perfect, but it is a good approximation for most use cases. There are factors outside of the control of this function that can affect the size of the widget once it's rendered to the console.  
     The size of a containing object can influence the size of the widget when it's expandable. If you know the width and height of a container that this widget will be rendered inside you can provide that as a parameter to get a more accurate size.
 
-    .PARAMETER Data
+    .PARAMETER Renderable
     The widget to calculate the size of.
 
     .PARAMETER ContainerHeight
@@ -34,7 +34,7 @@ function Get-SpectreRenderableSize {
         [int] $ContainerWidth = $script:SpectreConsole.Profile.Width
     )
     
-    $size = [Spectre.Console.Size]::new($ContainerHeight, $ContainerWidth)
+    $size = [Spectre.Console.Size]::new($ContainerWidth, $ContainerHeight)
     $renderOptions = [Spectre.Console.Rendering.RenderOptions]::new(
         $script:SpectreConsole.Profile.Capabilities,
         $size

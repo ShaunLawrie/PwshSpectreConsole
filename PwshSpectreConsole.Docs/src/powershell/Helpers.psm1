@@ -2,10 +2,11 @@ $script:Groups = @(
     @{ Name = "Prompts/"; Matches = @("read-") }
     @{ Name = "Formatting/"; Matches = @("layout", "format-", "new-spectrechartitem", "new-spectregridrow", "add-spectretablerow") }
     @{ Name = "Images/"; Matches = @("image") }
-    @{ Name = "Writing/"; Matches = @("out-", "write-", "escaped", "size") }
+    @{ Name = "Writing/"; Matches = @("out-", "write-", "escaped") }
     @{ Name = "Config/"; Matches = @("set-", "recording", 'test-spectresixelsupport') }
     @{ Name = "Demo/"; Matches = @("spectredemo", "open-pwshspectreconsolehelp") }
     @{ Name = "Live/"; Matches = @("live", "invoke-spectrecommand", "invoke-spectreprogress",  "job", "spectrescriptblock") }
+    @{ Name = "Measurements/"; Matches = @("size") }
 )
 
 <#
