@@ -12,21 +12,40 @@ function Get-SpectreLayoutSizes {
 
     .EXAMPLE
     # **Example 1**  
-    # This example calculates the heights of all the layouts in a layout tree and tells you how high the content layout will be.
+    # This example calculates the heights of all the layouts in a layout tree and tells you how high the content layout will be based on their ratios.
 
     $layout = New-SpectreLayout -Name "root" -Rows @(
         # Row 1
         (New-SpectreLayout -Name "title" -Ratio 1 -Data ("Title goes here" | Format-SpectrePanel -Expand)),
-        # Row 2 should be bigger
-        (New-SpectreLayout -Name "content" -Ratio 3 -Data ("Content goes here" |  Format-SpectrePanel -Expand))
+        # Row 2
+        (New-SpectreLayout -Name "body" -Ratio 3 -Columns @(
+            # Column 1
+            (New-SpectreLayout -Name "left" -Ratio 1 -Data ("Left goes here" | Format-SpectrePanel -Expand)),
+            # Column 2
+            (New-SpectreLayout -Name "right" -Ratio 2 -Data ("Right goes here" | Format-SpectrePanel -Expand))
+        ))
     )
 
+    # Get the sizes of the layouts in the layout tree before populating them with data
     $sizes = $layout | Get-SpectreLayoutSizes
-    $contentHeight = $sizes["content"].Height
-    $contentWidth = $sizes["content"].Width
+    
+    # Subtract the border sizes!
+    $titleWidth = $sizes["title"].Width - 2
+    $titleHeight = $sizes["title"].Height - 2
+    $leftWidth = $sizes["left"].Width - 2
+    $leftHeight = $sizes["left"].Height - 2
+    $rightWidth = $sizes["right"].Width - 2
+    $rightHeight = $sizes["right"].Height - 2
 
-    Write-SpectreHost "Content height: $contentHeight"
-    Write-SpectreHost "Content width: $contentHeight"
+    # Populate the layouts with data that takes up the full height of the layout
+    $titleContent = ((1..($titleHeight + 1)) | ForEach-Object { "Title line $_" }) -join "`n"
+    $leftContent = ((1..($leftHeight + 1)) | ForEach-Object { "Left line $_" }) -join "`n"
+    $rightContent = ((1..($rightHeight + 1)) | ForEach-Object { "Right line $_" }) -join "`n"
+
+    $null = $layout["title"].Update(($titleContent | Format-SpectrePanel -Title "I am $titleWidth x $titleHeight" -Expand))
+    $null = $layout["left"].Update(($leftContent | Format-SpectrePanel -Title "I am $leftWidth x $leftHeight" -Expand))
+    $null = $layout["right"].Update(($rightContent | Format-SpectrePanel -Title "I am $rightWidth x $rightHeight" -Expand))
+    
     $layout | Out-SpectreHost
     
     #>
