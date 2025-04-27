@@ -3,7 +3,7 @@
 [0.102, "o", "                      \r\n\u001B[38;5;12m\u28FE\u001B[0m Showing a spinner...\r\n                      "]
 [0.203, "o", "\r\u001B[2A                      \r\n\u001B[38;5;12m\u28FD\u001B[0m Showing a spinner...\r\n                      "]
 [0.303, "o", "\r\u001B[2A                      \r\n\u001B[38;5;12m\u28FB\u001B[0m Showing a spinner...\r\n                      "]
-[0.403, "o", "\r\u001B[2A                      \r\n\u001B[38;5;12m\u28BF\u001B[0m Showing a spinner...\r\n                      "]
+[0.404, "o", "\r\u001B[2A                      \r\n\u001B[38;5;12m\u28BF\u001B[0m Showing a spinner...\r\n                      "]
 [0.504, "o", "\r\u001B[2A                      \r\n\u001B[38;5;12m\u287F\u001B[0m Showing a spinner...\r\n                      "]
 [0.604, "o", "\r\u001B[2A                      \r\n\u001B[38;5;12m\u28DF\u001B[0m Showing a spinner...\r\n                      "]
 [0.705, "o", "\r\u001B[2A                      \r\n\u001B[38;5;12m\u28EF\u001B[0m Showing a spinner...\r\n                      "]
@@ -43,9 +43,9 @@
 [3.815, "o", "\r\u001B[2A                      \r\n\u001B[38;5;12m\u28DF\u001B[0m Showing a spinner...\r\n                      "]
 [3.915, "o", "\r\u001B[2A                      \r\n\u001B[38;5;12m\u28EF\u001B[0m Showing a spinner...\r\n                      "]
 [4.003, "o", "\r\u001B[2A \r\n                      \r\n\u001B[38;5;12m\u28EF\u001B[0m Showing a spinner...\r\n                      "]
-[4.005, "o", "\r\u001B[2A                      \r\n\u001B[38;5;12m\u28F7\u001B[0m Showing a spinner...\r\n                      "]
-[4.006, "o", "\r\u001B[2K\u001B[1A\u001B[2K\u001B[1A\u001B[2K"]
-[4.006, "o", "\u001B[?25h"]
-[4.007, "o", "Result: Some result\r\n"]
+[4.004, "o", "\r\u001B[2A                      \r\n\u001B[38;5;12m\u28F7\u001B[0m Showing a spinner...\r\n                      "]
+[4.004, "o", "\r\u001B[2K\u001B[1A\u001B[2K\u001B[1A\u001B[2K"]
+[4.004, "o", "\u001B[?25h"]
+[4.005, "o", "Result: Some result\r\n"]
 
 
