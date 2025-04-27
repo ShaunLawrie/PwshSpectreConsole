@@ -43,6 +43,7 @@ $root = New-SpectreLayout -Name "root" -Rows @($row1, $row2)
 $root | Out-SpectreHost
 #>
 function New-SpectreLayout {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/new-spectrelayout/')]
     [Reflection.AssemblyMetadata("title", "New-SpectreLayout")]
     param (
         [Parameter(ParameterSetName = 'Data')]

@@ -1,5 +1,5 @@
-
 function Get-SpectreEscapedText {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/writing/get-spectreescapedtext/')]
     <#
     .SYNOPSIS
     Escapes text for use in Spectre Console.

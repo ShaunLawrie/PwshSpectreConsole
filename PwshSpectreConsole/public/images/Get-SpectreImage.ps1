@@ -1,6 +1,7 @@
 $script:CachedImages = @{}
 
 function Get-SpectreImage {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/images/get-spectreimage/')]
     <#
     .SYNOPSIS
     Displays an image in the console using CanvasImage or SixelImage if the terminal supports Sixel.
@@ -49,7 +50,6 @@ function Get-SpectreImage {
     }
     #>
     [Reflection.AssemblyMetadata('title', 'Get-SpectreImage')]
-    [CmdletBinding()]
     param (
         [Parameter(Mandatory, ValueFromPipelineByPropertyName, ValueFromPipeline)]
         [Alias('Uri', 'FullName')]

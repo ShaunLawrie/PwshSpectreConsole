@@ -2,6 +2,7 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Write-SpectreRule {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/writing/write-spectrerule/')]
     <#
     .SYNOPSIS
     Writes a Spectre horizontal-rule to the console.

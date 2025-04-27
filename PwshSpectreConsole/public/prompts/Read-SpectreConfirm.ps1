@@ -2,6 +2,7 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Read-SpectreConfirm {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/prompts/read-spectreconfirm/')]
     <#
     .SYNOPSIS
     Displays a simple confirmation prompt with the option of selecting yes or no and returns a boolean representing the answer. 

@@ -1,6 +1,7 @@
 using module "..\..\private\completions\Transformers.psm1"
 
 function Out-SpectreHost {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/writing/out-spectrehost/')]
     <#
     .SYNOPSIS
     Writes a spectre renderable to the console host.

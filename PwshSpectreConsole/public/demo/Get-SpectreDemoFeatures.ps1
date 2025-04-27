@@ -11,6 +11,7 @@
     Get-SpectreDemoFeatures
 #>
 function Get-SpectreDemoFeatures {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/demo/get-spectredemofeatures/')]
     [Reflection.AssemblyMetadata("title", "Get-SpectreDemoFeatures")]
     param ()
 

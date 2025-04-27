@@ -2,6 +2,7 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Write-SpectreFigletText {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/writing/write-spectrefiglettext/')]
     <#
     .SYNOPSIS
     Writes a Spectre Console Figlet text to the console.

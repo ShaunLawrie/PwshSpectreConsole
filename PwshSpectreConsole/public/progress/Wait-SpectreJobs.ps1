@@ -1,4 +1,5 @@
 function Wait-SpectreJobs {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/progress/wait-spectrejobs/')]
     <#
     .SYNOPSIS
     Waits for Spectre jobs to complete.

@@ -1,6 +1,7 @@
 using module "..\..\private\completions\Transformers.psm1"
 
 function Format-SpectrePadded {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectrepadded/')]
     <#
     .SYNOPSIS
     Wraps a Spectre Console renderable item in padding.

@@ -26,6 +26,7 @@ $table = Add-SpectreTableRow -Table $table -Columns "Shaun", 99, "Wellington"
 $table | Out-SpectreHost
 #>
 function Add-SpectreTableRow {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/add-spectretablerow/')]
     [Reflection.AssemblyMetadata("title", "Add-SpectreTableRow")]
     param (
         [Parameter(Mandatory)]

@@ -4,7 +4,7 @@ $script:Groups = @(
     @{ Name = "Images/"; Matches = @("image") }
     @{ Name = "Writing/"; Matches = @("out-", "write-", "escaped", "size") }
     @{ Name = "Config/"; Matches = @("set-", "recording", 'test-spectresixelsupport') }
-    @{ Name = "Demo/"; Matches = @("spectredemo") }
+    @{ Name = "Demo/"; Matches = @("spectredemo", "open-pwshspectreconsolehelp") }
     @{ Name = "Live/"; Matches = @("live", "invoke-spectrecommand", "invoke-spectreprogress",  "job", "spectrescriptblock") }
 )
 

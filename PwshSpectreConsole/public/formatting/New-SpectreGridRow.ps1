@@ -26,6 +26,7 @@ $rows = @(
 $rows | Format-SpectreGrid
 #>
 function New-SpectreGridRow {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/new-spectregridrow/')]
     [Reflection.AssemblyMetadata("title", "New-SpectreGridRow")]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]

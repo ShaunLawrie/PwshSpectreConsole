@@ -2,6 +2,7 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Invoke-SpectreCommandWithStatus {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/progress/invoke-spectrecommandwithstatus/')]
     <#
     .SYNOPSIS
     Invokes a script block with a Spectre status spinner.

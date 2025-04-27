@@ -2,6 +2,7 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Format-SpectreTree {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectretree/')]
     <#
     .SYNOPSIS
     Formats a hashtable as a tree using Spectre Console.

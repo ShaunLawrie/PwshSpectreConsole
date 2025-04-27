@@ -21,6 +21,7 @@
     - Spectre Console Emojis: https://spectreconsole.net/appendix/emojis
 #>
 function Get-SpectreDemoEmoji {
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/demo/get-spectredemoemoji/')]
     [Reflection.AssemblyMetadata("title", "Get-SpectreDemoEmoji")]
     param (
         [int] $Count
