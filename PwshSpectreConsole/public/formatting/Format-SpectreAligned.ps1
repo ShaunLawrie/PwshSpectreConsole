@@ -2,7 +2,6 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Format-SpectreAligned {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectrealigned/')]
     <#
     .SYNOPSIS
     Wraps a renderable object in a Spectre Console Aligned object.
@@ -24,6 +23,7 @@ function Format-SpectreAligned {
     # This example demonstrates how to align a string to the right inside a panel.
     "hello right hand side" | Format-SpectreAligned -HorizontalAlignment Right -VerticalAlignment Middle | Format-SpectrePanel -Expand -Height 9
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectrealigned/')]
     [Reflection.AssemblyMetadata("title", "Format-SpectreAligned")]
     param(
         [Parameter(ValueFromPipeline, Mandatory)]

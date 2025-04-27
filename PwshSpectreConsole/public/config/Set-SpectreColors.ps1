@@ -2,7 +2,6 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Set-SpectreColors {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/config/set-spectrecolors/')]
     <#
     .SYNOPSIS
     Sets the accent color and default value color for Spectre Console.
@@ -31,6 +30,7 @@ function Set-SpectreColors {
     Write-SpectreRule "This is a rule with a specified color" -Color "Yellow"
 
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/config/set-spectrecolors/')]
     [Reflection.AssemblyMetadata("title", "Set-SpectreColors")]
     param (
         [ColorTransformationAttribute()]

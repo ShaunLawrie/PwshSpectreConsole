@@ -2,7 +2,6 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Format-SpectreTable {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectretable/', DefaultParameterSetName = '__AllParameterSets')]
     <#
     .SYNOPSIS
     Formats an array of objects into a Spectre Console table.
@@ -106,6 +105,7 @@ function Format-SpectreTable {
         Fruits = $fruits
     } | Format-SpectreTable -Color Cyan1
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectretable/', DefaultParameterSetName = '__AllParameterSets')]
     [Reflection.AssemblyMetadata("title", "Format-SpectreTable")]
     [Alias('fst')]
     param(

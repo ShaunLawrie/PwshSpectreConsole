@@ -1,5 +1,4 @@
 function Read-SpectrePause {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/prompts/read-spectrepause/')]
     <#
     .SYNOPSIS
     Pauses the script execution and waits for user input to continue.
@@ -25,6 +24,7 @@ function Read-SpectrePause {
     Read-SpectrePause -Message "Press the [red]ANY[/] key to continue, when you press it this message will disappear..." -AnyKey
     # Type "x" to dismiss the message
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/prompts/read-spectrepause/')]
     [Reflection.AssemblyMetadata("title", "Read-SpectrePause")]
     param (
         [Alias("Title", "Question", "Prompt")]

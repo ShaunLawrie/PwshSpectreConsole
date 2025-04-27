@@ -2,7 +2,6 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Format-SpectreTree {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectretree/')]
     <#
     .SYNOPSIS
     Formats a hashtable as a tree using Spectre Console.
@@ -49,6 +48,7 @@ function Format-SpectreTree {
 
     Format-SpectreTree -Data $data -Guide BoldLine -Color "Green"
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectretree/')]
     [Reflection.AssemblyMetadata("title", "Format-SpectreTree")]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]

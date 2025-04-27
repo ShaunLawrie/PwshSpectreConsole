@@ -86,6 +86,11 @@ foreach ($doc in $docs) {
     $commandName = $doc.Name -replace ".md",""
     $content = $content -replace "(?m)^.+\n^[\-]{$($commandName.Length)}", ''
 
+    # Check the title is set
+    if ($content -notmatch "title: $commandName") {
+        throw "No title found in $($doc.Name), ensure the [Reflection.AssemblyMetadata(`"title`", `"$commandName`")] attribute is set correctly in the function."
+    }
+
     # Remove the synopsis, the description is good enough
     $content = $content -replace "(?ms)^^### Synopsis.+?#", '#'
     

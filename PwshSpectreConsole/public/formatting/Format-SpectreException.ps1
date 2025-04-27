@@ -1,56 +1,28 @@
 using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
-<#
-.SYNOPSIS
-Formats an error record/exception into a Spectre Console Exception which supports syntax highlighting.
+function Format-SpectreException {
+    <#
+    .SYNOPSIS
+    Formats an error record/exception into a Spectre Console Exception which supports syntax highlighting.
 
-.DESCRIPTION
-Formats an error record/exception into a Spectre Console Exception which supports syntax highlighting.  
-See https://spectreconsole.net/exceptions for more information.
+    .DESCRIPTION
+    Formats an error record/exception into a Spectre Console Exception which supports syntax highlighting.  
+    See https://spectreconsole.net/exceptions for more information.
 
-.PARAMETER Exception
-The error/exception object to format.
+    .PARAMETER Exception
+    The error/exception object to format.
 
-.PARAMETER ExceptionFormat
-The format to use when rendering the exception. The default value is "Default".
+    .PARAMETER ExceptionFormat
+    The format to use when rendering the exception. The default value is "Default".
 
-.PARAMETER ExceptionStyle
-The style to use when rendering the exception provided as a hashtable. e.g. 
-```
-@{
-    Message        = "red"
-    Exception      = "white"
-    Method         = "yellow"
-    ParameterType  = "blue"
-    ParameterName  = "silver"
-    Parenthesis    = "silver"
-    Path           = "Yellow"
-    LineNumber     = "blue"
-    Dimmed         = "grey"
-    NonEmphasized  = "silver"
-}
-```
-
-.EXAMPLE
-# **Example 1**  
-# This example demonstrates how to format an exception into a Spectre Console Exception with syntax highlighting.
-try {
-    Get-ChildItem -BadParam -ErrorAction Stop
-} catch {
-    $_ | Format-SpectreException -ExceptionFormat ShortenEverything
-}
-
-.EXAMPLE
-# **Example 2**
-# This example uses custom formatting for the exception.
-try {
-    Get-ChildItem -BadParam -ErrorAction Stop
-} catch {
-    $_ | Format-SpectreException -ExceptionStyle @{
-        Message        = "#00ff00"
+    .PARAMETER ExceptionStyle
+    The style to use when rendering the exception provided as a hashtable. e.g. 
+    ```
+    @{
+        Message        = "red"
         Exception      = "white"
-        Method         = "#ff0000 on orange1"
+        Method         = "yellow"
         ParameterType  = "blue"
         ParameterName  = "silver"
         Parenthesis    = "silver"
@@ -59,9 +31,37 @@ try {
         Dimmed         = "grey"
         NonEmphasized  = "silver"
     }
-}
-#>
-function Format-SpectreException {
+    ```
+
+    .EXAMPLE
+    # **Example 1**  
+    # This example demonstrates how to format an exception into a Spectre Console Exception with syntax highlighting.
+    try {
+        Get-ChildItem -BadParam -ErrorAction Stop
+    } catch {
+        $_ | Format-SpectreException -ExceptionFormat ShortenEverything
+    }
+
+    .EXAMPLE
+    # **Example 2**
+    # This example uses custom formatting for the exception.
+    try {
+        Get-ChildItem -BadParam -ErrorAction Stop
+    } catch {
+        $_ | Format-SpectreException -ExceptionStyle @{
+            Message        = "#00ff00"
+            Exception      = "white"
+            Method         = "#ff0000 on orange1"
+            ParameterType  = "blue"
+            ParameterName  = "silver"
+            Parenthesis    = "silver"
+            Path           = "Yellow"
+            LineNumber     = "blue"
+            Dimmed         = "grey"
+            NonEmphasized  = "silver"
+        }
+    }
+    #>
     [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectreexception/')]
     [Reflection.AssemblyMetadata("title", "Format-SpectreException")]
     param(

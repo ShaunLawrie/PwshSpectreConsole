@@ -1,16 +1,16 @@
-<#
-.SYNOPSIS
-    Demonstrates the features of Spectre.Console.
-
-.DESCRIPTION
-    This script demonstrates the features of Spectre.Console. It shows off the various colors, styles, and other features that Spectre.Console supports.
-
-.EXAMPLE
-    # **Example 1**  
-    # This example demonstrates how to use Get-SpectreDemoFeatures to display a list of the features of Spectre.Console as seen on the https://spectreconsole.net/ homepage.
-    Get-SpectreDemoFeatures
-#>
 function Get-SpectreDemoFeatures {
+    <#
+    .SYNOPSIS
+        Demonstrates the features of Spectre.Console.
+
+    .DESCRIPTION
+        This script demonstrates the features of Spectre.Console. It shows off the various colors, styles, and other features that Spectre.Console supports.
+
+    .EXAMPLE
+        # **Example 1**  
+        # This example demonstrates how to use Get-SpectreDemoFeatures to display a list of the features of Spectre.Console as seen on the https://spectreconsole.net/ homepage.
+        Get-SpectreDemoFeatures
+    #>
     [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/demo/get-spectredemofeatures/')]
     [Reflection.AssemblyMetadata("title", "Get-SpectreDemoFeatures")]
     param ()

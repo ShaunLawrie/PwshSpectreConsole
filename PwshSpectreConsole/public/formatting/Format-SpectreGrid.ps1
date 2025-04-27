@@ -1,7 +1,6 @@
 using module "..\..\private\completions\Transformers.psm1"
 
 function Format-SpectreGrid {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectregrid/')]
     <#
     .SYNOPSIS
     Formats data into a Spectre Console grid.
@@ -42,6 +41,7 @@ function Format-SpectreGrid {
     
     $gridRows | Format-SpectreGrid
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectregrid/')]
     [Reflection.AssemblyMetadata("title", "Format-SpectreGrid")]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]

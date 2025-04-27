@@ -11,6 +11,7 @@ function Open-PwshSpectreConsoleHelp {
         .LINK
             https://pwshspectreconsole.com/guides/get-started/
     #>
+    [Reflection.AssemblyMetadata("title", "Open-PwshSpectreConsoleHelp")]
     param()
 
     $online = "https://pwshspectreconsole.com/guides/get-started/"

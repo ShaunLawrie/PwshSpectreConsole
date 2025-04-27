@@ -1,5 +1,4 @@
 function Get-SpectreImageExperimental {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/images/get-spectreimageexperimental/')]
     <#
     .SYNOPSIS
     Displays an image in the console using block characters and ANSI escape codes.
@@ -36,6 +35,7 @@ function Get-SpectreImageExperimental {
     # This example demonstrates how to display a static image in the console.
     Get-SpectreImageExperimental -ImagePath ".\private\images\smiley.png" -Width 80
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/images/get-spectreimageexperimental/')]
     [Reflection.AssemblyMetadata("title", "Get-SpectreImageExperimental")]
     param (
         [string] $ImagePath,

@@ -2,7 +2,6 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Read-SpectreSelectionGrouped {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/prompts/read-spectreselectiongrouped/')]
     <#
     .SYNOPSIS
     Displays a selection prompt using Spectre Console with groups.
@@ -44,6 +43,7 @@ function Read-SpectreSelectionGrouped {
     # Type "↓", "↓", "↓", "↓", "↲" to wrap around the list and choose green
     Write-SpectreHost "Your chosen color is '$color'"
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/prompts/read-spectreselectiongrouped/')]
     [Reflection.AssemblyMetadata("title", "Read-SpectreSelectionGrouped")]
     param (
         [Alias("Title", "Question", "Prompt")]

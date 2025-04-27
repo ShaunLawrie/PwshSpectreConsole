@@ -2,7 +2,6 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Write-SpectreRule {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/writing/write-spectrerule/')]
     <#
     .SYNOPSIS
     Writes a Spectre horizontal-rule to the console.
@@ -27,6 +26,7 @@ function Write-SpectreRule {
     # This example demonstrates how to write a rule to the console.
     Write-SpectreRule -Title "My Rule" -Alignment Center -Color Yellow
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/writing/write-spectrerule/')]
     [Reflection.AssemblyMetadata("title", "Write-SpectreRule")]
     param (
         [string] $Title,

@@ -2,7 +2,6 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Read-SpectreMultiSelectionGrouped {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/prompts/read-spectremultiselectiongrouped/')]
     <#
     .SYNOPSIS
     Displays a multi-selection prompt with grouped choices and returns the selected choices.
@@ -44,6 +43,7 @@ function Read-SpectreMultiSelectionGrouped {
     # Type "↓", "<space>", "↓", "↓", "↓", "<space>", "↲" to choose red and all secondary colors
     Write-SpectreHost "Your favourite colors are $($selected -join ', ')"
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/prompts/read-spectremultiselectiongrouped/')]
     [Reflection.AssemblyMetadata("title", "Read-SpectreMultiSelectionGrouped")]
     param (
         [Alias("Title", "Question", "Prompt")]

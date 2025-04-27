@@ -3,7 +3,6 @@ $script:SpectreRecordingOriginalConsole = $null
 $script:SpectreRecordingType = $null
 
 function Start-SpectreRecording {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/config/start-spectrerecording/')]
     <#
         .SYNOPSIS
             Starts a recording of the current console output. This can be used to record a demo of a script or module.
@@ -33,6 +32,7 @@ function Start-SpectreRecording {
             # Output the results
             Write-SpectreHost "Result:`n$result"
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/config/start-spectrerecording/')]
     [Reflection.AssemblyMetadata("title", "Start-SpectreRecording")]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '', Scope = 'Function', Target = '*')]
     param(

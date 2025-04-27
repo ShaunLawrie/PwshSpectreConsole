@@ -1,7 +1,6 @@
 using module "..\..\private\completions\Transformers.psm1"
 
 function Format-SpectrePadded {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectrepadded/')]
     <#
     .SYNOPSIS
     Wraps a Spectre Console renderable item in padding.
@@ -28,6 +27,7 @@ function Format-SpectrePadded {
     # This example demonstrates how to pad an item with different padding on each side.
     "Item to pad" | Format-SpectrePadded -Top 4 -Left 10 -Right 1 -Bottom 1 | Format-SpectrePanel
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectrepadded/')]
     [Reflection.AssemblyMetadata("title", "Format-SpectrePadded")]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]

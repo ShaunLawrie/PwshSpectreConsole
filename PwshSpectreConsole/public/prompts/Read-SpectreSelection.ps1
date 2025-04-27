@@ -2,7 +2,6 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Read-SpectreSelection {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/prompts/read-spectreselection/')]
     <#
     .SYNOPSIS
     Displays a selection prompt using Spectre Console.
@@ -46,6 +45,7 @@ function Read-SpectreSelection {
     # Type "b", "l", "u", "e", "r", "↲" to choose "Bluer"
     Write-SpectreHost "Your chosen color is '$color'"
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/prompts/read-spectreselection/')]
     [Reflection.AssemblyMetadata("title", "Read-SpectreSelection")]
     param (
         [Alias("Title", "Question", "Prompt")]

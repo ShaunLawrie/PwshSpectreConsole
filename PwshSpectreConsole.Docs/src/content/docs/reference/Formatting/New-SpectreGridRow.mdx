@@ -23,7 +23,8 @@ Creates a new SpectreGridRow object with the specified columns for use in Format
 ### Examples
 
 
-**Example 1**  # This example demonstrates how to create a grid with two rows and three columns.
+**Example 1**  
+This example demonstrates how to create a grid with two rows and three columns.
 
 
 
@@ -33,8 +34,8 @@ $columns += "Column 1" | Format-SpectrePanel
 $columns += "Column 2" | Format-SpectrePanel
 $columns += "Column 3" | Format-SpectrePanel
 $rows = @(
-  (New-SpectreGridRow -Data $columns),
-  (New-SpectreGridRow -Data $columns)
+(New-SpectreGridRow -Data $columns),
+(New-SpectreGridRow -Data $columns)
 )
 
 $rows | Format-SpectreGrid

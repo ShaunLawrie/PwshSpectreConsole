@@ -1,5 +1,4 @@
 function Get-SpectreEscapedText {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/writing/get-spectreescapedtext/')]
     <#
     .SYNOPSIS
     Escapes text for use in Spectre Console.
@@ -18,6 +17,7 @@ function Get-SpectreEscapedText {
     $data = "][[][red]]][[/][][]["
     Format-SpectrePanel -Title "Unescaped data" -Data "I want escaped $($data | Get-SpectreEscapedText) [yellow]and[/] [red]unescaped[/] data"
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/writing/get-spectreescapedtext/')]
     [Reflection.AssemblyMetadata("title", "Get-SpectreEscapedText")]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]

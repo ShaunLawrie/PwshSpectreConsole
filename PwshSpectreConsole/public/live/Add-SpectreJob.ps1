@@ -1,5 +1,4 @@
 function Add-SpectreJob {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/progress/add-spectrejob/')]
     <#
     .SYNOPSIS
     Adds a Spectre job to a list of jobs.
@@ -24,6 +23,7 @@ function Add-SpectreJob {
     .EXAMPLE
     # **Example 1**  
     # This example demonstrates how to add two jobs to a context and wait for them to complete.
+    
     $jobOutcomes = Invoke-SpectreCommandWithProgress -ScriptBlock {
         param (
             [Spectre.Console.ProgressContext] $Context
@@ -36,6 +36,7 @@ function Add-SpectreJob {
     }
     $jobOutcomes | Format-SpectreTable -Property Id, Name, PSJobTypeName, State, Command
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/live/add-spectrejob/')]
     [Reflection.AssemblyMetadata("title", "Add-SpectreJob")]
     param (
         [Parameter(Mandatory)]

@@ -1,7 +1,6 @@
 using module "..\..\private\completions\Transformers.psm1"
 
 function Out-SpectreHost {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/writing/out-spectrehost/')]
     <#
     .SYNOPSIS
     Writes a spectre renderable to the console host.
@@ -22,6 +21,7 @@ function Out-SpectreHost {
     $table = Get-ChildItem | Select-Object Name, Length, LastWriteTime | Format-SpectreTable
     $table | Out-SpectreHost
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/writing/out-spectrehost/')]
     [Reflection.AssemblyMetadata("title", "Out-SpectreHost")]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]

@@ -2,7 +2,6 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Format-SpectrePanel {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectrepanel/')]
     <#
     .SYNOPSIS
     Formats a string as a Spectre Console panel with optional title, border, and color.
@@ -62,6 +61,7 @@ function Format-SpectrePanel {
     $image = Get-SpectreImage -ImagePath ".\private\images\smiley.png" -MaxWidth 25  
     @($message, $image) | Format-SpectreColumns | Format-SpectrePanel
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectrepanel/')]
     [Reflection.AssemblyMetadata("title", "Format-SpectrePanel")]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]

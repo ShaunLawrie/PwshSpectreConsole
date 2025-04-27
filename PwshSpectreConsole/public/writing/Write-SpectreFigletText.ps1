@@ -2,7 +2,6 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Write-SpectreFigletText {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/writing/write-spectrefiglettext/')]
     <#
     .SYNOPSIS
     Writes a Spectre Console Figlet text to the console.
@@ -36,6 +35,7 @@ function Write-SpectreFigletText {
     # This example demonstrates how to write Figlet text to the console using a custom Figlet font.
     Write-SpectreFigletText -Text "Whoa?!" -FigletFontPath "..\PwshSpectreConsole.Docs\src\assets\3d.flf"
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/writing/write-spectrefiglettext/')]
     [Reflection.AssemblyMetadata("title", "Write-SpectreFigletText")]
     param (
         [string] $Text = "Hello Spectre!",

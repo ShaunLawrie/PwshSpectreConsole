@@ -80,3 +80,9 @@ function Stop-SpectreRecordingMock {
 function Test-SpectreSixelSupportMock {
     return $false
 }
+
+function Open-PwshSpectreConsoleHelpMock {
+    $online = "https://pwshspectreconsole.com/guides/get-started/"
+    Write-SpectreHost "[Grey69]Opening the [white link=$online]online help page[/] for PwshSpectreConsole in your default browser...[/]"
+    Write-SpectreHost "[DarkOrange]View [white link]$online[/] in your browser to view online help for this module.[/]"
+}
