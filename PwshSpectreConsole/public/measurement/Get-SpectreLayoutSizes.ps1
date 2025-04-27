@@ -56,9 +56,9 @@ function Get-SpectreLayoutSizes {
         [Spectre.Console.Layout] $Layout
     )
     
-    $size = [Spectre.Console.Size]::new($script:SpectreConsole.Profile.Width, $script:SpectreConsole.Profile.Height)
+    $size = [Spectre.Console.Size]::new([Spectre.Console.AnsiConsole]::Console.Profile.Width, [Spectre.Console.AnsiConsole]::Console.Profile.Height)
     $renderOptions = [Spectre.Console.Rendering.RenderOptions]::new(
-        $script:SpectreConsole.Profile.Capabilities,
+        [Spectre.Console.AnsiConsole]::Console.Profile.Capabilities,
         $size
     )
 

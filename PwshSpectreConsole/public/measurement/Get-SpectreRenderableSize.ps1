@@ -30,13 +30,13 @@ function Get-SpectreRenderableSize {
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
         [Spectre.Console.Rendering.Renderable] $Renderable,
-        [int] $ContainerHeight = $script:SpectreConsole.Profile.Height,
-        [int] $ContainerWidth = $script:SpectreConsole.Profile.Width
+        [int] $ContainerHeight = [Spectre.Console.AnsiConsole]::Console.Profile.Height,
+        [int] $ContainerWidth = [Spectre.Console.AnsiConsole]::Console.Profile.Width
     )
     
     $size = [Spectre.Console.Size]::new($ContainerWidth, $ContainerHeight)
     $renderOptions = [Spectre.Console.Rendering.RenderOptions]::new(
-        $script:SpectreConsole.Profile.Capabilities,
+        [Spectre.Console.AnsiConsole]::Console.Profile.Capabilities,
         $size
     )
     $renderOptions.Justification = $null
