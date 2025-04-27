@@ -2,7 +2,6 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Read-SpectreText {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/prompts/read-spectretext/')]
     <#
     .SYNOPSIS
     Prompts the user with a question and returns the user's input.
@@ -52,6 +51,7 @@ function Read-SpectreText {
     # Type "orange", "↲", "magenta", "↲" to enter text that must match a choice in the choices list, orange will be rejected, magenta will be accepted
     Write-SpectreHost "Your favourite color is '$favouriteColor'"
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/prompts/read-spectretext/')]
     [Reflection.AssemblyMetadata("title", "Read-SpectreText")]
     param (
         [Parameter(Mandatory)]

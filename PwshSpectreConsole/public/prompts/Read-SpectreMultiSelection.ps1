@@ -2,7 +2,6 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Read-SpectreMultiSelection {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/prompts/read-spectremultiselection/')]
     <#
     .SYNOPSIS
     Displays a multi-selection prompt using Spectre Console and returns the selected choices.
@@ -37,6 +36,7 @@ function Read-SpectreMultiSelection {
     # Type "↓", "<space>", "↓", "↓", "<space>", "↓", "<space>", "↲" to choose banana, pear and strawberry
     Write-SpectreHost "Your favourite fruits are $($fruits -join ', ')"
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/prompts/read-spectremultiselection/')]
     [Reflection.AssemblyMetadata("title", "Read-SpectreMultiSelection")]
     param (
         [Alias("Title", "Question", "Prompt")]

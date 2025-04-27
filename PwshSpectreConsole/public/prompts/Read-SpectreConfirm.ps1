@@ -2,7 +2,6 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Read-SpectreConfirm {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/prompts/read-spectreconfirm/')]
     <#
     .SYNOPSIS
     Displays a simple confirmation prompt with the option of selecting yes or no and returns a boolean representing the answer. 
@@ -31,6 +30,7 @@ function Read-SpectreConfirm {
     # Type "y", "↲" to accept the prompt
     Write-Host "Your answer was '$answer'"
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/prompts/read-spectreconfirm/')]
     [Reflection.AssemblyMetadata("title", "Read-SpectreConfirm")]
     param (
         [Parameter(Mandatory)]

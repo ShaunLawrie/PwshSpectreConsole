@@ -2,7 +2,6 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Format-SpectreBreakdownChart {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectrebreakdownchart/')]
     <#
     .SYNOPSIS
     Formats data into a breakdown chart.
@@ -34,6 +33,7 @@ function Format-SpectreBreakdownChart {
 
     Format-SpectreBreakdownChart -Data $data -Width 50
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectrebreakdownchart/')]
     [Reflection.AssemblyMetadata("title", "Format-SpectreBreakdownChart")]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]

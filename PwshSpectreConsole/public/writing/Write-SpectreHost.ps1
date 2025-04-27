@@ -1,7 +1,6 @@
 using module "..\..\private\completions\Completers.psm1"
 
 function Write-SpectreHost {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/writing/write-spectrehost/')]
     <#
     .SYNOPSIS
     Writes a message to the console using Spectre Console markup.
@@ -22,6 +21,7 @@ function Write-SpectreHost {
     # This example demonstrates how to write a message to the console using Spectre Console markup.
     Write-SpectreHost -Message "Hello, [blue underline]world[/]! :call_me_hand:"
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/writing/write-spectrehost/')]
     [Reflection.AssemblyMetadata("title", "Write-SpectreHost")]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]

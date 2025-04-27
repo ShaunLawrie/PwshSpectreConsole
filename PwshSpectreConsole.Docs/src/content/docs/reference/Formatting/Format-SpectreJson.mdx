@@ -15,6 +15,7 @@ title: Format-SpectreJson
 import Asciinema from '../../../../components/Asciinema.astro'
 import formatspectrejsonExample1 from '../../../../assets/examples/formatspectrejsonExample1.cast?url'
 import formatspectrejsonExample2 from '../../../../assets/examples/formatspectrejsonExample2.cast?url'
+import formatspectrejsonExample3 from '../../../../assets/examples/formatspectrejsonExample3.cast?url'
 
 ### Description
 
@@ -65,28 +66,60 @@ Format-SpectreJson -Data $data
 
 
 **Example 2**  
-This example demonstrates how to display the contents of a JSON file using Format-SpectreJson.  
-First, create a temporary JSON file for demonstration purposes.  
+This example demonstrates how to display json string data using Format-SpectreJson.
 
 
 
 ```powershell
-$tempJson = Join-Path $env:TEMP 'example.json'
+$jsonString = @{
+    Name = 'Alice'
+    Age = 30
+    Skills = @('PowerShell', 'Spectre.Console')
+} | ConvertTo-Json
+# Display the JSON string using Format-SpectreJson
+$jsonString | Format-SpectreJson
+```
+<Asciinema
+    src={formatspectrejsonExample2}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+**Example 3**  
+This example demonstrates how to display the contents of one or more JSON files directly using Format-SpectreJson.
+Create temporary JSON files for demonstration, use a random execution ID to avoid reading random json files from the temp directory.
+
+
+
+```powershell
+$executionId = [guid]::NewGuid().ToString()
+$tempJson1 = (New-TemporaryFile).FullName -replace '.tmp$', ".$executionId.json"
+$tempJson2 = (New-TemporaryFile).FullName -replace '.tmp$', ".$executionId.json"
+
 @{
     Name = 'Alice'
     Age = 30
     Skills = @('PowerShell', 'Spectre.Console')
-} | ConvertTo-Json | Set-Content -Path $tempJson
-# Display the JSON file using Get-Content and Format-SpectreJson
-Get-Content -Raw $tempJson | Format-SpectreJson
-# Type "↲" to accept the prompt
+} | ConvertTo-Json | Set-Content -Path $tempJson1
 
-# You can also use Get-ChildItem to pass the file directly:
-Get-ChildItem $tempJson | Format-SpectreJson
-# Type "↲" to accept the prompt
+@{
+    Name = 'Bob'
+    Age = 35
+    Skills = @('C#', 'JavaScript')
+} | ConvertTo-Json | Set-Content -Path $tempJson2
+
+# Display the JSON files directly using Get-ChildItem and Format-SpectreJson
+$parent = Split-Path $tempJson1 -Parent
+Get-ChildItem $parent -Filter "*.$executionId.json" | Format-SpectreJson
 ```
 <Asciinema
-    src={formatspectrejsonExample2}
+    src={formatspectrejsonExample3}
     settings={{
         loop: false,
         terminalLineHeight: 1.1,

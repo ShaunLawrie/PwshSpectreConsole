@@ -2,7 +2,6 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Format-SpectreBarChart {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectrebarchart/')]
     <#
     .SYNOPSIS
     Formats and displays a bar chart using the Spectre Console module.
@@ -34,6 +33,7 @@ function Format-SpectreBarChart {
     
     Format-SpectreBarChart -Data $data -Label "Fruit Sales" -Width 50
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectrebarchart/')]
     [Reflection.AssemblyMetadata("title", "Format-SpectreBarChart")]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]

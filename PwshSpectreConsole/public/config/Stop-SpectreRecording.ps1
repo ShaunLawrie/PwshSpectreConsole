@@ -1,5 +1,4 @@
 function Stop-SpectreRecording {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/config/stop-spectrerecording/')]
     <#
         .SYNOPSIS
             Stops a recording of the current console output and returns the recording.
@@ -25,6 +24,7 @@ function Stop-SpectreRecording {
             # Output the results
             Write-SpectreHost "Result:`n$result"
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/config/stop-spectrerecording/')]
     [Reflection.AssemblyMetadata("title", "Stop-SpectreRecording")]
     param (
         [string] $Title,

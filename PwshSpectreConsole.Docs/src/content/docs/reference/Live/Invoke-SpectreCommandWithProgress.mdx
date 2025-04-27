@@ -126,7 +126,8 @@ $result = Invoke-SpectreCommandWithProgress -ScriptBlock {
     $task1.IsIndeterminate = $true
     Start-Sleep -Seconds 5
     $task1.Value = 100
-return "Some result"
+
+    return "Some result"
 }
 Write-SpectreHost "Result: $result"
 ```

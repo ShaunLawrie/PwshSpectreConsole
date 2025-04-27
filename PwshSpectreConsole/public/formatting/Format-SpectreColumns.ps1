@@ -1,7 +1,6 @@
 using module "..\..\private\completions\Completers.psm1"
 
 function Format-SpectreColumns {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectrecolumns/')]
     <#
     .SYNOPSIS
     Renders a collection of renderables in columns to the console.
@@ -40,6 +39,7 @@ function Format-SpectreColumns {
     # This example demonstrates how to display a collection of panels that are expanded and with expanded columns so it takes up the console width.
     @("left", "middle", "right") | Foreach-Object { $_ | Format-SpectrePanel -Expand } | Format-SpectreColumns -Expand
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectrecolumns/')]
     [Reflection.AssemblyMetadata("title", "Format-SpectreColumns")]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]

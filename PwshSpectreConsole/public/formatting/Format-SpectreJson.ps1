@@ -1,7 +1,6 @@
 using module "..\..\private\completions\Transformers.psm1"
 
 function Format-SpectreJson {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectrejson/')]
     <#
     .SYNOPSIS
     Formats an array of objects into a Spectre Console Json.  
@@ -126,6 +125,7 @@ function Format-SpectreJson {
     $parent = Split-Path $tempJson1 -Parent
     Get-ChildItem $parent -Filter "*.$executionId.json" | Format-SpectreJson
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectrejson/')]
     [Reflection.AssemblyMetadata("title", "Format-SpectreJson")]
     [Alias('fsj')]
     param(

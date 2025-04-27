@@ -1,26 +1,25 @@
-
-<#
-.SYNOPSIS
-    Retrieves a collection of emojis available in Spectre Console.
-    ![Example emojis](/emoji.png)
-
-.DESCRIPTION
-    The Get-SpectreDemoEmoji function retrieves a collection of emojis available in Spectre Console. It displays the general emojis, faces, and provides information on how to use emojis in Spectre Console markup.
-
-.PARAMETER Count
-    Limit the number of emoji returned. This is only really useful for generating the help docs.
-
-.EXAMPLE
-    # **Example 1**  
-    # This example demonstrates how to use Get-SpectreDemoEmoji to display a list of the built-in Spectre Console emojis.
-    Get-SpectreDemoEmoji -Count 5
-
-.NOTES
-    Emoji support is dependent on the operating system, terminal, and font support. For more information on Spectre Console markup and emojis, refer to the following links:
-    - Spectre Console Markup: https://spectreconsole.net/markup
-    - Spectre Console Emojis: https://spectreconsole.net/appendix/emojis
-#>
 function Get-SpectreDemoEmoji {
+    <#
+    .SYNOPSIS
+        Retrieves a collection of emojis available in Spectre Console.
+        ![Example emojis](/emoji.png)
+
+    .DESCRIPTION
+        The Get-SpectreDemoEmoji function retrieves a collection of emojis available in Spectre Console. It displays the general emojis, faces, and provides information on how to use emojis in Spectre Console markup.
+
+    .PARAMETER Count
+        Limit the number of emoji returned. This is only really useful for generating the help docs.
+
+    .EXAMPLE
+        # **Example 1**  
+        # This example demonstrates how to use Get-SpectreDemoEmoji to display a list of the built-in Spectre Console emojis.
+        Get-SpectreDemoEmoji -Count 5
+
+    .NOTES
+        Emoji support is dependent on the operating system, terminal, and font support. For more information on Spectre Console markup and emojis, refer to the following links:
+        - Spectre Console Markup: https://spectreconsole.net/markup
+        - Spectre Console Emojis: https://spectreconsole.net/appendix/emojis
+    #>
     [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/demo/get-spectredemoemoji/')]
     [Reflection.AssemblyMetadata("title", "Get-SpectreDemoEmoji")]
     param (

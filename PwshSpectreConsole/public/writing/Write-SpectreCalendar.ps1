@@ -2,7 +2,6 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Write-SpectreCalendar {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/writing/write-spectrecalendar/')]
     <#
     .SYNOPSIS
     Writes a Spectre Console Calendar text to the console.
@@ -49,6 +48,7 @@ function Write-SpectreCalendar {
     }
     Write-SpectreCalendar -Date 2024-01-01 -Events $events
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/writing/write-spectrecalendar/')]
     [Reflection.AssemblyMetadata("title", "Write-SpectreCalendar")]
     param (
         [datetime] $Date = [datetime]::Now,

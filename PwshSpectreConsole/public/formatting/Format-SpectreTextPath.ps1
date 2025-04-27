@@ -2,7 +2,6 @@ using module "..\..\private\completions\Completers.psm1"
 using module "..\..\private\completions\Transformers.psm1"
 
 function Format-SpectreTextPath {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectretextpath/')]
     <#
     .SYNOPSIS
     Formats a path into a Spectre Console Path which supports highlighting and truncating.
@@ -34,6 +33,7 @@ function Format-SpectreTextPath {
     # This example demonstrates how to format a PowerShell path as a Spectre Console Path with syntax highlighting.
     Get-Location | Format-SpectreTextPath | Out-SpectreHost
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/formatting/format-spectretextpath/')]
     [Reflection.AssemblyMetadata("title", "Format-SpectreTextPath")]
     param(
         [Parameter(ValueFromPipeline, Mandatory)]

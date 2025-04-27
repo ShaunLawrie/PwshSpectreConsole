@@ -27,7 +27,6 @@ function Write-SpectreExample {
 }
 
 function Start-SpectreDemo {
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/demo/start-spectredemo/')]
     <#
     .SYNOPSIS
     Runs a demo of the PwshSpectreConsole module.
@@ -42,6 +41,7 @@ function Start-SpectreDemo {
     # This example demonstrates how to run the PwshSpectreConsole demo.
     Start-SpectreDemo
     #>
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/demo/start-spectredemo/')]
     [Reflection.AssemblyMetadata("title", "Start-SpectreDemo")]
     param()
 
