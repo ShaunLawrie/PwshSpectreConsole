@@ -6,7 +6,7 @@ $script:Groups = @(
     @{ Name = "Config/"; Matches = @("set-", "recording", 'test-spectresixelsupport') }
     @{ Name = "Demo/"; Matches = @("spectredemo", "open-pwshspectreconsolehelp") }
     @{ Name = "Live/"; Matches = @("live", "invoke-spectrecommand", "invoke-spectreprogress",  "job", "spectrescriptblock") }
-    @{ Name = "Measurements/"; Matches = @("size") }
+    @{ Name = "Measurement/"; Matches = @("size") }
 )
 
 <#

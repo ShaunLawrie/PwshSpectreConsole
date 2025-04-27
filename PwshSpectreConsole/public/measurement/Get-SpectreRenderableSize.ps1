@@ -25,7 +25,7 @@ function Get-SpectreRenderableSize {
     Write-SpectreHost "Panel width: $($panelSize.Width), height: $($panelSize.Height)"
     $panel | Out-SpectreHost
     #>
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/writing/get-spectrerenderablesize/')]
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/measurement/get-spectrerenderablesize/')]
     [Reflection.AssemblyMetadata("title", "Get-SpectreRenderableSize")]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]

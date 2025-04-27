@@ -49,7 +49,7 @@ function Get-SpectreLayoutSizes {
     $layout | Out-SpectreHost
     
     #>
-    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/writing/get-spectrelayoutsizes/')]
+    [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/measurement/get-spectrelayoutsizes/')]
     [Reflection.AssemblyMetadata("title", "Get-SpectreLayoutSizes")]
     param (
         [Parameter(ValueFromPipeline, Mandatory)]
