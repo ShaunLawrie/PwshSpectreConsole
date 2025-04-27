@@ -29,7 +29,7 @@ function Write-AnsiConsole {
 
     if ($CustomItemFormatter) {
         # ps1xml CustomItem formatters mangle the output because it uses the last character of the buffer width for itself
-        $script:SpectreConsole.Profile.Width = $Host.UI.RawUI.BufferSize.Width - 10
+        $script:SpectreConsole.Profile.Width = $Host.UI.RawUI.BufferSize.Width - 1
     } else {
         $script:SpectreConsole.Profile.Width = $Host.UI.RawUI.BufferSize.Width
     }
