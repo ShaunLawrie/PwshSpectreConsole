@@ -7,7 +7,13 @@ function New-SpectreLayout {
 
     .DESCRIPTION
     The New-SpectreLayout function creates a new Spectre Layout object with the specified data, columns, or rows. This function is used to create a layout object that can be used to split the console into multiple sections.  
-    You can only have either rows OR columns in a layout and can compose layouts of layouts to create complex layouts.
+    You can only have either rows OR columns in a layout and can compose layouts of layouts to create complex layouts.  
+
+    :::note  
+    If you need to know the size of the layout panels you can use the [`Get-SpectreLayoutSizes`](https://pwshspectreconsole.com/reference/measurement/get-spectrelayoutsizes/) function.  
+    :::  
+
+    See https://spectreconsole.net/widgets/layout for more information.
 
     .PARAMETER Data
     The data to be displayed in the layout.

@@ -5,6 +5,11 @@ function Invoke-SpectreLive {
 
     .DESCRIPTION
     Starts live rendering for a given renderable. The script block is able to update the renderable in real-time and Spectre Console redraws every time the scriptblock calls `$Context.refresh()`.  
+
+    :::note  
+    If you need to know the size of the layouts you can use the [`Get-SpectreLayoutSizes`](https://pwshspectreconsole.com/reference/measurement/get-spectrelayoutsizes/) function.  
+    :::  
+
     See https://spectreconsole.net/live/live-display for more information.
 
     .PARAMETER Data
