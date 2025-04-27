@@ -29,7 +29,7 @@ function Write-AnsiConsole {
 
     if ($CustomItemFormatter) {
         # ps1xml CustomItem formatters mangle the output because it uses the last character of the buffer width for itself
-        $script:SpectreConsole.Profile.Width = $Host.UI.RawUI.BufferSize.Width - 1
+        $script:SpectreConsole.Profile.Width = $Host.UI.RawUI.BufferSize.Width - 10
     } else {
         $script:SpectreConsole.Profile.Width = $Host.UI.RawUI.BufferSize.Width
     }
@@ -40,7 +40,8 @@ function Write-AnsiConsole {
 
     # If it contains sixel data and is from the custom item formatter then we need to write it to the console directly :(
     # I'm not sure why this is the case but it's the only way to get the sixel data to render correctly at the moment
-    if ($output -like "*P0;1q*" -and $CustomItemFormatter) {
+    # This also affects items using link data because long links get line broken and the link is lost and rendering gets mangled
+    if (($output -like "*P0;1q*" -or $output -like "*]8;id=*") -and $CustomItemFormatter) {
         "`n" + $output + "`e[2A" | Out-Host
         return
     } else {
