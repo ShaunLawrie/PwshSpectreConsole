@@ -8,6 +8,12 @@ function Format-SpectrePanel {
 
     .DESCRIPTION
     This function takes a string and formats it as a Spectre Console panel with optional title, border, and color. The resulting panel can be displayed in the console using the Write-Host command.  
+    This function takes a string or renderable object and formats it as a Spectre Console panel with optional title, border, and color. The resulting panel can be displayed in the console using the Write-Host command.  
+    
+    :::note  
+    A panel can only contain a single renderable object. To combine multiple items (such as text and images) in one panel, you'll need to wrap them in a container like Format-SpectreRows or Format-SpectreColumns first. Without this wrapping, Format-SpectrePanel will render each item in a separate panel.
+    :::  
+
     See https://spectreconsole.net/widgets/panel for more information.
 
     .PARAMETER Data
@@ -40,6 +46,20 @@ function Format-SpectrePanel {
     # **Example 2**  
     # This example demonstrates how to display a panel with a title and a double border that's expanded to take up the whole console width.
     "Hello, big panel!" | Format-SpectrePanel -Title "My Big Panel" -Border "Double" -Color "Magenta1" -Expand
+      .EXAMPLE
+    # **Example 3**  
+    # This example demonstrates how to combine text and images in a single panel.
+    # When combining multiple items in a panel, use Format-SpectreRows or Format-SpectreColumns to wrap them into a single renderable object.
+    $message = "Thanks Jeff!"
+    $image = Get-SpectreImage -ImagePath ".\private\images\smiley.png" -MaxWidth 25
+    @($message, $image) | Format-SpectreRows | Format-SpectrePanel
+    
+    .EXAMPLE
+    # **Example 4**  
+    # This example demonstrates how to combine text and images in a single panel with side-by-side layout.
+    $message = "Thanks Jeff!"
+    $image = Get-SpectreImage -ImagePath ".\private\images\smiley.png" -MaxWidth 25  
+    @($message, $image) | Format-SpectreColumns | Format-SpectrePanel
     #>
     [Reflection.AssemblyMetadata("title", "Format-SpectrePanel")]
     param (

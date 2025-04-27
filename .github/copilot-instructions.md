@@ -15,6 +15,9 @@
 
 # Documentation and Examples
 
+- Do not edit the markdown or MDX files directly.
+- All documentation is written inside the `.DESCRIPTION` and `.EXAMPLE` sections of the PowerShell comment based help in the `.ps1` files in the `PwshSpectreConsole/public/` directory.
+- The `.SYNOPSIS` section is a summarised version of what is in the `.DESCRIPTION` section.
 - Documentation in `PwshSpectreConsole.Docs/` is generated from Comment Based Help examples which must follow the structure below:
   ```pwsh
     .EXAMPLE
@@ -34,7 +37,8 @@
     - Where input is required for the example to run to the end, a special input comment must be used. This is done by using the `# Type "y", "↲" to accept the prompt` comment.
     - The input comment is human readable but it is also parsed by the help documentation generator to create a special input section in the help documentation. "Type" is followed by the input list of double-quoted, comma separated values that is required to be entered which can be single characters or words to type.
     - Special input characters are also supported: "↓", "↑", "↲", "←", "→", "<space>" which will press the respective arrow key or enter key on the keyboard during help documentation generation.
+    - Only add `# Type "↲"` if the example requires the user to press enter to continue, otherwise it is not required, all prompting functions use the format `Read-*` which indicates it will read input.
 - Adding new comment based help requires adding the new `.EXAMPLE` in the existing function docs.
-- Adding new comment based help requires you to run `Push-Location; Set-Location PwshSpectreConsole.Docs/ npm run update-docs:no-commit; Pop-Location;` in the terminal to generate the new help documentation and validate if there are errors.
+- Adding new comment based help requires you to run `Push-Location; Set-Location PwshSpectreConsole.Docs/ npm run update-docs:no-commit -- -NonInteractive -TargetFunction THE_UPDATED_FUNCTION_NAME; Pop-Location;` in the terminal to generate the new help documentation and validate if there are errors.
 - Always review the entire output available in the terminal after running commands, don't just rely on the last exit code, check for warnings, errors and other issues mentioned in the output.
 - Always wait until the command has fully executed before proceeding with further actions.
