@@ -73,7 +73,7 @@ function Get-SpectreImage {
 
         $imagePathResolved = $PSCmdlet.GetUnresolvedProviderPathFromPSPath($ImagePath)
         if (-not (Test-Path $imagePathResolved)) {
-            throw "The specified image path '$resolvedImagePath' does not exist."
+            throw "The specified image path '$imagePathResolved' does not exist."
         }
 
         $image = $null
