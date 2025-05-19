@@ -38,5 +38,31 @@ Describe "Write-SpectreRule" {
 
             { Assert-OutputMatchesSnapshot -SnapshotName "Write-SpectreRule" -Output $testConsole.Output } | Should -Not -Throw
         }
+
+        It "sets fixed width correctly" {
+            Mock Write-AnsiConsole {
+                $RenderableObject | Should -BeOfType [Spectre.Console.Rule]
+                $RenderableObject.Width | Should -Be 50
+                $testConsole.Write($RenderableObject)
+            }
+            
+            Write-SpectreRule -Title "Fixed Width Rule" -Width 50 -Alignment $justification
+            
+            Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
+        }
+
+        It "sets percentage width correctly" {
+            Mock Get-HostWidth { return 100 }
+            
+            Mock Write-AnsiConsole {
+                $RenderableObject | Should -BeOfType [Spectre.Console.Rule]
+                $RenderableObject.Width | Should -Be 50
+                $testConsole.Write($RenderableObject)
+            }
+            
+            Write-SpectreRule -Title "Percentage Width Rule" -Width "50%" -Alignment $justification
+            
+            Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
+        }
     }
 }
