@@ -1,350 +1,352 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="106" errors="0" failures="1" not-run="2" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2025-05-20" time="01:13:15">
-  <environment cwd="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole" clr-version="8.0.12" nunit-version="2.5.8.0" machine-name="pkrvmf6wy0o8zjz" user-domain="" user="runner" platform="Linux" os-version="6.11.0-1014-azure" />
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="108" errors="0" failures="1" not-run="2" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2025-05-20" time="01:22:16">
+  <environment platform="Linux" clr-version="8.0.12" machine-name="pkrvmf6wy0o8zjz" user-domain="" cwd="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole" user="runner" nunit-version="2.5.8.0" os-version="6.11.0-1014-azure" />
   <culture-info current-culture="" current-uiculture="" />
-  <test-suite type="TestFixture" name="Pester" executed="True" result="Failure" success="False" time="15.1359" asserts="0" description="Pester">
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Failure" success="False" time="14.9502" asserts="0" description="Pester">
     <results>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/progress/Invoke-SpectreCommandWithProgress.tests.ps1" executed="True" result="Success" success="True" time="3.1038" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/progress/Invoke-SpectreCommandWithProgress.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/progress/Invoke-SpectreCommandWithProgress.tests.ps1" executed="True" result="Success" success="True" time="2.9294" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/progress/Invoke-SpectreCommandWithProgress.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Invoke-SpectreCommandWithProgress" executed="True" result="Success" success="True" time="2.2775" asserts="0" description="Invoke-SpectreCommandWithProgress">
+          <test-suite type="TestFixture" name="Invoke-SpectreCommandWithProgress" executed="True" result="Success" success="True" time="2.2874" asserts="0" description="Invoke-SpectreCommandWithProgress">
             <results>
-              <test-case description="executes the scriptblock for the basic case" name="Invoke-SpectreCommandWithProgress.executes the scriptblock for the basic case" time="0.6673" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="executes the scriptblock with background jobs" name="Invoke-SpectreCommandWithProgress.executes the scriptblock with background jobs" time="1.5684" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="executes the scriptblock for the basic case" name="Invoke-SpectreCommandWithProgress.executes the scriptblock for the basic case" time="0.6685" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="executes the scriptblock with background jobs" name="Invoke-SpectreCommandWithProgress.executes the scriptblock with background jobs" time="1.5666" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/progress/Invoke-SpectreCommandWithStatus.tests.ps1" executed="True" result="Success" success="True" time="1.618" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/progress/Invoke-SpectreCommandWithStatus.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/progress/Invoke-SpectreCommandWithStatus.tests.ps1" executed="True" result="Success" success="True" time="1.6127" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/progress/Invoke-SpectreCommandWithStatus.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Invoke-SpectreCommandWithStatus" executed="True" result="Success" success="True" time="1.4447" asserts="0" description="Invoke-SpectreCommandWithStatus">
+          <test-suite type="TestFixture" name="Invoke-SpectreCommandWithStatus" executed="True" result="Success" success="True" time="1.4256" asserts="0" description="Invoke-SpectreCommandWithStatus">
             <results>
-              <test-case description="executes the scriptblock for the basic case" name="Invoke-SpectreCommandWithStatus.executes the scriptblock for the basic case" time="0.4123" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="executes the scriptblock without mocking" name="Invoke-SpectreCommandWithStatus.executes the scriptblock without mocking" time="1.027" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="executes the scriptblock for the basic case" name="Invoke-SpectreCommandWithStatus.executes the scriptblock for the basic case" time="0.397" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="executes the scriptblock without mocking" name="Invoke-SpectreCommandWithStatus.executes the scriptblock without mocking" time="1.0239" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/rendering/New-SpectreLayout.tests.ps1" executed="True" result="Success" success="True" time="0.3565" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/rendering/New-SpectreLayout.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/rendering/New-SpectreLayout.tests.ps1" executed="True" result="Success" success="True" time="0.3765" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/rendering/New-SpectreLayout.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="New-SpectreLayout" executed="True" result="Success" success="True" time="0.1598" asserts="0" description="New-SpectreLayout">
+          <test-suite type="TestFixture" name="New-SpectreLayout" executed="True" result="Success" success="True" time="0.1759" asserts="0" description="New-SpectreLayout">
             <results>
-              <test-case description="Should generate a layout" name="New-SpectreLayout.Should generate a layout" time="0.1562" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should generate a layout" name="New-SpectreLayout.Should generate a layout" time="0.1725" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/writing/Get-SpectreEscapedText.tests.ps1" executed="True" result="Success" success="True" time="0.1959" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/writing/Get-SpectreEscapedText.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/writing/Get-SpectreEscapedText.tests.ps1" executed="True" result="Success" success="True" time="0.2374" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/writing/Get-SpectreEscapedText.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Get-SpectreEscapedText" executed="True" result="Success" success="True" time="0.0222" asserts="0" description="Get-SpectreEscapedText">
+          <test-suite type="TestFixture" name="Get-SpectreEscapedText" executed="True" result="Success" success="True" time="0.0374" asserts="0" description="Get-SpectreEscapedText">
             <results>
-              <test-case description="formats a busted string" name="Get-SpectreEscapedText.formats a busted string" time="0.0073" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="handles pipelined input" name="Get-SpectreEscapedText.handles pipelined input" time="0.0056" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="leaves emoji alone, unfortunately these aren't escaped in spectre console" name="Get-SpectreEscapedText.leaves emoji alone, unfortunately these aren't escaped in spectre console" time="0.0052" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="formats a busted string" name="Get-SpectreEscapedText.formats a busted string" time="0.0075" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="handles pipelined input" name="Get-SpectreEscapedText.handles pipelined input" time="0.0064" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="leaves emoji alone, unfortunately these aren't escaped in spectre console" name="Get-SpectreEscapedText.leaves emoji alone, unfortunately these aren't escaped in spectre console" time="0.0062" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/writing/Write-SpectreCalendar.tests.ps1" executed="True" result="Success" success="True" time="0.6769" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/writing/Write-SpectreCalendar.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/writing/Write-SpectreCalendar.tests.ps1" executed="True" result="Success" success="True" time="0.6796" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/writing/Write-SpectreCalendar.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Write-SpectreCalendar" executed="True" result="Success" success="True" time="0.4921" asserts="0" description="Write-SpectreCalendar">
+          <test-suite type="TestFixture" name="Write-SpectreCalendar" executed="True" result="Success" success="True" time="0.4665" asserts="0" description="Write-SpectreCalendar">
             <results>
-              <test-case description="writes calendar for a date" name="Write-SpectreCalendar.writes calendar for a date" time="0.2085" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="writes calendar for a date with events" name="Write-SpectreCalendar.writes calendar for a date with events" time="0.136" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="writes calendar for a date with something else going on" name="Write-SpectreCalendar.writes calendar for a date with something else going on" time="0.11" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should match the snapshot" name="Write-SpectreCalendar.Should match the snapshot" time="0.033" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="writes calendar for a date" name="Write-SpectreCalendar.writes calendar for a date" time="0.1733" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="writes calendar for a date with events" name="Write-SpectreCalendar.writes calendar for a date with events" time="0.1351" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="writes calendar for a date with something else going on" name="Write-SpectreCalendar.writes calendar for a date with something else going on" time="0.1181" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should match the snapshot" name="Write-SpectreCalendar.Should match the snapshot" time="0.0351" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/writing/Write-SpectreFigletText.tests.ps1" executed="True" result="Success" success="True" time="0.3239" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/writing/Write-SpectreFigletText.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/writing/Write-SpectreFigletText.tests.ps1" executed="True" result="Success" success="True" time="0.3248" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/writing/Write-SpectreFigletText.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Write-SpectreFigletText" executed="True" result="Success" success="True" time="0.144" asserts="0" description="Write-SpectreFigletText">
+          <test-suite type="TestFixture" name="Write-SpectreFigletText" executed="True" result="Success" success="True" time="0.1233" asserts="0" description="Write-SpectreFigletText">
             <results>
-              <test-case description="writes figlet text" name="Write-SpectreFigletText.writes figlet text" time="0.0992" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="throws when the font file isn't found" name="Write-SpectreFigletText.throws when the font file isn't found" time="0.025" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should match the snapshot" name="Write-SpectreFigletText.Should match the snapshot" time="0.0163" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="writes figlet text" name="Write-SpectreFigletText.writes figlet text" time="0.0893" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="throws when the font file isn't found" name="Write-SpectreFigletText.throws when the font file isn't found" time="0.017" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should match the snapshot" name="Write-SpectreFigletText.Should match the snapshot" time="0.0136" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/writing/Write-SpectreHost.tests.ps1" executed="True" result="Success" success="True" time="0.3167" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/writing/Write-SpectreHost.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/writing/Write-SpectreHost.tests.ps1" executed="True" result="Success" success="True" time="0.3142" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/writing/Write-SpectreHost.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Write-SpectreHost" executed="True" result="Success" success="True" time="0.1034" asserts="0" description="Write-SpectreHost">
+          <test-suite type="TestFixture" name="Write-SpectreHost" executed="True" result="Success" success="True" time="0.0973" asserts="0" description="Write-SpectreHost">
             <results>
-              <test-case description="writes a message" name="Write-SpectreHost.writes a message" time="0.0445" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="writes a message" name="Write-SpectreHost.writes a message" time="0.0393" asserts="0" success="True" result="Success" executed="True" />
               <test-case description="accepts pipeline input" name="Write-SpectreHost.accepts pipeline input" time="0.0159" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="handles nonewline" name="Write-SpectreHost.handles nonewline" time="0.017" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should match the snapshot" name="Write-SpectreHost.Should match the snapshot" time="0.0229" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="handles nonewline" name="Write-SpectreHost.handles nonewline" time="0.0167" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should match the snapshot" name="Write-SpectreHost.Should match the snapshot" time="0.0223" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/writing/Write-SpectreRule.tests.ps1" executed="True" result="Success" success="True" time="0.2506" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/writing/Write-SpectreRule.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/writing/Write-SpectreRule.tests.ps1" executed="True" result="Success" success="True" time="0.4201" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/writing/Write-SpectreRule.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Write-SpectreRule" executed="True" result="Success" success="True" time="0.0552" asserts="0" description="Write-SpectreRule">
+          <test-suite type="TestFixture" name="Write-SpectreRule" executed="True" result="Success" success="True" time="0.2302" asserts="0" description="Write-SpectreRule">
             <results>
-              <test-case description="writes a rule" name="Write-SpectreRule.writes a rule" time="0.0332" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should match the snapshot" name="Write-SpectreRule.Should match the snapshot" time="0.0191" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="writes a rule" name="Write-SpectreRule.writes a rule" time="0.0547" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should match the snapshot" name="Write-SpectreRule.Should match the snapshot" time="0.0385" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="should write a rule with a specific width" name="Write-SpectreRule.should write a rule with a specific width" time="0.0764" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="should write a rule with a percentage width" name="Write-SpectreRule.should write a rule with a percentage width" time="0.0576" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/@init/Start-SpectreDemo.tests.ps1" executed="True" result="Success" success="True" time="0.4027" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/@init/Start-SpectreDemo.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/@init/Start-SpectreDemo.tests.ps1" executed="True" result="Success" success="True" time="0.3773" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/@init/Start-SpectreDemo.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Start-SpectreDemo" executed="True" result="Success" success="True" time="0.0144" asserts="0" description="Start-SpectreDemo">
+          <test-suite type="TestFixture" name="Start-SpectreDemo" executed="True" result="Success" success="True" time="0.0132" asserts="0" description="Start-SpectreDemo">
             <results>
-              <test-case description="Should have a demo function available, we're just testing the module was loaded correctly" name="Start-SpectreDemo.Should have a demo function available, we're just testing the module was loaded correctly" time="0.0114" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should have a demo function available, we're just testing the module was loaded correctly" name="Start-SpectreDemo.Should have a demo function available, we're just testing the module was loaded correctly" time="0.0105" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/prompts/Read-SpectreConfirm.tests.ps1" executed="True" result="Success" success="True" time="0.3731" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/prompts/Read-SpectreConfirm.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/prompts/Read-SpectreConfirm.tests.ps1" executed="True" result="Success" success="True" time="0.3744" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/prompts/Read-SpectreConfirm.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Read-SpectreConfirm" executed="True" result="Success" success="True" time="0.1783" asserts="0" description="Read-SpectreConfirm">
+          <test-suite type="TestFixture" name="Read-SpectreConfirm" executed="True" result="Success" success="True" time="0.1844" asserts="0" description="Read-SpectreConfirm">
             <results>
-              <test-case description="prompts" name="Read-SpectreConfirm.prompts" time="0.059" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="prompts with a default answer" name="Read-SpectreConfirm.prompts with a default answer" time="0.0265" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="writes success message" name="Read-SpectreConfirm.writes success message" time="0.0452" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="writes failure message" name="Read-SpectreConfirm.writes failure message" time="0.0263" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="accepts color" name="Read-SpectreConfirm.accepts color" time="0.0181" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="prompts" name="Read-SpectreConfirm.prompts" time="0.0564" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="prompts with a default answer" name="Read-SpectreConfirm.prompts with a default answer" time="0.0226" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="writes success message" name="Read-SpectreConfirm.writes success message" time="0.0338" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="writes failure message" name="Read-SpectreConfirm.writes failure message" time="0.0459" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="accepts color" name="Read-SpectreConfirm.accepts color" time="0.0222" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/prompts/Read-SpectreMultiSelection.tests.ps1" executed="True" result="Success" success="True" time="0.428" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/prompts/Read-SpectreMultiSelection.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/prompts/Read-SpectreMultiSelection.tests.ps1" executed="True" result="Success" success="True" time="0.471" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/prompts/Read-SpectreMultiSelection.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Read-SpectreMultiSelection" executed="True" result="Success" success="True" time="0.2221" asserts="0" description="Read-SpectreMultiSelection">
+          <test-suite type="TestFixture" name="Read-SpectreMultiSelection" executed="True" result="Success" success="True" time="0.2627" asserts="0" description="Read-SpectreMultiSelection">
             <results>
-              <test-case description="prompts and allows selection" name="Read-SpectreMultiSelection.prompts and allows selection" time="0.059" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="prompts and allows multiple selection" name="Read-SpectreMultiSelection.prompts and allows multiple selection" time="0.0342" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="throws with duplicate labels" name="Read-SpectreMultiSelection.throws with duplicate labels" time="0.016" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="throws with object choices without a ChoiceLabelProperty" name="Read-SpectreMultiSelection.throws with object choices without a ChoiceLabelProperty" time="0.0177" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="prompts with an object input and allows selection" name="Read-SpectreMultiSelection.prompts with an object input and allows selection" time="0.0322" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="prompts with an object input and allows multiple selection" name="Read-SpectreMultiSelection.prompts with an object input and allows multiple selection" time="0.056" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="prompts and allows selection" name="Read-SpectreMultiSelection.prompts and allows selection" time="0.0725" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="prompts and allows multiple selection" name="Read-SpectreMultiSelection.prompts and allows multiple selection" time="0.0273" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="throws with duplicate labels" name="Read-SpectreMultiSelection.throws with duplicate labels" time="0.0208" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="throws with object choices without a ChoiceLabelProperty" name="Read-SpectreMultiSelection.throws with object choices without a ChoiceLabelProperty" time="0.0222" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="prompts with an object input and allows selection" name="Read-SpectreMultiSelection.prompts with an object input and allows selection" time="0.065" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="prompts with an object input and allows multiple selection" name="Read-SpectreMultiSelection.prompts with an object input and allows multiple selection" time="0.0481" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/prompts/Read-SpectreMultiSelectionGrouped.tests.ps1" executed="True" result="Success" success="True" time="0.7296" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/prompts/Read-SpectreMultiSelectionGrouped.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/prompts/Read-SpectreMultiSelectionGrouped.tests.ps1" executed="True" result="Success" success="True" time="0.6458" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/prompts/Read-SpectreMultiSelectionGrouped.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Read-SpectreMultiSelectionGrouped" executed="True" result="Success" success="True" time="0.5301" asserts="0" description="Read-SpectreMultiSelectionGrouped">
+          <test-suite type="TestFixture" name="Read-SpectreMultiSelectionGrouped" executed="True" result="Success" success="True" time="0.4432" asserts="0" description="Read-SpectreMultiSelectionGrouped">
             <results>
-              <test-case description="prompts and allows selection" name="Read-SpectreMultiSelectionGrouped.prompts and allows selection" time="0.101" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="prompts and allows multiple selection" name="Read-SpectreMultiSelectionGrouped.prompts and allows multiple selection" time="0.1907" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="throws with duplicate labels" name="Read-SpectreMultiSelectionGrouped.throws with duplicate labels" time="0.0247" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="throws with object choices and no ChoiceLabelProperty" name="Read-SpectreMultiSelectionGrouped.throws with object choices and no ChoiceLabelProperty" time="0.0886" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="prompts with an object input and allows selection" name="Read-SpectreMultiSelectionGrouped.prompts with an object input and allows selection" time="0.0703" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="prompts with an object input and allows multiple selection" name="Read-SpectreMultiSelectionGrouped.prompts with an object input and allows multiple selection" time="0.0508" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="prompts and allows selection" name="Read-SpectreMultiSelectionGrouped.prompts and allows selection" time="0.1462" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="prompts and allows multiple selection" name="Read-SpectreMultiSelectionGrouped.prompts and allows multiple selection" time="0.1151" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="throws with duplicate labels" name="Read-SpectreMultiSelectionGrouped.throws with duplicate labels" time="0.0357" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="throws with object choices and no ChoiceLabelProperty" name="Read-SpectreMultiSelectionGrouped.throws with object choices and no ChoiceLabelProperty" time="0.0698" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="prompts with an object input and allows selection" name="Read-SpectreMultiSelectionGrouped.prompts with an object input and allows selection" time="0.0425" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="prompts with an object input and allows multiple selection" name="Read-SpectreMultiSelectionGrouped.prompts with an object input and allows multiple selection" time="0.0303" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/prompts/Read-SpectrePause.tests.ps1" executed="True" result="Success" success="True" time="0.3437" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/prompts/Read-SpectrePause.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/prompts/Read-SpectrePause.tests.ps1" executed="True" result="Success" success="True" time="0.3143" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/prompts/Read-SpectrePause.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Read-SpectrePause" executed="True" result="Success" success="True" time="0.1479" asserts="0" description="Read-SpectrePause">
+          <test-suite type="TestFixture" name="Read-SpectrePause" executed="True" result="Success" success="True" time="0.1291" asserts="0" description="Read-SpectrePause">
             <results>
-              <test-case description="displays" name="Read-SpectrePause.displays" time="0.09" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="displays a custom message" name="Read-SpectrePause.displays a custom message" time="0.0541" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="displays" name="Read-SpectrePause.displays" time="0.068" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="displays a custom message" name="Read-SpectrePause.displays a custom message" time="0.0584" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/prompts/Read-SpectreSelection.tests.ps1" executed="True" result="Success" success="True" time="0.2898" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/prompts/Read-SpectreSelection.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/prompts/Read-SpectreSelection.tests.ps1" executed="True" result="Success" success="True" time="0.3001" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/prompts/Read-SpectreSelection.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Read-SpectreSelection" executed="True" result="Success" success="True" time="0.1004" asserts="0" description="Read-SpectreSelection">
+          <test-suite type="TestFixture" name="Read-SpectreSelection" executed="True" result="Success" success="True" time="0.1059" asserts="0" description="Read-SpectreSelection">
             <results>
-              <test-case description="prompts" name="Read-SpectreSelection.prompts" time="0.0541" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="throws with duplicate labels" name="Read-SpectreSelection.throws with duplicate labels" time="0.0098" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="prompts with an object input" name="Read-SpectreSelection.prompts with an object input" time="0.0333" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="prompts" name="Read-SpectreSelection.prompts" time="0.0585" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="throws with duplicate labels" name="Read-SpectreSelection.throws with duplicate labels" time="0.0121" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="prompts with an object input" name="Read-SpectreSelection.prompts with an object input" time="0.0319" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/prompts/Read-SpectreText.tests.ps1" executed="True" result="Success" success="True" time="0.2831" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/prompts/Read-SpectreText.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/prompts/Read-SpectreText.tests.ps1" executed="True" result="Success" success="True" time="0.2845" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/prompts/Read-SpectreText.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Read-SpectreText" executed="True" result="Success" success="True" time="0.087" asserts="0" description="Read-SpectreText">
+          <test-suite type="TestFixture" name="Read-SpectreText" executed="True" result="Success" success="True" time="0.0886" asserts="0" description="Read-SpectreText">
             <results>
-              <test-case description="prompts" name="Read-SpectreText.prompts" time="0.0221" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="prompts with a default answer" name="Read-SpectreText.prompts with a default answer" time="0.0157" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="can allow an empty answer" name="Read-SpectreText.can allow an empty answer" time="0.0144" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="can use a colored prompt" name="Read-SpectreText.can use a colored prompt" time="0.0312" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="prompts" name="Read-SpectreText.prompts" time="0.0278" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="prompts with a default answer" name="Read-SpectreText.prompts with a default answer" time="0.0195" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="can allow an empty answer" name="Read-SpectreText.can allow an empty answer" time="0.0161" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="can use a colored prompt" name="Read-SpectreText.can use a colored prompt" time="0.0218" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/ConvertTo-SpectreDecoration.tests.ps1" executed="True" result="Success" success="True" time="1.0005" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/ConvertTo-SpectreDecoration.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/ConvertTo-SpectreDecoration.tests.ps1" executed="True" result="Success" success="True" time="1.0037" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/ConvertTo-SpectreDecoration.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="ConvertTo-SpectreDecoration" executed="True" result="Success" success="True" time="0.801" asserts="0" description="ConvertTo-SpectreDecoration">
+          <test-suite type="TestFixture" name="ConvertTo-SpectreDecoration" executed="True" result="Success" success="True" time="0.8027" asserts="0" description="ConvertTo-SpectreDecoration">
             <results>
-              <test-case description="Test PSStyle Decorations" name="ConvertTo-SpectreDecoration.Test PSStyle Decorations" time="0.0492" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Test Spectre Colors" name="ConvertTo-SpectreDecoration.Test Spectre Colors" time="0.7483" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Test PSStyle Decorations" name="ConvertTo-SpectreDecoration.Test PSStyle Decorations" time="0.0394" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Test Spectre Colors" name="ConvertTo-SpectreDecoration.Test Spectre Colors" time="0.76" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreAligned.tests.ps1" executed="True" result="Success" success="True" time="0.2539" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreAligned.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreAligned.tests.ps1" executed="True" result="Success" success="True" time="0.2463" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreAligned.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Format-SpectreAligned" executed="True" result="Success" success="True" time="0.053" asserts="0" description="Format-SpectreAligned">
+          <test-suite type="TestFixture" name="Format-SpectreAligned" executed="True" result="Success" success="True" time="0.0548" asserts="0" description="Format-SpectreAligned">
             <results>
-              <test-case description="Should align an item" name="Format-SpectreAligned.Should align an item" time="0.0255" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should align an item in a panel horizontally and vertically" name="Format-SpectreAligned.Should align an item in a panel horizontally and vertically" time="0.0245" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should align an item" name="Format-SpectreAligned.Should align an item" time="0.0279" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should align an item in a panel horizontally and vertically" name="Format-SpectreAligned.Should align an item in a panel horizontally and vertically" time="0.0239" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreBarChart.tests.ps1" executed="True" result="Success" success="True" time="0.4471" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreBarChart.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreBarChart.tests.ps1" executed="True" result="Success" success="True" time="0.4251" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreBarChart.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Format-SpectreBarChart" executed="True" result="Success" success="True" time="0.2518" asserts="0" description="Format-SpectreBarChart">
+          <test-suite type="TestFixture" name="Format-SpectreBarChart" executed="True" result="Success" success="True" time="0.2356" asserts="0" description="Format-SpectreBarChart">
             <results>
-              <test-case description="Should create a bar chart with correct width" name="Format-SpectreBarChart.Should create a bar chart with correct width" time="0.103" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should handle piped input correctly" name="Format-SpectreBarChart.Should handle piped input correctly" time="0.0331" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should handle single input correctly" name="Format-SpectreBarChart.Should handle single input correctly" time="0.0369" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should handle no title" name="Format-SpectreBarChart.Should handle no title" time="0.0249" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should handle no width and default to host width" name="Format-SpectreBarChart.Should handle no width and default to host width" time="0.03" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should match the snapshot" name="Format-SpectreBarChart.Should match the snapshot" time="0.0211" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should create a bar chart with correct width" name="Format-SpectreBarChart.Should create a bar chart with correct width" time="0.1039" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should handle piped input correctly" name="Format-SpectreBarChart.Should handle piped input correctly" time="0.0292" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should handle single input correctly" name="Format-SpectreBarChart.Should handle single input correctly" time="0.0216" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should handle no title" name="Format-SpectreBarChart.Should handle no title" time="0.0243" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should handle no width and default to host width" name="Format-SpectreBarChart.Should handle no width and default to host width" time="0.0224" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should match the snapshot" name="Format-SpectreBarChart.Should match the snapshot" time="0.0311" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreBreakdownChart.tests.ps1" executed="True" result="Success" success="True" time="0.337" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreBreakdownChart.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreBreakdownChart.tests.ps1" executed="True" result="Success" success="True" time="0.3369" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreBreakdownChart.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Format-SpectreBreakdownChart" executed="True" result="Success" success="True" time="0.1474" asserts="0" description="Format-SpectreBreakdownChart">
+          <test-suite type="TestFixture" name="Format-SpectreBreakdownChart" executed="True" result="Success" success="True" time="0.1543" asserts="0" description="Format-SpectreBreakdownChart">
             <results>
-              <test-case description="Should create a bar chart with correct width" name="Format-SpectreBreakdownChart.Should create a bar chart with correct width" time="0.054" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should handle piped input correctly" name="Format-SpectreBreakdownChart.Should handle piped input correctly" time="0.0187" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should handle single input correctly" name="Format-SpectreBreakdownChart.Should handle single input correctly" time="0.0249" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should handle no width and default to host width" name="Format-SpectreBreakdownChart.Should handle no width and default to host width" time="0.0283" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should match the snapshot" name="Format-SpectreBreakdownChart.Should match the snapshot" time="0.0194" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should create a bar chart with correct width" name="Format-SpectreBreakdownChart.Should create a bar chart with correct width" time="0.059" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should handle piped input correctly" name="Format-SpectreBreakdownChart.Should handle piped input correctly" time="0.0196" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should handle single input correctly" name="Format-SpectreBreakdownChart.Should handle single input correctly" time="0.0218" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should handle no width and default to host width" name="Format-SpectreBreakdownChart.Should handle no width and default to host width" time="0.0298" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should match the snapshot" name="Format-SpectreBreakdownChart.Should match the snapshot" time="0.0197" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreColumns.tests.ps1" executed="True" result="Success" success="True" time="0.3027" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreColumns.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreColumns.tests.ps1" executed="True" result="Success" success="True" time="0.2895" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreColumns.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Format-SpectreColumns" executed="True" result="Success" success="True" time="0.0877" asserts="0" description="Format-SpectreColumns">
+          <test-suite type="TestFixture" name="Format-SpectreColumns" executed="True" result="Success" success="True" time="0.1024" asserts="0" description="Format-SpectreColumns">
             <results>
-              <test-case description="Should format an array of strings into columns" name="Format-SpectreColumns.Should format an array of strings into columns" time="0.0435" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should expand items to fill the available space" name="Format-SpectreColumns.Should expand items to fill the available space" time="0.017" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should allow padding to be set" name="Format-SpectreColumns.Should allow padding to be set" time="0.0251" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should format an array of strings into columns" name="Format-SpectreColumns.Should format an array of strings into columns" time="0.0586" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should expand items to fill the available space" name="Format-SpectreColumns.Should expand items to fill the available space" time="0.0234" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should allow padding to be set" name="Format-SpectreColumns.Should allow padding to be set" time="0.0183" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreException.tests.ps1" executed="True" result="Success" success="True" time="0.2884" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreException.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreException.tests.ps1" executed="True" result="Success" success="True" time="0.2757" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreException.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Format-SpectreException" executed="True" result="Success" success="True" time="0.1011" asserts="0" description="Format-SpectreException">
+          <test-suite type="TestFixture" name="Format-SpectreException" executed="True" result="Success" success="True" time="0.0948" asserts="0" description="Format-SpectreException">
             <results>
-              <test-case description="Should format an error record" name="Format-SpectreException.Should format an error record" time="0.0667" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should format an exception" name="Format-SpectreException.Should format an exception" time="0.0124" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should format an exception with custom styles" name="Format-SpectreException.Should format an exception with custom styles" time="0.0199" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should format an error record" name="Format-SpectreException.Should format an error record" time="0.0672" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should format an exception" name="Format-SpectreException.Should format an exception" time="0.0116" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should format an exception with custom styles" name="Format-SpectreException.Should format an exception with custom styles" time="0.014" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreGrid.tests.ps1" executed="True" result="Success" success="True" time="0.2445" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreGrid.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreGrid.tests.ps1" executed="True" result="Success" success="True" time="0.2391" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreGrid.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Format-SpectreGrid" executed="True" result="Success" success="True" time="0.0532" asserts="0" description="Format-SpectreGrid">
+          <test-suite type="TestFixture" name="Format-SpectreGrid" executed="True" result="Success" success="True" time="0.0591" asserts="0" description="Format-SpectreGrid">
             <results>
-              <test-case description="Should format data in a grid" name="Format-SpectreGrid.Should format data in a grid" time="0.0513" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should format data in a grid" name="Format-SpectreGrid.Should format data in a grid" time="0.0571" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreJson.tests.ps1" executed="True" result="Success" success="True" time="0.422" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreJson.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreJson.tests.ps1" executed="True" result="Success" success="True" time="0.4082" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreJson.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Format-SpectreJson" executed="True" result="Success" success="True" time="0.2287" asserts="0" description="Format-SpectreJson">
+          <test-suite type="TestFixture" name="Format-SpectreJson" executed="True" result="Success" success="True" time="0.2163" asserts="0" description="Format-SpectreJson">
             <results>
-              <test-case description="tries to render a json" name="Format-SpectreJson.tries to render a json" time="0.0688" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Simple scalar array test" name="Format-SpectreJson.Simple scalar array test" time="0.0172" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Simple String test" name="Format-SpectreJson.Simple String test" time="0.027" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should take json string input" name="Format-SpectreJson.Should take json string input" time="0.0142" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should roundtrip json string input" name="Format-SpectreJson.Should roundtrip json string input" time="0.0758" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should match the snapshot" name="Format-SpectreJson.Should match the snapshot" time="0.0111" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should format with a custom format" name="Format-SpectreJson.Should format with a custom format" time="0.0121" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="tries to render a json" name="Format-SpectreJson.tries to render a json" time="0.074" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Simple scalar array test" name="Format-SpectreJson.Simple scalar array test" time="0.0179" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Simple String test" name="Format-SpectreJson.Simple String test" time="0.0172" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should take json string input" name="Format-SpectreJson.Should take json string input" time="0.0133" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should roundtrip json string input" name="Format-SpectreJson.Should roundtrip json string input" time="0.0668" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should match the snapshot" name="Format-SpectreJson.Should match the snapshot" time="0.0107" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should format with a custom format" name="Format-SpectreJson.Should format with a custom format" time="0.0141" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectrePadded.tests.ps1" executed="True" result="Success" success="True" time="0.241" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectrePadded.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectrePadded.tests.ps1" executed="True" result="Success" success="True" time="0.2505" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectrePadded.tests.ps1">
         <results>
           <test-suite type="TestFixture" name="Format-SpectrePadded" executed="True" result="Success" success="True" time="0.0616" asserts="0" description="Format-SpectrePadded">
             <results>
-              <test-case description="Should format data with padding around it" name="Format-SpectrePadded.Should format data with padding around it" time="0.0311" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should format data with padding around it with specific padding values" name="Format-SpectrePadded.Should format data with padding around it with specific padding values" time="0.0135" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should format data with padding around it with expanded padding" name="Format-SpectrePadded.Should format data with padding around it with expanded padding" time="0.0149" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should format data with padding around it" name="Format-SpectrePadded.Should format data with padding around it" time="0.0277" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should format data with padding around it with specific padding values" name="Format-SpectrePadded.Should format data with padding around it with specific padding values" time="0.0132" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should format data with padding around it with expanded padding" name="Format-SpectrePadded.Should format data with padding around it with expanded padding" time="0.0187" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectrePanel.tests.ps1" executed="True" result="Success" success="True" time="0.2464" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectrePanel.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectrePanel.tests.ps1" executed="True" result="Success" success="True" time="0.2425" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectrePanel.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Format-SpectrePanel" executed="True" result="Success" success="True" time="0.0648" asserts="0" description="Format-SpectrePanel">
+          <test-suite type="TestFixture" name="Format-SpectrePanel" executed="True" result="Success" success="True" time="0.0654" asserts="0" description="Format-SpectrePanel">
             <results>
-              <test-case description="Should create a panel" name="Format-SpectrePanel.Should create a panel" time="0.0316" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should create an expanded panel" name="Format-SpectrePanel.Should create an expanded panel" time="0.0154" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should match the snapshot" name="Format-SpectrePanel.Should match the snapshot" time="0.0158" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should create a panel" name="Format-SpectrePanel.Should create a panel" time="0.028" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should create an expanded panel" name="Format-SpectrePanel.Should create an expanded panel" time="0.0233" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should match the snapshot" name="Format-SpectrePanel.Should match the snapshot" time="0.012" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreRows.tests.ps1" executed="True" result="Success" success="True" time="0.2152" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreRows.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreRows.tests.ps1" executed="True" result="Success" success="True" time="0.217" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreRows.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Format-SpectreRows" executed="True" result="Success" success="True" time="0.0282" asserts="0" description="Format-SpectreRows">
+          <test-suite type="TestFixture" name="Format-SpectreRows" executed="True" result="Success" success="True" time="0.0327" asserts="0" description="Format-SpectreRows">
             <results>
-              <test-case description="Should format an array of strings into rows" name="Format-SpectreRows.Should format an array of strings into rows" time="0.0263" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should format an array of strings into rows" name="Format-SpectreRows.Should format an array of strings into rows" time="0.0308" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreTable.tests.ps1" executed="True" result="Success" success="True" time="0.5592" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreTable.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreTable.tests.ps1" executed="True" result="Success" success="True" time="0.5574" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreTable.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Format-SpectreTable" executed="True" result="Success" success="True" time="0.3725" asserts="0" description="Format-SpectreTable">
+          <test-suite type="TestFixture" name="Format-SpectreTable" executed="True" result="Success" success="True" time="0.3737" asserts="0" description="Format-SpectreTable">
             <results>
-              <test-case description="Should create a table when default display members for a command are required" name="Format-SpectreTable.Should create a table when default display members for a command are required" time="0.0855" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should create a table when default display members for a command are required and input is piped" name="Format-SpectreTable.Should create a table when default display members for a command are required and input is piped" time="0.0467" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should be able to retrieve default display members for command output with format data" name="Format-SpectreTable.Should be able to retrieve default display members for command output with format data" time="0.0197" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should not throw and should return null when input does not have format data" name="Format-SpectreTable.Should not throw and should return null when input does not have format data" time="0.0072" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should be able to format ansi strings" name="Format-SpectreTable.Should be able to format ansi strings" time="0.0074" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should be able to format PSStyle strings" name="Format-SpectreTable.Should be able to format PSStyle strings" time="0.0135" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should be able to format strings with spectre markup when opted in" name="Format-SpectreTable.Should be able to format strings with spectre markup when opted in" time="0.0075" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should leave spectre markup alone by default" name="Format-SpectreTable.Should leave spectre markup alone by default" time="0.0052" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should be able to create a new table cell with spectre markup" name="Format-SpectreTable.Should be able to create a new table cell with spectre markup" time="0.0127" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should be able to create a new table cell without spectre markup by default" name="Format-SpectreTable.Should be able to create a new table cell without spectre markup by default" time="0.0212" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should be able to create a new table row with spectre markup" name="Format-SpectreTable.Should be able to create a new table row with spectre markup" time="0.017" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should be able to create a new table row without spectre markup by default" name="Format-SpectreTable.Should be able to create a new table row without spectre markup by default" time="0.0122" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should create a table and display results properly" name="Format-SpectreTable.Should create a table and display results properly" time="0.0477" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should create a table and display ICollection results properly" name="Format-SpectreTable.Should create a table and display ICollection results properly" time="0.0212" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should be able to use calculated properties" name="Format-SpectreTable.Should be able to use calculated properties" time="0.0265" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should match the snapshot" name="Format-SpectreTable.Should match the snapshot" time="0.0182" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should create a table when default display members for a command are required" name="Format-SpectreTable.Should create a table when default display members for a command are required" time="0.0826" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should create a table when default display members for a command are required and input is piped" name="Format-SpectreTable.Should create a table when default display members for a command are required and input is piped" time="0.0484" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should be able to retrieve default display members for command output with format data" name="Format-SpectreTable.Should be able to retrieve default display members for command output with format data" time="0.016" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should not throw and should return null when input does not have format data" name="Format-SpectreTable.Should not throw and should return null when input does not have format data" time="0.0069" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should be able to format ansi strings" name="Format-SpectreTable.Should be able to format ansi strings" time="0.007" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should be able to format PSStyle strings" name="Format-SpectreTable.Should be able to format PSStyle strings" time="0.0134" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should be able to format strings with spectre markup when opted in" name="Format-SpectreTable.Should be able to format strings with spectre markup when opted in" time="0.0171" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should leave spectre markup alone by default" name="Format-SpectreTable.Should leave spectre markup alone by default" time="0.006" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should be able to create a new table cell with spectre markup" name="Format-SpectreTable.Should be able to create a new table cell with spectre markup" time="0.0131" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should be able to create a new table cell without spectre markup by default" name="Format-SpectreTable.Should be able to create a new table cell without spectre markup by default" time="0.011" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should be able to create a new table row with spectre markup" name="Format-SpectreTable.Should be able to create a new table row with spectre markup" time="0.014" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should be able to create a new table row without spectre markup by default" name="Format-SpectreTable.Should be able to create a new table row without spectre markup by default" time="0.017" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should create a table and display results properly" name="Format-SpectreTable.Should create a table and display results properly" time="0.0509" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should create a table and display ICollection results properly" name="Format-SpectreTable.Should create a table and display ICollection results properly" time="0.0165" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should be able to use calculated properties" name="Format-SpectreTable.Should be able to use calculated properties" time="0.0275" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should match the snapshot" name="Format-SpectreTable.Should match the snapshot" time="0.0235" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreTextPath.tests.ps1" executed="True" result="Success" success="True" time="0.2346" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreTextPath.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreTextPath.tests.ps1" executed="True" result="Success" success="True" time="0.2259" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreTextPath.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Format-SpectreTextPath" executed="True" result="Success" success="True" time="0.0527" asserts="0" description="Format-SpectreTextPath">
+          <test-suite type="TestFixture" name="Format-SpectreTextPath" executed="True" result="Success" success="True" time="0.0513" asserts="0" description="Format-SpectreTextPath">
             <results>
-              <test-case description="Should format a path" name="Format-SpectreTextPath.Should format a path" time="0.0388" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should format with a custom format" name="Format-SpectreTextPath.Should format with a custom format" time="0.0118" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should format a path" name="Format-SpectreTextPath.Should format a path" time="0.0311" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should format with a custom format" name="Format-SpectreTextPath.Should format with a custom format" time="0.0182" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreTree.tests.ps1" executed="True" result="Success" success="True" time="0.28" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreTree.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreTree.tests.ps1" executed="True" result="Success" success="True" time="0.2895" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/formatting/Format-SpectreTree.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Format-SpectreTree" executed="True" result="Success" success="True" time="0.1068" asserts="0" description="Format-SpectreTree">
+          <test-suite type="TestFixture" name="Format-SpectreTree" executed="True" result="Success" success="True" time="0.1057" asserts="0" description="Format-SpectreTree">
             <results>
-              <test-case description="Should create a Tree" name="Format-SpectreTree.Should create a Tree" time="0.0834" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Should match the snapshot" name="Format-SpectreTree.Should match the snapshot" time="0.0213" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should create a Tree" name="Format-SpectreTree.Should create a Tree" time="0.0901" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Should match the snapshot" name="Format-SpectreTree.Should match the snapshot" time="0.0137" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/live/Invoke-SpectreLive.tests.ps1" executed="True" result="Failure" success="False" time="0.3708" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/live/Invoke-SpectreLive.tests.ps1">
+      <test-suite type="TestFixture" name="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/live/Invoke-SpectreLive.tests.ps1" executed="True" result="Failure" success="False" time="0.2807" asserts="0" description="/home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/live/Invoke-SpectreLive.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Invoke-SpectreLive" executed="True" result="Failure" success="False" time="0.183" asserts="0" description="Invoke-SpectreLive">
+          <test-suite type="TestFixture" name="Invoke-SpectreLive" executed="True" result="Failure" success="False" time="0.1061" asserts="0" description="Invoke-SpectreLive">
             <results>
-              <test-case description="executes the scriptblock for the basic case" name="Invoke-SpectreLive.executes the scriptblock for the basic case" time="0.1527" asserts="0" success="False" result="Failure" executed="True">
+              <test-case description="executes the scriptblock for the basic case" name="Invoke-SpectreLive.executes the scriptblock for the basic case" time="0.0861" asserts="0" success="False" result="Failure" executed="True">
                 <failure>
                   <message>ArgumentException: Offset and length were out of bounds for the array or count is greater than the number of elements from index to the end of the source collection.
 MethodInvocationException: Exception calling "Start" with "1" argument(s): "Offset and length were out of bounds for the array or count is greater than the number of elements from index to the end of the source collection."</message>
@@ -353,7 +355,7 @@ at Invoke-SpectreLive, /home/runner/work/PwshSpectreConsole/PwshSpectreConsole/P
 at &lt;ScriptBlock&gt;, /home/runner/work/PwshSpectreConsole/PwshSpectreConsole/PwshSpectreConsole.Tests/live/Invoke-SpectreLive.tests.ps1:24</stack-trace>
                 </failure>
               </test-case>
-              <test-case description="executes the scriptblock with background jobs" name="Invoke-SpectreLive.executes the scriptblock with background jobs" time="0.0283" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="executes the scriptblock with background jobs" name="Invoke-SpectreLive.executes the scriptblock with background jobs" time="0.018" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
