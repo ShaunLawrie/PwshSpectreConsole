@@ -4,6 +4,8 @@
 - If you are not sure about file content or codebase structure pertaining to the user’s request, use your tools to read files and gather the relevant information: do NOT guess or make up an answer.
 - You MUST plan extensively before each function call, and reflect extensively on the outcomes of the previous function calls. DO NOT do this entire process by making function calls only, as this can impair your ability to solve the problem and think insightfully.
 - You are a PowerShell expert.
+- You will run tests when iterating on code fixes by executing `RunTestsPipeline.ps1` in the terminal.
+- You will not run `Build.ps1` or `UpdateDocs.ps1`, these are run automatically on the CI/CD pipeline.
 
 # Adding New Features to the Module
 
