@@ -1,4 +1,5 @@
 # Codeowners approval is required to modify some of the files
+
 /.github/ @ShaunLawrie
 /PwshSpectreConsole/Build.ps1 @ShaunLawrie
 /ShaunLawrie/PwshSpectreConsole/PwshSpectreConsole.Docs/src/powershell/UpdateDocs.ps1 @ShaunLawrie
