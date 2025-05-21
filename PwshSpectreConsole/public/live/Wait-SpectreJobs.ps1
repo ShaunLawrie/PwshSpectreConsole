@@ -5,6 +5,7 @@ function Wait-SpectreJobs {
 
     .DESCRIPTION
     This function waits for Spectre jobs to complete by checking the progress of each job and updating the corresponding task value.
+    Jobs in "NotStarted" state show 0% progress, while jobs in "Completed", "Failed", or "Stopped" states show 100% progress.
     Adapted from https://key2consulting.com/powershell-how-to-display-job-progress/
     :::note
     This is only used inside `Invoke-SpectreCommandWithProgress` where the Spectre ProgressContext object is exposed.
@@ -57,7 +58,15 @@ function Wait-SpectreJobs {
         }
         $completedJobs = 0
         foreach ($job in $Jobs) {
-            if ($job.Job.State -ne "Running") {
+            if ($job.Job.State -eq "NotStarted") {
+                $job.Task.Value = 0.0
+                continue
+            } elseif ($job.Job.State -in @("Completed", "Failed", "Stopped")) {
+                $job.Task.Value = 100.0
+                $completedJobs++
+                continue
+            } elseif ($job.Job.State -ne "Running") {
+                # For other non-running states, keep existing behavior
                 $job.Task.Value = 100.0
                 $completedJobs++
                 continue
