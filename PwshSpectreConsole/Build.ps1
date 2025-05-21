@@ -290,26 +290,24 @@ function Copy-OverrideFiles {
     New-Item -Path $spectreConsoleJsonPath -ItemType Directory -Force | Out-Null
     New-Item -Path $sixLaborsPath -ItemType Directory -Force | Out-Null
     
-    # Define the files we need to copy explicitly to ensure all are handled correctly
-    $filesToCopy = @(
-        @{
-            Source = Join-Path $OverridesPath "Spectre.Console\lib\net6.0\Spectre.Console.dll"
-            Destination = Join-Path $spectreConsolePath "Spectre.Console.dll"
-        },
-        @{
-            Source = Join-Path $OverridesPath "Spectre.Console.ImageSharp\lib\net6.0\Spectre.Console.ImageSharp.dll"
-            Destination = Join-Path $spectreConsoleImageSharpPath "Spectre.Console.ImageSharp.dll"
-        }
-    )
+    # Copy main Spectre.Console.dll
+    $spectreConsoleDllSource = Join-Path $OverridesPath "Spectre.Console\lib\net6.0\Spectre.Console.dll"
+    $spectreConsoleDllDest = Join-Path $spectreConsolePath "Spectre.Console.dll"
+    if (Test-Path $spectreConsoleDllSource) {
+        Write-Warning "OVERRIDE: Copying $spectreConsoleDllSource to $spectreConsoleDllDest"
+        Copy-Item -Path $spectreConsoleDllSource -Destination $spectreConsoleDllDest -Force
+    } else {
+        Write-Warning "Source file not found: $spectreConsoleDllSource"
+    }
     
-    # Copy the files
-    foreach ($file in $filesToCopy) {
-        if (Test-Path $file.Source) {
-            Write-Warning "OVERRIDE: Copying $($file.Source) to $($file.Destination)"
-            Copy-Item -Path $file.Source -Destination $file.Destination -Force
-        } else {
-            Write-Warning "Source file not found: $($file.Source)"
-        }
+    # Copy Spectre.Console.ImageSharp.dll
+    $spectreConsoleImageSharpDllSource = Join-Path $OverridesPath "Spectre.Console.ImageSharp\lib\net6.0\Spectre.Console.ImageSharp.dll"
+    $spectreConsoleImageSharpDllDest = Join-Path $spectreConsoleImageSharpPath "Spectre.Console.ImageSharp.dll"
+    if (Test-Path $spectreConsoleImageSharpDllSource) {
+        Write-Warning "OVERRIDE: Copying $spectreConsoleImageSharpDllSource to $spectreConsoleImageSharpDllDest"
+        Copy-Item -Path $spectreConsoleImageSharpDllSource -Destination $spectreConsoleImageSharpDllDest -Force
+    } else {
+        Write-Warning "Source file not found: $spectreConsoleImageSharpDllSource"
     }
     
     # Find Spectre.Console.Json.dll if available
@@ -321,76 +319,35 @@ function Copy-OverrideFiles {
         Write-Warning "Spectre.Console.Json.dll not found in overrides, it may not be required"
     }
     
-    # We need to extract the SixLabors.ImageSharp.dll from one of the existing dlls
-    # Create a temporary directory to extract the dependency
-    Write-Host "Looking for SixLabors.ImageSharp.dll dependency..."
-    $tempDir = Join-Path (New-TemporaryFile).DirectoryName "TempExtract"
-    New-Item -Path $tempDir -ItemType Directory -Force | Out-Null
-    
-    # Copy the Spectre.Console.ImageSharp.dll to the temp directory and use it to get the dependency
-    try {
-        $imageSharpDllPath = Join-Path $spectreConsoleImageSharpPath "Spectre.Console.ImageSharp.dll"
-        if (Test-Path $imageSharpDllPath) {
-            Copy-Item -Path $imageSharpDllPath -Destination $tempDir -Force
-            
-            # Try to find the dependency using the assembly
-            try {
-                Write-Host "Loading Spectre.Console.ImageSharp.dll to identify dependencies..."
-                $assembly = [System.Reflection.Assembly]::LoadFrom((Join-Path $tempDir "Spectre.Console.ImageSharp.dll"))
-                Write-Host "Assembly loaded successfully"
-                
-                # List assembly references to identify SixLabors.ImageSharp
-                $references = $assembly.GetReferencedAssemblies()
-                foreach ($ref in $references) {
-                    Write-Host "Referenced assembly: $($ref.Name), Version: $($ref.Version)"
-                }
-                
-                # Find SixLabors.ImageSharp reference
-                $imageSharpRef = $references | Where-Object { $_.Name -eq "SixLabors.ImageSharp" }
-                if ($null -ne $imageSharpRef) {
-                    Write-Host "Found SixLabors.ImageSharp reference, version: $($imageSharpRef.Version)"
-                    # Download this specific version
-                    $imageSharpVersion = $imageSharpRef.Version.ToString()
-                    Write-Host "Downloading SixLabors.ImageSharp version $imageSharpVersion"
-                    
-                    # Download the NuGet package
-                    try {
-                        $downloadLocation = Join-Path $tempDir "SixLabors.ImageSharp.zip"
-                        Invoke-WebRequest "https://www.nuget.org/api/v2/package/SixLabors.ImageSharp/$imageSharpVersion" -OutFile $downloadLocation -UseBasicParsing
-                        
-                        if (Test-Path $downloadLocation) {
-                            Write-Host "Expanding downloaded package..."
-                            Expand-Archive $downloadLocation -DestinationPath (Join-Path $tempDir "SixLaborsExtracted") -Force
-                            
-                            # Find the DLL in the package
-                            $sixLaborsDll = Get-ChildItem -Path (Join-Path $tempDir "SixLaborsExtracted") -Recurse -Filter "SixLabors.ImageSharp.dll" | Select-Object -First 1
-                            if ($null -ne $sixLaborsDll) {
-                                Write-Host "Copying SixLabors.ImageSharp.dll to $sixLaborsPath"
-                                Copy-Item -Path $sixLaborsDll.FullName -Destination (Join-Path $sixLaborsPath "SixLabors.ImageSharp.dll") -Force
-                            } else {
-                                Write-Warning "Could not find SixLabors.ImageSharp.dll in the extracted package"
-                            }
-                        }
-                    } catch {
-                        Write-Warning "Failed to download SixLabors.ImageSharp: $_"
-                    }
-                }
-            } catch {
-                Write-Warning "Failed to load assembly to identify dependencies: $_"
+    # Find SixLabors.ImageSharp.dll in the overrides
+    $sixLaborsDll = Get-ChildItem -Path $OverridesPath -Recurse -Filter "SixLabors.ImageSharp.dll" | Select-Object -First 1
+    if ($null -ne $sixLaborsDll) {
+        Write-Warning "OVERRIDE: Copying $($sixLaborsDll.FullName) to $(Join-Path $sixLaborsPath "SixLabors.ImageSharp.dll")"
+        Copy-Item -Path $sixLaborsDll.FullName -Destination (Join-Path $sixLaborsPath "SixLabors.ImageSharp.dll") -Force
+    } else {
+        # Try to find the SixLabors.ImageSharp.dll in the test packages directory
+        $testPackagesDir = Join-Path (Get-Location).Path "PwshSpectreConsole.Tests\packages"
+        if (Test-Path $testPackagesDir) {
+            $testSixLaborsDll = Get-ChildItem -Path $testPackagesDir -Recurse -Filter "SixLabors.ImageSharp.dll" | Select-Object -First 1
+            if ($null -ne $testSixLaborsDll) {
+                Write-Warning "OVERRIDE: Copying $($testSixLaborsDll.FullName) to $(Join-Path $sixLaborsPath "SixLabors.ImageSharp.dll")"
+                Copy-Item -Path $testSixLaborsDll.FullName -Destination (Join-Path $sixLaborsPath "SixLabors.ImageSharp.dll") -Force
+            } else {
+                Write-Warning "SixLabors.ImageSharp.dll not found in test packages directory"
             }
         }
-    }
-    finally {
-        if (Test-Path $tempDir) {
-            Remove-Item $tempDir -Recurse -Force -ErrorAction SilentlyContinue
+        
+        # If still not found, update module manifest to remove SixLabors.ImageSharp reference
+        if (-not (Test-Path (Join-Path $sixLaborsPath "SixLabors.ImageSharp.dll"))) {
+            Write-Warning "SixLabors.ImageSharp.dll not found, will update module manifest to remove reference"
+            $moduleManifestPath = Join-Path (Join-Path (Get-Location).Path "PwshSpectreConsole") "PwshSpectreConsole.psd1"
+            if (Test-Path $moduleManifestPath) {
+                $moduleManifest = Get-Content -Path $moduleManifestPath -Raw
+                $updatedManifest = $moduleManifest -replace "'.\\packages\\SixLabors.ImageSharp\\lib\\net6.0\\SixLabors.ImageSharp.dll', ", ""
+                Set-Content -Path $moduleManifestPath -Value $updatedManifest -Force
+                Write-Host "Updated module manifest to remove SixLabors.ImageSharp reference"
+            }
         }
-    }
-    
-    # If we couldn't find or download the DLL, we need to create a placeholder DLL
-    if (-not (Test-Path (Join-Path $sixLaborsPath "SixLabors.ImageSharp.dll"))) {
-        Write-Warning "Could not obtain SixLabors.ImageSharp.dll, creating a placeholder file"
-        # Create an empty file to prevent loading errors - this won't actually work but at least the module will load
-        New-Item -Path (Join-Path $sixLaborsPath "SixLabors.ImageSharp.dll") -ItemType File -Force | Out-Null
     }
 }
 
