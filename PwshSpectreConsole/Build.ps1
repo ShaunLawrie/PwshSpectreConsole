@@ -336,17 +336,30 @@ function Copy-OverrideFiles {
                 Write-Warning "SixLabors.ImageSharp.dll not found in test packages directory"
             }
         }
+    }
+    
+    # Update the module manifest to make sure it only includes DLLs that actually exist
+    $moduleManifestPath = Join-Path (Join-Path (Get-Location).Path "PwshSpectreConsole") "PwshSpectreConsole.psd1"
+    if (Test-Path $moduleManifestPath) {
+        $moduleManifest = Get-Content -Path $moduleManifestPath -Raw
+        $updatedManifest = $moduleManifest
         
-        # If still not found, update module manifest to remove SixLabors.ImageSharp reference
+        # Check for SixLabors.ImageSharp.dll
         if (-not (Test-Path (Join-Path $sixLaborsPath "SixLabors.ImageSharp.dll"))) {
-            Write-Warning "SixLabors.ImageSharp.dll not found, will update module manifest to remove reference"
-            $moduleManifestPath = Join-Path (Join-Path (Get-Location).Path "PwshSpectreConsole") "PwshSpectreConsole.psd1"
-            if (Test-Path $moduleManifestPath) {
-                $moduleManifest = Get-Content -Path $moduleManifestPath -Raw
-                $updatedManifest = $moduleManifest -replace "'.\\packages\\SixLabors.ImageSharp\\lib\\net6.0\\SixLabors.ImageSharp.dll', ", ""
-                Set-Content -Path $moduleManifestPath -Value $updatedManifest -Force
-                Write-Host "Updated module manifest to remove SixLabors.ImageSharp reference"
-            }
+            Write-Warning "SixLabors.ImageSharp.dll not found, removing from module manifest"
+            $updatedManifest = $updatedManifest -replace "'.\\packages\\SixLabors.ImageSharp\\lib\\net6.0\\SixLabors.ImageSharp.dll', ", ""
+        }
+        
+        # Check for Spectre.Console.Json.dll
+        if (-not (Test-Path (Join-Path $spectreConsoleJsonPath "Spectre.Console.Json.dll"))) {
+            Write-Warning "Spectre.Console.Json.dll not found, removing from module manifest"
+            $updatedManifest = $updatedManifest -replace "'.\\packages\\Spectre.Console.Json\\lib\\net6.0\\Spectre.Console.Json.dll', ", ""
+        }
+        
+        # Write the updated manifest back if changes were made
+        if ($updatedManifest -ne $moduleManifest) {
+            Set-Content -Path $moduleManifestPath -Value $updatedManifest -Force
+            Write-Host "Updated module manifest to remove references to missing DLLs"
         }
     }
 }
