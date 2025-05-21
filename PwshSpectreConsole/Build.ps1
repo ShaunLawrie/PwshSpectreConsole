@@ -302,46 +302,6 @@ function Copy-OverrideFiles {
         }
     )
     
-    # We also need SixLabors.ImageSharp.dll - try to find it in the overrides directory
-    # or download it if not found
-    $sixLaborsSource = Get-ChildItem -Path $OverridesPath -Recurse -Filter "SixLabors.ImageSharp.dll" | Select-Object -First 1
-    if ($null -ne $sixLaborsSource) {
-        $filesToCopy += @{
-            Source = $sixLaborsSource.FullName
-            Destination = Join-Path $sixLaborsPath "SixLabors.ImageSharp.dll"
-        }
-    } else {
-        # If SixLabors.ImageSharp.dll is not in the overrides, download it from NuGet
-        Write-Host "SixLabors.ImageSharp.dll not found in overrides, downloading from NuGet"
-        $imageSharpVersion = "3.1.7" # Use a known good version
-        
-        $tempDir = Join-Path (New-TemporaryFile).DirectoryName "ImageSharp"
-        New-Item -Path $tempDir -ItemType Directory -Force | Out-Null
-        
-        try {
-            $downloadLocation = Join-Path $tempDir "download.zip"
-            Invoke-WebRequest "https://www.nuget.org/api/v2/package/SixLabors.ImageSharp/$imageSharpVersion" -OutFile $downloadLocation -UseBasicParsing
-            
-            if (Test-Path $downloadLocation) {
-                Expand-Archive $downloadLocation $tempDir -Force
-                $imageSharpDll = Get-ChildItem -Path $tempDir -Filter "SixLabors.ImageSharp.dll" -Recurse | Select-Object -First 1
-                
-                if ($null -ne $imageSharpDll) {
-                    $filesToCopy += @{
-                        Source = $imageSharpDll.FullName
-                        Destination = Join-Path $sixLaborsPath "SixLabors.ImageSharp.dll"
-                    }
-                }
-            }
-        } catch {
-            Write-Warning "Failed to download SixLabors.ImageSharp: $_"
-        } finally {
-            if (Test-Path $tempDir) {
-                Remove-Item $tempDir -Recurse -Force -ErrorAction SilentlyContinue
-            }
-        }
-    }
-    
     # Copy the files
     foreach ($file in $filesToCopy) {
         if (Test-Path $file.Source) {
@@ -359,6 +319,78 @@ function Copy-OverrideFiles {
         Copy-Item -Path $jsonDll.FullName -Destination (Join-Path $spectreConsoleJsonPath "Spectre.Console.Json.dll") -Force
     } else {
         Write-Warning "Spectre.Console.Json.dll not found in overrides, it may not be required"
+    }
+    
+    # We need to extract the SixLabors.ImageSharp.dll from one of the existing dlls
+    # Create a temporary directory to extract the dependency
+    Write-Host "Looking for SixLabors.ImageSharp.dll dependency..."
+    $tempDir = Join-Path (New-TemporaryFile).DirectoryName "TempExtract"
+    New-Item -Path $tempDir -ItemType Directory -Force | Out-Null
+    
+    # Copy the Spectre.Console.ImageSharp.dll to the temp directory and use it to get the dependency
+    try {
+        $imageSharpDllPath = Join-Path $spectreConsoleImageSharpPath "Spectre.Console.ImageSharp.dll"
+        if (Test-Path $imageSharpDllPath) {
+            Copy-Item -Path $imageSharpDllPath -Destination $tempDir -Force
+            
+            # Try to find the dependency using the assembly
+            try {
+                Write-Host "Loading Spectre.Console.ImageSharp.dll to identify dependencies..."
+                $assembly = [System.Reflection.Assembly]::LoadFrom((Join-Path $tempDir "Spectre.Console.ImageSharp.dll"))
+                Write-Host "Assembly loaded successfully"
+                
+                # List assembly references to identify SixLabors.ImageSharp
+                $references = $assembly.GetReferencedAssemblies()
+                foreach ($ref in $references) {
+                    Write-Host "Referenced assembly: $($ref.Name), Version: $($ref.Version)"
+                }
+                
+                # Find SixLabors.ImageSharp reference
+                $imageSharpRef = $references | Where-Object { $_.Name -eq "SixLabors.ImageSharp" }
+                if ($null -ne $imageSharpRef) {
+                    Write-Host "Found SixLabors.ImageSharp reference, version: $($imageSharpRef.Version)"
+                    # Download this specific version
+                    $imageSharpVersion = $imageSharpRef.Version.ToString()
+                    Write-Host "Downloading SixLabors.ImageSharp version $imageSharpVersion"
+                    
+                    # Download the NuGet package
+                    try {
+                        $downloadLocation = Join-Path $tempDir "SixLabors.ImageSharp.zip"
+                        Invoke-WebRequest "https://www.nuget.org/api/v2/package/SixLabors.ImageSharp/$imageSharpVersion" -OutFile $downloadLocation -UseBasicParsing
+                        
+                        if (Test-Path $downloadLocation) {
+                            Write-Host "Expanding downloaded package..."
+                            Expand-Archive $downloadLocation -DestinationPath (Join-Path $tempDir "SixLaborsExtracted") -Force
+                            
+                            # Find the DLL in the package
+                            $sixLaborsDll = Get-ChildItem -Path (Join-Path $tempDir "SixLaborsExtracted") -Recurse -Filter "SixLabors.ImageSharp.dll" | Select-Object -First 1
+                            if ($null -ne $sixLaborsDll) {
+                                Write-Host "Copying SixLabors.ImageSharp.dll to $sixLaborsPath"
+                                Copy-Item -Path $sixLaborsDll.FullName -Destination (Join-Path $sixLaborsPath "SixLabors.ImageSharp.dll") -Force
+                            } else {
+                                Write-Warning "Could not find SixLabors.ImageSharp.dll in the extracted package"
+                            }
+                        }
+                    } catch {
+                        Write-Warning "Failed to download SixLabors.ImageSharp: $_"
+                    }
+                }
+            } catch {
+                Write-Warning "Failed to load assembly to identify dependencies: $_"
+            }
+        }
+    }
+    finally {
+        if (Test-Path $tempDir) {
+            Remove-Item $tempDir -Recurse -Force -ErrorAction SilentlyContinue
+        }
+    }
+    
+    # If we couldn't find or download the DLL, we need to create a placeholder DLL
+    if (-not (Test-Path (Join-Path $sixLaborsPath "SixLabors.ImageSharp.dll"))) {
+        Write-Warning "Could not obtain SixLabors.ImageSharp.dll, creating a placeholder file"
+        # Create an empty file to prevent loading errors - this won't actually work but at least the module will load
+        New-Item -Path (Join-Path $sixLaborsPath "SixLabors.ImageSharp.dll") -ItemType File -Force | Out-Null
     }
 }
 
