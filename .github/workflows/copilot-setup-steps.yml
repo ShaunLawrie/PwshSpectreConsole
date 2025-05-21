@@ -1,0 +1,26 @@
+name: "Copilot Setup Steps"
+
+on: workflow_dispatch
+
+jobs:
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    # Run the unit tests to start to ensure all dependencies are installed and working.
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Unit Test
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          Write-Host "Working on ${{ github.ref }}"
+          & .\PwshSpectreConsole\Build.ps1
+          $env:PSModulePath = @($env:PSModulePath, ".\PwshSpectreConsole\") -join ":"
+          $PSVersionTable | Out-Host
+          Get-Module Pester -ListAvailable | Out-Host
+          Invoke-Pester -CI -ExcludeTag "ExcludeCI"

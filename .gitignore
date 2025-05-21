@@ -32,3 +32,6 @@ Working/
 bin/
 obj/
 *.sln
+
+# Test results
+testResults.xml

@@ -12,7 +12,7 @@ class ArgumentCompletionsSpectreColors : ArgumentCompleterAttribute {
             foreach ($Color in ([Spectre.Console.Color] | Get-Member -Static -Type Properties).Name) {
                 if ($Color -like "$wordToComplete*") {
                     [CompletionResult]::new(
-                        <# completionText #> [Spectre.Console.Color]::$Color,
+                        <# completionText #> $Color,
                         <# listItemText #>   ([Spectre.Console.Markup]::new($Color, [Spectre.Console.Style]::new([Spectre.Console.Color]::$Color)) | Out-SpectreHost),
                         <# resultType #>     'ParameterValue',
                         <# toolTip #>        $Color

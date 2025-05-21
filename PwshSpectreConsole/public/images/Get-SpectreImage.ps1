@@ -26,12 +26,12 @@ function Get-SpectreImage {
     Forces the image to be displayed using the specified format, even if we can't detect Sixel support in the terminal.
 
     .EXAMPLE
-    # **Example 1**  
+    # **Example 1**
     # When Sixel is not supported the image will use the standard Canvas renderer which draws the image using character cells to represent the image.
     Get-SpectreImage -ImagePath ".\private\images\smiley.png" -MaxWidth 40
 
     .EXAMPLE
-    # **Example 2**  
+    # **Example 2**
     # For Sixel images, the image returned by `Get-SpectreImage` will render a new frame every time it's drawn so if it's an animated GIF it will appear animated if you render it repeatedly and move the cursor back to the same start position before each image output.
     #
     # ![Spectre Sixel Example](/lapras-terminal.gif)
@@ -71,9 +71,10 @@ function Get-SpectreImage {
             $ImagePath = $script:CachedImages[$ImagePath]
         }
 
-        $imagePathResolved = Resolve-Path $ImagePath
-        if (-not (Test-Path $imagePathResolved)) {
-            throw "The specified image path '$resolvedImagePath' does not exist."
+        $imagePathResolved = $PSCmdlet.GetUnresolvedProviderPathFromPSPath($ImagePath)
+        if (-not (Test-Path -Path $imagePathResolved -PathType Leaf)) {
+            # more explicit test for file, otherwise it passes for directories.
+            throw "The specified image path '$imagePathResolved' does not exist."
         }
 
         $image = $null
