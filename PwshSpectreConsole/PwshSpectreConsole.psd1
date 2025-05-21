@@ -57,7 +57,7 @@ PowerShellVersion = '7.0'
 RequiredAssemblies = '.\packages\Spectre.Console\lib\net6.0\Spectre.Console.dll', 
                '.\packages\Spectre.Console.ImageSharp\lib\net6.0\Spectre.Console.ImageSharp.dll', 
                
-               '.\packages\Spectre.Console.Json\lib\net6.0\Spectre.Console.Json.dll', 
+               
                '.\packages\PwshSpectreConsole.dll'
 
 # Script files (.ps1) that are run in the caller's environment prior to importing this module.
@@ -153,5 +153,6 @@ PrivateData = @{
 # DefaultCommandPrefix = ''
 
 }
+
 
 
