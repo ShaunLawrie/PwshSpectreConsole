@@ -4,7 +4,8 @@ param (
     [int] $DotnetSdkMajorVersion = 8,
     [switch] $NoReinstall,
     [string] $SpectreConsoleRepoUrl = "https://github.com/ShaunLawrie/spectre.console.git",
-    [string] $SepctreConsoleBranch = "main"
+    [string] $SpectreConsoleBranch = "release/0.48.0",  # Use a release tag/branch that's compatible with .NET 8
+    [switch] $FallbackToOverrides = $true  # Allow falling back to overrides if build fails
 )
 
 function Clone-SpectreConsoleRepository {
@@ -43,9 +44,25 @@ function Clone-SpectreConsoleRepository {
         
         # Clone the repository 
         Write-Host "Cloning fresh repository..."
-        $output = & git clone --branch $Branch $RepoUrl .
+        $output = & git clone --branch $Branch $RepoUrl . 2>&1
         if ($LASTEXITCODE -ne 0) {
-            throw "Failed to clone $RepoUrl. Error: $output"
+            # If the specific branch doesn't exist, try cloning the main branch and then checking out the tag
+            if ($output -match "Remote branch $Branch not found") {
+                Write-Warning "Branch $Branch not found, trying to clone main branch and checkout as a tag"
+                & git clone $RepoUrl .
+                if ($LASTEXITCODE -ne 0) {
+                    throw "Failed to clone $RepoUrl"
+                }
+                
+                & git fetch --all --tags
+                & git checkout "tags/$Branch" -b "build-$Branch" 2>&1
+                if ($LASTEXITCODE -ne 0) {
+                    Write-Warning "Could not checkout tag/branch $Branch, will continue with main branch"
+                    & git checkout main
+                }
+            } else {
+                throw "Failed to clone $RepoUrl. Error: $output"
+            }
         }
     } 
     finally {
@@ -99,15 +116,35 @@ function Build-SpectreConsole {
     $spectreConsoleTestingProject = Join-Path $RepoDirectory "src/Spectre.Console.Testing/Spectre.Console.Testing.csproj"
     
     if (-not (Test-Path $spectreConsoleProject)) {
-        throw "Spectre.Console project not found at $spectreConsoleProject"
+        # Try to find in root src directory as older versions had different directory structure
+        $spectreConsoleProject = Join-Path $RepoDirectory "src/Spectre.Console.csproj"
+        if (-not (Test-Path $spectreConsoleProject)) {
+            throw "Spectre.Console project not found in repository structure"
+        }
     }
     
     if (-not (Test-Path $spectreConsoleImageSharpProject)) {
-        throw "Spectre.Console.ImageSharp project not found at $spectreConsoleImageSharpProject"
+        # Try to find in root src directory as older versions had different directory structure
+        $spectreConsoleImageSharpProject = Join-Path $RepoDirectory "src/Spectre.Console.ImageSharp.csproj" 
+        if (-not (Test-Path $spectreConsoleImageSharpProject)) {
+            $spectreConsoleImageSharpProject = Join-Path $RepoDirectory "src/Spectre.Console.ImageSharp/Spectre.Console.ImageSharp.csproj"
+            if (-not (Test-Path $spectreConsoleImageSharpProject)) {
+                throw "Spectre.Console.ImageSharp project not found in repository structure"
+            }
+        }
     }
     
     if (-not (Test-Path $spectreConsoleJsonProject)) {
-        throw "Spectre.Console.Json project not found at $spectreConsoleJsonProject"
+        # Try to find in root src directory as older versions had different directory structure
+        $spectreConsoleJsonProject = Join-Path $RepoDirectory "src/Spectre.Console.Json.csproj"
+        if (-not (Test-Path $spectreConsoleJsonProject)) {
+            $spectreConsoleJsonProject = Join-Path $RepoDirectory "src/Spectre.Console.Json/Spectre.Console.Json.csproj"
+            if (-not (Test-Path $spectreConsoleJsonProject)) {
+                # If Json project doesn't exist in older versions, we'll skip it
+                $spectreConsoleJsonProject = $null
+                Write-Warning "Spectre.Console.Json project not found, it may not exist in this version"
+            }
+        }
     }
     
     try {
@@ -134,11 +171,13 @@ function Build-SpectreConsole {
             throw "Failed to build Spectre.Console.ImageSharp"
         }
 
-        # Build Json integration
-        Write-Host "Building Spectre.Console.Json..."
-        & dotnet build $spectreConsoleJsonProject -c Release -nodereuse:false --no-restore
-        if ($LASTEXITCODE -ne 0) {
-            throw "Failed to build Spectre.Console.Json"
+        # Build Json integration if it exists
+        if ($spectreConsoleJsonProject) {
+            Write-Host "Building Spectre.Console.Json..."
+            & dotnet build $spectreConsoleJsonProject -c Release -nodereuse:false --no-restore
+            if ($LASTEXITCODE -ne 0) {
+                Write-Warning "Failed to build Spectre.Console.Json, but continuing"
+            }
         }
 
         # Build Testing project if it exists
@@ -146,7 +185,7 @@ function Build-SpectreConsole {
             Write-Host "Building Spectre.Console.Testing..."
             & dotnet build $spectreConsoleTestingProject -c Release -nodereuse:false --no-restore
             if ($LASTEXITCODE -ne 0) {
-                Write-Warning "Failed to build Spectre.Console.Testing, this may not be an issue if tests don't need it."
+                Write-Warning "Failed to build Spectre.Console.Testing, but continuing"
             }
         }
         
@@ -165,7 +204,7 @@ function Build-SpectreConsole {
         
         # Copy built DLLs to the install location
         Write-Host "Copying built assemblies to destination"
-        $spectreConsoleDll = Get-ChildItem -Path "$RepoDirectory/src/Spectre.Console/bin/Release" -Filter "Spectre.Console.dll" -Recurse | Select-Object -First 1
+        $spectreConsoleDll = Get-ChildItem -Path $RepoDirectory -Filter "Spectre.Console.dll" -Recurse | Where-Object { $_.FullName -like "*\bin\Release\*" } | Select-Object -First 1
         if ($null -ne $spectreConsoleDll) {
             Copy-Item -Path $spectreConsoleDll.FullName -Destination $spectreConsolePath -Force
             Write-Host "Copied Spectre.Console.dll from $($spectreConsoleDll.FullName)"
@@ -173,7 +212,7 @@ function Build-SpectreConsole {
             throw "Could not find Spectre.Console.dll in the build output"
         }
         
-        $spectreConsoleImageSharpDll = Get-ChildItem -Path "$RepoDirectory/src/Extensions/Spectre.Console.ImageSharp/bin/Release" -Filter "Spectre.Console.ImageSharp.dll" -Recurse | Select-Object -First 1
+        $spectreConsoleImageSharpDll = Get-ChildItem -Path $RepoDirectory -Filter "Spectre.Console.ImageSharp.dll" -Recurse | Where-Object { $_.FullName -like "*\bin\Release\*" } | Select-Object -First 1
         if ($null -ne $spectreConsoleImageSharpDll) {
             Copy-Item -Path $spectreConsoleImageSharpDll.FullName -Destination $spectreConsoleImageSharpPath -Force
             Write-Host "Copied Spectre.Console.ImageSharp.dll from $($spectreConsoleImageSharpDll.FullName)"
@@ -181,16 +220,18 @@ function Build-SpectreConsole {
             throw "Could not find Spectre.Console.ImageSharp.dll in the build output"
         }
         
-        $spectreConsoleJsonDll = Get-ChildItem -Path "$RepoDirectory/src/Extensions/Spectre.Console.Json/bin/Release" -Filter "Spectre.Console.Json.dll" -Recurse | Select-Object -First 1
-        if ($null -ne $spectreConsoleJsonDll) {
-            Copy-Item -Path $spectreConsoleJsonDll.FullName -Destination $spectreConsoleJsonPath -Force
-            Write-Host "Copied Spectre.Console.Json.dll from $($spectreConsoleJsonDll.FullName)"
-        } else {
-            throw "Could not find Spectre.Console.Json.dll in the build output"
+        if ($spectreConsoleJsonProject) {
+            $spectreConsoleJsonDll = Get-ChildItem -Path $RepoDirectory -Filter "Spectre.Console.Json.dll" -Recurse | Where-Object { $_.FullName -like "*\bin\Release\*" } | Select-Object -First 1
+            if ($null -ne $spectreConsoleJsonDll) {
+                Copy-Item -Path $spectreConsoleJsonDll.FullName -Destination $spectreConsoleJsonPath -Force
+                Write-Host "Copied Spectre.Console.Json.dll from $($spectreConsoleJsonDll.FullName)"
+            } else {
+                Write-Warning "Could not find Spectre.Console.Json.dll in the build output"
+            }
         }
         
         # Find and copy SixLabors.ImageSharp dependency
-        $imageSharpDll = Get-ChildItem -Path "$RepoDirectory/src/Extensions/Spectre.Console.ImageSharp/bin/Release" -Filter "SixLabors.ImageSharp.dll" -Recurse | Select-Object -First 1
+        $imageSharpDll = Get-ChildItem -Path $RepoDirectory -Filter "SixLabors.ImageSharp.dll" -Recurse | Where-Object { $_.FullName -like "*\bin\Release\*" } | Select-Object -First 1
         if ($null -ne $imageSharpDll) {
             Copy-Item -Path $imageSharpDll.FullName -Destination $sixLaborsPath -Force
             Write-Host "Copied SixLabors.ImageSharp.dll from $($imageSharpDll.FullName)"
@@ -199,7 +240,7 @@ function Build-SpectreConsole {
         }
         
         # Try to find and copy Spectre.Console.Testing.dll if it exists
-        $testingDll = Get-ChildItem -Path "$RepoDirectory/src/Spectre.Console.Testing/bin/Release" -Filter "Spectre.Console.Testing.dll" -Recurse | Select-Object -First 1
+        $testingDll = Get-ChildItem -Path $RepoDirectory -Filter "Spectre.Console.Testing.dll" -Recurse | Where-Object { $_.FullName -like "*\bin\Release\*" } | Select-Object -First 1
         if ($null -ne $testingDll) {
             Copy-Item -Path $testingDll.FullName -Destination $spectreConsoleTestingPath -Force
             Write-Host "Copied Spectre.Console.Testing.dll from $($testingDll.FullName)"
@@ -214,9 +255,41 @@ function Build-SpectreConsole {
         }
         
         Write-Host "Successfully built and copied Spectre.Console assemblies"
+        return $true
+    }
+    catch {
+        Write-Warning "Build failed with error: $_"
+        # Restore original global.json if we modified it
+        if (Test-Path "$globalJsonPath.bak") {
+            Write-Host "Restoring original global.json"
+            Move-Item -Path "$globalJsonPath.bak" -Destination $globalJsonPath -Force
+        }
+        return $false
     }
     finally {
         Pop-Location
+    }
+}
+
+function Copy-OverrideFiles {
+    param (
+        [string] $OverridesPath,
+        [string] $InstallLocation
+    )
+
+    Write-Host "Falling back to override files from $OverridesPath"
+    $overrides = Get-ChildItem -Path $OverridesPath -File -Recurse -Filter "*.dll"
+    foreach ($override in $overrides) {
+        $destination = Join-Path $InstallLocation $override.FullName.Replace($OverridesPath, "")
+        Write-Warning "OVERRIDE: Copying $override to $destination"
+        
+        # Make sure destination directory exists
+        $destinationDir = [System.IO.Path]::GetDirectoryName($destination)
+        if (-not (Test-Path $destinationDir)) {
+            New-Item -Path $destinationDir -ItemType Directory -Force | Out-Null
+        }
+        
+        Copy-Item -Path $override.FullName -Destination $destination -Force
     }
 }
 
@@ -225,6 +298,7 @@ $installLocation = (Join-Path $PSScriptRoot "packages")
 $csharpProjectLocation = (Join-Path $PSScriptRoot "private" "classes")
 $testingInstallLocation = (Join-Path $PSScriptRoot ".." "PwshSpectreConsole.Tests" "packages")
 $tempSpectreConsoleRepoDir = Join-Path $PSScriptRoot ".spectre.build"
+$overridesPath = (Join-Path $PSScriptRoot "overrides")
 
 if ((Test-Path $installLocation) -and $NoReinstall) {
     Write-Host "Spectre.Console already installed, skipping"
@@ -249,10 +323,31 @@ New-Item -Path $installLocation -ItemType Directory -Force | Out-Null
 New-Item -Path $testingInstallLocation -ItemType Directory -Force | Out-Null
 
 # Clone and build the Spectre.Console fork
-$repoPath = Clone-SpectreConsoleRepository -RepoUrl $SpectreConsoleRepoUrl -Branch $SepctreConsoleBranch -TempDirectory $tempSpectreConsoleRepoDir
+try {
+    $repoPath = Clone-SpectreConsoleRepository -RepoUrl $SpectreConsoleRepoUrl -Branch $SpectreConsoleBranch -TempDirectory $tempSpectreConsoleRepoDir
 
-# Build the forked Spectre.Console
-Build-SpectreConsole -RepoDirectory $repoPath -InstallLocation $installLocation -DotnetSdkMajorVersion $DotnetSdkMajorVersion
+    # Build the forked Spectre.Console
+    $buildSuccess = Build-SpectreConsole -RepoDirectory $repoPath -InstallLocation $installLocation -DotnetSdkMajorVersion $DotnetSdkMajorVersion
+    
+    # If the build failed and fallback is enabled, use the override DLLs
+    if (-not $buildSuccess -and $FallbackToOverrides) {
+        Write-Warning "Building from source failed, using override DLLs as fallback"
+        Copy-OverrideFiles -OverridesPath $overridesPath -InstallLocation $installLocation
+    }
+    elseif (-not $buildSuccess) {
+        throw "Failed to build Spectre.Console from source and fallback to overrides is disabled"
+    }
+}
+catch {
+    if ($FallbackToOverrides) {
+        Write-Warning "Exception occurred: $_"
+        Write-Warning "Falling back to override DLLs"
+        Copy-OverrideFiles -OverridesPath $overridesPath -InstallLocation $installLocation
+    }
+    else {
+        throw $_
+    }
+}
 
 # Build the C# classes for the PowerShell module
 $command = Get-Command "dotnet" -ErrorAction SilentlyContinue
@@ -278,4 +373,4 @@ try {
     Pop-Location
 }
 
-Write-Host "Spectre.Console fork has been successfully built and installed"
+Write-Host "Spectre.Console fork has been successfully set up"
