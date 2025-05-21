@@ -73,6 +73,25 @@ function Build-SpectreConsole {
         throw "Repository directory '$RepoDirectory' does not exist"
     }
     
+    # Handle global.json SDK version
+    $globalJsonPath = Join-Path $RepoDirectory "global.json"
+    if (Test-Path $globalJsonPath) {
+        Write-Host "Found global.json, checking SDK requirements"
+        $globalJson = Get-Content $globalJsonPath | ConvertFrom-Json
+        
+        if ($globalJson.sdk.rollForward -eq "latestFeature") {
+            Write-Host "Global.json is configured to use latest feature version, modifying to use SDK $DotnetSdkMajorVersion"
+            $globalJson.sdk.version = "$DotnetSdkMajorVersion.0.0"
+            
+            # Backup original global.json
+            Copy-Item -Path $globalJsonPath -Destination "$globalJsonPath.bak" -Force
+            
+            # Update global.json with SDK version we have
+            $globalJson | ConvertTo-Json -Depth 10 | Set-Content $globalJsonPath
+            Write-Host "Updated global.json to use SDK version $DotnetSdkMajorVersion.0.0"
+        }
+    }
+    
     # Verify project files exist
     $spectreConsoleProject = Join-Path $RepoDirectory "src/Spectre.Console/Spectre.Console.csproj"
     $spectreConsoleImageSharpProject = Join-Path $RepoDirectory "src/Extensions/Spectre.Console.ImageSharp/Spectre.Console.ImageSharp.csproj"
@@ -97,27 +116,35 @@ function Build-SpectreConsole {
         
         Write-Host "Building Spectre.Console from source"
         
+        # First restore all dependencies
+        Write-Host "Restoring dependencies..."
+        & dotnet restore --force -nodereuse:false
+        
         # Build the solution
-        & dotnet build -c Release $spectreConsoleProject
+        Write-Host "Building Spectre.Console..."
+        & dotnet build $spectreConsoleProject -c Release -nodereuse:false --no-restore
         if ($LASTEXITCODE -ne 0) {
             throw "Failed to build Spectre.Console"
         }
         
         # Build ImageSharp integration
-        & dotnet build -c Release $spectreConsoleImageSharpProject
+        Write-Host "Building Spectre.Console.ImageSharp..."
+        & dotnet build $spectreConsoleImageSharpProject -c Release -nodereuse:false --no-restore
         if ($LASTEXITCODE -ne 0) {
             throw "Failed to build Spectre.Console.ImageSharp"
         }
 
         # Build Json integration
-        & dotnet build -c Release $spectreConsoleJsonProject
+        Write-Host "Building Spectre.Console.Json..."
+        & dotnet build $spectreConsoleJsonProject -c Release -nodereuse:false --no-restore
         if ($LASTEXITCODE -ne 0) {
             throw "Failed to build Spectre.Console.Json"
         }
 
         # Build Testing project if it exists
         if (Test-Path $spectreConsoleTestingProject) {
-            & dotnet build -c Release $spectreConsoleTestingProject
+            Write-Host "Building Spectre.Console.Testing..."
+            & dotnet build $spectreConsoleTestingProject -c Release -nodereuse:false --no-restore
             if ($LASTEXITCODE -ne 0) {
                 Write-Warning "Failed to build Spectre.Console.Testing, this may not be an issue if tests don't need it."
             }
@@ -178,6 +205,12 @@ function Build-SpectreConsole {
             Write-Host "Copied Spectre.Console.Testing.dll from $($testingDll.FullName)"
         } else {
             Write-Warning "Could not find Spectre.Console.Testing.dll in build output. This may not be an issue if tests don't require it."
+        }
+        
+        # Restore original global.json if we modified it
+        if (Test-Path "$globalJsonPath.bak") {
+            Write-Host "Restoring original global.json"
+            Move-Item -Path "$globalJsonPath.bak" -Destination $globalJsonPath -Force
         }
         
         Write-Host "Successfully built and copied Spectre.Console assemblies"
