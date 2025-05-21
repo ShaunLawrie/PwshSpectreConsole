@@ -278,18 +278,87 @@ function Copy-OverrideFiles {
     )
 
     Write-Host "Falling back to override files from $OverridesPath"
-    $overrides = Get-ChildItem -Path $OverridesPath -File -Recurse -Filter "*.dll"
-    foreach ($override in $overrides) {
-        $destination = Join-Path $InstallLocation $override.FullName.Replace($OverridesPath, "")
-        Write-Warning "OVERRIDE: Copying $override to $destination"
-        
-        # Make sure destination directory exists
-        $destinationDir = [System.IO.Path]::GetDirectoryName($destination)
-        if (-not (Test-Path $destinationDir)) {
-            New-Item -Path $destinationDir -ItemType Directory -Force | Out-Null
+    
+    # Make sure all required directories exist
+    $spectreConsolePath = Join-Path $InstallLocation "Spectre.Console\lib\net6.0"
+    $spectreConsoleImageSharpPath = Join-Path $InstallLocation "Spectre.Console.ImageSharp\lib\net6.0"
+    $spectreConsoleJsonPath = Join-Path $InstallLocation "Spectre.Console.Json\lib\net6.0"
+    $sixLaborsPath = Join-Path $InstallLocation "SixLabors.ImageSharp\lib\net6.0"
+    
+    New-Item -Path $spectreConsolePath -ItemType Directory -Force | Out-Null
+    New-Item -Path $spectreConsoleImageSharpPath -ItemType Directory -Force | Out-Null
+    New-Item -Path $spectreConsoleJsonPath -ItemType Directory -Force | Out-Null
+    New-Item -Path $sixLaborsPath -ItemType Directory -Force | Out-Null
+    
+    # Define the files we need to copy explicitly to ensure all are handled correctly
+    $filesToCopy = @(
+        @{
+            Source = Join-Path $OverridesPath "Spectre.Console\lib\net6.0\Spectre.Console.dll"
+            Destination = Join-Path $spectreConsolePath "Spectre.Console.dll"
+        },
+        @{
+            Source = Join-Path $OverridesPath "Spectre.Console.ImageSharp\lib\net6.0\Spectre.Console.ImageSharp.dll"
+            Destination = Join-Path $spectreConsoleImageSharpPath "Spectre.Console.ImageSharp.dll"
         }
+    )
+    
+    # We also need SixLabors.ImageSharp.dll - try to find it in the overrides directory
+    # or download it if not found
+    $sixLaborsSource = Get-ChildItem -Path $OverridesPath -Recurse -Filter "SixLabors.ImageSharp.dll" | Select-Object -First 1
+    if ($null -ne $sixLaborsSource) {
+        $filesToCopy += @{
+            Source = $sixLaborsSource.FullName
+            Destination = Join-Path $sixLaborsPath "SixLabors.ImageSharp.dll"
+        }
+    } else {
+        # If SixLabors.ImageSharp.dll is not in the overrides, download it from NuGet
+        Write-Host "SixLabors.ImageSharp.dll not found in overrides, downloading from NuGet"
+        $imageSharpVersion = "3.1.7" # Use a known good version
         
-        Copy-Item -Path $override.FullName -Destination $destination -Force
+        $tempDir = Join-Path (New-TemporaryFile).DirectoryName "ImageSharp"
+        New-Item -Path $tempDir -ItemType Directory -Force | Out-Null
+        
+        try {
+            $downloadLocation = Join-Path $tempDir "download.zip"
+            Invoke-WebRequest "https://www.nuget.org/api/v2/package/SixLabors.ImageSharp/$imageSharpVersion" -OutFile $downloadLocation -UseBasicParsing
+            
+            if (Test-Path $downloadLocation) {
+                Expand-Archive $downloadLocation $tempDir -Force
+                $imageSharpDll = Get-ChildItem -Path $tempDir -Filter "SixLabors.ImageSharp.dll" -Recurse | Select-Object -First 1
+                
+                if ($null -ne $imageSharpDll) {
+                    $filesToCopy += @{
+                        Source = $imageSharpDll.FullName
+                        Destination = Join-Path $sixLaborsPath "SixLabors.ImageSharp.dll"
+                    }
+                }
+            }
+        } catch {
+            Write-Warning "Failed to download SixLabors.ImageSharp: $_"
+        } finally {
+            if (Test-Path $tempDir) {
+                Remove-Item $tempDir -Recurse -Force -ErrorAction SilentlyContinue
+            }
+        }
+    }
+    
+    # Copy the files
+    foreach ($file in $filesToCopy) {
+        if (Test-Path $file.Source) {
+            Write-Warning "OVERRIDE: Copying $($file.Source) to $($file.Destination)"
+            Copy-Item -Path $file.Source -Destination $file.Destination -Force
+        } else {
+            Write-Warning "Source file not found: $($file.Source)"
+        }
+    }
+    
+    # Find Spectre.Console.Json.dll if available
+    $jsonDll = Get-ChildItem -Path $OverridesPath -Recurse -Filter "Spectre.Console.Json.dll" | Select-Object -First 1
+    if ($null -ne $jsonDll) {
+        Write-Warning "OVERRIDE: Copying $($jsonDll.FullName) to $(Join-Path $spectreConsoleJsonPath "Spectre.Console.Json.dll")"
+        Copy-Item -Path $jsonDll.FullName -Destination (Join-Path $spectreConsoleJsonPath "Spectre.Console.Json.dll") -Force
+    } else {
+        Write-Warning "Spectre.Console.Json.dll not found in overrides, it may not be required"
     }
 }
 
