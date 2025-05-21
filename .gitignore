@@ -35,3 +35,6 @@ obj/
 
 # Test results
 testResults.xml
+
+# Spectre.Console build directory
+PwshSpectreConsole/.spectre.build/
