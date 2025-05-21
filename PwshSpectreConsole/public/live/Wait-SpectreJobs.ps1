@@ -57,9 +57,9 @@ function Wait-SpectreJobs {
         }
         $completedJobs = 0
         foreach ($job in $Jobs) {
-            # JobState is an Enum. Anything less then 2 (NotStarted, Running) is not 100%
+            # JobState is an Enum. Anything less than [System.Management.Automation.JobState]::Completed (NotStarted, Running) is not 100%
             # https://learn.microsoft.com/en-us/dotnet/api/system.management.automation.jobstate?view=powershellsdk-7.4.0
-            if ([int][System.Management.Automation.JobState]$job.Job.State -gte 2) {
+            if ([System.Management.Automation.JobState]$job.Job.State -ge [System.Management.Automation.JobState]::Completed) {
                 $job.Task.Value = 100.0
                 $completedJobs++
                 continue
