@@ -34,6 +34,8 @@ function Get-SpectreRenderableSize {
         [int] $ContainerWidth = [Spectre.Console.AnsiConsole]::Console.Profile.Width
     )
     
+    # Use values from the parameters, which will fall back to the console dimensions
+    # that have already been validated by Initialize-SpectreConsoleDimensions on module import
     $size = [Spectre.Console.Size]::new($ContainerWidth, $ContainerHeight)
     $renderOptions = [Spectre.Console.Rendering.RenderOptions]::new(
         [Spectre.Console.AnsiConsole]::Console.Profile.Capabilities,

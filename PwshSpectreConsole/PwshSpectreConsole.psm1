@@ -23,6 +23,9 @@ foreach ($directory in @('private', 'public')) {
     }
 }
 
+# Initialize console dimensions to ensure they're valid (important for CI environments)
+Initialize-SpectreConsoleDimensions
+
 # cache the DA1 response.
 $script:TerminalSupportsSixel = Test-SpectreSixelSupport
 
