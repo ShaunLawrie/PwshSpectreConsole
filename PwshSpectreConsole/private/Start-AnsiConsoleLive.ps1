@@ -24,17 +24,7 @@ function Start-AnsiConsoleLive {
     New-Variable -Name $resultVariableName -Scope "Script"
     
     # Ensure console has valid dimensions before starting live display
-    $originalWidth = [Spectre.Console.AnsiConsole]::Console.Profile.Width
-    $originalHeight = [Spectre.Console.AnsiConsole]::Console.Profile.Height
-    
-    # Set default values if width or height is 0 or negative (often happens in CI environments)
-    if ($originalWidth -le 0) {
-        [Spectre.Console.AnsiConsole]::Console.Profile.Width = 80
-    }
-    
-    if ($originalHeight -le 0) {
-        [Spectre.Console.AnsiConsole]::Console.Profile.Height = 24
-    }
+    Initialize-SpectreConsoleDimensions
     
     try {
         [Spectre.Console.AnsiConsole]::Live($Data).Start({
@@ -45,14 +35,7 @@ function Start-AnsiConsoleLive {
         })
     }
     finally {
-        # Restore original dimensions if they were valid
-        if ($originalWidth -gt 0) {
-            [Spectre.Console.AnsiConsole]::Console.Profile.Width = $originalWidth
-        }
-        
-        if ($originalHeight -gt 0) {
-            [Spectre.Console.AnsiConsole]::Console.Profile.Height = $originalHeight
-        }
+        # No need to restore dimensions as they're now managed centrally
     }
     return Get-Variable -Name $resultVariableName -ValueOnly
 }

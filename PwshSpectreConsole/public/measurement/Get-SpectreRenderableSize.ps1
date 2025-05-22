@@ -34,15 +34,11 @@ function Get-SpectreRenderableSize {
         [int] $ContainerWidth = [Spectre.Console.AnsiConsole]::Console.Profile.Width
     )
     
-    # Set default values if width or height is 0 or negative (often happens in CI environments)
-    if ($ContainerWidth -le 0) {
-        $ContainerWidth = 80
-    }
+    # Ensure console dimensions are valid
+    Initialize-SpectreConsoleDimensions
     
-    if ($ContainerHeight -le 0) {
-        $ContainerHeight = 24
-    }
-    
+    # Use values from the parameters, which will fall back to the console dimensions
+    # that have already been validated by Initialize-SpectreConsoleDimensions
     $size = [Spectre.Console.Size]::new($ContainerWidth, $ContainerHeight)
     $renderOptions = [Spectre.Console.Rendering.RenderOptions]::new(
         [Spectre.Console.AnsiConsole]::Console.Profile.Capabilities,
