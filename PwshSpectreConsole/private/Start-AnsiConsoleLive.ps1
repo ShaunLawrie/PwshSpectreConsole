@@ -35,7 +35,7 @@ function Start-AnsiConsoleLive {
         })
     }
     finally {
-        # No need to restore dimensions as they're now managed centrally
+        # Dimensions are managed centrally via Initialize-SpectreConsoleDimensions
     }
     return Get-Variable -Name $resultVariableName -ValueOnly
 }

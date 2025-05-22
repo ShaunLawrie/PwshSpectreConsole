@@ -56,9 +56,6 @@ function Get-SpectreLayoutSizes {
         [Spectre.Console.Layout] $Layout
     )
     
-    # Ensure console dimensions are valid
-    Initialize-SpectreConsoleDimensions
-    
     $width = [Spectre.Console.AnsiConsole]::Console.Profile.Width
     $height = [Spectre.Console.AnsiConsole]::Console.Profile.Height
     
