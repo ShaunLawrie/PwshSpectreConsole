@@ -31,3 +31,38 @@ jobs:
         with:
           name: Snapshots
           path: PwshSpectreConsole.Tests/@snapshots/*.txt
+          
+  # This job tests that the UpdateDocs.ps1 script executes successfully.
+  # It helps prevent failures in the version-bump-and-publish workflow after a PR is merged.
+  # The -NoCommit switch ensures no changes are committed to the repo during this test.
+  test-update-docs:
+    name: Test UpdateDocs.ps1
+    runs-on: ubuntu-latest
+    needs: unit-test
+    if: github.repository_owner != 'ShaunLawrie' || (github.ref != 'refs/heads/main' && github.ref != 'refs/heads/prerelease')
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Install HelpOut Module
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          Install-Module HelpOut -Scope CurrentUser -RequiredVersion 0.5 -Force
+          Get-Module HelpOut -ListAvailable | Out-Host
+      - name: Build Module
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          & .\PwshSpectreConsole\Build.ps1
+          $env:PSModulePath = @($env:PSModulePath, ".\PwshSpectreConsole\") -join ":"
+          Get-Module PwshSpectreConsole -ListAvailable | Out-Host
+      - name: Test UpdateDocs.ps1
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          Write-Host "Testing UpdateDocs.ps1 script execution..."
+          & .\PwshSpectreConsole.Docs\src\powershell\UpdateDocs.ps1 -NonInteractive -NoCommit -NoBuild -Cleanup
+          if ($LASTEXITCODE -ne 0) {
+              throw "UpdateDocs.ps1 failed with exit code $LASTEXITCODE"
+          }
+          Write-Host "UpdateDocs.ps1 test passed successfully"

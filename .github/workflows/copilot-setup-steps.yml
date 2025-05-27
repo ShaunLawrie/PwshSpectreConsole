@@ -19,6 +19,7 @@ jobs:
         run: |
           $ErrorActionPreference = "Stop"
           Write-Host "Working on ${{ github.ref }}"
+          Install-Module HelpOut -Scope CurrentUser -RequiredVersion 0.5 -Force
           & .\PwshSpectreConsole\Build.ps1
           $env:PSModulePath = @($env:PSModulePath, ".\PwshSpectreConsole\") -join ":"
           $PSVersionTable | Out-Host
