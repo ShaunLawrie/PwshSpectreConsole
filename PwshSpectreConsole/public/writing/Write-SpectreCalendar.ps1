@@ -83,7 +83,12 @@ function Write-SpectreCalendar {
             $eventDate = $event.Name -as [datetime]
             $calendar = [Spectre.Console.CalendarExtensions]::AddCalendarEvent($calendar, $event.value, $eventDate.Year, $eventDate.Month, $eventDate.Day)
         }
-        $outputData += $calendar.CalendarEvents | Sort-Object -Property Day | Format-SpectreTable -Property Description, Year, Month, Day -Border $Border -Color $Color
+        $eventsTable = $calendar.CalendarEvents | Sort-Object -Property Day | Format-SpectreTable -Property Description, Year, Month, Day -Border $Border -Color $Color
+        
+        # Apply alignment to the events table
+        $eventsTable = $eventsTable | Format-SpectreAligned -HorizontalAlignment $Alignment
+        
+        $outputData += $eventsTable
     }
 
     if ($PassThru) {
