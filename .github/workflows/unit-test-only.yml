@@ -31,3 +31,64 @@ jobs:
         with:
           name: Snapshots
           path: PwshSpectreConsole.Tests/@snapshots/*.txt
+          
+  test-update-docs:
+    name: Test UpdateDocs.ps1
+    runs-on: ubuntu-latest
+    needs: unit-test
+    if: github.repository_owner != 'ShaunLawrie' || (github.ref != 'refs/heads/main' && github.ref != 'refs/heads/prerelease')
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Install HelpOut Module
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          Install-Module HelpOut -Scope CurrentUser -RequiredVersion 0.5 -Force
+          Get-Module HelpOut -ListAvailable | Out-Host
+      - name: Build Module
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          & .\PwshSpectreConsole\Build.ps1
+          $env:PSModulePath = @($env:PSModulePath, ".\PwshSpectreConsole\") -join ":"
+          Get-Module PwshSpectreConsole -ListAvailable | Out-Host
+      - name: Test UpdateDocs.ps1
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          Write-Host "Testing UpdateDocs.ps1 script execution..."
+          & .\PwshSpectreConsole.Docs\src\powershell\UpdateDocs.ps1 -NonInteractive -NoCommit -NoBuild
+          if ($LASTEXITCODE -ne 0) {
+              throw "UpdateDocs.ps1 failed with exit code $LASTEXITCODE"
+          }
+          Write-Host "UpdateDocs.ps1 test passed successfully"
+      - name: Cleanup Generated Files
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          Write-Host "Cleaning up any generated files..."
+          
+          # Clean up the docs/reference directory
+          $docsRefPath = ".\PwshSpectreConsole.Docs\content\docs\reference\"
+          if (Test-Path $docsRefPath) {
+            Write-Host "Cleaning up $docsRefPath"
+            git checkout -- $docsRefPath
+          }
+          
+          # Clean up the examples directory
+          $examplesPath = ".\PwshSpectreConsole.Docs\assets\examples\"
+          if (Test-Path $examplesPath) {
+            Write-Host "Cleaning up $examplesPath"
+            git checkout -- $examplesPath
+          }
+          
+          # Verify no files are changed
+          $status = git status --porcelain
+          if ($status) {
+            Write-Host "Warning: The following files were changed by UpdateDocs.ps1 and need cleanup:"
+            Write-Host $status
+            git checkout -- .
+          } else {
+            Write-Host "No files were changed, cleanup successful"
+          }
