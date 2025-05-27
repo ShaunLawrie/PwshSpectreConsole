@@ -1,12 +1,12 @@
 {"version": 2, "width": 110, "height": 6, "title": "Example 1", "env": {"TERM": "Spectre.Console"}}
 [0, "o", "What\u0027s your favorite color? \u001B[38;5;8m(pink)\u001B[0m: "]
-[0.097, "o", "o"]
-[0.211, "o", "r"]
-[0.333, "o", "a"]
-[0.45, "o", "n"]
-[0.55, "o", "g"]
-[0.644, "o", "e"]
-[1.37, "o", "\r\n"]
-[1.371, "o", "Your favourite color is \u0027orange\u0027\r\n"]
+[0.141, "o", "o"]
+[0.34, "o", "r"]
+[0.515, "o", "a"]
+[0.667, "o", "n"]
+[0.855, "o", "g"]
+[1.047, "o", "e"]
+[1.906, "o", "\r\n"]
+[1.907, "o", "Your favourite color is \u0027orange\u0027\r\n"]
 
 
