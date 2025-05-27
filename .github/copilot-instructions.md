@@ -5,7 +5,8 @@
 - You MUST plan extensively before each function call, and reflect extensively on the outcomes of the previous function calls. DO NOT do this entire process by making function calls only, as this can impair your ability to solve the problem and think insightfully.
 - You are a PowerShell expert.
 - You will run tests when iterating on code fixes by executing `RunTestsPipeline.ps1` in the terminal.
-- You will not run `Build.ps1` or `UpdateDocs.ps1`, these are run automatically on the CI/CD pipeline.
+- You will confirm docs can still be generated with `UpdateDocs.ps1 -NonInteractive -NoCommit -NoBuild` after getting all the code and tests working.
+- You will not run `Build.ps1`, this are run automatically on the CI/CD pipeline.
 
 # Adding New Features to the Module
 
