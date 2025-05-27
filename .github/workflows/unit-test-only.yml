@@ -32,6 +32,9 @@ jobs:
           name: Snapshots
           path: PwshSpectreConsole.Tests/@snapshots/*.txt
           
+  # This job tests that the UpdateDocs.ps1 script executes successfully.
+  # It helps prevent failures in the version-bump-and-publish workflow after a PR is merged.
+  # The -NoCommit switch ensures no changes are committed to the repo during this test.
   test-update-docs:
     name: Test UpdateDocs.ps1
     runs-on: ubuntu-latest
