@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
 title: Write-SpectreRule
 ---
 
@@ -10,10 +14,14 @@ title: Write-SpectreRule
 
 import Asciinema from '../../../../components/Asciinema.astro'
 import writespectreruleExample1 from '../../../../assets/examples/writespectreruleExample1.cast?url'
+import writespectreruleExample2 from '../../../../assets/examples/writespectreruleExample2.cast?url'
+import writespectreruleExample3 from '../../../../assets/examples/writespectreruleExample3.cast?url'
+import writespectreruleExample4 from '../../../../assets/examples/writespectreruleExample4.cast?url'
 
 ### Description
 
 The Write-SpectreRule function writes a Spectre horizontal-rule to the console with the specified title, alignment, and color.
+You can control the width of the rule by specifying either the Width or WidthPercent parameter.
 
 
 
@@ -43,6 +51,66 @@ Write-SpectreRule -Title "My Rule" -Alignment Center -Color Yellow
 />
 
 
+**Example 2**  
+This example demonstrates how to write a rule with a specific width.
+
+
+
+```powershell
+Write-SpectreRule -Title "Fixed Width Rule" -Width 40
+```
+<Asciinema
+    src={writespectreruleExample2}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+**Example 3**  
+This example demonstrates how to write a rule with a width that's a percentage of the console width.
+
+
+
+```powershell
+Write-SpectreRule -Title "Half Width Rule" -WidthPercent 50 -Alignment Center
+```
+<Asciinema
+    src={writespectreruleExample3}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+**Example 4**
+This example demonstrates writing a rule by directly providing the title text.
+
+
+
+```powershell
+Write-SpectreRule "Simple Rule Title"
+```
+<Asciinema
+    src={writespectreruleExample4}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
 ---
 
 
@@ -56,9 +124,9 @@ The title of the rule.
 
 
 
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[String]`|false   |1       |false        |
+|Type      |Required|Position|PipelineInput |
+|----------|--------|--------|--------------|
+|`[String]`|false   |1       |true (ByValue)|
 
 
 
@@ -81,7 +149,7 @@ Valid Values:
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
-|`[String]`|false   |2       |false        |
+|`[String]`|false   |named   |false        |
 
 
 
@@ -96,18 +164,54 @@ The color of the rule. The default value is the accent color of the script.
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
-|`[Color]`|false   |3       |false        |
+|`[Color]`|false   |named   |false        |
 
 
 
 #### **LineColor**
+
+The color of the rule's line. The default value is the default value color of the script.
+
+
 
 
 
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
-|`[Color]`|false   |4       |false        |
+|`[Color]`|false   |named   |false        |
+
+
+
+#### **Width**
+
+The width of the rule in characters. If not specified, the rule will span the full width of the console.
+Cannot be used together with WidthPercent.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |named   |false        |
+
+
+
+#### **WidthPercent**
+
+The width of the rule as a percentage of the console width. Value must be between 1 and 100.
+Cannot be used together with Width.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |named   |false        |
 
 
 
@@ -133,5 +237,11 @@ Returns the Spectre Rule object instead of writing it to the console.
 
 ### Syntax
 ```powershell
-Write-SpectreRule [[-Title] <String>] [[-Alignment] <String>] [[-Color] <Color>] [[-LineColor] <Color>] [-PassThru] [<CommonParameters>]
+Write-SpectreRule [[-Title] <String>] [-Alignment <String>] [-Color <Color>] [-LineColor <Color>] [-PassThru] [<CommonParameters>]
+```
+```powershell
+Write-SpectreRule [[-Title] <String>] [-Alignment <String>] [-Color <Color>] [-LineColor <Color>] [-WidthPercent <Int32>] [-PassThru] [<CommonParameters>]
+```
+```powershell
+Write-SpectreRule [[-Title] <String>] [-Alignment <String>] [-Color <Color>] [-LineColor <Color>] [-Width <Int32>] [-PassThru] [<CommonParameters>]
 ```
