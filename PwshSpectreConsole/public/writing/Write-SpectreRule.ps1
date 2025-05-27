@@ -47,10 +47,18 @@ function Write-SpectreRule {
     # **Example 3**  
     # This example demonstrates how to write a rule with a width that's a percentage of the console width.
     Write-SpectreRule -Title "Half Width Rule" -WidthPercent 50 -Alignment Center
+
+    .EXAMPLE
+    # **Example 4**
+    # This example demonstrates writing a rule by directly providing the title text.
+    Write-SpectreRule "Simple Rule Title"
     #>
     [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/writing/write-spectrerule/', DefaultParameterSetName = 'Default')]
     [Reflection.AssemblyMetadata("title", "Write-SpectreRule")]
     param (
+        [Parameter(ParameterSetName = 'Default', Position = 0, ValueFromPipeline = $true)]
+        [Parameter(ParameterSetName = 'FixedWidth', Position = 0, ValueFromPipeline = $true)]
+        [Parameter(ParameterSetName = 'PercentWidth', Position = 0, ValueFromPipeline = $true)]
         [string] $Title,
         [ValidateSet([SpectreConsoleJustify], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Alignment = "Left",
