@@ -85,10 +85,8 @@ function Write-SpectreCalendar {
         }
         $eventsTable = $calendar.CalendarEvents | Sort-Object -Property Day | Format-SpectreTable -Property Description, Year, Month, Day -Border $Border -Color $Color
         
-        # Apply the same alignment to the events table if it's not "Left"
-        if ($Alignment -ne "Left") {
-            $eventsTable = $eventsTable | Format-SpectreAligned -HorizontalAlignment $Alignment
-        }
+        # Apply alignment to the events table
+        $eventsTable = $eventsTable | Format-SpectreAligned -HorizontalAlignment $Alignment
         
         $outputData += $eventsTable
     }
