@@ -29,7 +29,47 @@ function Write-AnsiConsoleWithWidth {
     )
 
     if ($script:SpectreRecordingType) {
-        [Spectre.Console.AnsiConsole]::Write($RenderableObject)
+        # For recording, we'll try to set the width if possible
+        $recordingConsole = [Spectre.Console.AnsiConsole]::Console
+        
+        # Try to get the profile width property safely
+        $originalWidth = $null
+        $canSetWidth = $false
+        
+        try {
+            # Check if the console has a Profile.Width property
+            if ($null -ne $recordingConsole.Profile -and 
+                ($recordingConsole.Profile | Get-Member -Name 'Width' -MemberType Property)) {
+                $originalWidth = $recordingConsole.Profile.Width
+                $canSetWidth = $true
+            }
+        }
+        catch {
+            # If any error occurs, we'll just proceed without setting the width
+            Write-Verbose "Unable to access Profile.Width property on recording console: $_"
+        }
+        
+        try {
+            # Set width if possible
+            if ($canSetWidth) {
+                $recordingConsole.Profile.Width = $MaxWidth
+            }
+            
+            # Render the object
+            [Spectre.Console.AnsiConsole]::Write($RenderableObject)
+        }
+        finally {
+            # Restore original width if we changed it
+            if ($canSetWidth -and $null -ne $originalWidth) {
+                try {
+                    $recordingConsole.Profile.Width = $originalWidth
+                }
+                catch {
+                    Write-Verbose "Unable to restore Profile.Width on recording console: $_"
+                }
+            }
+        }
+        
         return
     }
 
