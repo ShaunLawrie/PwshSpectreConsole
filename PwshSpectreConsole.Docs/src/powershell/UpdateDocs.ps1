@@ -5,6 +5,7 @@ param(
     [switch]$NonInteractive,
     [switch]$NoBuild,
     [switch]$NoCommit,
+    [switch]$Cleanup,
     [string]$TargetFunction
 )
 
@@ -225,6 +226,35 @@ if($Branch -eq "prerelease") {
 
 if($NoBuild) {
     return 
+}
+
+# Cleanup generated files if requested
+if ($NoCommit -and $Cleanup) {
+    Write-Host "Cleaning up any generated files..."
+    
+    # Clean up the docs/reference directory
+    $docsRefPath = "$PSScriptRoot/../content/docs/reference/"
+    if (Test-Path $docsRefPath) {
+        Write-Host "Cleaning up $docsRefPath"
+        git checkout -- $docsRefPath
+    }
+    
+    # Clean up the examples directory
+    $examplesPath = "$PSScriptRoot/../assets/examples/"
+    if (Test-Path $examplesPath) {
+        Write-Host "Cleaning up $examplesPath"
+        git checkout -- $examplesPath
+    }
+    
+    # Verify no files are changed
+    $status = git status --porcelain
+    if ($status) {
+        Write-Host "Warning: The following files were changed by UpdateDocs.ps1 and need cleanup:"
+        Write-Host $status
+        git checkout -- .
+    } else {
+        Write-Host "No files were changed, cleanup successful"
+    }
 }
 
 # Build the docs site
