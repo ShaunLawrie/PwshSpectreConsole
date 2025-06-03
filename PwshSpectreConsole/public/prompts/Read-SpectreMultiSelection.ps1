@@ -39,7 +39,7 @@ function Read-SpectreMultiSelection {
     .EXAMPLE
     # **Example 2**  
     # This example demonstrates using pipeline input to provide choices for multi-selection.
-    $selectedFiles = Get-ChildItem -Path "*.db" | Read-SpectreMultiSelection -Message "Select database files to backup" -ChoiceLabelProperty Name
+    $selectedFiles = @("file1.db", "file2.db", "file3.db") | ForEach-Object { [PSCustomObject]@{ Name = $_ } } | Read-SpectreMultiSelection -Message "Select database files to backup" -ChoiceLabelProperty Name
     # Type "<space>", "↓", "<space>", "↲" to select multiple files
     Write-SpectreHost "Selected files: $($selectedFiles.Name -join ', ')"
     #>

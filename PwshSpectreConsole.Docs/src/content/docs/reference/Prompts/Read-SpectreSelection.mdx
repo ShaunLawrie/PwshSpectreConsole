@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: New
+    variant: tip
 title: Read-SpectreSelection
 ---
 
@@ -11,6 +15,7 @@ title: Read-SpectreSelection
 import Asciinema from '../../../../components/Asciinema.astro'
 import readspectreselectionExample1 from '../../../../assets/examples/readspectreselectionExample1.cast?url'
 import readspectreselectionExample2 from '../../../../assets/examples/readspectreselectionExample2.cast?url'
+import readspectreselectionExample3 from '../../../../assets/examples/readspectreselectionExample3.cast?url'
 
 ### Description
 
@@ -69,6 +74,28 @@ Write-SpectreHost "Your chosen color is '$color'"
 />
 
 
+**Example 3**  
+This example demonstrates using pipeline input to provide choices to the selection prompt.
+
+
+
+```powershell
+$selectedFile = @("file1.txt", "file2.txt", "file3.txt") | ForEach-Object { [PSCustomObject]@{ Name = $_ } } | Read-SpectreSelection -Message "Select a file to open" -ChoiceLabelProperty Name
+# Type "↓", "↲" to select the second file
+Write-SpectreHost "Selected file: $($selectedFile.Name)"
+```
+<Asciinema
+    src={readspectreselectionExample3}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
 ---
 
 
@@ -84,7 +111,7 @@ The title of the selection prompt.
 
 |Type      |Required|Position|PipelineInput|Aliases                      |
 |----------|--------|--------|-------------|-----------------------------|
-|`[String]`|false   |1       |false        |Title<br/>Question<br/>Prompt|
+|`[String]`|false   |named   |false        |Title<br/>Question<br/>Prompt|
 
 
 
@@ -97,9 +124,9 @@ The list of choices to display in the selection prompt. ChoiceLabelProperty is r
 
 
 
-|Type     |Required|Position|PipelineInput|
-|---------|--------|--------|-------------|
-|`[Array]`|true    |2       |false        |
+|Type     |Required|Position|PipelineInput |
+|---------|--------|--------|--------------|
+|`[Array]`|true    |2       |true (ByValue)|
 
 
 
@@ -114,7 +141,7 @@ If the object is complex then the property of the choice object to use as the la
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
-|`[String]`|false   |3       |false        |
+|`[String]`|false   |named   |false        |
 
 
 
@@ -129,7 +156,7 @@ The color of the selected option in the selection prompt.
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
-|`[Color]`|false   |4       |false        |
+|`[Color]`|false   |named   |false        |
 
 
 
@@ -144,7 +171,7 @@ The number of choices to display per page in the selection prompt.
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
-|`[Int32]`|false   |5       |false        |
+|`[Int32]`|false   |named   |false        |
 
 
 
@@ -170,7 +197,7 @@ If this switch is present, the user can search for choices in the selection prom
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
-|`[Int32]`|false   |6       |false        |
+|`[Int32]`|false   |named   |false        |
 
 
 
@@ -185,7 +212,7 @@ The color of the search highlight in the selection prompt. Defaults to a slightl
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
-|`[Color]`|false   |7       |false        |
+|`[Color]`|false   |named   |false        |
 
 
 
@@ -196,5 +223,5 @@ The color of the search highlight in the selection prompt. Defaults to a slightl
 
 ### Syntax
 ```powershell
-Read-SpectreSelection [[-Message] <String>] [-Choices] <Array> [[-ChoiceLabelProperty] <String>] [[-Color] <Color>] [[-PageSize] <Int32>] [-EnableSearch] [[-TimeoutSeconds] <Int32>] [[-SearchHighlightColor] <Color>] [<CommonParameters>]
+Read-SpectreSelection [-Message <String>] [-Choices] <Array> [-ChoiceLabelProperty <String>] [-Color <Color>] [-PageSize <Int32>] [-EnableSearch] [-TimeoutSeconds <Int32>] [-SearchHighlightColor <Color>] [<CommonParameters>]
 ```

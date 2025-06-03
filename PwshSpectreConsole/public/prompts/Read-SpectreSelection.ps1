@@ -48,8 +48,8 @@ function Read-SpectreSelection {
     .EXAMPLE
     # **Example 3**  
     # This example demonstrates using pipeline input to provide choices to the selection prompt.
-    $selectedFile = Get-ChildItem -Path "*.txt" | Read-SpectreSelection -Message "Select a file to open" -ChoiceLabelProperty Name
-    # Type "↓", "↲" to select the first file
+    $selectedFile = @("file1.txt", "file2.txt", "file3.txt") | ForEach-Object { [PSCustomObject]@{ Name = $_ } } | Read-SpectreSelection -Message "Select a file to open" -ChoiceLabelProperty Name
+    # Type "↓", "↲" to select the second file
     Write-SpectreHost "Selected file: $($selectedFile.Name)"
     #>
     [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/prompts/read-spectreselection/')]
