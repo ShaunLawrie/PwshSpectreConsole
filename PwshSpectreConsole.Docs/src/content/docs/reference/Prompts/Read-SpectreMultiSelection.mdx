@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: New
+    variant: tip
 title: Read-SpectreMultiSelection
 ---
 
@@ -10,6 +14,7 @@ title: Read-SpectreMultiSelection
 
 import Asciinema from '../../../../components/Asciinema.astro'
 import readspectremultiselectionExample1 from '../../../../assets/examples/readspectremultiselectionExample1.cast?url'
+import readspectremultiselectionExample2 from '../../../../assets/examples/readspectremultiselectionExample2.cast?url'
 
 ### Description
 
@@ -47,6 +52,28 @@ Write-SpectreHost "Your favourite fruits are $($fruits -join ', ')"
 />
 
 
+**Example 2**  
+This example demonstrates using pipeline input to provide choices for multi-selection.
+
+
+
+```powershell
+$selectedFiles = @("file1.db", "file2.db", "file3.db") | ForEach-Object { [PSCustomObject]@{ Name = $_ } } | Read-SpectreMultiSelection -Message "Select database files to backup" -ChoiceLabelProperty Name
+# Type "<space>", "↓", "<space>", "↲" to select multiple files
+Write-SpectreHost "Selected files: $($selectedFiles.Name -join ', ')"
+```
+<Asciinema
+    src={readspectremultiselectionExample2}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
 ---
 
 
@@ -62,7 +89,7 @@ The title of the prompt. Defaults to "What are your favourite [Spectre.Console.C
 
 |Type      |Required|Position|PipelineInput|Aliases                      |
 |----------|--------|--------|-------------|-----------------------------|
-|`[String]`|false   |1       |false        |Title<br/>Question<br/>Prompt|
+|`[String]`|false   |named   |false        |Title<br/>Question<br/>Prompt|
 
 
 
@@ -75,9 +102,9 @@ The list of choices to display in the selection prompt. ChoiceLabelProperty is r
 
 
 
-|Type     |Required|Position|PipelineInput|
-|---------|--------|--------|-------------|
-|`[Array]`|true    |2       |false        |
+|Type     |Required|Position|PipelineInput |
+|---------|--------|--------|--------------|
+|`[Array]`|true    |2       |true (ByValue)|
 
 
 
@@ -92,7 +119,7 @@ If the object is complex then the property of the choice object to use as the la
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
-|`[String]`|false   |3       |false        |
+|`[String]`|false   |named   |false        |
 
 
 
@@ -107,7 +134,7 @@ The color to use for highlighting the selected choices. Defaults to the accent c
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
-|`[Color]`|false   |4       |false        |
+|`[Color]`|false   |named   |false        |
 
 
 
@@ -122,7 +149,7 @@ The number of choices to display per page. Defaults to 5.
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
-|`[Int32]`|false   |5       |false        |
+|`[Int32]`|false   |named   |false        |
 
 
 
@@ -133,7 +160,7 @@ The number of choices to display per page. Defaults to 5.
 
 |Type     |Required|Position|PipelineInput|
 |---------|--------|--------|-------------|
-|`[Int32]`|false   |6       |false        |
+|`[Int32]`|false   |named   |false        |
 
 
 
@@ -159,5 +186,5 @@ Allow the multi-selection to be submitted without any options chosen.
 
 ### Syntax
 ```powershell
-Read-SpectreMultiSelection [[-Message] <String>] [-Choices] <Array> [[-ChoiceLabelProperty] <String>] [[-Color] <Color>] [[-PageSize] <Int32>] [[-TimeoutSeconds] <Int32>] [-AllowEmpty] [<CommonParameters>]
+Read-SpectreMultiSelection [-Message <String>] [-Choices] <Array> [-ChoiceLabelProperty <String>] [-Color <Color>] [-PageSize <Int32>] [-TimeoutSeconds <Int32>] [-AllowEmpty] [<CommonParameters>]
 ```

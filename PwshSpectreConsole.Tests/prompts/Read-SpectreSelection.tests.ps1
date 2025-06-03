@@ -38,5 +38,24 @@ Describe "Read-SpectreSelection" {
             ) | Should -Be $itemToBeSelected
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
         }
+
+        It "accepts pipeline input for choices" {
+            $itemToBeSelectedName = Get-RandomString
+            $choices = @($itemToBeSelectedName) + (Get-RandomList)
+            $choices | Read-SpectreSelection -Title $testTitle -PageSize $testPageSize -Color $testColor | Should -Be $itemToBeSelectedName
+            Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
+        }
+
+        It "accepts pipeline input for object choices with ChoiceLabelProperty" {
+            $itemToBeSelectedName = Get-RandomString
+            $itemToBeSelected = [PSCustomObject]@{ ColumnToSelectFrom = $itemToBeSelectedName; Other = Get-RandomString }
+            $choices = @(
+                [PSCustomObject]@{ ColumnToSelectFrom = Get-RandomString; Other = Get-RandomString },
+                $itemToBeSelected,
+                [PSCustomObject]@{ ColumnToSelectFrom = Get-RandomString; Other = Get-RandomString }
+            )
+            $choices | Read-SpectreSelection -Title $testTitle -ChoiceLabelProperty "ColumnToSelectFrom" -PageSize $testPageSize -Color $testColor | Should -Be $itemToBeSelected
+            Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
+        }
     }
 }
