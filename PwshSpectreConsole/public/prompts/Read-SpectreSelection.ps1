@@ -44,13 +44,20 @@ function Read-SpectreSelection {
     $color = Read-SpectreSelection -Message "Select your favorite color" -Choices @("Blue", "Bluer", "Blue-est") -EnableSearch
     # Type "b", "l", "u", "e", "r", "↲" to choose "Bluer"
     Write-SpectreHost "Your chosen color is '$color'"
+
+    .EXAMPLE
+    # **Example 3**  
+    # This example demonstrates using pipeline input to provide choices to the selection prompt.
+    $selectedFile = Get-ChildItem -Path "*.txt" | Read-SpectreSelection -Message "Select a file to open" -ChoiceLabelProperty Name
+    # Type "↓", "↲" to select the first file
+    Write-SpectreHost "Selected file: $($selectedFile.Name)"
     #>
     [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/prompts/read-spectreselection/')]
     [Reflection.AssemblyMetadata("title", "Read-SpectreSelection")]
     param (
         [Alias("Title", "Question", "Prompt")]
         [string] $Message,
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ValueFromPipeline, Position = 1)]
         [array] $Choices,
         [string] $ChoiceLabelProperty,
         [ColorTransformationAttribute()]
@@ -63,34 +70,51 @@ function Read-SpectreSelection {
         [ArgumentCompletionsSpectreColors()]
         [Spectre.Console.Color] $SearchHighlightColor = $script:AccentColor.Blend([Spectre.Console.Color]::White, 0.7)
     )
-    $spectrePrompt = [Spectre.Console.SelectionPrompt[string]]::new()
-
-    $choiceLabels = $Choices
-    if ($ChoiceLabelProperty) {
-        $choiceLabels = $Choices | Select-Object -ExpandProperty $ChoiceLabelProperty
+    
+    begin {
+        $allChoices = @()
     }
-
-    $duplicateLabels = $choiceLabels | Group-Object | Where-Object { $_.Count -gt 1 }
-    if ($duplicateLabels) {
-        throw "You have duplicate labels in your select list, this is ambiguous so a selection cannot be made"
+    
+    process {
+        # Collect all choices from pipeline
+        if ($null -ne $_) {
+            $allChoices += $_
+        }
     }
+    
+    end {
+        # Use collected choices from pipeline or parameter choices
+        $choicesToUse = if ($allChoices.Count -gt 0) { $allChoices } else { $Choices }
+        
+        $spectrePrompt = [Spectre.Console.SelectionPrompt[string]]::new()
 
-    $spectrePrompt = [Spectre.Console.SelectionPromptExtensions]::AddChoices($spectrePrompt, [string[]]$choiceLabels)
-    if ($Message) {
-        $spectrePrompt.Title = $Message
+        $choiceLabels = $choicesToUse
+        if ($ChoiceLabelProperty) {
+            $choiceLabels = $choicesToUse | Select-Object -ExpandProperty $ChoiceLabelProperty
+        }
+
+        $duplicateLabels = $choiceLabels | Group-Object | Where-Object { $_.Count -gt 1 }
+        if ($duplicateLabels) {
+            throw "You have duplicate labels in your select list, this is ambiguous so a selection cannot be made"
+        }
+
+        $spectrePrompt = [Spectre.Console.SelectionPromptExtensions]::AddChoices($spectrePrompt, [string[]]$choiceLabels)
+        if ($Message) {
+            $spectrePrompt.Title = $Message
+        }
+        $spectrePrompt.PageSize = $PageSize
+        $spectrePrompt.WrapAround = $true
+        $spectrePrompt.HighlightStyle = [Spectre.Console.Style]::new($Color)
+        $spectrePrompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
+        $spectrePrompt.SearchEnabled = $EnableSearch
+        $spectrePrompt.SearchHighlightStyle = [Spectre.Console.Style]::new($SearchHighlightColor)
+
+        $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt -TimeoutSeconds $TimeoutSeconds
+
+        if ($ChoiceLabelProperty) {
+            $selected = $choicesToUse | Where-Object -Property $ChoiceLabelProperty -Eq $selected
+        }
+
+        return $selected
     }
-    $spectrePrompt.PageSize = $PageSize
-    $spectrePrompt.WrapAround = $true
-    $spectrePrompt.HighlightStyle = [Spectre.Console.Style]::new($Color)
-    $spectrePrompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
-    $spectrePrompt.SearchEnabled = $EnableSearch
-    $spectrePrompt.SearchHighlightStyle = [Spectre.Console.Style]::new($SearchHighlightColor)
-
-    $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt -TimeoutSeconds $TimeoutSeconds
-
-    if ($ChoiceLabelProperty) {
-        $selected = $Choices | Where-Object -Property $ChoiceLabelProperty -Eq $selected
-    }
-
-    return $selected
 }

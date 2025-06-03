@@ -35,13 +35,20 @@ function Read-SpectreMultiSelection {
                                           -PageSize 4
     # Type "↓", "<space>", "↓", "↓", "<space>", "↓", "<space>", "↲" to choose banana, pear and strawberry
     Write-SpectreHost "Your favourite fruits are $($fruits -join ', ')"
+
+    .EXAMPLE
+    # **Example 2**  
+    # This example demonstrates using pipeline input to provide choices for multi-selection.
+    $selectedFiles = Get-ChildItem -Path "*.db" | Read-SpectreMultiSelection -Message "Select database files to backup" -ChoiceLabelProperty Name
+    # Type "<space>", "↓", "<space>", "↲" to select multiple files
+    Write-SpectreHost "Selected files: $($selectedFiles.Name -join ', ')"
     #>
     [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/prompts/read-spectremultiselection/')]
     [Reflection.AssemblyMetadata("title", "Read-SpectreMultiSelection")]
     param (
         [Alias("Title", "Question", "Prompt")]
         [string] $Message,
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ValueFromPipeline, Position = 1)]
         [array] $Choices,
         [string] $ChoiceLabelProperty,
         [ColorTransformationAttribute()]
@@ -51,37 +58,54 @@ function Read-SpectreMultiSelection {
         [int] $TimeoutSeconds,
         [switch] $AllowEmpty
     )
-    $spectrePrompt = [Spectre.Console.MultiSelectionPrompt[string]]::new()
-
-    $choiceLabels = $Choices
-    $choiceObjects = $Choices | Where-Object { $_ -isnot [string] }
-    if ($null -ne $choiceObjects -and [string]::IsNullOrEmpty($ChoiceLabelProperty)) {
-        throw "You must specify the ChoiceLabelProperty parameter when using choice groups with complex objects"
+    
+    begin {
+        $allChoices = @()
     }
-    if ($ChoiceLabelProperty) {
-        $choiceLabels = $Choices | Select-Object -ExpandProperty $ChoiceLabelProperty
+    
+    process {
+        # Collect all choices from pipeline
+        if ($null -ne $_) {
+            $allChoices += $_
+        }
     }
+    
+    end {
+        # Use collected choices from pipeline or parameter choices
+        $choicesToUse = if ($allChoices.Count -gt 0) { $allChoices } else { $Choices }
+        
+        $spectrePrompt = [Spectre.Console.MultiSelectionPrompt[string]]::new()
 
-    $duplicateLabels = $choiceLabels | Group-Object | Where-Object { $_.Count -gt 1 }
-    if ($duplicateLabels) {
-        throw "You have duplicate labels in your select list, this is ambiguous so a selection cannot be made"
+        $choiceLabels = $choicesToUse
+        $choiceObjects = $choicesToUse | Where-Object { $_ -isnot [string] }
+        if ($null -ne $choiceObjects -and [string]::IsNullOrEmpty($ChoiceLabelProperty)) {
+            throw "You must specify the ChoiceLabelProperty parameter when using choice groups with complex objects"
+        }
+        if ($ChoiceLabelProperty) {
+            $choiceLabels = $choicesToUse | Select-Object -ExpandProperty $ChoiceLabelProperty
+        }
+
+        $duplicateLabels = $choiceLabels | Group-Object | Where-Object { $_.Count -gt 1 }
+        if ($duplicateLabels) {
+            throw "You have duplicate labels in your select list, this is ambiguous so a selection cannot be made"
+        }
+
+        $spectrePrompt = [Spectre.Console.MultiSelectionPromptExtensions]::AddChoices($spectrePrompt, [string[]]$choiceLabels)
+        if ($Message) {
+            $spectrePrompt.Title = $Message
+        }
+        $spectrePrompt.PageSize = $PageSize
+        $spectrePrompt.WrapAround = $true
+        $spectrePrompt.Required = !$AllowEmpty
+        $spectrePrompt.HighlightStyle = [Spectre.Console.Style]::new($Color)
+        $spectrePrompt.InstructionsText = "[$($script:DefaultValueColor.ToMarkup())](Press [$($script:AccentColor.ToMarkup())]space[/] to toggle a choice and press [$($script:AccentColor.ToMarkup())]<enter>[/] to submit your answer)[/]"
+        $spectrePrompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
+        $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt -TimeoutSeconds $TimeoutSeconds
+
+        if ($ChoiceLabelProperty) {
+            $selected = $choicesToUse | Where-Object { $selected -contains $_.$ChoiceLabelProperty }
+        }
+
+        return $selected
     }
-
-    $spectrePrompt = [Spectre.Console.MultiSelectionPromptExtensions]::AddChoices($spectrePrompt, [string[]]$choiceLabels)
-    if ($Message) {
-        $spectrePrompt.Title = $Message
-    }
-    $spectrePrompt.PageSize = $PageSize
-    $spectrePrompt.WrapAround = $true
-    $spectrePrompt.Required = !$AllowEmpty
-    $spectrePrompt.HighlightStyle = [Spectre.Console.Style]::new($Color)
-    $spectrePrompt.InstructionsText = "[$($script:DefaultValueColor.ToMarkup())](Press [$($script:AccentColor.ToMarkup())]space[/] to toggle a choice and press [$($script:AccentColor.ToMarkup())]<enter>[/] to submit your answer)[/]"
-    $spectrePrompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
-    $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt -TimeoutSeconds $TimeoutSeconds
-
-    if ($ChoiceLabelProperty) {
-        $selected = $Choices | Where-Object { $selected -contains $_.$ChoiceLabelProperty }
-    }
-
-    return $selected
 }
