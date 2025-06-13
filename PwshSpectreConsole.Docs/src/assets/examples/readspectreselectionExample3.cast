@@ -1,9 +1,9 @@
 {"version": 2, "width": 110, "height": 5, "title": "Example 2", "env": {"TERM": "Spectre.Console"}}
 [0, "o", "\u001B[?25lSelect a file to open\r\n                     \r\n\u001B[38;5;12m\u003E file1.txt\u001B[0m          \r\n  file2.txt          \r\n  file3.txt          "]
 [0, "o", "\r\u001B[4ASelect a file to open\r\n                     \r\n\u001B[38;5;12m\u003E file1.txt\u001B[0m          \r\n  file2.txt          \r\n  file3.txt          "]
-[0.734, "o", "\r\u001B[4ASelect a file to open\r\n                     \r\n  file1.txt          \r\n\u001B[38;5;12m\u003E file2.txt\u001B[0m          \r\n  file3.txt          "]
-[1.618, "o", "\r\u001B[2K\u001B[1A\u001B[2K\u001B[1A\u001B[2K\u001B[1A\u001B[2K\u001B[1A\u001B[2K"]
-[1.618, "o", "\u001B[?25h"]
-[1.621, "o", "Selected file: file2.txt\r\n"]
+[0.601, "o", "\r\u001B[4ASelect a file to open\r\n                     \r\n  file1.txt          \r\n\u001B[38;5;12m\u003E file2.txt\u001B[0m          \r\n  file3.txt          "]
+[1.165, "o", "\r\u001B[2K\u001B[1A\u001B[2K\u001B[1A\u001B[2K\u001B[1A\u001B[2K\u001B[1A\u001B[2K"]
+[1.165, "o", "\u001B[?25h"]
+[1.166, "o", "Selected file: file2.txt\r\n"]
 
 
