@@ -68,5 +68,26 @@ Describe "Read-SpectreMultiSelection" {
             ) | Should -Be @($itemToBeSelected, $anotherItemToBeSelected)
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
         }
+
+        It "accepts pipeline input for choices" {
+            $itemsToBeSelectedNames = @("toBeSelected", "also to be selected")
+            $choices = $itemsToBeSelectedNames + (Get-RandomList)
+            $choices | Read-SpectreMultiSelection -Title $testTitle -PageSize $testPageSize -Color $testColor | Should -Be $itemsToBeSelectedNames
+            Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
+        }
+
+        It "accepts pipeline input for object choices with ChoiceLabelProperty" {
+            $itemsToBeSelectedNames = @("toBeSelected", "also to be selected")
+            $itemToBeSelected = [PSCustomObject]@{ ColumnToSelectFrom = $itemsToBeSelectedNames[0]; Other = Get-RandomString }
+            $anotherItemToBeSelected = [PSCustomObject]@{ ColumnToSelectFrom = $itemsToBeSelectedNames[1]; Other = Get-RandomString }
+            $choices = @(
+                [PSCustomObject]@{ ColumnToSelectFrom = Get-RandomString; Other = Get-RandomString },
+                $itemToBeSelected,
+                [PSCustomObject]@{ ColumnToSelectFrom = Get-RandomString; Other = Get-RandomString },
+                $anotherItemToBeSelected
+            )
+            $choices | Read-SpectreMultiSelection -Title $testTitle -ChoiceLabelProperty "ColumnToSelectFrom" -PageSize $testPageSize -Color $testColor | Should -Be @($itemToBeSelected, $anotherItemToBeSelected)
+            Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
+        }
     }
 }
