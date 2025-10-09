@@ -49,6 +49,9 @@ function Format-SpectreTable {
     .PARAMETER Title
     The title of the table.
 
+    .PARAMETER ShowRowSeparators
+    Shows row separators.
+
     .PARAMETER AllowMarkup
     Allow Spectre markup in the table elements e.g. [green]message[/].
 
@@ -132,6 +135,7 @@ function Format-SpectreTable {
         [int] $Width,
         [switch] $HideHeaders,
         [String] $Title,
+        [switch] $ShowRowSeparators,
         [switch] $AllowMarkup,
         [switch] $Expand
     )
@@ -149,6 +153,7 @@ function Format-SpectreTable {
             'Width' { $table.Width = $Width }
             'HideHeaders' { $table.ShowHeaders = $false }
             'Title' { $tableoptions.Title = $Title }
+            'ShowRowSeparators' { [Spectre.Console.TableExtensions]::ShowRowSeparators($table) | Out-Null }
             'AllowMarkup' { $rowoptions.AllowMarkup = $true }
             'Wrap' { $tableoptions.Wrap = $true ; $FormatTableParams.Wrap = $true }
             'View' { $FormatTableParams.View = $View }
