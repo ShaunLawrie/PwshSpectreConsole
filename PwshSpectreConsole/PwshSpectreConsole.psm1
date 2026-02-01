@@ -1,4 +1,4 @@
-using module ".\private\completions\Completers.psm1"
+using module "./private/completions/Completers.psm1"
 
 $script:AccentColor = [Spectre.Console.Color]::Blue
 $script:DefaultValueColor = [Spectre.Console.Color]::Grey
@@ -27,7 +27,7 @@ foreach ($directory in @('private', 'public')) {
 Initialize-SpectreConsoleDimensions
 
 # cache the DA1 response.
-$script:TerminalSupportsSixel = Test-SpectreSixelSupport
+$script:TerminalSupportsSixel = [PwshSpectreConsole.Terminal.Compatibility]::TerminalSupportsSixel()
 
 $script:SpectreProfile = Get-SpectreProfile
 if ($script:SpectreProfile.Unicode -eq $true -or $env:IgnoreSpectreConsoleEncoding) {

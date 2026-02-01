@@ -1,0 +1,178 @@
+root = true
+
+############################################################
+# Basic file-type formatting
+############################################################
+
+[*.{json,yaml,yml}]
+indent_size = 2
+
+[*.md]
+indent_size = 2
+
+[*.{resx,ruleset,stylecop,xml,xsd,xsl}]
+indent_size = 2
+
+[*.{props,targets,config,nuspec}]
+indent_size = 2
+
+[*.tsv]
+indent_style = tab
+
+############################################################
+# Standard formatting for C# and project files
+############################################################
+
+[*.{cs,csproj}]
+indent_style = space
+indent_size = 4
+charset = utf-8
+end_of_line = crlf
+insert_final_newline = true
+
+############################################################
+# C# / .NET defaults - consolidated for clarity
+############################################################
+
+[*.cs]
+
+# Set severity for all analyzers that are enabled by default (https://docs.microsoft.com/en-us/visualstudio/code-quality/use-roslyn-analyzers?view=vs-2022#set-rule-severity-of-multiple-analyzer-rules-at-once-in-an-editorconfig-file)
+dotnet_analyzer_diagnostic.category-roslynator.severity = default|none|silent|suggestion|warning|error
+
+# Enable/disable all analyzers by default
+# NOTE: This option can be used only in .roslynatorconfig file
+roslynator_analyzers.enabled_by_default = true
+
+# Set severity for a specific analyzer
+# dotnet_diagnostic.<ANALYZER_ID>.severity = default|none|silent|suggestion|warning|error
+
+# Enable/disable all refactorings
+roslynator_refactorings.enabled = true
+
+# Enable/disable specific refactoring
+# roslynator_refactoring.<REFACTORING_NAME>.enabled = true|false
+
+# Enable/disable all compiler diagnostic fixes
+roslynator_compiler_diagnostic_fixes.enabled = true
+
+# Enable/disable specific compiler diagnostic fix
+# roslynator_compiler_diagnostic_fix.<COMPILER_DIAGNOSTIC_ID>.enabled = true|false
+
+# Sort using directives with System.* first
+dotnet_sort_system_directives_first = true
+
+# Default analyzer severity for most rules: suggestion (non-breaking for local dev)
+dotnet_analyzer_diagnostic.severity = suggestion
+
+# categories: sensible defaults for repository quality
+# Style: formatting and stylistic suggestions
+dotnet_analyzer_diagnostic.category-Style.severity = warning
+
+# Performance: high-value performance rules treated as errors (e.g. hot-path logging)
+dotnet_analyzer_diagnostic.category-Performance.severity = error
+
+# Naming: recommendations; keep as suggestions to avoid developer friction
+dotnet_analyzer_diagnostic.category-Naming.severity = suggestion
+
+# Maintainability: suggestions for cleaner, maintainable code
+dotnet_analyzer_diagnostic.category-Maintainability.severity = suggestion
+
+# Interoperability: warn about platform/interop issues
+dotnet_analyzer_diagnostic.category-Interoperability.severity = warning
+
+# Design: API design and usage guidance
+dotnet_analyzer_diagnostic.category-Design.severity = warning
+
+# Documentation: XML/docs guidance as suggestions
+dotnet_analyzer_diagnostic.category-Documentation.severity = suggestion
+
+# Globalization: treat important globalization issues as errors (e.g. culture-sensitive formatting)
+dotnet_analyzer_diagnostic.category-Globalization.severity = error
+
+# Reliability: lifecycle/dispose and other reliability concerns - warn by default
+dotnet_analyzer_diagnostic.category-Reliability.severity = warning
+
+# Security: escalate security findings to errors
+dotnet_analyzer_diagnostic.category-Security.severity = error
+
+# Usage: general API usage guidance
+dotnet_analyzer_diagnostic.category-Usage.severity = warning
+
+# Modern C# style preferences (good defaults for .NET 10)
+csharp_style_namespace_declarations = file_scoped
+csharp_style_implicit_object_creation = true
+csharp_style_target_typed_new_expression = true
+csharp_style_pattern_matching_over_is_with_cast_check = true
+csharp_style_prefer_not_pattern = true
+
+csharp_style_pattern_matching_over_as_with_null_check = true
+csharp_style_inlined_variable_declaration = true
+csharp_style_throw_expression = true
+csharp_style_prefer_switch_expression = true
+csharp_prefer_simple_using_statement = true
+csharp_style_prefer_pattern_matching = true
+dotnet_style_operator_placement_when_wrapping = end_of_line
+
+# # Prefer pattern-matching null checks (`is null` / `is not null`) over `== null` or ReferenceEquals
+dotnet_style_prefer_is_null_check_over_reference_equality_method = true
+dotnet_diagnostic.IDE0041.severity = warning
+# Also enable related null-check simplification rules
+dotnet_diagnostic.IDE0029.severity = warning
+dotnet_diagnostic.IDE0030.severity = warning
+dotnet_diagnostic.IDE0270.severity = warning
+dotnet_diagnostic.IDE0019.severity = warning
+
+# Prefer var when the type is apparent (modern and concise)
+# how does this work with IDE0007?
+# var and explicit typing preferences
+# csharp_style_var_for_built_in_types = false:none
+# csharp_style_var_when_type_is_apparent = true:suggestion
+# csharp_style_var_elsewhere = false:suggestion
+csharp_style_var_when_type_is_apparent = true
+
+# # Expression-bodied members where concise
+csharp_style_expression_bodied_methods = when_on_single_line
+csharp_style_expression_bodied_properties = when_on_single_line
+
+# # Naming conventions (kept as suggestions)
+# dotnet_naming_rule.private_fields_should_be_camel_case.severity = suggestion
+# dotnet_naming_rule.private_fields_should_be_camel_case.symbols = private_fields
+# dotnet_naming_rule.private_fields_should_be_camel_case.style = camel_case_underscore
+# dotnet_naming_symbols.private_fields.applicable_kinds = field
+# dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+# dotnet_naming_style.camel_case_underscore.capitalization = camel_case
+# dotnet_naming_style.camel_case_underscore.required_prefix = _
+# csharp_style_unused_value_expression_statement_preference = discard_variable
+
+
+# Helpful IDE rules as suggestions so dotnet-format can apply fixes
+dotnet_diagnostic.IDE0005.severity = suggestion   # Remove unnecessary usings
+dotnet_diagnostic.IDE0059.severity = suggestion   # Unused assignment
+dotnet_diagnostic.IDE0051.severity = suggestion   # Unused private members
+dotnet_diagnostic.IDE0060.severity = suggestion   # Unused parameters
+dotnet_diagnostic.IDE0058.severity = suggestion   # Expression value is never used
+dotnet_diagnostic.IDE0130.severity = suggestion   # Use 'new' expression where possible (target-typed new)
+csharp_style_unused_value_expression_statement_preference = unused_local_variable
+# Nullable reference types - enabled as suggestions; project opt-in controls runtime enforcement
+nullable = enable
+csharp_style_prefer_primary_constructors = false
+
+# Formatting / newline preferences
+# prefer Stroustrup
+csharp_new_line_before_open_brace = false
+csharp_new_line_before_else = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
+csharp_prefer_braces = when_multiline
+# Indentation preferences
+csharp_indent_block_contents = true
+csharp_indent_braces = false
+csharp_indent_case_contents = true
+csharp_indent_case_contents_when_block = true
+csharp_indent_switch_labels = true
+csharp_indent_labels = one_less_than_current
+
+
+
+# Using directive placement
+csharp_using_directive_placement = outside_namespace

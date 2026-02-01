@@ -33,7 +33,7 @@ Copyright = '(c) Shaun Lawrie. All rights reserved.'
 Description = 'A convenient PowerShell wrapper for Spectre.Console'
 
 # Minimum version of the PowerShell engine required by this module
-PowerShellVersion = '7.0'
+PowerShellVersion = '7.4'
 
 # Name of the PowerShell host required by this module
 # PowerShellHostName = ''
@@ -54,11 +54,13 @@ PowerShellVersion = '7.0'
 # RequiredModules = @()
 
 # Assemblies that must be loaded prior to importing this module
-RequiredAssemblies = '.\packages\Spectre.Console\lib\net6.0\Spectre.Console.dll', 
-               '.\packages\Spectre.Console.ImageSharp\lib\net6.0\Spectre.Console.ImageSharp.dll', 
-               '.\packages\SixLabors.ImageSharp\lib\net6.0\SixLabors.ImageSharp.dll', 
-               '.\packages\Spectre.Console.Json\lib\net6.0\Spectre.Console.Json.dll', 
-               '.\packages\PwshSpectreConsole.dll'
+RequiredAssemblies = @(
+            './lib/Spectre.Console.dll'
+            './lib/Spectre.Console.Json.dll'
+            './lib/Spectre.Console.Testing.dll'
+            './lib/SixLabors.ImageSharp.dll'
+            './lib/PwshSpectreConsole.dll'
+        )
 
 # Script files (.ps1) that are run in the caller's environment prior to importing this module.
 # ScriptsToProcess = @()
@@ -73,26 +75,26 @@ FormatsToProcess = 'PwshSpectreConsole.format.ps1xml'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = 'Add-SpectreJob', 'Format-SpectreBarChart', 
-               'Format-SpectreBreakdownChart', 'Format-SpectrePanel', 
-               'Format-SpectreTable', 'Format-SpectreTree', 'Get-SpectreEscapedText', 
-               'Get-SpectreImage', 'Get-SpectreImageExperimental', 
-               'Invoke-SpectreCommandWithProgress', 
-               'Invoke-SpectreCommandWithStatus', 'Read-SpectreMultiSelection', 
-               'Read-SpectreMultiSelectionGrouped', 'Read-SpectrePause', 
-               'Read-SpectreSelection', 'Read-SpectreText', 'Set-SpectreColors', 
-               'Start-SpectreDemo', 'Wait-SpectreJobs', 'Write-SpectreFigletText', 
-               'Write-SpectreHost', 'Write-SpectreRule', 'Read-SpectreConfirm', 
-               'New-SpectreChartItem', 'Invoke-SpectreScriptBlockQuietly', 
-               'Get-SpectreDemoColors', 'Get-SpectreDemoEmoji', 'Format-SpectreJson', 
-               'Write-SpectreCalendar', 'Start-SpectreRecording', 
-               'Stop-SpectreRecording', 'Format-SpectreColumns', 
-               'Format-SpectreRows', 'Format-SpectrePadded', 'Format-SpectreGrid', 
-               'New-SpectreGridRow', 'Format-SpectreTextPath', 'New-SpectreLayout', 
-               'Format-SpectreAligned', 'Out-SpectreHost', 'Add-SpectreTableRow', 
-               'Invoke-SpectreLive', 'Format-SpectreException', 
-               'Get-SpectreDemoFeatures', 'Get-SpectreRenderableSize', 
-               'Read-SpectreSelectionGrouped', 'Open-PwshSpectreConsoleHelp', 
+FunctionsToExport = 'Add-SpectreJob', 'Format-SpectreBarChart',
+               'Format-SpectreBreakdownChart', 'Format-SpectrePanel',
+               'Format-SpectreTable', 'Format-SpectreTree', 'Get-SpectreEscapedText',
+               'Get-SpectreImage', 'Get-SpectreImageExperimental',
+               'Invoke-SpectreCommandWithProgress',
+               'Invoke-SpectreCommandWithStatus', 'Read-SpectreMultiSelection',
+               'Read-SpectreMultiSelectionGrouped', 'Read-SpectrePause',
+               'Read-SpectreSelection', 'Read-SpectreText', 'Set-SpectreColors',
+               'Start-SpectreDemo', 'Wait-SpectreJobs', 'Write-SpectreFigletText',
+               'Write-SpectreHost', 'Write-SpectreRule', 'Read-SpectreConfirm',
+               'New-SpectreChartItem', 'Invoke-SpectreScriptBlockQuietly',
+               'Get-SpectreDemoColors', 'Get-SpectreDemoEmoji', 'Format-SpectreJson',
+               'Write-SpectreCalendar', 'Start-SpectreRecording',
+               'Stop-SpectreRecording', 'Format-SpectreColumns',
+               'Format-SpectreRows', 'Format-SpectrePadded', 'Format-SpectreGrid',
+               'New-SpectreGridRow', 'Format-SpectreTextPath', 'New-SpectreLayout',
+               'Format-SpectreAligned', 'Out-SpectreHost', 'Add-SpectreTableRow',
+               'Invoke-SpectreLive', 'Format-SpectreException',
+               'Get-SpectreDemoFeatures', 'Get-SpectreRenderableSize',
+               'Read-SpectreSelectionGrouped', 'Open-PwshSpectreConsoleHelp',
                'Get-SpectreLayoutSizes'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
@@ -153,4 +155,3 @@ PrivateData = @{
 # DefaultCommandPrefix = ''
 
 }
-

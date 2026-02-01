@@ -17,9 +17,9 @@ if($helpOut.Version.ToString() -ne "0.5") {
     throw "Must be run with HelpOut v0.5"
 }
 
-& "$PSScriptRoot\..\..\..\PwshSpectreConsole\Build.ps1" -NoReinstall
+& "$PSScriptRoot\..\..\..\Build.ps1"
 
-Import-Module "$PSScriptRoot\..\..\..\PwshSpectreConsole\PwshSpectreConsole.psd1" -Force
+Import-Module "$PSScriptRoot\..\..\..\output\PwshSpectreConsole.psd1" -Force
 Import-Module "$PSScriptRoot\Helpers.psm1" -Force
 Import-Module "$PSScriptRoot\Mocks.psm1" -Force
 
@@ -94,7 +94,7 @@ foreach ($doc in $docs) {
 
     # Remove the synopsis, the description is good enough
     $content = $content -replace "(?ms)^^### Synopsis.+?#", '#'
-    
+
     # Get last modified date of file from git (the path is relative to this file)
     $gitCommitDates = Get-GitCommitDatesForHashFile -Name $doc.Name -OutputPath $outputPath
     $modified = $gitCommitDates | Select-Object -First 1
@@ -111,7 +111,7 @@ foreach ($doc in $docs) {
         $tag = "Updated"
     }
     Write-Host "File $($doc.Name) was last modified on $modified and created on $created, using tag $tag"
-    
+
     # Add the tag to the top of the file
     if($tag) {
         $tagYaml = Get-Tag -Tag $tag
@@ -207,7 +207,7 @@ foreach ($doc in $docs) {
             [Spectre.Console.AnsiConsole]::Console = $originalConsole
         }
     }
-    
+
     # Write out the formatted file
     $content | Out-File $doc.FullName -NoNewline
 }
@@ -225,27 +225,27 @@ if($Branch -eq "prerelease") {
 }
 
 if($NoBuild) {
-    return 
+    return
 }
 
 # Cleanup generated files if requested
 if ($NoCommit -and $Cleanup) {
     Write-Host "Cleaning up any generated files..."
-    
+
     # Clean up the docs/reference directory
     $docsRefPath = "$PSScriptRoot/../content/docs/reference/"
     if (Test-Path $docsRefPath) {
         Write-Host "Cleaning up $docsRefPath"
         git checkout -- $docsRefPath
     }
-    
+
     # Clean up the examples directory
     $examplesPath = "$PSScriptRoot/../assets/examples/"
     if (Test-Path $examplesPath) {
         Write-Host "Cleaning up $examplesPath"
         git checkout -- $examplesPath
     }
-    
+
     # Verify no files are changed
     $status = git status --porcelain
     if ($status) {

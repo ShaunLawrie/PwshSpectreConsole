@@ -1,6 +1,19 @@
-Remove-Module PwshSpectreConsole -Force -ErrorAction SilentlyContinue
-Import-Module "$PSScriptRoot\..\..\PwshSpectreConsole\PwshSpectreConsole.psd1" -Force
-Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
+BeforeAll {
+    if (-Not (Get-Module PwshSpectreConsole)) {
+        if ($env:RunMergedPsm1Tests) {
+            $ModulePath = Resolve-Path (Join-Path $PSScriptRoot '..' '..' 'output' 'PwshSpectreConsole.psd1')
+        }
+        else {
+            $ModulePath = Resolve-Path (Join-Path $PSScriptRoot '..' '..' 'PwshSpectreConsole' 'PwshSpectreConsole.psd1')
+        }
+        Write-Host "Importing PwshSpectreConsole module from $ModulePath"
+        Import-Module $ModulePath -ErrorAction Stop
+    }
+    if (-Not (Get-Module TestHelpers)) {
+        $TestHelpersPath = Resolve-Path (Join-Path $PSScriptRoot '..' 'TestHelpers.psm1')
+        Import-Module $TestHelpersPath -ErrorAction Stop
+    }
+}
 
 Describe "Format-SpectreBreakdownChart" {
     InModuleScope "PwshSpectreConsole" {
@@ -32,14 +45,14 @@ Describe "Format-SpectreBreakdownChart" {
             $chart | Out-SpectreHost
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
         }
-        
+
         It "Should handle piped input correctly" {
             $chart = $testData | Format-SpectreBreakdownChart -Width $testWidth
             $chart | Should -BeOfType [Spectre.Console.BreakdownChart]
             $chart | Out-SpectreHost
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
         }
-        
+
         It "Should handle single input correctly" {
             $testData = New-SpectreChartItem -Label (Get-RandomString) -Value (Get-Random -Minimum -100 -Maximum 100) -Color (Get-RandomColor)
             $chart = Format-SpectreBreakdownChart -Data $testData -Width $testWidth

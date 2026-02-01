@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>13.0</LangVersion>
+    </PropertyGroup>
+    <PropertyGroup>
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
+        <AnalysisLevel>latest-Recommended</AnalysisLevel>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Spectre.Console" Version="0.54.0" />
+        <PackageReference Include="Spectre.Console.Testing" Version="0.54.0" />
+        <PackageReference Include="Spectre.Console.Json" Version="0.54.0" />
+        <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
+        <PackageReference Include="System.Management.Automation" Version="7.4" PrivateAssets="all" />
+        <PackageReference Include="Roslynator.Analyzers" Version="4.*">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Roslynator.CodeFixes" Version="4.*">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+    </ItemGroup>
+    <ItemGroup>
+        <!-- https://learn.microsoft.com/en-us/nuget/concepts/auditing-packages#excluding-advisories -->
+        <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-447r-wph3-92pm" />
+    </ItemGroup>
+</Project>

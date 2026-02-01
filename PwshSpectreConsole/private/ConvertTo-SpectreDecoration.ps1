@@ -6,7 +6,7 @@ function ConvertTo-SpectreDecoration {
         [switch]$AllowMarkup
     )
     Write-Debug "Module: $($ExecutionContext.SessionState.Module.Name) Command: $($MyInvocation.MyCommand.Name) Param: $($PSBoundParameters.GetEnumerator())"
-    $lookup = [PwshSpectreConsole.VTCodes.Parser]::Parse($String)
+    # $lookup = [PwshSpectreConsole.VTCodes.Parser]::Parse($String)
     $ht = @{
         decoration = [Spectre.Console.Decoration]::None
         fg         = [Spectre.Console.Color]::Default
