@@ -65,13 +65,21 @@ public sealed class ImageCanvas : Renderable {
     }
 
     /// <summary>
-    /// Sets a pixel with the specified color in the canvas at the specified location.
+    /// Sets a cell with the specified color in the canvas at the specified location.
     /// </summary>
     /// <param name="x">The X coordinate for the pixel.</param>
     /// <param name="y">The Y coordinate for the pixel.</param>
-    /// <param name="color">The pixel color.</param>
+    /// <param name="cellColorr">The pixel color.</param>
     /// <returns>The same <see cref="Canvas"/> instance so that multiple calls can be chained.</returns>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
+    public ImageCanvas SetCell(int x, int y, Color cellColor) {
+        if (x < 0 || x >= Width || y < 0 || y >= Height) {
+            throw new ArgumentOutOfRangeException($"SetCell x/y out of bounds: ({x},{y}) for canvas {Width}x{Height}");
+        }
+
+        _cells[x, y].Foreground = cellColor;
+        return this;
+    }
     public ImageCanvas SetCell(int x, int y, char glyph, Color? cellColor) {
         if (x < 0 || x >= Width || y < 0 || y >= Height) {
             throw new ArgumentOutOfRangeException($"SetCell x/y out of bounds: ({x},{y}) for canvas {Width}x{Height}");
@@ -168,7 +176,7 @@ public sealed class ImageCanvas : Renderable {
         }
 
         // Materialize the iterator and return segments.
-        return DoRender().ToList();
+        return [.. DoRender()];
     }
 
     private Cell[,] ScaleDown(int newWidth, int newHeight) {

@@ -1,7 +1,7 @@
 namespace PwshSpectreConsole;
 
 /// <summary>
-/// Represents a renderable image.
+/// Represents a renderable image in Cell blocks.
 /// </summary>
 /// <remarks>
 /// Initializes a new instance of the <see cref="CellImage"/> class.
@@ -9,7 +9,6 @@ namespace PwshSpectreConsole;
 /// <param name="filename">The image filename.</param>
 /// <param name="animationDisabled">Whether the image should have animation disabled.</param>
 public sealed class CellImage : Renderable {
-
     private static readonly IResampler _defaultResampler = KnownResamplers.Bicubic;
 
     /// <summary>
@@ -89,16 +88,29 @@ public sealed class CellImage : Renderable {
         int pixelsPerCellX;
         int pixelsPerCellY;
         switch (mode) {
+            case ImageTypes.Sixel:
+            // no-op sixel should never end up here.
+            // break;
             case ImageTypes.Braille:
-                pixelsPerCellX = 2; pixelsPerCellY = 4; break;
+                pixelsPerCellX = 2;
+                pixelsPerCellY = 4;
+                break;
             case ImageTypes.BlockElements:
-                pixelsPerCellX = 1; pixelsPerCellY = 2; break;
+                pixelsPerCellX = 1;
+                pixelsPerCellY = 2;
+                break;
+            case ImageTypes.CanvasSpectre:
+                pixelsPerCellX = 1;
+                pixelsPerCellY = 1;
+                break;
+            case ImageTypes.Canvas:
             case ImageTypes.HalfBlocks:
             case ImageTypes.Blocks:
-            case ImageTypes.Sixel:
             case ImageTypes.Auto:
             default:
-                pixelsPerCellX = 1; pixelsPerCellY = 2; break;
+                pixelsPerCellX = 1;
+                pixelsPerCellY = 2;
+                break;
         }
 
         int terminalPixelWidth = options.Unicode ? 1 : 2;
@@ -136,13 +148,8 @@ public sealed class CellImage : Renderable {
             };
 
             switch (mode) {
-                case ImageTypes.Blocks:
-                case ImageTypes.HalfBlocks:
-                    CellRender.RenderHalfCellblocks(image, ref canvas);
-                    break;
                 case ImageTypes.Sixel:
-                case ImageTypes.Auto:
-                    CellRender.RenderHalfCellblocks(image, ref canvas);
+                    // no-op sixel should never end up here.
                     break;
                 case ImageTypes.BlockElements:
                     CellRender.RenderBlockElements(image, ref canvas);
@@ -150,6 +157,15 @@ public sealed class CellImage : Renderable {
                 case ImageTypes.Braille:
                     CellRender.RenderBraille(image, ref canvas);
                     break;
+                case ImageTypes.Canvas:
+                    CellRender.RenderCanvas(image, ref canvas);
+                    break;
+                case ImageTypes.CanvasSpectre:
+                    CellRender.RenderCanvasSpectre(image, ref canvas);
+                    break;
+                case ImageTypes.Auto:
+                case ImageTypes.Blocks:
+                case ImageTypes.HalfBlocks:
                 default:
                     CellRender.RenderHalfCellblocks(image, ref canvas);
                     break;

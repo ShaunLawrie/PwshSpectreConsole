@@ -1,10 +1,10 @@
 ﻿namespace PwshSpectreConsole;
 
 /// <summary>
-/// Represents a renderable image.
+/// Represents a renderable image, with pixel rendering (ie sub-cell).
 /// </summary>
 /// <remarks>
-/// Initializes a new instance of the <see cref="SixelImage"/> class.
+/// Initializes a new instance of the <see cref="PixelImage"/> class.
 /// </remarks>
 /// <param name="filename">The image filename.</param>
 /// <param name="animationDisabled">Whether the image should have animation disabled.</param>

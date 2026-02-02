@@ -94,14 +94,12 @@ function Get-SpectreImage {
                 throw 'Sixel format is not supported in this terminal, use -Force to override.'
             }
         }
-        elseif ($Format -in 'HalfBlocks','BlockElements','Braille','Blocks') {
+        else{
             $image = [PwshSpectreConsole.CellImage]::new($imagePathResolved, $Format)
         }
-
         if ($image -and $MaxWidth) {
             $image.MaxWidth = $MaxWidth
         }
-
         $image
     }
 }

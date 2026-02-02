@@ -12,8 +12,7 @@ public static partial class CellRender {
                 bool bottomTransparent = IsTransparent(bottom);
 
                 if (topTransparent && bottomTransparent) {
-                    // leave transparent
-                    continue;
+                    // leave transparent (no-op)
                 }
                 else if (topTransparent) {
                     canvas.SetCell(x, cy, Constants.LowerHalfBlock, new Color(bottom.R, bottom.G, bottom.B));

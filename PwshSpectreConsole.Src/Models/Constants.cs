@@ -98,6 +98,7 @@ internal static class Constants {
     /// braille blank (U+2800)
     /// </summary>
     public const char BrailleBlank = '\u2800';
+
     /// <summary>
     /// explicit space char for clarity
     /// </summary>
