@@ -5,9 +5,6 @@ public enum ImageTypes {
     Sixel = 1,
     // this will just choose halfblocks
     Blocks = 2,
-    HalfBlocks = 3,
-    BlockElements = 4,
-    Braille = 5,
-    Canvas = 6,
-    CanvasSpectre = 7
+    Braille = 3,
+    Canvas = 4
 }

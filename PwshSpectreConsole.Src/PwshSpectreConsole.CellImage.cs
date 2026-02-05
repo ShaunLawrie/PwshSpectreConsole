@@ -61,13 +61,13 @@ public sealed class CellImage : Renderable {
     internal ImageTypes _protocol;
     public CellImage(string filename) {
         AnimationDisabled = false;
-        _protocol = ImageTypes.HalfBlocks;
+        _protocol = ImageTypes.Blocks;
         Image = SixImage.Load<Rgba32>(filename);
     }
 
     public CellImage(string filename, ImageTypes? protocol, bool animationDisabled = false) {
         AnimationDisabled = animationDisabled;
-        _protocol = protocol ?? ImageTypes.HalfBlocks;
+        _protocol = protocol ?? ImageTypes.Blocks;
         Image = SixImage.Load<Rgba32>(filename);
     }
 
@@ -87,30 +87,13 @@ public sealed class CellImage : Renderable {
         // pixels per cell mapping for each mode
         int pixelsPerCellX;
         int pixelsPerCellY;
-        switch (mode) {
-            case ImageTypes.Sixel:
-            // no-op sixel should never end up here.
-            // break;
-            case ImageTypes.Braille:
-                pixelsPerCellX = 2;
-                pixelsPerCellY = 4;
-                break;
-            case ImageTypes.BlockElements:
-                pixelsPerCellX = 1;
-                pixelsPerCellY = 2;
-                break;
-            case ImageTypes.CanvasSpectre:
-                pixelsPerCellX = 1;
-                pixelsPerCellY = 1;
-                break;
-            case ImageTypes.Canvas:
-            case ImageTypes.HalfBlocks:
-            case ImageTypes.Blocks:
-            case ImageTypes.Auto:
-            default:
-                pixelsPerCellX = 1;
-                pixelsPerCellY = 2;
-                break;
+        if (mode is ImageTypes.Braille) {
+            pixelsPerCellX = 2;
+            pixelsPerCellY = 4;
+        }
+        else {
+            pixelsPerCellX = 1;
+            pixelsPerCellY = 2;
         }
 
         int terminalPixelWidth = options.Unicode ? 1 : 2;
@@ -151,23 +134,17 @@ public sealed class CellImage : Renderable {
                 case ImageTypes.Sixel:
                     // no-op sixel should never end up here.
                     break;
-                case ImageTypes.BlockElements:
-                    CellRender.RenderBlockElements(image, ref canvas);
-                    break;
+
                 case ImageTypes.Braille:
                     CellRender.RenderBraille(image, ref canvas);
                     break;
                 case ImageTypes.Canvas:
                     CellRender.RenderCanvas(image, ref canvas);
                     break;
-                case ImageTypes.CanvasSpectre:
-                    CellRender.RenderCanvasSpectre(image, ref canvas);
-                    break;
                 case ImageTypes.Auto:
                 case ImageTypes.Blocks:
-                case ImageTypes.HalfBlocks:
                 default:
-                    CellRender.RenderHalfCellblocks(image, ref canvas);
+                    CellRender.RenderBlocks(image, ref canvas);
                     break;
             }
 
