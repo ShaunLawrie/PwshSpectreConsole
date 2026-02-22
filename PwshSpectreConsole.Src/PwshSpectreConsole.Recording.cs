@@ -157,7 +157,7 @@ public partial class RecordingConsole : IAnsiConsole {
             countOfCursorUps += int.Parse(cursorUp.Groups[1].Value, CultureInfo.InvariantCulture);
         }
         int KeyEntries = Input.KeyEntries;
-        int countOfNewlines = Newline().Matches(json).Count;
+        int countOfNewlines = Newline().Count(json);
         int totalLines = countOfNewlines - countOfCursorUps + KeyEntries + 2;
         string header = $"{{\"version\": 2, \"width\": {_ansiConsole.Profile.Width}, \"height\": {totalLines}, \"title\": \"{JsonEncodedText.Encode(title)}\", \"env\": {{\"TERM\": \"Spectre.Console\"}}}}";
         return $"{header}{Environment.NewLine}{json}{Environment.NewLine}";
@@ -175,8 +175,10 @@ public partial class RecordingConsole : IAnsiConsole {
 
     [GeneratedRegex(@"\\n")]
     private static partial Regex Newline();
+
     [GeneratedRegex(@"\\r\\r\\n")]
     private static partial Regex DoubleNewline();
+
     [GeneratedRegex(@"\[([0-9]+)A")]
     private static partial Regex CursorUps();
 }
