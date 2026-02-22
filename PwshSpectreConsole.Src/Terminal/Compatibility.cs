@@ -8,8 +8,6 @@ public static class Compatibility {
     /// Memory-caches the result of the terminal supporting sixel graphics.
     /// </summary>
     private static bool? _terminalSupportsSixel;
-    private static bool? _terminalSupportsSynchronizedOutput;
-
     /// <summary>
     /// Memory-caches the result of the terminal cell size, sending the control code is slow.
     /// </summary>
@@ -67,75 +65,6 @@ public static class Compatibility {
         string response = GetControlSequenceResponse(Constants.DA1);
         _terminalSupportsSixel = response.Contains(";4;") || response.Contains(";4c");
         return _terminalSupportsSixel.Value;
-    }
-
-    /// <summary>
-    /// query if the terminal supports synchronized output.
-    /// Use CSI ? 2026 $ p to query the state of the (DEC) mode 2026.
-    /// This works for any private mode number.
-    /// If you get nothing back (DECRQM not implemented at all)
-    /// or you get back a CSI ? 2026 ; 0 $ y
-    /// 0 	Mode is not recognized 	not supported
-    /// 1 	Set
-    /// 2 	Reset
-    /// 3 	Permanently set
-    /// 4 	Permanently reset
-    /// => [?2026;0$y
-    /// See DECRQM (request) and DECRPM (response) for more details.
-    /// </summary>
-    public static bool TerminalSupportsSynchronizedOutput() {
-        if (_terminalSupportsSynchronizedOutput.HasValue) {
-            return _terminalSupportsSynchronizedOutput.Value;
-        }
-
-        string response = GetControlSequenceResponse(Constants.DECRQM2026);
-        try {
-            if (string.IsNullOrEmpty(response)) {
-                _terminalSupportsSynchronizedOutput = false;
-                return false;
-            }
-
-            // Expected response: ESC[?2026;<n>$y  where <n> is a number (0..4)
-            int idx = response.IndexOf("?2026;", StringComparison.Ordinal);
-            if (idx >= 0) {
-                int start = idx + "?2026;".Length;
-                int end = response.IndexOf('$', start);
-                if (end < 0) {
-                    // If no $ found, try to find a non-digit terminator or use rest of string
-                    end = start;
-                    while (end < response.Length && char.IsDigit(response[end])) end++;
-                }
-
-                if (end > start) {
-                    string numberText = response[start..end];
-                    if (int.TryParse(numberText, NumberStyles.Integer, CultureInfo.InvariantCulture, out int number)) {
-                        // 0 = not recognized (not supported). 1..4 indicate supported states.
-                        _terminalSupportsSynchronizedOutput = number != 0;
-                        // Console.WriteLine($"Synchronized Output: received {number}");
-                        return _terminalSupportsSynchronizedOutput.Value;
-                    }
-                }
-            }
-
-            // As a fallback, try to extract the last numeric token from the response
-            for (int i = response.Length - 1; i >= 0; i--) {
-                if (char.IsDigit(response[i])) {
-                    int j = i;
-                    while (j >= 0 && char.IsDigit(response[j])) j--;
-                    string candidate = response.Substring(j + 1, i - j);
-                    if (int.TryParse(candidate, NumberStyles.Integer, CultureInfo.InvariantCulture, out int fallbackNumber)) {
-                        _terminalSupportsSynchronizedOutput = fallbackNumber != 0;
-                        Console.WriteLine($"Synchronized Output fallback: received {fallbackNumber}");
-                        return _terminalSupportsSynchronizedOutput.Value;
-                    }
-                    break;
-                }
-            }
-        }
-        catch {
-            return false;
-        }
-        return false;
     }
 
     /// <summary>
