@@ -10,8 +10,6 @@ function Test-SpectreSixelSupport {
     [Reflection.AssemblyMetadata("title", "Test-SpectreSixelSupport")]
     param ()
     try {
-        # $response = Get-ControlSequenceResponse -ControlSequence "[c"
-        # return $response.Contains(";4;")
         [PwshSpectreConsole.Terminal.Compatibility]::TerminalSupportsSixel()
     } catch {
         return $false
