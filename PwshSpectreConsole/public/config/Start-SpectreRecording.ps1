@@ -64,7 +64,7 @@ function Start-SpectreRecording {
 
     if($RecordingType -eq "asciinema") {
         # Create a recording console for asciinema, it's a bit fiddlier and requires an iansiconsole that can record durations between frames
-        $script:SpectreRecordingRecorder = [PwshSpectreConsole.Recording.RecordingConsole]::new($width, $height)
+        $script:SpectreRecordingRecorder = [PwshSpectreConsole.RecordingConsole]::new($width, $height)
     } else {
         # Use the built in recorder
         $script:SpectreRecordingRecorder = [Spectre.Console.Recorder]::new($script:SpectreRecordingOriginalConsole)
