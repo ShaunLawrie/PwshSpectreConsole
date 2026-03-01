@@ -20,13 +20,6 @@ if ($env:CI) {
     }
 }
 
-# Location of the main module
-$PwshSpectreConsolePath = "$RepositoryRoot/PwshSpectreConsole"
-
-# Set the module path to include the local module
-$separator = if ($IsWindows) { ";" } else { ":" }
-$env:PSModulePath = @($env:PSModulePath, $PwshSpectreConsolePath) -join $separator
-
 # If last commit was the version bump, skip it
 $lastCommitUser = git log -1 --pretty=%aN
 if ($Type -ne "stable" -and $lastCommitUser -like "*via GitHub Actions*") {
