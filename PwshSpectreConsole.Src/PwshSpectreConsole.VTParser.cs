@@ -41,7 +41,7 @@ public static class VTParser {
                     if (VsbLength(ref vsb) > 0) {
                         ReadOnlySpan<char> textSpan = vsb.AsSpan();
                         paragraph.Append(textSpan, currentStyle.HasAnyStyle ? currentStyle.ToSpectreStyle() : Style.Plain);
-                        vsb = new ValueStringBuilder(256);
+                        vsb.Clear();
                     }
 
                     int escapeEnd = ParseEscapeSequence(span, i, ref currentStyle);
@@ -58,7 +58,7 @@ public static class VTParser {
                     if (VsbLength(ref vsb) > 0) {
                         ReadOnlySpan<char> textSpan = vsb.AsSpan();
                         paragraph.Append(textSpan, currentStyle.HasAnyStyle ? currentStyle.ToSpectreStyle() : Style.Plain);
-                        vsb = new ValueStringBuilder(256);
+                        vsb.Clear();
                     }
                     OscResult oscResult = ParseOscSequence(span, i, ref currentStyle);
                     if (oscResult.End > i) {

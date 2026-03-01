@@ -34,6 +34,11 @@ internal ref struct ValueStringBuilder {
         if (old != null) ArrayPool<char>.Shared.Return(old);
     }
 
+    public void Clear() {
+        _span[..Length].Clear();
+        Length = 0;
+    }
+
     public readonly ReadOnlySpan<char> AsSpan() => _span[..Length];
 
     public override string ToString() {

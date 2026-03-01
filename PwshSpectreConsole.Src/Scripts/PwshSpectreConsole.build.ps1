@@ -48,7 +48,7 @@ task Build {
     }
     try {
         Push-Location $script:config.SourcePath
-        exec { dotnet publish -c Release -o $script:config.DestinationPath }
+        exec { dotnet publish -c $Configuration -o $script:config.DestinationPath }
     } finally {
         Pop-Location
     }

@@ -20,4 +20,4 @@ jobs:
           $ErrorActionPreference = "Stop"
           Write-Host "Working on ${{ github.ref }}"
           Install-Module HelpOut -Scope CurrentUser -RequiredVersion 0.5 -Force
-          & .\Build.ps1
+          & .\build.ps1
