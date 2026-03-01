@@ -36,7 +36,6 @@ PwshSpectreConsole.Src/*/bin/*
 PwshSpectreConsole.Src/*/obj/*
 # Test results
 testResults.xml
-.github/
 PwshSpectreConsole/lib/*
 output/
 ref/

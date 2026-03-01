@@ -78,7 +78,7 @@ if ($WhatIfPreference) {
     Write-Host "WhatIf: Would have published module to gallery"
 } else {
     Import-Module (Join-Path $RepositoryRoot "output" "PwshSpectreConsole.psd1") -Force
-    Publish-Module -Name PwshSpectreConsole -NugetApiKey $env:PSGALLERY_API_KEY -AllowPrerelease
+    Publish-Module -Path (Join-Path $RepositoryRoot "output" "PwshSpectreConsole.psd1") -NugetApiKey $env:PSGALLERY_API_KEY -AllowPrerelease
 }
 
 # Create a gh release for it
