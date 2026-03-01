@@ -29,7 +29,13 @@ function Write-AnsiConsoleWithWidth {
     )
 
     if ($script:SpectreRecordingType) {
-        [Spectre.Console.AnsiConsole]::Write($RenderableObject)
+        $originalRecordingWidth = [Spectre.Console.AnsiConsole]::Console.Profile.Width
+        try {
+            [Spectre.Console.AnsiConsole]::Console.Profile.Width = $MaxWidth
+            [Spectre.Console.AnsiConsole]::Write($RenderableObject)
+        } finally {
+            [Spectre.Console.AnsiConsole]::Console.Profile.Width = $originalRecordingWidth
+        }
         return
     }
 

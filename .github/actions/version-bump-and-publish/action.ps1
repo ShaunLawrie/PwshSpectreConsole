@@ -48,7 +48,10 @@ if ($WhatIfPreference) {
     Write-Host "WhatIf: Would have bumped version to $newVersion"
 } else {
     Write-Host "Bumping version to $newVersion"
-    Update-ModuleManifest -Path "$RepositoryRoot\PwshSpectreConsole\PwshSpectreConsole.psd1" -ModuleVersion ([version]$newVersion)
+    $manifestPath = "$RepositoryRoot\PwshSpectreConsole\PwshSpectreConsole.psd1"
+    $manifestContent = Get-Content -Path $manifestPath -Raw
+    $manifestContent = $manifestContent -replace "ModuleVersion\s*=\s*'.+?'", "ModuleVersion = '$([version]$newVersion)'"
+    Set-Content -Path $manifestPath -Value $manifestContent -NoNewline
     git config --global user.name 'Shaun Lawrie (via GitHub Actions)'
     git config --global user.email 'shaun.r.lawrie@gmail.com'
     git add (Join-Path $RepositoryRoot "PwshSpectreConsole" "PwshSpectreConsole.psd1")
@@ -68,7 +71,10 @@ if ($newVersion.PreReleaseLabel) {
     if ($WhatIfPreference) {
         Write-Host "WhatIf: Would have set pre-release version $($newVersion.PreReleaseLabel)"
     } else {
-        Update-ModuleManifest -Path $RepositoryRoot\PwshSpectreConsole\PwshSpectreConsole.psd1 -PrivateData @{ Prerelease = $newVersion.PreReleaseLabel }
+        $manifestPath = "$RepositoryRoot\PwshSpectreConsole\PwshSpectreConsole.psd1"
+        $manifestContent = Get-Content -Path $manifestPath -Raw
+        $manifestContent = $manifestContent -replace "# Prerelease = ''", "Prerelease = '$($newVersion.PreReleaseLabel)'"
+        Set-Content -Path $manifestPath -Value $manifestContent -NoNewline
     }
 }
 
