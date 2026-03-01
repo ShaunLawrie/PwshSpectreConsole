@@ -176,10 +176,7 @@ task Test {
     if ($PesterOutput) {
         $pesterConfig.Output.Verbosity = $PesterOutput
     }
-    
-    $splat = @{}
     if ($env:CI) {
-        $splat.CI = $true
         $pesterConfig.Filter.ExcludeTag = "ExcludeCI"
     }
 
@@ -188,7 +185,7 @@ task Test {
     $TestHelpersPath = Resolve-Path (Join-Path $script:config.TestPath 'TestHelpers.psm1')
     Import-Module $TestHelpersPath -ErrorAction Stop
 
-    Invoke-Pester -Configuration $pesterConfig @splat
+    Invoke-Pester -Configuration $pesterConfig
 }
 
 task CleanAfter {
