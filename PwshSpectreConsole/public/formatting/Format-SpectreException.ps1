@@ -17,7 +17,9 @@ function Format-SpectreException {
     The format to use when rendering the exception. The default value is "Default".
 
     .PARAMETER ExceptionStyle
-    The style to use when rendering the exception provided as a hashtable. e.g. 
+    The style to use when rendering the exception provided as a hashtable.
+    You can provide a partial hashtable to override only specific styles, the rest will use defaults.
+    e.g. 
     ```
     @{
         Message        = "red"
@@ -70,24 +72,22 @@ function Format-SpectreException {
         [ValidateSet([SpectreConsoleExceptionFormats], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $ExceptionFormat = "Default",
         [ColorThemeTransformationAttribute()]
-        [hashtable] $ExceptionStyle = @{
-            Message        = "Red"
-            Exception      = "White"
-            Method         = [Spectre.Console.Color]::Pink3
-            ParameterType  = "Grey69"
-            ParameterName  = $script:DefaultValueColor
-            Parenthesis    = $script:DefaultValueColor
-            Path           = [Spectre.Console.Color]::Pink3
-            LineNumber     = "Blue"
-            Dimmed         = "Grey"
-            NonEmphasized  = $script:DefaultValueColor
-        }
+        [hashtable] $ExceptionStyle = @{}
     )
 
-    $requiredExceptionStyleKeys = @("Message", "Exception", "Method", "ParameterType", "ParameterName", "Parenthesis", "Path", "LineNumber", "Dimmed", "NonEmphasized")
-    if (($requiredExceptionStyleKeys | ForEach-Object { $ExceptionStyle.Keys -contains $_ }) -contains $false) {
-        throw "ExceptionStyle must contain the following keys: $($requiredExceptionStyleKeys -join ', ')"
+    $defaultExceptionStyle = @{
+        Message        = [Spectre.Console.Style]::Parse("Red")
+        Exception      = [Spectre.Console.Style]::Parse("White")
+        Method         = [Spectre.Console.Style]::new([Spectre.Console.Color]::Pink3)
+        ParameterType  = [Spectre.Console.Style]::Parse("Grey69")
+        ParameterName  = [Spectre.Console.Style]::new($script:DefaultValueColor)
+        Parenthesis    = [Spectre.Console.Style]::new($script:DefaultValueColor)
+        Path           = [Spectre.Console.Style]::new([Spectre.Console.Color]::Pink3)
+        LineNumber     = [Spectre.Console.Style]::Parse("Blue")
+        Dimmed         = [Spectre.Console.Style]::Parse("Grey")
+        NonEmphasized  = [Spectre.Console.Style]::new($script:DefaultValueColor)
     }
+    Merge-HashtableDefaults -UserStyle $ExceptionStyle -DefaultStyle $defaultExceptionStyle
 
     if ($Exception -is [System.Management.Automation.ErrorRecord]) {
         $exceptionObject = $Exception.Exception

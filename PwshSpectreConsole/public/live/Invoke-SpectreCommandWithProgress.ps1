@@ -107,6 +107,32 @@ function Invoke-SpectreCommandWithProgress {
         return $result
     }
     Write-SpectreHost "Result: $result"
+
+    .EXAMPLE
+    # **Example 5**  
+    # This example demonstrates how to track the progress of ForEach-Object -Parallel jobs with a progress bar.
+    $OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = [System.Text.UTF8Encoding]::new()
+    $jobs = 1..10 | ForEach-Object -AsJob -ThrottleLimit 3 -Parallel {
+        Start-Sleep -Seconds (Get-Random -Minimum 1 -Maximum 5)
+    }
+    Invoke-SpectreCommandWithProgress -ScriptBlock {
+        param (
+            [Spectre.Console.ProgressContext] $Context
+        )
+        $task = $Context.AddTask("Waiting for jobs to complete")
+        do {
+            $completedCount = $jobs.ChildJobs.Where{ $_.State -eq "Completed" }.Count
+            $totalCount = $jobs.ChildJobs.Count
+            $percentComplete = [math]::Round($completedCount / $totalCount * 100, 0)
+            if ($percentComplete -gt $task.Percentage) {
+                $task.Increment($percentComplete - $task.Percentage)
+            }
+            if ($jobs.State -eq "Running") {
+                Start-Sleep -Milliseconds 500
+            }
+        } until ($jobs.State -eq "Completed")
+        $task.Increment(100 - $task.Percentage)
+    }
     #>
     [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/live/invoke-spectrecommandwithprogress/')]
     [Reflection.AssemblyMetadata("title", "Invoke-SpectreCommandWithProgress")]

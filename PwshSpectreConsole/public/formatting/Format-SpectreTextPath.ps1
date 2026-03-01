@@ -18,6 +18,7 @@ function Format-SpectreTextPath {
 
     .PARAMETER PathStyle
     A hashtable of Spectre Console colors or color names to style the path output.
+    You can provide a partial hashtable to override only specific styles, the rest will use defaults.
     e.g.
     ```
     @{
@@ -41,18 +42,16 @@ function Format-SpectreTextPath {
         [ValidateSet([SpectreConsoleJustify], ErrorMessage = "Value '{0}' is invalid. Try one of: {1}")]
         [string] $Alignment = "Left",
         [ColorThemeTransformationAttribute()]
-        [hashtable] $PathStyle = @{
-            RootColor      = $script:AccentColor
-            SeparatorColor = $script:DefaultValueColor
-            StemColor      = [Spectre.Console.Color]::Orange1
-            LeafColor      = [Spectre.Console.Color]::Red
-        }
+        [hashtable] $PathStyle = @{}
     )
 
-    $requiredPathKeys = @("RootColor", "SeparatorColor", "StemColor", "LeafColor")
-    if (($requiredPathKeys | ForEach-Object { $PathStyle.Keys -contains $_ }) -contains $false) {
-        throw "PathStyle must contain the following keys: $($requiredPathKeys -join ', ')"
+    $defaultPathStyle = @{
+        RootColor      = [Spectre.Console.Style]::new($script:AccentColor)
+        SeparatorColor = [Spectre.Console.Style]::new($script:DefaultValueColor)
+        StemColor      = [Spectre.Console.Style]::new([Spectre.Console.Color]::Orange1)
+        LeafColor      = [Spectre.Console.Style]::new([Spectre.Console.Color]::Red)
     }
+    Merge-HashtableDefaults -UserStyle $PathStyle -DefaultStyle $defaultPathStyle
 
     $textPath = [PwshSpectreConsole.Render.SpectreTextPath]::new($Path)
     $textPath.Justification = [Spectre.Console.Justify]::$Alignment

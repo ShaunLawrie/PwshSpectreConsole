@@ -54,6 +54,7 @@ function Format-SpectreJson {
 
     .PARAMETER JsonStyle
     A hashtable of Spectre Console color names and values to style the Json output.
+    You can provide a partial hashtable to override only specific styles, the rest will use defaults.
     e.g.
     ```
     @{
@@ -139,24 +140,22 @@ function Format-SpectreJson {
         [int] $Width,
         [int] $Height,
         [ColorThemeTransformationAttribute()]
-        [hashtable] $JsonStyle = @{
-            MemberStyle    = $script:AccentColor
-            BracesStyle    = [Spectre.Console.Color]::Cyan1
-            BracketsStyle  = [Spectre.Console.Color]::Orange1
-            ColonStyle     = $script:AccentColor
-            CommaStyle     = $script:AccentColor
-            StringStyle    = [Spectre.Console.Color]::White
-            NumberStyle    = [Spectre.Console.Color]::Cyan1
-            BooleanStyle   = [Spectre.Console.Color]::LightSkyBlue1
-            NullStyle      = $script:DefaultValueColor
-        }
+        [hashtable] $JsonStyle = @{}
     )
     begin {
 
-        $requiredJsonStyleKeys = @('MemberStyle', 'BracesStyle', 'BracketsStyle', 'ColonStyle', 'CommaStyle', 'StringStyle', 'NumberStyle', 'BooleanStyle', 'NullStyle')
-        if (($requiredJsonStyleKeys | ForEach-Object { $JsonStyle.Keys -contains $_ }) -contains $false) {
-            throw "JsonStyle must contain the following keys: $($requiredJsonStyleKeys -join ', ')"
+        $defaultJsonStyle = @{
+            MemberStyle    = [Spectre.Console.Style]::new($script:AccentColor)
+            BracesStyle    = [Spectre.Console.Style]::new([Spectre.Console.Color]::Cyan1)
+            BracketsStyle  = [Spectre.Console.Style]::new([Spectre.Console.Color]::Orange1)
+            ColonStyle     = [Spectre.Console.Style]::new($script:AccentColor)
+            CommaStyle     = [Spectre.Console.Style]::new($script:AccentColor)
+            StringStyle    = [Spectre.Console.Style]::new([Spectre.Console.Color]::White)
+            NumberStyle    = [Spectre.Console.Style]::new([Spectre.Console.Color]::Cyan1)
+            BooleanStyle   = [Spectre.Console.Style]::new([Spectre.Console.Color]::LightSkyBlue1)
+            NullStyle      = [Spectre.Console.Style]::new($script:DefaultValueColor)
         }
+        Merge-HashtableDefaults -UserStyle $JsonStyle -DefaultStyle $defaultJsonStyle
 
         $collector = [System.Collections.Generic.List[psobject]]::new()
         $splat = @{

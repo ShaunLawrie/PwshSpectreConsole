@@ -93,5 +93,24 @@ Describe "Read-SpectreMultiSelectionGrouped" {
             Read-SpectreMultiSelectionGrouped -Title $testTitle -ChoiceLabelProperty "ColumnToSelectFrom" -Choices $testChoices -PageSize $testPageSize -Color $testColor | Should -Be @($itemToBeSelected, $anotherItemToBeSelected)
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
         }
+
+        It "prompts with a scriptblock ChoiceLabelProperty" {
+            $itemsToBeSelectedNames = @("hello_42", "world_99")
+            $itemToBeSelected = [PSCustomObject]@{ Name = "hello"; Id = 42 }
+            $anotherItemToBeSelected = [PSCustomObject]@{ Name = "world"; Id = 99 }
+            $testChoices = @(
+                @{
+                    Name    = "Test Group"
+                    Choices = @(
+                        [PSCustomObject]@{ Name = "foo"; Id = 1 },
+                        $itemToBeSelected,
+                        [PSCustomObject]@{ Name = "bar"; Id = 2 },
+                        $anotherItemToBeSelected
+                    )
+                }
+            )
+            Read-SpectreMultiSelectionGrouped -Title $testTitle -ChoiceLabelProperty { "$($_.Name)_$($_.Id)" } -Choices $testChoices -PageSize $testPageSize -Color $testColor | Should -Be @($itemToBeSelected, $anotherItemToBeSelected)
+            Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
+        }
     }
 }

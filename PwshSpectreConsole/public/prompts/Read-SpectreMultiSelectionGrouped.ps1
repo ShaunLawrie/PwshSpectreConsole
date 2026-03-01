@@ -17,6 +17,7 @@ function Read-SpectreMultiSelectionGrouped {
 
     .PARAMETER ChoiceLabelProperty
     The name of the property to use as the label for each choice. If this parameter is not specified, the choices are displayed as strings.
+    This can be a string property name or a script block that takes the choice object as `$_` and returns a string label.
 
     .PARAMETER Color
     The color of the selected choices. The default value is the accent color of the script.
@@ -50,7 +51,7 @@ function Read-SpectreMultiSelectionGrouped {
         [string] $Message,
         [Parameter(Mandatory)]
         [array] $Choices,
-        [string] $ChoiceLabelProperty,
+        [object] $ChoiceLabelProperty,
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
         [Spectre.Console.Color] $Color = $script:AccentColor,
@@ -62,7 +63,9 @@ function Read-SpectreMultiSelectionGrouped {
 
     $choiceLabels = $Choices.Choices
     $flattenedChoices = $Choices.Choices
-    if ($ChoiceLabelProperty) {
+    if ($ChoiceLabelProperty -is [scriptblock]) {
+        $choiceLabels = $choiceLabels | ForEach-Object -Process $ChoiceLabelProperty
+    } elseif ($ChoiceLabelProperty) {
         $choiceLabels = $choiceLabels | Select-Object -ExpandProperty $ChoiceLabelProperty
     }
     $duplicateLabels = $choiceLabels | Group-Object | Where-Object { $_.Count -gt 1 }
@@ -72,11 +75,13 @@ function Read-SpectreMultiSelectionGrouped {
 
     foreach ($group in $Choices) {
         $choiceObjects = $group.Choices | Where-Object { $_ -isnot [string] }
-        if ($null -ne $choiceObjects -and [string]::IsNullOrEmpty($ChoiceLabelProperty)) {
+        if ($null -ne $choiceObjects -and !$ChoiceLabelProperty) {
             throw "You must specify the ChoiceLabelProperty parameter when using choice groups with complex objects"
         }
         $choiceLabels = $group.Choices
-        if ($ChoiceLabelProperty) {
+        if ($ChoiceLabelProperty -is [scriptblock]) {
+            $choiceLabels = $choiceLabels | ForEach-Object -Process $ChoiceLabelProperty
+        } elseif ($ChoiceLabelProperty) {
             $choiceLabels = $choiceLabels | Select-Object -ExpandProperty $ChoiceLabelProperty
         }
         $spectrePrompt = [Spectre.Console.MultiSelectionPromptExtensions]::AddChoiceGroup($spectrePrompt, $group.Name, [string[]]$choiceLabels)
@@ -93,7 +98,9 @@ function Read-SpectreMultiSelectionGrouped {
     $spectrePrompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
     $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt -TimeoutSeconds $TimeoutSeconds
 
-    if ($ChoiceLabelProperty) {
+    if ($ChoiceLabelProperty -is [scriptblock]) {
+        $selected = $flattenedChoices | Where-Object { $selected -contains (ForEach-Object -InputObject $_ -Process $ChoiceLabelProperty) }
+    } elseif ($ChoiceLabelProperty) {
         $selected = $flattenedChoices | Where-Object { $selected -contains $_.$ChoiceLabelProperty }
     }
 

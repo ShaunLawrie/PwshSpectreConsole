@@ -18,6 +18,7 @@ function Read-SpectreSelection {
 
     .PARAMETER ChoiceLabelProperty
     If the object is complex then the property of the choice object to use as the label in the selection prompt is required.
+    This can be a string property name or a script block that takes the choice object as `$_` and returns a string label.
 
     .PARAMETER Color
     The color of the selected option in the selection prompt.
@@ -51,6 +52,18 @@ function Read-SpectreSelection {
     $selectedFile = @("file1.txt", "file2.txt", "file3.txt") | ForEach-Object { [PSCustomObject]@{ Name = $_ } } | Read-SpectreSelection -Message "Select a file to open" -ChoiceLabelProperty Name
     # Type "↓", "↲" to select the second file
     Write-SpectreHost "Selected file: $($selectedFile.Name)"
+
+    .EXAMPLE
+    # **Example 4**  
+    # This example demonstrates a selection prompt with a scriptblock to generate dynamic labels for complex objects.
+    $data = @(
+        [PSCustomObject]@{ Name = "Alice"; Age = 30 },
+        [PSCustomObject]@{ Name = "Bob"; Age = 25 },
+        [PSCustomObject]@{ Name = "Charlie"; Age = 35 }
+    )
+    $selected = Read-SpectreSelection -Message "Select a person" -Choices $data -ChoiceLabelProperty { "$($_.Name) (Age: $($_.Age))" }
+    # Type "↓", "↲" to select Bob
+    Write-SpectreHost "Selected: $($selected.Name)"
     #>
     [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/prompts/read-spectreselection/')]
     [Reflection.AssemblyMetadata("title", "Read-SpectreSelection")]
@@ -59,7 +72,7 @@ function Read-SpectreSelection {
         [string] $Message,
         [Parameter(Mandatory, ValueFromPipeline, Position = 1)]
         [array] $Choices,
-        [string] $ChoiceLabelProperty,
+        [object] $ChoiceLabelProperty,
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
         [Spectre.Console.Color] $Color = $script:AccentColor,
@@ -89,7 +102,9 @@ function Read-SpectreSelection {
         $spectrePrompt = [Spectre.Console.SelectionPrompt[string]]::new()
 
         $choiceLabels = $choicesToUse
-        if ($ChoiceLabelProperty) {
+        if ($ChoiceLabelProperty -is [scriptblock]) {
+            $choiceLabels = $choicesToUse | ForEach-Object -Process $ChoiceLabelProperty
+        } elseif ($ChoiceLabelProperty) {
             $choiceLabels = $choicesToUse | Select-Object -ExpandProperty $ChoiceLabelProperty
         }
 
@@ -111,7 +126,9 @@ function Read-SpectreSelection {
 
         $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt -TimeoutSeconds $TimeoutSeconds
 
-        if ($ChoiceLabelProperty) {
+        if ($ChoiceLabelProperty -is [scriptblock]) {
+            $selected = $choicesToUse | Where-Object { (ForEach-Object -InputObject $_ -Process $ChoiceLabelProperty) -eq $selected }
+        } elseif ($ChoiceLabelProperty) {
             $selected = $choicesToUse | Where-Object -Property $ChoiceLabelProperty -Eq $selected
         }
 

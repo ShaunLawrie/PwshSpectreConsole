@@ -85,5 +85,32 @@ Describe "Read-SpectreMultiSelection" {
             $choices | Read-SpectreMultiSelection -Title $testTitle -ChoiceLabelProperty "ColumnToSelectFrom" -PageSize $testPageSize -Color $testColor | Should -Be @($itemToBeSelected, $anotherItemToBeSelected)
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
         }
+
+        It "prompts with a scriptblock ChoiceLabelProperty" {
+            $itemsToBeSelectedNames = @("hello_42", "world_99")
+            $itemToBeSelected = [PSCustomObject]@{ Name = "hello"; Id = 42 }
+            $anotherItemToBeSelected = [PSCustomObject]@{ Name = "world"; Id = 99 }
+            Read-SpectreMultiSelection -Title $testTitle -ChoiceLabelProperty { "$($_.Name)_$($_.Id)" } -PageSize $testPageSize -Color $testColor -Choices @(
+                [PSCustomObject]@{ Name = "foo"; Id = 1 },
+                $itemToBeSelected,
+                [PSCustomObject]@{ Name = "bar"; Id = 2 },
+                $anotherItemToBeSelected
+            ) | Should -Be @($itemToBeSelected, $anotherItemToBeSelected)
+            Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
+        }
+
+        It "accepts pipeline input with a scriptblock ChoiceLabelProperty" {
+            $itemsToBeSelectedNames = @("hello_42", "world_99")
+            $itemToBeSelected = [PSCustomObject]@{ Name = "hello"; Id = 42 }
+            $anotherItemToBeSelected = [PSCustomObject]@{ Name = "world"; Id = 99 }
+            $choices = @(
+                [PSCustomObject]@{ Name = "foo"; Id = 1 },
+                $itemToBeSelected,
+                [PSCustomObject]@{ Name = "bar"; Id = 2 },
+                $anotherItemToBeSelected
+            )
+            $choices | Read-SpectreMultiSelection -Title $testTitle -ChoiceLabelProperty { "$($_.Name)_$($_.Id)" } -PageSize $testPageSize -Color $testColor | Should -Be @($itemToBeSelected, $anotherItemToBeSelected)
+            Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
+        }
     }
 }

@@ -17,6 +17,7 @@ function Read-SpectreMultiSelection {
 
     .PARAMETER ChoiceLabelProperty
     If the object is complex then the property of the choice object to use as the label in the selection prompt is required.
+    This can be a string property name or a script block that takes the choice object as `$_` and returns a string label.
 
     .PARAMETER Color
     The color to use for highlighting the selected choices. Defaults to the accent color of the script.
@@ -42,6 +43,18 @@ function Read-SpectreMultiSelection {
     $selectedFiles = @("file1.db", "file2.db", "file3.db") | ForEach-Object { [PSCustomObject]@{ Name = $_ } } | Read-SpectreMultiSelection -Message "Select database files to backup" -ChoiceLabelProperty Name
     # Type "<space>", "↓", "<space>", "↲" to select multiple files
     Write-SpectreHost "Selected files: $($selectedFiles.Name -join ', ')"
+
+    .EXAMPLE
+    # **Example 3**  
+    # This example demonstrates using a scriptblock to generate dynamic labels for complex objects.
+    $data = @(
+        [PSCustomObject]@{ Name = "Alice"; Age = 30 },
+        [PSCustomObject]@{ Name = "Bob"; Age = 25 },
+        [PSCustomObject]@{ Name = "Charlie"; Age = 35 }
+    )
+    $selected = Read-SpectreMultiSelection -Message "Select people" -Choices $data -ChoiceLabelProperty { "$($_.Name) (Age: $($_.Age))" }
+    # Type "<space>", "↓", "↓", "<space>", "↲" to select Alice and Charlie
+    Write-SpectreHost "Selected: $(($selected | ForEach-Object { $_.Name }) -join ', ')"
     #>
     [CmdletBinding(HelpUri='https://pwshspectreconsole.com/reference/prompts/read-spectremultiselection/')]
     [Reflection.AssemblyMetadata("title", "Read-SpectreMultiSelection")]
@@ -50,7 +63,7 @@ function Read-SpectreMultiSelection {
         [string] $Message,
         [Parameter(Mandatory, ValueFromPipeline, Position = 1)]
         [array] $Choices,
-        [string] $ChoiceLabelProperty,
+        [object] $ChoiceLabelProperty,
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
         [Spectre.Console.Color] $Color = $script:AccentColor,
@@ -78,10 +91,12 @@ function Read-SpectreMultiSelection {
 
         $choiceLabels = $choicesToUse
         $choiceObjects = $choicesToUse | Where-Object { $_ -isnot [string] }
-        if ($null -ne $choiceObjects -and [string]::IsNullOrEmpty($ChoiceLabelProperty)) {
+        if ($null -ne $choiceObjects -and !$ChoiceLabelProperty) {
             throw "You must specify the ChoiceLabelProperty parameter when using choice groups with complex objects"
         }
-        if ($ChoiceLabelProperty) {
+        if ($ChoiceLabelProperty -is [scriptblock]) {
+            $choiceLabels = $choicesToUse | ForEach-Object -Process $ChoiceLabelProperty
+        } elseif ($ChoiceLabelProperty) {
             $choiceLabels = $choicesToUse | Select-Object -ExpandProperty $ChoiceLabelProperty
         }
 
@@ -102,7 +117,9 @@ function Read-SpectreMultiSelection {
         $spectrePrompt.MoreChoicesText = "[$($script:DefaultValueColor.ToMarkup())](Move up and down to reveal more choices)[/]"
         $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt -TimeoutSeconds $TimeoutSeconds
 
-        if ($ChoiceLabelProperty) {
+        if ($ChoiceLabelProperty -is [scriptblock]) {
+            $selected = $choicesToUse | Where-Object { $selected -contains (ForEach-Object -InputObject $_ -Process $ChoiceLabelProperty) }
+        } elseif ($ChoiceLabelProperty) {
             $selected = $choicesToUse | Where-Object { $selected -contains $_.$ChoiceLabelProperty }
         }
 

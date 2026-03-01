@@ -18,6 +18,7 @@ function Read-SpectreSelectionGrouped {
 
     .PARAMETER ChoiceLabelProperty
     If the object is complex then the property of the choice object to use as the label in the selection prompt is required.
+    This can be a string property name or a script block that takes the choice object as `$_` and returns a string label.
 
     .PARAMETER Color
     The color of the selected option in the selection prompt.
@@ -50,7 +51,7 @@ function Read-SpectreSelectionGrouped {
         [string] $Message,
         [Parameter(Mandatory)]
         [hashtable] $Choices,
-        [string] $ChoiceLabelProperty,
+        [object] $ChoiceLabelProperty,
         [ColorTransformationAttribute()]
         [ArgumentCompletionsSpectreColors()]
         [Spectre.Console.Color] $Color = $script:AccentColor,
@@ -64,7 +65,9 @@ function Read-SpectreSelectionGrouped {
     $spectrePrompt = [Spectre.Console.SelectionPrompt[string]]::new()
 
     $choiceLabels = $Choices.Values | ForEach-Object { [array]$_ }
-    if ($ChoiceLabelProperty) {
+    if ($ChoiceLabelProperty -is [scriptblock]) {
+        $choiceLabels = $Choices.Values | ForEach-Object { [array]$_ } | ForEach-Object -Process $ChoiceLabelProperty
+    } elseif ($ChoiceLabelProperty) {
         $choiceLabels = $Choices.Values | ForEach-Object { [array]$_ } | Select-Object -ExpandProperty $ChoiceLabelProperty
     }
 
@@ -74,7 +77,13 @@ function Read-SpectreSelectionGrouped {
     }
 
     foreach ($key in $Choices.Keys) {
-        $spectrePrompt = [Spectre.Console.SelectionPromptExtensions]::AddChoiceGroup($spectrePrompt, $key, [string[]]$Choices[$key])
+        $groupChoiceLabels = $Choices[$key]
+        if ($ChoiceLabelProperty -is [scriptblock]) {
+            $groupChoiceLabels = $Choices[$key] | ForEach-Object -Process $ChoiceLabelProperty
+        } elseif ($ChoiceLabelProperty) {
+            $groupChoiceLabels = $Choices[$key] | Select-Object -ExpandProperty $ChoiceLabelProperty
+        }
+        $spectrePrompt = [Spectre.Console.SelectionPromptExtensions]::AddChoiceGroup($spectrePrompt, $key, [string[]]$groupChoiceLabels)
     }
     
     if ($Message) {
@@ -90,8 +99,10 @@ function Read-SpectreSelectionGrouped {
 
     $selected = Invoke-SpectrePromptAsync -Prompt $spectrePrompt -TimeoutSeconds $TimeoutSeconds
 
-    if ($ChoiceLabelProperty) {
-        $selected = $Choices.Values | Where-Object -Property $ChoiceLabelProperty -Eq $selected
+    if ($ChoiceLabelProperty -is [scriptblock]) {
+        $selected = $Choices.Values | ForEach-Object { [array]$_ } | Where-Object { (ForEach-Object -InputObject $_ -Process $ChoiceLabelProperty) -eq $selected }
+    } elseif ($ChoiceLabelProperty) {
+        $selected = $Choices.Values | ForEach-Object { [array]$_ } | Where-Object -Property $ChoiceLabelProperty -Eq $selected
     }
 
     return $selected

@@ -53,5 +53,28 @@ Describe "Read-SpectreSelection" {
             $choices | Read-SpectreSelection -Title $testTitle -ChoiceLabelProperty "ColumnToSelectFrom" -PageSize $testPageSize -Color $testColor | Should -Be $itemToBeSelected
             Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
         }
+
+        It "prompts with a scriptblock ChoiceLabelProperty" {
+            $itemToBeSelectedName = "hello_42"
+            $itemToBeSelected = [PSCustomObject]@{ Name = "hello"; Id = 42 }
+            Read-SpectreSelection -Title $testTitle -ChoiceLabelProperty { "$($_.Name)_$($_.Id)" } -PageSize $testPageSize -Color $testColor -Choices @(
+                [PSCustomObject]@{ Name = "foo"; Id = 1 },
+                $itemToBeSelected,
+                [PSCustomObject]@{ Name = "bar"; Id = 2 }
+            ) | Should -Be $itemToBeSelected
+            Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
+        }
+
+        It "accepts pipeline input with a scriptblock ChoiceLabelProperty" {
+            $itemToBeSelectedName = "hello_42"
+            $itemToBeSelected = [PSCustomObject]@{ Name = "hello"; Id = 42 }
+            $choices = @(
+                [PSCustomObject]@{ Name = "foo"; Id = 1 },
+                $itemToBeSelected,
+                [PSCustomObject]@{ Name = "bar"; Id = 2 }
+            )
+            $choices | Read-SpectreSelection -Title $testTitle -ChoiceLabelProperty { "$($_.Name)_$($_.Id)" } -PageSize $testPageSize -Color $testColor | Should -Be $itemToBeSelected
+            Assert-MockCalled -CommandName "Invoke-SpectrePromptAsync" -Times 1 -Exactly
+        }
     }
 }
