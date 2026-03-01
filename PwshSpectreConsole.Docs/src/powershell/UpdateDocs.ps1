@@ -26,7 +26,7 @@ if ($NoModuleBuild) {
     & "$PSScriptRoot\..\..\..\build.ps1"
 }
 
-Import-Module "$PSScriptRoot\..\..\..\output\PwshSpectreConsole.psd1" -Force
+Import-Module "$PSScriptRoot\..\..\..\output\PwshSpectreConsole\PwshSpectreConsole.psd1" -Force
 Import-Module "$PSScriptRoot\Helpers.psm1" -Force
 Import-Module "$PSScriptRoot\Mocks.psm1" -Force
 

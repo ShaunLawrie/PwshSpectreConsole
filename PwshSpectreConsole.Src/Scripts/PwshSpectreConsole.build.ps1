@@ -14,7 +14,7 @@ $script:config = @{
     ModuleName       = 'PwshSpectreConsole'
     ProjectRoot      = $projectRoot
     SourcePath       = Join-Path $projectRoot 'PwshSpectreConsole.Src'
-    OutputPath       = Join-Path $projectRoot 'output'
+    OutputPath       = Join-Path $projectRoot 'output' 'PwshSpectreConsole'
     ModuleSourcePath = Join-Path $projectRoot 'PwshSpectreConsole'
     TestPath         = Join-Path $projectRoot 'PwshSpectreConsole.Tests'
     CsprojPath       = Join-Path $projectRoot 'PwshSpectreConsole.Src' 'PwshSpectreConsole.csproj'
@@ -36,6 +36,10 @@ task Clean {
     Write-Host "Cleaning output directory: $($script:config.OutputPath)" -ForegroundColor Yellow
     if (Test-Path $script:config.OutputPath) {
         Remove-Item -Path $script:config.OutputPath -Recurse -Force
+    }
+    $parent = Split-Path $script:config.OutputPath -Parent
+    if (!Test-Path $parent) {
+        New-Item -Path $parent -ItemType Directory | Out-Null
     }
     New-Item -Path $script:config.OutputPath -ItemType Directory -Force | Out-Null
 }
