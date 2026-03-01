@@ -34,17 +34,17 @@ foreach ($function in $functions) {
 }
 
 # Get the next version
-$newVersion = Get-NextVersion -Type $Type
+$moduleManifestPath = "$RepositoryRoot\PwshSpectreConsole\PwshSpectreConsole.psd1"
+$newVersion = Get-NextVersion -Type $Type -ModuleName "PwshSpectreConsole" -ModuleManifestPath $moduleManifestPath
 
 # Bump the version in the module manifest
 if ($WhatIfPreference) {
     Write-Host "WhatIf: Would have bumped version to $newVersion"
 } else {
     Write-Host "Bumping version to $newVersion"
-    $manifestPath = "$RepositoryRoot\PwshSpectreConsole\PwshSpectreConsole.psd1"
-    $manifestContent = Get-Content -Path $manifestPath -Raw
+    $manifestContent = Get-Content -Path $moduleManifestPath -Raw
     $manifestContent = $manifestContent -replace "ModuleVersion\s*=\s*'.+?'", "ModuleVersion = '$([version]$newVersion)'"
-    Set-Content -Path $manifestPath -Value $manifestContent -NoNewline
+    Set-Content -Path $moduleManifestPath -Value $manifestContent -NoNewline
     git config --global user.name 'Shaun Lawrie (via GitHub Actions)'
     git config --global user.email 'shaun.r.lawrie@gmail.com'
     git add (Join-Path $RepositoryRoot "PwshSpectreConsole" "PwshSpectreConsole.psd1")
@@ -64,10 +64,9 @@ if ($newVersion.PreReleaseLabel) {
     if ($WhatIfPreference) {
         Write-Host "WhatIf: Would have set pre-release version $($newVersion.PreReleaseLabel)"
     } else {
-        $manifestPath = "$RepositoryRoot\PwshSpectreConsole\PwshSpectreConsole.psd1"
-        $manifestContent = Get-Content -Path $manifestPath -Raw
+        $manifestContent = Get-Content -Path $moduleManifestPath -Raw
         $manifestContent = $manifestContent -replace "# Prerelease = ''", "Prerelease = '$($newVersion.PreReleaseLabel)'"
-        Set-Content -Path $manifestPath -Value $manifestContent -NoNewline
+        Set-Content -Path $moduleManifestPath -Value $manifestContent -NoNewline
     }
 }
 

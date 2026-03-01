@@ -2,12 +2,16 @@ function Get-NextVersion {
     param (
         [Parameter(Mandatory = $true)]
         [ValidateSet("stable", "prerelease")]
-        [string]$Type
+        [string]$Type,
+        [Parameter(Mandatory = $true)]
+        [string]$ModuleName,
+        [Parameter(Mandatory = $true)]
+        [string]$ModuleManifestPath
     )
 
-    $latestGalleryStableVersion = Get-LatestGalleryVersion -Type "stable" -ModuleName "PwshSpectreConsole"
-    $latestGalleryPrereleaseVersion = Get-LatestGalleryVersion -Type "prerelease" -ModuleName "PwshSpectreConsole"
-    $localModuleVersion = Get-LocalModuleVersion -ModuleName "PwshSpectreConsole"
+    $latestGalleryStableVersion = Get-LatestGalleryVersion -Type "stable" -ModuleName $ModuleName
+    $latestGalleryPrereleaseVersion = Get-LatestGalleryVersion -Type "prerelease" -ModuleName $ModuleName
+    $localModuleVersion = Get-LocalModuleVersion -ModuleManifestPath $ModuleManifestPath
 
     if ($Type -eq "stable") {
         return Get-NextStableVersion `
