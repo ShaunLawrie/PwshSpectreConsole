@@ -78,10 +78,10 @@ function Write-SpectreCalendar {
     $outputData = @($calendar)
 
     if ($Events) {
-        foreach ($event in $events.GetEnumerator()) {
+        foreach ($calendarEvent in $events.GetEnumerator()) {
             # Calendar events don't appear to support Culture.
-            $eventDate = $event.Name -as [datetime]
-            $calendar = [Spectre.Console.CalendarExtensions]::AddCalendarEvent($calendar, $event.value, $eventDate.Year, $eventDate.Month, $eventDate.Day)
+            $eventDate = $calendarEvent.Name -as [datetime]
+            $calendar = [Spectre.Console.CalendarExtensions]::AddCalendarEvent($calendar, $calendarEvent.value, $eventDate.Year, $eventDate.Month, $eventDate.Day)
         }
         $eventsTable = $calendar.CalendarEvents | Sort-Object -Property Day | Format-SpectreTable -Property Description, Year, Month, Day -Border $Border -Color $Color
         

@@ -17,12 +17,6 @@ $script:SpectreConsoleSettings = [Spectre.Console.AnsiConsoleSettings]::new()
 $script:SpectreConsoleSettings.Out = $script:SpectreConsoleOutput
 $script:SpectreConsole = [Spectre.Console.AnsiConsole]::Create($script:SpectreConsoleSettings)
 
-foreach ($directory in @('private', 'public')) {
-    Get-ChildItem -Path "$PSScriptRoot\$directory\*.ps1" -Recurse | ForEach-Object {
-        . $_.FullName
-    }
-}
-
 # Initialize console dimensions to ensure they're valid (important for CI environments)
 Initialize-SpectreConsoleDimensions
 
@@ -37,7 +31,6 @@ if ($script:SpectreProfile.Unicode -eq $true -or $env:IgnoreSpectreConsoleEncodi
 if ($env:IgnoreSpectreEncoding -eq $true) {
     return
 }
-
 @"
 [white]Your terminal host is currently using encoding '$($SpectreProfile.Encoding)' which limits Spectre Console functionality.
 

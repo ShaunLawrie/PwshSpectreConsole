@@ -18,14 +18,16 @@ $script:config = @{
     ModuleSourcePath = Join-Path $projectRoot 'PwshSpectreConsole'
     TestPath         = Join-Path $projectRoot 'PwshSpectreConsole.Tests'
     CsprojPath       = Join-Path $projectRoot 'PwshSpectreConsole.Src' 'PwshSpectreConsole.csproj'
-    DestinationPath  = Join-Path $projectRoot 'output' 'lib'
+    DotnetOutputPath = Join-Path $projectRoot 'output' 'PwshSpectreConsole' 'lib'
 }
 function MergePSM1 {
     param(
         $Path
     )
+    Write-Host "Merging $($Path)" -ForegroundColor Gray
     $content = Get-Content $Path.FullName -Raw
     '#region {0}' -f ([System.IO.Path]::GetRelativePath($projectRoot, $Path.FullName) -replace '\\','/')
+    [Environment]::NewLine
     $content = $content -replace '(?m)^using (module|namespace).*$' -replace '(?m)\r?\n',([Environment]::NewLine)
     $content.Trim()
     '#endregion'
@@ -52,7 +54,7 @@ task Build {
     }
     try {
         Push-Location $script:config.SourcePath
-        exec { dotnet publish -c $Configuration -o $script:config.DestinationPath }
+        exec { dotnet publish -c $Configuration -o $script:config.DotnetOutputPath }
     } finally {
         Pop-Location
     }
@@ -105,52 +107,7 @@ using namespace PwshSpectreConsole
     } | Out-String | Add-Content -Path $MergedPSM1Path -NoNewline
 
     # Add initialization code
-    @'
-$script:AccentColor = [Spectre.Console.Color]::Blue
-$script:DefaultValueColor = [Spectre.Console.Color]::Grey
-$script:DefaultTableHeaderColor = [Spectre.Console.Color]::Default
-$script:DefaultTableTextColor = [Spectre.Console.Color]::Default
-
-# For widgets that can be streamed to the console as raw text, prompts/progress widgets do not use this.
-# This allows the terminal to process them as text so they can be dumped like:
-# PS> $widget = "Hello, World!" | Format-SpectrePanel -Title "My Panel" -Color Blue -Expand
-# PS> $widget # uses the default powershell console writer
-# PS> $widget > file.txt # redirects as string data to file
-# PS> $widget | Out-SpectreHost # uses a dedicated console writer that doesn't pad the object like the default formatter
-$script:SpectreConsoleWriter = [System.IO.StringWriter]::new()
-$script:SpectreConsoleOutput = [Spectre.Console.AnsiConsoleOutput]::new($script:SpectreConsoleWriter)
-$script:SpectreConsoleSettings = [Spectre.Console.AnsiConsoleSettings]::new()
-$script:SpectreConsoleSettings.Out = $script:SpectreConsoleOutput
-$script:SpectreConsole = [Spectre.Console.AnsiConsole]::Create($script:SpectreConsoleSettings)
-
-# Initialize console dimensions to ensure they're valid (important for CI environments)
-Initialize-SpectreConsoleDimensions
-
-# cache the DA1 response.
-$script:TerminalSupportsSixel = [PwshSpectreConsole.Terminal.Compatibility]::TerminalSupportsSixel()
-
-$script:SpectreProfile = Get-SpectreProfile
-if ($script:SpectreProfile.Unicode -eq $true -or $env:IgnoreSpectreConsoleEncoding) {
-    return $script:SpectreConsole
-}
-
-if ($env:IgnoreSpectreEncoding -eq $true) {
-    return
-}
-@"
-[white]Your terminal host is currently using encoding '$($SpectreProfile.Encoding)' which limits Spectre Console functionality.
-
-To enable UTF-8 output in your terminal, add the following line at the top of your PowerShell `$PROFILE file and restart the terminal:
-[Orange1 on Grey15]$('$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = [System.Text.UTF8Encoding]::new()' | Get-SpectreEscapedText)[/]
-
-If you don't want to enable UTF-8, you can suppress this warning with the environment variable [Orange1 on Grey15]`$env:IgnoreSpectreEncoding = `$true[/] instead.
-
-For more details see:
- - https://github.com/ShaunLawrie/PwshSpectreConsole/issues/46
- - https://spectreconsole.net/best-practices#configuring-the-windows-terminal-for-unicode-and-emoji-support
- - https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_profiles[/]
-"@ | Format-SpectrePanel -Title "[Orange1] PwshSpectreConsole Warning [/]" -Color OrangeRed1 -Expand | Out-Host
-'@ | Add-Content -Path $MergedPSM1Path -NoNewline
+    MergePSM1 -Path (Get-Item (Join-Path $script:config.ModuleSourcePath "$($script:config.ModuleName).psm1")) | Add-Content -Path $MergedPSM1Path -NoNewline
 }
 
 task PSScriptAnalyzer {
@@ -184,8 +141,9 @@ task Test {
         $pesterConfig.Filter.ExcludeTag = "ExcludeCI"
     }
 
-    Write-Host "Running merged PSM1 tests..." -ForegroundColor Yellow
-    Import-Module (Resolve-Path (Join-Path $script:config.OutputPath "$($script:config.moduleName).psd1"))
+    $modulePath = Resolve-Path (Join-Path $script:config.OutputPath "$($script:config.moduleName).psd1")
+    Write-Host "Running merged PSM1 tests for module $modulePath..." -ForegroundColor Yellow
+    Import-Module $modulePath
     $TestHelpersPath = Resolve-Path (Join-Path $script:config.TestPath 'TestHelpers.psm1')
     Import-Module $TestHelpersPath -ErrorAction Stop
 
@@ -194,8 +152,8 @@ task Test {
 
 task CleanAfter {
     Write-Host "Cleaning up merged module test artifacts" -ForegroundColor Yellow
-    if ($script:config.DestinationPath -and (Test-Path $script:config.DestinationPath)) {
-        Get-Childitem $script:config.DestinationPath -File | Where-Object { $_.Extension -in '.pdb', '.json' } | Remove-Item -Force -ErrorAction Ignore
+    if ($script:config.DotnetOutputPath -and (Test-Path $script:config.DotnetOutputPath)) {
+        Get-Childitem $script:config.DotnetOutputPath -File | Where-Object { $_.Extension -in '.pdb', '.json' } | Remove-Item -Force -ErrorAction Ignore
     }
 }
 

@@ -5,14 +5,14 @@ Describe "Format-SpectreTextPath" {
             $testConsole = [Spectre.Console.Testing.TestConsole]::new()
             $testConsole.EmitAnsiSequences = $true
             Mock Write-AnsiConsole {
-                $RenderableObject | Should -BeOfType [Spectre.Console.TextPath]
+                $RenderableObject | Should -BeOfType [PwshSpectreConsole.Render.SpectreTextPath]
                 $testConsole.Write($RenderableObject)
             }
         }
 
         It "Should format a path" {
             $renderable = Format-SpectreTextPath -Path "C:\Windows\System32\cmd.exe"
-            $renderable | Should -BeOfType [Spectre.Console.TextPath]
+            $renderable | Should -BeOfType [PwshSpectreConsole.Render.SpectreTextPath]
             $renderable | Out-SpectreHost
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
             { Assert-OutputMatchesSnapshot -SnapshotName "Format-SpectreTextPath" -Output $testConsole.Output } | Should -Not -Throw
@@ -25,7 +25,7 @@ Describe "Format-SpectreTextPath" {
                 StemColor      = [Spectre.Console.Color]::Orange1
                 LeafColor      = [Spectre.Console.Color]::HotPink
             }
-            $renderable | Should -BeOfType [Spectre.Console.TextPath]
+            $renderable | Should -BeOfType [PwshSpectreConsole.Render.SpectreTextPath]
             $renderable | Out-SpectreHost
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
             { Assert-OutputMatchesSnapshot -SnapshotName "Format-SpectreTextPathCustom" -Output $testConsole.Output } | Should -Not -Throw

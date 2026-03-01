@@ -9,6 +9,7 @@ global using System.Reflection.Metadata;
 global using System.Runtime.CompilerServices;
 global using System.Text;
 global using System.Threading;
+global using PwshSpectreConsole.Extensions;
 global using PwshSpectreConsole.Models;
 global using PwshSpectreConsole.Render;
 global using PwshSpectreConsole.Terminal;

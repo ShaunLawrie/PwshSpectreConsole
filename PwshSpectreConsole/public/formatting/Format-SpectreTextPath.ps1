@@ -54,7 +54,7 @@ function Format-SpectreTextPath {
         throw "PathStyle must contain the following keys: $($requiredPathKeys -join ', ')"
     }
 
-    $textPath = [Spectre.Console.TextPath]::new($Path)
+    $textPath = [PwshSpectreConsole.Render.SpectreTextPath]::new($Path)
     $textPath.Justification = [Spectre.Console.Justify]::$Alignment
     $textPath.RootStyle = $PathStyle.RootColor
     $textPath.SeparatorStyle = $PathStyle.SeparatorColor
