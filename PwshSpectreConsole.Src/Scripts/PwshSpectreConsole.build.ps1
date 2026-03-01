@@ -38,7 +38,7 @@ task Clean {
         Remove-Item -Path $script:config.OutputPath -Recurse -Force
     }
     $parent = Split-Path $script:config.OutputPath -Parent
-    if (!Test-Path $parent) {
+    if (!(Test-Path $parent)) {
         New-Item -Path $parent -ItemType Directory | Out-Null
     }
     New-Item -Path $script:config.OutputPath -ItemType Directory -Force | Out-Null
