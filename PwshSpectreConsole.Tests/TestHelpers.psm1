@@ -289,7 +289,7 @@ function CompareColorTables {
         else {
             $currentColor = '{1}{0}m{2}{0:0#}{2}{3}' -f $_, $ht.bg, $ht.pad, $ht.reset
         }
-        $SpectreMapped = Get-SpectreRenderable ([PwshSpectreConsole.VTParser]::ToParagraph($currentColor))
+        $SpectreMapped = Get-SpectreRenderable ([PwshSpectreConsole.VTParser]::ToSpanParagraph($currentColor))
         [PSCustomObject]@{
             Color          = $currentColor
             ColorEscaped   = $currentColor -replace $ht.e, '␛'

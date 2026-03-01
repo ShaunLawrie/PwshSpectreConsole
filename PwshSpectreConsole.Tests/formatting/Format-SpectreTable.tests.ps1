@@ -63,7 +63,7 @@ Describe "Format-SpectreTable" {
         It "Should be able to format ansi strings" {
             $rawString = "hello world"
             $ansiString = "`e[31mhello `e[46mworld`e[0m"
-            $result = ConvertTo-SpectreDecoration -String $ansiString
+            $result = [PwshSpectreConsole.VTParser]::ToSpanParagraph($ansiString).ToParagraph()
             $result.Length | Should -Be $rawString.Length
         }
 
@@ -76,20 +76,20 @@ Describe "Format-SpectreTable" {
                 $ansiString += "$($PSStyle.$name)$name "
             }
             $ansiString += "$($PSStyle.Reset)"
-            $result = ConvertTo-SpectreDecoration -String $ansiString
+            $result = [PwshSpectreConsole.VTParser]::ToSpanParagraph($ansiString).ToParagraph()
             $result.Length | Should -Be $rawString.Length
         }
 
         It "Should be able to format strings with spectre markup when opted in" {
             $rawString = "hello spectremarkup world"
             $ansiString = "hello [red]spectremarkup[/] world"
-            $result = ConvertTo-SpectreDecoration -String $ansiString -AllowMarkup
+            $result = [PwshSpectreConsole.VTParser]::ToSpanParagraph($ansiString).ToParagraph()
             $result.Length | Should -Be $rawString.Length
         }
 
         It "Should leave spectre markup alone by default" {
             $ansiString = "hello [red]spectremarkup[/] world"
-            $result = ConvertTo-SpectreDecoration -String $ansiString
+            $result = [PwshSpectreConsole.VTParser]::ToSpanParagraph($ansiString).ToParagraph()
             $result.Length | Should -Be $ansiString.Length
         }
 

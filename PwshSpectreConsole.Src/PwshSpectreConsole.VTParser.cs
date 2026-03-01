@@ -24,7 +24,7 @@ public static class VTParser {
     ///   (returning <c>start + 1</c>) rather than throwing. This keeps the parser
     ///   resilient to garbage input and allows the rest of the string to be parsed.
     /// </summary>
-    public static SpanParagraph ToParagraph(string input) {
+    public static SpanParagraph ToSpanParagraph(string input) {
         if (string.IsNullOrEmpty(input)) return new SpanParagraph();
 
         var paragraph = new SpanParagraph();

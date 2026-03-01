@@ -28,7 +28,7 @@ function New-TableRow {
             }
             if ($cell -match $detectVT) {
                 # Use optimized fast paragraph to reduce allocations
-                $fp = [PwshSpectreConsole.VTParser]::ToParagraph($cell)
+                $fp = [PwshSpectreConsole.VTParser]::ToSpanParagraph($cell)
                 if ($null -ne $fp) { $fp.SingleLineOverride = $true; $fp }
                 continue
             }
