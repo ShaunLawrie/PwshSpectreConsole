@@ -1,11 +1,6 @@
 BeforeAll {
     if (-Not (Get-Module PwshSpectreConsole)) {
-        if ($env:RunMergedPsm1Tests) {
-            $ModulePath = Resolve-Path (Join-Path $PSScriptRoot '..' '..' 'output' 'PwshSpectreConsole.psd1')
-        }
-        else {
-            $ModulePath = Resolve-Path (Join-Path $PSScriptRoot '..' '..' 'PwshSpectreConsole' 'PwshSpectreConsole.psd1')
-        }
+        $ModulePath = Resolve-Path (Join-Path $PSScriptRoot '..' '..' 'output' 'PwshSpectreConsole.psd1')
         Write-Host "Importing PwshSpectreConsole module from $ModulePath"
         Import-Module $ModulePath -ErrorAction Stop
     }

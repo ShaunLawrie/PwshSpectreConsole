@@ -166,12 +166,6 @@ task Test {
         Write-Host "    Test directory not found at: $($script:config.TestPath)" -ForegroundColor Yellow
         return
     }
-    $splat = @{}
-    if ($env:CI) {
-        $splat.CI = $true
-        $splat.ExcludeTag = "ExcludeCI"
-        $env:RunMergedPsm1Tests = $true
-    }
     $pesterConfig = New-PesterConfiguration
     $pesterConfig.Run.Path = $script:config.TestPath
     $pesterConfig.Run.Throw = $true
@@ -182,24 +176,23 @@ task Test {
     if ($PesterOutput) {
         $pesterConfig.Output.Verbosity = $PesterOutput
     }
-
-    # Dump pester version info and config for debugging
-    $pesterModules = Get-Module -Name Pester -ListAvailable
-    $PesterVersions = $pesterModules | Select-Object Name, Version, Path
-    Write-Host "Pester versions: $($PesterVersions | ConvertTo-Json -Depth 5)"
-    Write-Host "Pester configuration: $($pesterConfig | ConvertTo-Json -Depth 5)"
+    
+    $splat = @{}
+    if ($env:CI) {
+        $splat.CI = $true
+        $pesterConfig.Filter.ExcludeTag = "ExcludeCI"
+    }
 
     Write-Host "Running merged PSM1 tests..." -ForegroundColor Yellow
-    $env:RunMergedPsm1Tests = $true
     Import-Module (Resolve-Path (Join-Path $script:config.OutputPath "$($script:config.moduleName).psd1"))
+    $TestHelpersPath = Resolve-Path (Join-Path $script:config.TestPath 'TestHelpers.psm1')
+    Import-Module $TestHelpersPath -ErrorAction Stop
 
     Invoke-Pester -Configuration $pesterConfig @splat
-    Remove-Item Env:RunMergedPsm1Tests -ErrorAction Ignore
 }
 
 task CleanAfter {
     Write-Host "Cleaning up merged module test artifacts" -ForegroundColor Yellow
-    Remove-Item Env:RunMergedPsm1Tests -ErrorAction Ignore
     if ($script:config.DestinationPath -and (Test-Path $script:config.DestinationPath)) {
         Get-Childitem $script:config.DestinationPath -File | Where-Object { $_.Extension -in '.pdb', '.json' } | Remove-Item -Force -ErrorAction Ignore
     }
