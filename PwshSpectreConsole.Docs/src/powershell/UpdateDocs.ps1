@@ -17,7 +17,7 @@ if($helpOut.Version.ToString() -ne "0.5") {
     throw "Must be run with HelpOut v0.5"
 }
 
-& "$PSScriptRoot\..\..\..\Build.ps1"
+& "$PSScriptRoot\..\..\..\build.ps1"
 
 Import-Module "$PSScriptRoot\..\..\..\output\PwshSpectreConsole.psd1" -Force
 Import-Module "$PSScriptRoot\Helpers.psm1" -Force
