@@ -110,6 +110,19 @@ using namespace PwshSpectreConsole
     MergePSM1 -Path (Get-Item (Join-Path $script:config.ModuleSourcePath "$($script:config.ModuleName).psm1")) | Add-Content -Path $MergedPSM1Path -NoNewline
 }
 
+task StaticAssets {
+    Write-Host "Copying static assets to output directory" -ForegroundColor Yellow
+    # Only one needed for the demo at the moment
+    $asset = Join-Path $script:config.ModuleSourcePath 'private' 'images' 'smiley.png'
+    if (Test-Path $asset) {
+        $destination = Join-Path $script:config.OutputPath 'smiley.png'
+        Copy-Item -Path $asset -Destination $destination -Force
+        Write-Host "Copied asset: $($asset) to $($destination)" -ForegroundColor Green
+    } else {
+        throw "Asset not found at: $($asset)"
+    }
+}
+
 task PSScriptAnalyzer {
     Write-Host "Running PSScriptAnalyzer on merged module" -ForegroundColor Yellow
     # this is just a bit broken, should take a look at it in the future with proper settings.
@@ -157,6 +170,6 @@ task CleanAfter {
     }
 }
 
-task All -Jobs Clean, Build, ModuleFiles, CleanAfter, Test
-task Repro -Jobs Clean, Build, ModuleFiles, CleanAfter
+task All -Jobs Clean, Build, ModuleFiles, StaticAssets, CleanAfter, Test
+task Repro -Jobs Clean, Build, ModuleFiles, StaticAssets, CleanAfter
 task TestMerge -Jobs Test
