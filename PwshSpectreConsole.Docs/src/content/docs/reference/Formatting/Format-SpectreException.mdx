@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
 title: Format-SpectreException
 ---
 
@@ -132,7 +136,9 @@ Valid Values:
 
 #### **ExceptionStyle**
 
-The style to use when rendering the exception provided as a hashtable. e.g. 
+The style to use when rendering the exception provided as a hashtable.
+You can provide a partial hashtable to override only specific styles, the rest will use defaults.
+e.g. 
 ```
 @{
     Message        = "red"

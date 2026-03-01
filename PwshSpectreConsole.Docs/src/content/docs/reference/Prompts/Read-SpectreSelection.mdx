@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
 title: Read-SpectreSelection
 ---
 
@@ -12,6 +16,7 @@ import Asciinema from '../../../../components/Asciinema.astro'
 import readspectreselectionExample1 from '../../../../assets/examples/readspectreselectionExample1.cast?url'
 import readspectreselectionExample2 from '../../../../assets/examples/readspectreselectionExample2.cast?url'
 import readspectreselectionExample3 from '../../../../assets/examples/readspectreselectionExample3.cast?url'
+import readspectreselectionExample4 from '../../../../assets/examples/readspectreselectionExample4.cast?url'
 
 ### Description
 
@@ -92,6 +97,33 @@ Write-SpectreHost "Selected file: $($selectedFile.Name)"
 />
 
 
+**Example 4**  
+This example demonstrates a selection prompt with a scriptblock to generate dynamic labels for complex objects.
+
+
+
+```powershell
+$data = @(
+    [PSCustomObject]@{ Name = "Alice"; Age = 30 },
+    [PSCustomObject]@{ Name = "Bob"; Age = 25 },
+    [PSCustomObject]@{ Name = "Charlie"; Age = 35 }
+)
+$selected = Read-SpectreSelection -Message "Select a person" -Choices $data -ChoiceLabelProperty { "$($_.Name) (Age: $($_.Age))" }
+# Type "↓", "↲" to select Bob
+Write-SpectreHost "Selected: $($selected.Name)"
+```
+<Asciinema
+    src={readspectreselectionExample4}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
 ---
 
 
@@ -129,6 +161,7 @@ The list of choices to display in the selection prompt. ChoiceLabelProperty is r
 #### **ChoiceLabelProperty**
 
 If the object is complex then the property of the choice object to use as the label in the selection prompt is required.
+This can be a string property name or a script block that takes the choice object as `$_` and returns a string label.
 
 
 
@@ -137,7 +170,7 @@ If the object is complex then the property of the choice object to use as the la
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
-|`[String]`|false   |named   |false        |
+|`[Object]`|false   |named   |false        |
 
 
 
@@ -219,5 +252,5 @@ The color of the search highlight in the selection prompt. Defaults to a slightl
 
 ### Syntax
 ```powershell
-Read-SpectreSelection [-Message <String>] [-Choices] <Array> [-ChoiceLabelProperty <String>] [-Color <Color>] [-PageSize <Int32>] [-EnableSearch] [-TimeoutSeconds <Int32>] [-SearchHighlightColor <Color>] [<CommonParameters>]
+Read-SpectreSelection [-Message <String>] [-Choices] <Array> [-ChoiceLabelProperty <Object>] [-Color <Color>] [-PageSize <Int32>] [-EnableSearch] [-TimeoutSeconds <Int32>] [-SearchHighlightColor <Color>] [<CommonParameters>]
 ```

@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
 title: Read-SpectreSelectionGrouped
 ---
 
@@ -84,6 +88,7 @@ The title of the selection prompt.
 #### **ChoiceLabelProperty**
 
 If the object is complex then the property of the choice object to use as the label in the selection prompt is required.
+This can be a string property name or a script block that takes the choice object as `$_` and returns a string label.
 
 
 
@@ -92,7 +97,7 @@ If the object is complex then the property of the choice object to use as the la
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
-|`[String]`|false   |3       |false        |
+|`[Object]`|false   |3       |false        |
 
 
 
@@ -174,5 +179,5 @@ The color of the search highlight in the selection prompt. Defaults to a slightl
 
 ### Syntax
 ```powershell
-Read-SpectreSelectionGrouped [[-Message] <String>] [-Choices] <Hashtable> [[-ChoiceLabelProperty] <String>] [[-Color] <Color>] [[-PageSize] <Int32>] [-EnableSearch] [[-TimeoutSeconds] <Int32>] [[-SearchHighlightColor] <Color>] [<CommonParameters>]
+Read-SpectreSelectionGrouped [[-Message] <String>] [-Choices] <Hashtable> [[-ChoiceLabelProperty] <Object>] [[-Color] <Color>] [[-PageSize] <Int32>] [-EnableSearch] [[-TimeoutSeconds] <Int32>] [[-SearchHighlightColor] <Color>] [<CommonParameters>]
 ```

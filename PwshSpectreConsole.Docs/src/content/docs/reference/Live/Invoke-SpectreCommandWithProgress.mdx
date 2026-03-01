@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
 title: Invoke-SpectreCommandWithProgress
 ---
 
@@ -13,6 +17,7 @@ import invokespectrecommandwithprogressExample1 from '../../../../assets/example
 import invokespectrecommandwithprogressExample2 from '../../../../assets/examples/invokespectrecommandwithprogressExample2.cast?url'
 import invokespectrecommandwithprogressExample3 from '../../../../assets/examples/invokespectrecommandwithprogressExample3.cast?url'
 import invokespectrecommandwithprogressExample4 from '../../../../assets/examples/invokespectrecommandwithprogressExample4.cast?url'
+import invokespectrecommandwithprogressExample5 from '../../../../assets/examples/invokespectrecommandwithprogressExample5.cast?url'
 
 ### Description
 
@@ -171,6 +176,47 @@ Write-SpectreHost "Result: $result"
 ```
 <Asciinema
     src={invokespectrecommandwithprogressExample4}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+**Example 5**  
+This example demonstrates how to track the progress of ForEach-Object -Parallel jobs with a progress bar.
+
+
+
+```powershell
+$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = [System.Text.UTF8Encoding]::new()
+$jobs = 1..10 | ForEach-Object -AsJob -ThrottleLimit 3 -Parallel {
+    Start-Sleep -Seconds (Get-Random -Minimum 1 -Maximum 5)
+}
+Invoke-SpectreCommandWithProgress -ScriptBlock {
+    param (
+        [Spectre.Console.ProgressContext] $Context
+    )
+    $task = $Context.AddTask("Waiting for jobs to complete")
+    do {
+        $completedCount = $jobs.ChildJobs.Where{ $_.State -eq "Completed" }.Count
+        $totalCount = $jobs.ChildJobs.Count
+        $percentComplete = [math]::Round($completedCount / $totalCount * 100, 0)
+        if ($percentComplete -gt $task.Percentage) {
+            $task.Increment($percentComplete - $task.Percentage)
+        }
+        if ($jobs.State -eq "Running") {
+            Start-Sleep -Milliseconds 500
+        }
+    } until ($jobs.State -eq "Completed")
+    $task.Increment(100 - $task.Percentage)
+}
+```
+<Asciinema
+    src={invokespectrecommandwithprogressExample5}
     settings={{
         loop: false,
         terminalLineHeight: 1.1,

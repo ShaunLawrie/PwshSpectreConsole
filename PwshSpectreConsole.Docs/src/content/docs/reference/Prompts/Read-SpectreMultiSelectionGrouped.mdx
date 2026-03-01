@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
 title: Read-SpectreMultiSelectionGrouped
 ---
 
@@ -91,6 +95,7 @@ An array of choice groups. Each group is a hashtable with two keys: "Name" and "
 #### **ChoiceLabelProperty**
 
 The name of the property to use as the label for each choice. If this parameter is not specified, the choices are displayed as strings.
+This can be a string property name or a script block that takes the choice object as `$_` and returns a string label.
 
 
 
@@ -99,7 +104,7 @@ The name of the property to use as the label for each choice. If this parameter 
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
-|`[String]`|false   |3       |false        |
+|`[Object]`|false   |3       |false        |
 
 
 
@@ -166,5 +171,5 @@ Allow the multi-selection to be submitted without any options chosen.
 
 ### Syntax
 ```powershell
-Read-SpectreMultiSelectionGrouped [[-Message] <String>] [-Choices] <Array> [[-ChoiceLabelProperty] <String>] [[-Color] <Color>] [[-PageSize] <Int32>] [[-TimeoutSeconds] <Int32>] [-AllowEmpty] [<CommonParameters>]
+Read-SpectreMultiSelectionGrouped [[-Message] <String>] [-Choices] <Array> [[-ChoiceLabelProperty] <Object>] [[-Color] <Color>] [[-PageSize] <Int32>] [[-TimeoutSeconds] <Int32>] [-AllowEmpty] [<CommonParameters>]
 ```
