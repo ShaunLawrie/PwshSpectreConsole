@@ -3,7 +3,8 @@ param(
     [ValidateSet("dev", "prerelease", "main")]
     [string]$Branch = "dev",
     [switch]$NonInteractive,
-    [switch]$NoBuild,
+    [switch]$NoModuleBuild,
+    [switch]$NoWebBuild,
     [switch]$NoCommit,
     [switch]$Cleanup,
     [string]$TargetFunction
@@ -17,7 +18,13 @@ if($helpOut.Version.ToString() -ne "0.5") {
     throw "Must be run with HelpOut v0.5"
 }
 
-& "$PSScriptRoot\..\..\..\build.ps1"
+if ($NoModuleBuild) {
+    Write-Host "Skipping module build as requested with -NoModuleBuild"
+} else {
+    # Build the module to ensure the latest changes are included in the help docs
+    Write-Host "Building module..."
+    & "$PSScriptRoot\..\..\..\build.ps1"
+}
 
 Import-Module "$PSScriptRoot\..\..\..\output\PwshSpectreConsole.psd1" -Force
 Import-Module "$PSScriptRoot\Helpers.psm1" -Force
@@ -224,7 +231,7 @@ if($Branch -eq "prerelease") {
     Set-Content -Path $astroConfigPath -Value $astroConfig
 }
 
-if($NoBuild) {
+if($NoWebBuild) {
     return
 }
 

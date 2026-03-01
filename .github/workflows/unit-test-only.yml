@@ -38,7 +38,7 @@ jobs:
         run: |
           $ErrorActionPreference = "Stop"
           Write-Host "Testing UpdateDocs.ps1 script execution..."
-          & .\PwshSpectreConsole.Docs\src\powershell\UpdateDocs.ps1 -NonInteractive -NoCommit -NoBuild -Cleanup
+          & .\PwshSpectreConsole.Docs\src\powershell\UpdateDocs.ps1 -NonInteractive -NoCommit -NoModuleBuild -NoWebBuild -Cleanup
           if ($LASTEXITCODE -ne 0) {
               throw "UpdateDocs.ps1 failed with exit code $LASTEXITCODE"
           }
