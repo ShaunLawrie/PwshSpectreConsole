@@ -10,6 +10,8 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
+Write-Host "Build parameters: Configuration=$Configuration, Task=$Task, FullNameFilter=$($FullNameFilter -join ', '), PesterOutput=$PesterOutput" -ForegroundColor Cyan
+
 # Helper function to build parameters for InvokeBuild
 $buildparams = @{
     Configuration = $Configuration
