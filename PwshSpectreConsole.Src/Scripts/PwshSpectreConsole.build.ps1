@@ -183,6 +183,12 @@ task Test {
         $pesterConfig.Output.Verbosity = $PesterOutput
     }
 
+    # Dump pester version info and config for debugging
+    $pesterModules = Get-Module -Name Pester -ListAvailable
+    $PesterVersions = $pesterModules | Select-Object Name, Version, Path
+    Write-Host "Pester versions: $($PesterVersions | ConvertTo-Json -Depth 5)"
+    Write-Host "Pester configuration: $($pesterConfig | ConvertTo-Json -Depth 5)"
+
     Write-Host "Running merged PSM1 tests..." -ForegroundColor Yellow
     $env:RunMergedPsm1Tests = $true
     Import-Module (Resolve-Path (Join-Path $script:config.OutputPath "$($script:config.moduleName).psd1"))
