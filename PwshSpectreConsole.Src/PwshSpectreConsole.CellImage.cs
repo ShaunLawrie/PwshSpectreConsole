@@ -6,8 +6,6 @@ namespace PwshSpectreConsole;
 /// <remarks>
 /// Initializes a new instance of the <see cref="CellImage"/> class.
 /// </remarks>
-/// <param name="filename">The image filename.</param>
-/// <param name="animationDisabled">Whether the image should have animation disabled.</param>
 public sealed class CellImage : Renderable {
     private static readonly IResampler _defaultResampler = KnownResamplers.Bicubic;
 

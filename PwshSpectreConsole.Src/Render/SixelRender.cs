@@ -168,7 +168,7 @@ public static partial class SixelRender {
     /// <param name="sixelBuilder">The string builder to write to.</param>
     /// <param name="colorIndex">The index of the color in the palette.</param>
     /// <param name="repeatCounter">The number of times the color is repeated.</param>
-    /// <param name="sixelDataCharacter">The sixel character to write.</param>
+    /// <param name="sixel">The sixel character to write.</param>
     private static void AppendSixel(this StringBuilder sixelBuilder, int colorIndex, int repeatCounter, char sixel) {
         if (colorIndex == 0) {
             // Transparent pixels are a special case and are always 0 in the palette.

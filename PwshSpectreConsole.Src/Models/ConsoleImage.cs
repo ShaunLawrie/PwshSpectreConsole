@@ -10,7 +10,7 @@ namespace PwshSpectreConsole.Models;
 /// <param name="pixelHeight">The height of a sixel image in pixels.</param>
 /// <param name="cellHeight">The height of a sixel image in terminal cells.</param>
 /// <param name="cellWidth">The width of a sixel image in terminal cells.</param>
-/// <param name="sixelStrings">The Sixel strings representing each frame of the image.</param>
+/// <param name="blockStrings">The Sixel strings representing each frame of the image.</param>
 public readonly struct ConsoleImage(int pixelWidth, int pixelHeight, int cellHeight, int cellWidth, string[] blockStrings) {
     /// <summary>
     /// Gets the width of a sixel image in pixels.

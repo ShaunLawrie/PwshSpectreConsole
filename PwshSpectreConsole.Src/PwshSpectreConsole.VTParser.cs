@@ -1,6 +1,4 @@
-﻿using PwshSpectreConsole.Render;
-
-namespace PwshSpectreConsole;
+﻿namespace PwshSpectreConsole;
 
 public static class VTParser {
     private const char ESC = '\x1B';
@@ -352,51 +350,4 @@ public static class VTParser {
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static bool IsDigit(char c) => (uint)(c - '0') <= 9;
-
-    // Try parse CSI but do not modify current style; returns parsed style and escape end
-    private static bool TryParseEscapeSequence(ReadOnlySpan<char> span, int start, out int escapeEnd, out StyleState result) {
-        int i = start + 2; // Skip ESC[
-        const int MaxEscapeSequenceLength = 1024;
-        Span<byte> parameters = stackalloc byte[16];
-        int paramCount = 0;
-        byte currentNumber = 0;
-        bool hasNumber = false;
-        int escapeLength = 0;
-
-        result = new StyleState();
-        while (i < span.Length && span[i] != SGR_END && escapeLength < MaxEscapeSequenceLength) {
-            if (IsDigit(span[i])) {
-                int digit = span[i] - '0';
-                if (currentNumber > 25) { currentNumber = 255; } else { int tmp = (currentNumber * 10) + digit; currentNumber = tmp > 255 ? (byte)255 : (byte)tmp; }
-                hasNumber = true;
-            }
-            else if (span[i] is ';' or ':') {
-                if (paramCount < parameters.Length) parameters[paramCount++] = (byte)(hasNumber ? currentNumber : 0);
-                currentNumber = 0; hasNumber = false;
-            }
-            else { escapeEnd = start + 1; return false; }
-            i++; escapeLength++;
-        }
-
-        if (i >= span.Length || span[i] != SGR_END) { escapeEnd = start + 1; return false; }
-        if (paramCount < parameters.Length) parameters[paramCount++] = (byte)(hasNumber ? currentNumber : 0);
-        result = new StyleState();
-        ApplySgrParameters(parameters[..paramCount], ref result);
-        escapeEnd = i + 1;
-        return true;
-    }
-
-    private static bool StyleStateEqual(in StyleState a, in StyleState b) {
-        if (a.Decoration != b.Decoration) return false;
-        if (a.Link != b.Link) return false;
-        if (a.Foreground.HasValue != b.Foreground.HasValue) return false;
-        if (a.Background.HasValue != b.Background.HasValue) return false;
-        if (a.Foreground.HasValue && b.Foreground.HasValue) {
-            if (!a.Foreground.Value.Equals(b.Foreground.Value)) return false;
-        }
-        if (a.Background.HasValue && b.Background.HasValue) {
-            if (!a.Background.Value.Equals(b.Background.Value)) return false;
-        }
-        return true;
-    }
 }

@@ -6,8 +6,6 @@
 /// <remarks>
 /// Initializes a new instance of the <see cref="PixelImage"/> class.
 /// </remarks>
-/// <param name="filename">The image filename.</param>
-/// <param name="animationDisabled">Whether the image should have animation disabled.</param>
 public sealed class PixelImage : Renderable {
     /// <summary>
     /// Gets the image width in pixels.

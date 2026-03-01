@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Spectre.Console;
-using Spectre.Console.Rendering;
-
-namespace PwshSpectreConsole;
+﻿namespace PwshSpectreConsole;
 
 /// <summary>
 /// Represents a renderable canvas.
@@ -69,7 +63,7 @@ public sealed class ImageCanvas : Renderable {
     /// </summary>
     /// <param name="x">The X coordinate for the pixel.</param>
     /// <param name="y">The Y coordinate for the pixel.</param>
-    /// <param name="cellColorr">The pixel color.</param>
+    /// <param name="cellColor">The pixel color.</param>
     /// <returns>The same <see cref="Canvas"/> instance so that multiple calls can be chained.</returns>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     public ImageCanvas SetCell(int x, int y, Color cellColor) {

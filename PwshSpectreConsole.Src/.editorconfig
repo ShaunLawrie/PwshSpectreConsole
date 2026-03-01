@@ -37,7 +37,7 @@ insert_final_newline = true
 [*.cs]
 
 # Set severity for all analyzers that are enabled by default (https://docs.microsoft.com/en-us/visualstudio/code-quality/use-roslyn-analyzers?view=vs-2022#set-rule-severity-of-multiple-analyzer-rules-at-once-in-an-editorconfig-file)
-dotnet_analyzer_diagnostic.category-roslynator.severity = default|none|silent|suggestion|warning|error
+dotnet_analyzer_diagnostic.category-roslynator.severity = default
 
 # Enable/disable all analyzers by default
 # NOTE: This option can be used only in .roslynatorconfig file
