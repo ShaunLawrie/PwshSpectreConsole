@@ -13,14 +13,30 @@ public static partial class SixelRender {
     /// <param name="image">The image to convert.</param>
     /// <param name="cellWidth">The width of the cell in terminal cells.</param>
     /// <param name="disableAnimation">Whether to disable animation for the image and only load the first frame.</param>
+    /// <param name="maxCellHeight">Optional maximum height in terminal cells. When set, the image will be scaled down
+    /// to fit within this height while maintaining its aspect ratio. This prevents sixel images from scrolling the
+    /// terminal during rendering which misaligns with Spectre Console's cursor position tracking.</param>
     /// <returns>The Sixel object.</returns>
-    public static Sixel ImageToSixel(Image<Rgba32> image, int cellWidth, bool disableAnimation = false) {
+    public static Sixel ImageToSixel(Image<Rgba32> image, int cellWidth, bool disableAnimation = false, int? maxCellHeight = null) {
         // We're going to resize the image when it's rendered, so use a copy to leave the original untouched.
         Image<Rgba32> imageClone = image.Clone();
 
         // Convert to pixel sizes.
-        int pixelWidth = cellWidth * Compatibility.GetCellSize().PixelWidth;
+        CellSize cellSize = Compatibility.GetCellSize();
+        int pixelWidth = cellWidth * cellSize.PixelWidth;
         int pixelHeight = (int)Math.Round((double)imageClone.Height / imageClone.Width * pixelWidth);
+
+        // Cap the height to prevent sixel scrolling artifacts.
+        // When a sixel image is taller than the terminal, it scrolls the terminal during
+        // rendering which misaligns with Spectre Console's cursor position tracking.
+        if (maxCellHeight.HasValue && maxCellHeight.Value > 0) {
+            int maxPixelHeight = maxCellHeight.Value * cellSize.PixelHeight;
+            if (pixelHeight > maxPixelHeight) {
+                pixelHeight = maxPixelHeight;
+                pixelWidth = (int)Math.Round((double)imageClone.Width / imageClone.Height * pixelHeight);
+                cellWidth = (int)Math.Ceiling((double)pixelWidth / cellSize.PixelWidth);
+            }
+        }
 
         imageClone.Mutate(ctx => {
             // Resize the image to the target size
@@ -36,7 +52,7 @@ public static partial class SixelRender {
             }));
         });
 
-        int cellPixelHeight = Compatibility.GetCellSize().PixelHeight;
+        int cellPixelHeight = cellSize.PixelHeight;
         int cellHeight = (int)Math.Ceiling((double)pixelHeight / cellPixelHeight);
         var sixelStrings = new List<string>();
 

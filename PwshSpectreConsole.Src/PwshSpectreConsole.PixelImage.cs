@@ -72,14 +72,24 @@ public sealed class PixelImage : Renderable {
     /// <inheritdoc/>
     protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth) {
         // Got a max width smaller than the render max width?
+        // When MaxWidth is explicitly set by the user, use it and don't constrain height.
+        // When MaxWidth is not set, constrain the image to the terminal height so tall images
+        // don't cause sixel scrolling artifacts.
+        int? maxCellHeight = null;
         if (MaxWidth != null && MaxWidth < maxWidth) {
             maxWidth = MaxWidth.Value;
+        }
+        else {
+            int terminalHeight = Compatibility.GetTerminalHeight();
+            if (terminalHeight > 0) {
+                maxCellHeight = terminalHeight - 4; // Leave some room for the prompt and avoid triggering terminal scroll when rendering images that are close to the terminal height.
+            }
         }
 
         // Write the sixel data as a control segment.
         // Parsing is expensive, cache the result for the current width.
         if (!_cachedSixels.TryGetValue(maxWidth, out Sixel sixel)) {
-            sixel = SixelRender.ImageToSixel(Image, maxWidth, AnimationDisabled);
+            sixel = SixelRender.ImageToSixel(Image, maxWidth, AnimationDisabled, maxCellHeight);
             _cachedSixels.Add(maxWidth, sixel);
         }
 

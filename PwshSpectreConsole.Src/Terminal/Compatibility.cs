@@ -210,4 +210,20 @@ public static class Compatibility {
             PixelHeight = 20
         };
     }
+
+    /// <summary>
+    /// Gets the terminal height in cells. Returns 0 if the height cannot be determined.
+    /// </summary>
+    /// <returns>The terminal height in cells, or 0 if unavailable.</returns>
+    public static int GetTerminalHeight() {
+        try {
+            if (!Console.IsOutputRedirected) {
+                return Console.WindowHeight;
+            }
+        }
+        catch {
+            // Terminal height is unavailable (e.g. no console attached).
+        }
+        return 0;
+    }
 }
