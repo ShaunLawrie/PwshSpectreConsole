@@ -1,7 +1,3 @@
-Remove-Module PwshSpectreConsole -Force -ErrorAction SilentlyContinue
-Import-Module "$PSScriptRoot\..\..\PwshSpectreConsole\PwshSpectreConsole.psd1" -Force
-Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
-
 Describe "Format-SpectreException" {
     InModuleScope "PwshSpectreConsole" {
 
@@ -53,7 +49,7 @@ Describe "Format-SpectreException" {
                     NonEmphasized  = "Red"
                 }
             }
-            
+
             $renderable | Should -BeOfType [Spectre.Console.Rows]
             $renderable | Out-SpectreHost
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly

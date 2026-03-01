@@ -1,7 +1,3 @@
-Remove-Module PwshSpectreConsole -Force -ErrorAction SilentlyContinue
-Import-Module "$PSScriptRoot\..\..\PwshSpectreConsole\PwshSpectreConsole.psd1" -Force
-Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
-
 Describe "New-SpectreLayout" {
     InModuleScope "PwshSpectreConsole" {
 
@@ -28,7 +24,7 @@ Describe "New-SpectreLayout" {
             $renderable | Out-SpectreHost
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
             { Assert-OutputMatchesSnapshot -SnapshotName "New-SpectreLayout" -Output $testConsole.Output } | Should -Not -Throw
-            
+
         }
     }
 }

@@ -220,8 +220,8 @@ Function Get-SpectreColorSample {
         [PSCustomObject]@{
             Color  = $c
             String = $SpectreString
-            # Object = $color
-            # Debug = Get-AnsiEscapeSequence $SpectreString
+            Object = $color
+            Debug = Get-AnsiEscapeSequence $SpectreString
         }
     }
 }
@@ -257,5 +257,44 @@ function Assert-OutputMatchesSnapshot {
         Write-Host "But the output was:`n`n$compare"
         Write-Host "You can diff the snapshot files at:`n - $snapShotPath`n - $snapShotComparisonPath"
         throw "Snapshot comparison failed"
+    }
+}
+
+function CompareColorTables {
+    param(
+        [int]$Padding = 2
+    )
+
+    $colorList = 30..37 + 40..47 + 90..97 + 100..107
+    $stylecolors = $psstyle.Foreground.psobject.Properties.name | ForEach-Object {
+    foreach ($f in ('foreground', 'background')) {
+            [PSCustomObject]@{
+                Name  = $_
+                Value = $PSStyle.$f.$_
+            }
+        }
+    }
+    $ht = @{
+        e     = [char]27
+        reset = '{0}{1}' -f [char]27, '[0m'
+        pad   = ' ' * $Padding
+        bg    = '{0}{1}' -f [char]27, '['
+        # numbers + space + padding
+        len   = [math]::Floor(($host.ui.RawUI.WindowSize.Width - 10) / (3 + 1 + (2 * $Padding)))
+    }
+    $colorList + $stylecolors | ForEach-Object {
+        if ($_.Name) {
+            $currentColor = '{0}{2}{1}{2}{3}' -f $_.Value, $_.Name, $ht.pad, $ht.reset
+        }
+        else {
+            $currentColor = '{1}{0}m{2}{0:0#}{2}{3}' -f $_, $ht.bg, $ht.pad, $ht.reset
+        }
+        $SpectreMapped = Get-SpectreRenderable ([PwshSpectreConsole.VTParser]::ToSpanParagraph($currentColor))
+        [PSCustomObject]@{
+            Color          = $currentColor
+            ColorEscaped   = $currentColor -replace $ht.e, '␛'
+            Spectre        = $SpectreMapped
+            SpectreEscaped = $SpectreMapped -replace $ht.e, '␛'
+        }
     }
 }

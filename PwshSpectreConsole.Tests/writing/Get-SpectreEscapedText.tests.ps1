@@ -1,7 +1,3 @@
-Remove-Module PwshSpectreConsole -Force -ErrorAction SilentlyContinue
-Import-Module "$PSScriptRoot\..\..\PwshSpectreConsole\PwshSpectreConsole.psd1" -Force
-Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
-
 Describe "Get-SpectreEscapedText" {
     InModuleScope "PwshSpectreConsole" {
 

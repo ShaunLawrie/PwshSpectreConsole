@@ -57,9 +57,9 @@ function Get-SpectreImage {
         [Parameter(ValueFromPipelineByPropertyName)]
         [Alias('Width')]
         [int] $MaxWidth,
-        [ValidateSet('Auto', 'Sixel', 'Canvas')]
-        [string] $Format = 'Auto',
-        [switch] $Force
+        [ImageTypes] $Format = 'Auto',
+        [switch] $Force,
+        [switch] $Animation
     )
     process {
         if ($ImagePath.StartsWith('http://') -or $ImagePath.StartsWith('https://')) {
@@ -80,24 +80,26 @@ function Get-SpectreImage {
         $image = $null
         if ($Format -eq 'Auto') {
             if ($script:TerminalSupportsSixel -or $Force.IsPresent) {
-                $image = [Spectre.Console.SixelImage]::new($imagePathResolved)
-            } else {
-                $image = [Spectre.Console.CanvasImage]::new($imagePathResolved)
+                $image = [PwshSpectreConsole.PixelImage]::new($imagePathResolved, !$Animation)
             }
-        } elseif ($Format -eq 'Sixel') {
-            if ($script:TerminalSupportsSixel -or $Force.IsPresent) {
-                $image = [Spectre.Console.SixelImage]::new($imagePathResolved)
-            } else {
-                throw 'Sixel format is not supported in this terminal.'
+            else {
+                $image = [PwshSpectreConsole.CellImage]::new($imagePathResolved)
             }
-        } elseif ($Format -eq 'Canvas') {
-            $image = [Spectre.Console.CanvasImage]::new($imagePathResolved)
         }
-
-        if ($MaxWidth) {
+        elseif ($Format -eq 'Sixel') {
+            if ($script:TerminalSupportsSixel -or $Force.IsPresent) {
+                $image = [PwshSpectreConsole.PixelImage]::new($imagePathResolved, !$Animation)
+            }
+            else {
+                throw 'Sixel format is not supported in this terminal, use -Force to override.'
+            }
+        }
+        else{
+            $image = [PwshSpectreConsole.CellImage]::new($imagePathResolved, $Format)
+        }
+        if ($image -and $MaxWidth) {
             $image.MaxWidth = $MaxWidth
         }
-
         $image
     }
 }

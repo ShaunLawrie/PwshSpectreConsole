@@ -1,7 +1,3 @@
-Remove-Module PwshSpectreConsole -Force -ErrorAction SilentlyContinue
-Import-Module "$PSScriptRoot\..\..\PwshSpectreConsole\PwshSpectreConsole.psd1" -Force
-Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
-
 Describe "Write-SpectreFigletText" {
     InModuleScope "PwshSpectreConsole" {
         BeforeEach {
@@ -14,7 +10,7 @@ Describe "Write-SpectreFigletText" {
                 $RenderableObject | Should -BeOfType [Spectre.Console.FigletText]
                 $RenderableObject.Justification | Should -Be $testAlignment
                 $RenderableObject.Color.ToMarkup() | Should -Be $testColor
-                
+
                 $testConsole.Write($RenderableObject)
             }
         }

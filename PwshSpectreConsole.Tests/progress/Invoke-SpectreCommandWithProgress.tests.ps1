@@ -1,12 +1,5 @@
-Remove-Module PwshSpectreConsole -Force -ErrorAction SilentlyContinue
-Import-Module "$PSScriptRoot\..\..\PwshSpectreConsole\PwshSpectreConsole.psd1" -Force
-Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
-
-$script:originalConsole = [Spectre.Console.AnsiConsole]::Console
-
 Describe "Invoke-SpectreCommandWithProgress" -Tag "integration" {
     InModuleScope "PwshSpectreConsole" {
-
         BeforeEach {
             $writer = [System.IO.StringWriter]::new()
             $output = [Spectre.Console.AnsiConsoleOutput]::new($writer)

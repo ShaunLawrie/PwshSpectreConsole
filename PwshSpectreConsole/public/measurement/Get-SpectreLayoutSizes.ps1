@@ -65,7 +65,7 @@ function Get-SpectreLayoutSizes {
         $size
     )
 
-    $regions = $layout.GetLayoutRegions($renderOptions, $renderOptions.ConsoleSize.Width)
+    $regions = [PwshSpectreConsole.Extensions.LayoutExtensions]::GetLayoutRegions($Layout, $renderOptions, $renderOptions.ConsoleSize.Width)
 
     $regionsTable = @{}
     $regions.GetEnumerator() | Foreach-Object {

@@ -1,7 +1,3 @@
-Remove-Module PwshSpectreConsole -Force -ErrorAction SilentlyContinue
-Import-Module "$PSScriptRoot\..\..\PwshSpectreConsole\PwshSpectreConsole.psd1" -Force
-Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
-
 Describe "Format-SpectreTable" {
     InModuleScope "PwshSpectreConsole" {
         BeforeEach {
@@ -67,7 +63,7 @@ Describe "Format-SpectreTable" {
         It "Should be able to format ansi strings" {
             $rawString = "hello world"
             $ansiString = "`e[31mhello `e[46mworld`e[0m"
-            $result = ConvertTo-SpectreDecoration -String $ansiString
+            $result = [PwshSpectreConsole.VTParser]::ToSpanParagraph($ansiString).ToParagraph()
             $result.Length | Should -Be $rawString.Length
         }
 
@@ -80,20 +76,13 @@ Describe "Format-SpectreTable" {
                 $ansiString += "$($PSStyle.$name)$name "
             }
             $ansiString += "$($PSStyle.Reset)"
-            $result = ConvertTo-SpectreDecoration -String $ansiString
-            $result.Length | Should -Be $rawString.Length
-        }
-
-        It "Should be able to format strings with spectre markup when opted in" {
-            $rawString = "hello spectremarkup world"
-            $ansiString = "hello [red]spectremarkup[/] world"
-            $result = ConvertTo-SpectreDecoration -String $ansiString -AllowMarkup
+            $result = [PwshSpectreConsole.VTParser]::ToSpanParagraph($ansiString).ToParagraph()
             $result.Length | Should -Be $rawString.Length
         }
 
         It "Should leave spectre markup alone by default" {
             $ansiString = "hello [red]spectremarkup[/] world"
-            $result = ConvertTo-SpectreDecoration -String $ansiString
+            $result = [PwshSpectreConsole.VTParser]::ToSpanParagraph($ansiString).ToParagraph()
             $result.Length | Should -Be $ansiString.Length
         }
 
@@ -165,7 +154,7 @@ Describe "Format-SpectreTable" {
             $clean | Should -Be '{1}'
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
         }
-        
+
         It "Should be able to use calculated properties" {
             $testData = Get-Process -Id $pid
             $testBorder = 'Markdown'
@@ -208,6 +197,26 @@ Describe "Format-SpectreTable" {
             $table | Should -BeOfType [Spectre.Console.Table]
             $table | Out-SpectreHost
             { Assert-OutputMatchesSnapshot -SnapshotName "Format-SpectreTable" -Output $testConsole.Output } | Should -Not -Throw
+        }
+
+        It "VT escape sequences should be detected and be used instead of markup when creating table cells" {
+            Mock Write-AnsiConsole {
+                $testConsole.Write($RenderableObject)
+            }
+            $table = [pscustomobject]@{
+                # Markup can't be used in combination with VT sequences, VT takes priority
+                "Name"  = "[red]Test[/] `e[31m1`e[0m"
+                "Value" = 10
+                "Color" = "Turquoise2"
+            }, [pscustomobject]@{
+                "Name"  = "Test [red]2[/]"
+                "Value" = 20
+                "Color" = "#ff0000"
+            } | Format-SpectreTable -Border "Rounded" -Color "Turquoise2" -AllowMarkup
+
+            $table | Should -BeOfType [Spectre.Console.Table]
+            $table | Out-SpectreHost
+            { Assert-OutputMatchesSnapshot -SnapshotName "Format-SpectreTable-VT" -Output $testConsole.Output } | Should -Not -Throw
         }
     }
 }

@@ -1,10 +1,5 @@
-Remove-Module PwshSpectreConsole -Force -ErrorAction SilentlyContinue
-Import-Module "$PSScriptRoot\..\..\PwshSpectreConsole\PwshSpectreConsole.psd1" -Force
-Import-Module "$PSScriptRoot\..\TestHelpers.psm1" -Force
-
 Describe "Invoke-SpectreLive" {
     InModuleScope "PwshSpectreConsole" {
-
         BeforeEach {
             $writer = [System.IO.StringWriter]::new()
             $output = [Spectre.Console.AnsiConsoleOutput]::new($writer)
@@ -45,6 +40,6 @@ Describe "Invoke-SpectreLive" {
                 return 1
             } | Should -Be 1
         }
-        
+
     }
 }
