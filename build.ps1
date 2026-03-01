@@ -13,9 +13,9 @@ $ErrorActionPreference = 'Stop'
 # Helper function to build parameters for InvokeBuild
 $buildparams = @{
     Configuration = $Configuration
-    File          = Join-Path $PSScriptRoot 'PwshSpectreConsole.build.ps1'
+    File          = Join-Path $PSScriptRoot 'PwshSpectreConsole.Src' 'Scripts' 'PwshSpectreConsole.build.ps1'
     Task          = 'All'
-    # Result        = 'Result'
+    Result        = 'Result'
     Safe          = $true
 }
 
@@ -40,17 +40,21 @@ if ($FullNameFilter) {
 if ($PesterOutput) {
     $buildparams['PesterOutput'] = $PesterOutput
 }
+
+Write-Host "Running build with configuration: $Configuration, buildParameters: $($buildparams | ConvertTo-Json -Depth 3)"
+
 if (-not $env:CI) {
     # In local environment, run in separate PowerShell to allow rebuilds without restart
     $sb = {
         param($bp)
         Invoke-Build @bp
-        # $Result
     }
     pwsh -NoProfile -Command $sb -args $buildparams
 }
 else {
     # In CI environment, run directly
     Invoke-Build @buildparams
-    # $Result
+    if ($Result.Error) {
+        throw "Build failed with error: $($Result.Error)"
+    }
 }
