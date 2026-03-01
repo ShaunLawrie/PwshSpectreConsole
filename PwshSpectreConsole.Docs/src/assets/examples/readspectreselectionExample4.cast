@@ -1,9 +1,9 @@
 {"version": 2, "width": 110, "height": 5, "title": "Example 3", "env": {"TERM": "Spectre.Console"}}
 [0, "o", "\u001B[?25lSelect a person     \r\n                    \r\n\u001B[38;5;12m\u003E Alice (Age: 30)\u001B[0m   \r\n  Bob (Age: 25)     \r\n  Charlie (Age: 35) "]
 [0, "o", "\r\u001B[4ASelect a person     \r\n                    \r\n\u001B[38;5;12m\u003E Alice (Age: 30)\u001B[0m   \r\n  Bob (Age: 25)     \r\n  Charlie (Age: 35) "]
-[0.434, "o", "\r\u001B[4ASelect a person     \r\n                    \r\n  Alice (Age: 30)   \r\n\u001B[38;5;12m\u003E Bob (Age: 25)\u001B[0m     \r\n  Charlie (Age: 35) "]
-[0.968, "o", "\r\u001B[2K\u001B[1A\u001B[2K\u001B[1A\u001B[2K\u001B[1A\u001B[2K\u001B[1A\u001B[2K"]
-[0.968, "o", "\u001B[?25h"]
-[0.968, "o", "Selected: Bob\r\n"]
+[0.735, "o", "\r\u001B[4ASelect a person     \r\n                    \r\n  Alice (Age: 30)   \r\n\u001B[38;5;12m\u003E Bob (Age: 25)\u001B[0m     \r\n  Charlie (Age: 35) "]
+[1.306, "o", "\r\u001B[2K\u001B[1A\u001B[2K\u001B[1A\u001B[2K\u001B[1A\u001B[2K\u001B[1A\u001B[2K"]
+[1.306, "o", "\u001B[?25h"]
+[1.306, "o", "Selected: Bob\r\n"]
 
 
