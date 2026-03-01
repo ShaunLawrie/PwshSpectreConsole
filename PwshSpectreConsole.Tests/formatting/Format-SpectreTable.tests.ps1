@@ -80,13 +80,6 @@ Describe "Format-SpectreTable" {
             $result.Length | Should -Be $rawString.Length
         }
 
-        It "Should be able to format strings with spectre markup when opted in" {
-            $rawString = "hello spectremarkup world"
-            $ansiString = "hello [red]spectremarkup[/] world"
-            $result = [PwshSpectreConsole.VTParser]::ToSpanParagraph($ansiString).ToParagraph()
-            $result.Length | Should -Be $rawString.Length
-        }
-
         It "Should leave spectre markup alone by default" {
             $ansiString = "hello [red]spectremarkup[/] world"
             $result = [PwshSpectreConsole.VTParser]::ToSpanParagraph($ansiString).ToParagraph()
@@ -204,6 +197,26 @@ Describe "Format-SpectreTable" {
             $table | Should -BeOfType [Spectre.Console.Table]
             $table | Out-SpectreHost
             { Assert-OutputMatchesSnapshot -SnapshotName "Format-SpectreTable" -Output $testConsole.Output } | Should -Not -Throw
+        }
+
+        It "VT escape sequences should be detected and be used instead of markup when creating table cells" {
+            Mock Write-AnsiConsole {
+                $testConsole.Write($RenderableObject)
+            }
+            $table = [pscustomobject]@{
+                # Markup can't be used in combination with VT sequences, VT takes priority
+                "Name"  = "[red]Test[/] `e[31m1`e[0m"
+                "Value" = 10
+                "Color" = "Turquoise2"
+            }, [pscustomobject]@{
+                "Name"  = "Test [red]2[/]"
+                "Value" = 20
+                "Color" = "#ff0000"
+            } | Format-SpectreTable -Border "Rounded" -Color "Turquoise2" -AllowMarkup
+
+            $table | Should -BeOfType [Spectre.Console.Table]
+            $table | Out-SpectreHost
+            { Assert-OutputMatchesSnapshot -SnapshotName "Format-SpectreTable-VT" -Output $testConsole.Output } | Should -Not -Throw
         }
     }
 }

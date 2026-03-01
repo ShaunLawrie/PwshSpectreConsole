@@ -211,11 +211,7 @@ function Format-SpectreTable {
                 }
                 $row = New-TableRow -Entry $item.FormatPropertyFieldList.propertyValue -Renderables $renderables -Color $TextColor @rowoptions
             }
-            if ($AllowMarkup) {
-                $table = [Spectre.Console.TableExtensions]::AddRow($table, [Spectre.Console.Markup[]]$row)
-            } else {
-                $table = [Spectre.Console.TableExtensions]::AddRow($table, [Spectre.Console.Rendering.Renderable[]]$row)
-            }
+            $table = [Spectre.Console.TableExtensions]::AddRow($table, [Spectre.Console.Rendering.Renderable[]]$row)
         }
         if ($Title -And -Not $rowoptions.scalar) {
             $table.Title = [Spectre.Console.TableTitle]::new($Title, [Spectre.Console.Style]::new($Color))

@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Reflection;
-using Spectre.Console;
-using Spectre.Console.Rendering;
 
 namespace PwshSpectreConsole.Extensions;
 
