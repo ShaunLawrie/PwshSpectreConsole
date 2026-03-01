@@ -1,0 +1,79 @@
+---
+sidebar:
+  badge:
+    text: New
+    variant: tip
+title: Get-SpectreColors
+---
+
+
+
+
+
+
+
+import Asciinema from '../../../../components/Asciinema.astro'
+import getspectrecolorsExample1 from '../../../../assets/examples/getspectrecolorsExample1.cast?url'
+import getspectrecolorsExample2 from '../../../../assets/examples/getspectrecolorsExample2.cast?url'
+
+### Description
+
+This function returns the current default color configuration for Spectre Console. These colors are used throughout the module as defaults for various commands. The colors can be changed using Set-SpectreColors.
+
+
+
+---
+
+
+### Examples
+
+
+**Example 1**  
+This example demonstrates how to retrieve the current default colors for Spectre Console.
+
+
+
+```powershell
+Get-SpectreColors | Format-SpectreTable
+```
+<Asciinema
+    src={getspectrecolorsExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+**Example 2**  
+This example demonstrates how to retrieve the default colors after changing them with Set-SpectreColors.
+
+
+
+```powershell
+Set-SpectreColors -AccentColor "Turquoise2" -DefaultValueColor "Grey85"
+Get-SpectreColors | Format-SpectreTable
+Set-SpectreColors -AccentColor "Blue" -DefaultValueColor "Grey"
+```
+<Asciinema
+    src={getspectrecolorsExample2}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+---
+
+
+### Syntax
+```powershell
+Get-SpectreColors [<CommonParameters>]
+```

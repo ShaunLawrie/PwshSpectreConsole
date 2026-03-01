@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
 title: Format-SpectreJson
 ---
 
@@ -271,6 +275,7 @@ To add a border with a width, use `$data | Format-SpectreJson | Format-SpectrePa
 #### **JsonStyle**
 
 A hashtable of Spectre Console color names and values to style the Json output.
+You can provide a partial hashtable to override only specific styles, the rest will use defaults.
 e.g.
 ```
 @{

@@ -1,4 +1,8 @@
 ---
+sidebar:
+  badge:
+    text: Updated
+    variant: note
 title: Read-SpectreMultiSelection
 ---
 
@@ -11,6 +15,7 @@ title: Read-SpectreMultiSelection
 import Asciinema from '../../../../components/Asciinema.astro'
 import readspectremultiselectionExample1 from '../../../../assets/examples/readspectremultiselectionExample1.cast?url'
 import readspectremultiselectionExample2 from '../../../../assets/examples/readspectremultiselectionExample2.cast?url'
+import readspectremultiselectionExample3 from '../../../../assets/examples/readspectremultiselectionExample3.cast?url'
 
 ### Description
 
@@ -70,6 +75,33 @@ Write-SpectreHost "Selected files: $($selectedFiles.Name -join ', ')"
 />
 
 
+**Example 3**  
+This example demonstrates using a scriptblock to generate dynamic labels for complex objects.
+
+
+
+```powershell
+$data = @(
+    [PSCustomObject]@{ Name = "Alice"; Age = 30 },
+    [PSCustomObject]@{ Name = "Bob"; Age = 25 },
+    [PSCustomObject]@{ Name = "Charlie"; Age = 35 }
+)
+$selected = Read-SpectreMultiSelection -Message "Select people" -Choices $data -ChoiceLabelProperty { "$($_.Name) (Age: $($_.Age))" }
+# Type "<space>", "↓", "↓", "<space>", "↲" to select Alice and Charlie
+Write-SpectreHost "Selected: $(($selected | ForEach-Object { $_.Name }) -join ', ')"
+```
+<Asciinema
+    src={readspectremultiselectionExample3}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
 ---
 
 
@@ -107,6 +139,7 @@ The list of choices to display in the selection prompt. ChoiceLabelProperty is r
 #### **ChoiceLabelProperty**
 
 If the object is complex then the property of the choice object to use as the label in the selection prompt is required.
+This can be a string property name or a script block that takes the choice object as `$_` and returns a string label.
 
 
 
@@ -115,7 +148,7 @@ If the object is complex then the property of the choice object to use as the la
 
 |Type      |Required|Position|PipelineInput|
 |----------|--------|--------|-------------|
-|`[String]`|false   |named   |false        |
+|`[Object]`|false   |named   |false        |
 
 
 
@@ -182,5 +215,5 @@ Allow the multi-selection to be submitted without any options chosen.
 
 ### Syntax
 ```powershell
-Read-SpectreMultiSelection [-Message <String>] [-Choices] <Array> [-ChoiceLabelProperty <String>] [-Color <Color>] [-PageSize <Int32>] [-TimeoutSeconds <Int32>] [-AllowEmpty] [<CommonParameters>]
+Read-SpectreMultiSelection [-Message <String>] [-Choices] <Array> [-ChoiceLabelProperty <Object>] [-Color <Color>] [-PageSize <Int32>] [-TimeoutSeconds <Int32>] [-AllowEmpty] [<CommonParameters>]
 ```
