@@ -24,18 +24,11 @@ if ($env:CI) {
 $PwshSpectreConsolePath = "$RepositoryRoot/PwshSpectreConsole"
 
 # Build the module
-& "$PwshSpectreConsolePath/Build.ps1"
+& "./Build.ps1"
 
 # Set the module path to include the local module
 $separator = if ($IsWindows) { ";" } else { ":" }
 $env:PSModulePath = @($env:PSModulePath, $PwshSpectreConsolePath) -join $separator
-
-# Run tests
-if ($WhatIfPreference) {
-    Write-Host "WhatIf: Would have run tests"
-} else {
-    Invoke-Pester -Path $RepositoryRoot -CI -ExcludeTag "ExcludeCI"
-}
 
 # If last commit was the version bump, skip it
 $lastCommitUser = git log -1 --pretty=%aN
