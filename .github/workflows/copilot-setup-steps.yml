@@ -12,16 +12,12 @@ jobs:
     # Run the unit tests to start to ensure all dependencies are installed and working.
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: Unit Test
+      - name: Build and Unit Test
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
           Write-Host "Working on ${{ github.ref }}"
           Install-Module HelpOut -Scope CurrentUser -RequiredVersion 0.5 -Force
-          & .\PwshSpectreConsole\Build.ps1
-          $env:PSModulePath = @($env:PSModulePath, ".\PwshSpectreConsole\") -join ":"
-          $PSVersionTable | Out-Host
-          Get-Module Pester -ListAvailable | Out-Host
-          Invoke-Pester -CI -ExcludeTag "ExcludeCI"
+          & .\Build.ps1
