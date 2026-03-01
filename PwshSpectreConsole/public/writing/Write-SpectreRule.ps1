@@ -92,7 +92,7 @@ function Write-SpectreRule {
         Write-AnsiConsoleWithWidth -RenderableObject $rule -MaxWidth $Width | Out-Host
     }
     elseif ($PSCmdlet.ParameterSetName -eq 'PercentWidth') {
-        $consoleWidth = [Console]::WindowWidth
+        $consoleWidth = Get-HostWidth
         $calculatedWidth = [Math]::Floor($consoleWidth * ($WidthPercent / 100))
         # Ensure minimum width of 1
         $calculatedWidth = [Math]::Max(1, $calculatedWidth)
