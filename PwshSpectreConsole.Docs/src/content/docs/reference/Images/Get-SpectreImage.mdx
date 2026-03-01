@@ -118,6 +118,8 @@ Valid Values:
 
 * Auto
 * Sixel
+* Blocks
+* Braille
 * Canvas
 
 
@@ -125,9 +127,9 @@ Valid Values:
 
 
 
-|Type      |Required|Position|PipelineInput|
-|----------|--------|--------|-------------|
-|`[String]`|false   |3       |false        |
+|Type          |Required|Position|PipelineInput|
+|--------------|--------|--------|-------------|
+|`[ImageTypes]`|false   |3       |false        |
 
 
 
@@ -146,6 +148,17 @@ Forces the image to be displayed using the specified format, even if we can't de
 
 
 
+#### **Animation**
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|false   |named   |false        |
+
+
+
 
 
 ---
@@ -153,5 +166,5 @@ Forces the image to be displayed using the specified format, even if we can't de
 
 ### Syntax
 ```powershell
-Get-SpectreImage [-ImagePath] <String> [[-MaxWidth] <Int32>] [[-Format] <String>] [-Force] [<CommonParameters>]
+Get-SpectreImage [-ImagePath] <String> [[-MaxWidth] <Int32>] [[-Format] {Auto | Sixel | Blocks | Braille | Canvas}] [-Force] [-Animation] [<CommonParameters>]
 ```
