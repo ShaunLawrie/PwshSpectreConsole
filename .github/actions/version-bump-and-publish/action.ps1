@@ -23,9 +23,6 @@ if ($env:CI) {
 # Location of the main module
 $PwshSpectreConsolePath = "$RepositoryRoot/PwshSpectreConsole"
 
-# Build the module
-& "./Build.ps1"
-
 # Set the module path to include the local module
 $separator = if ($IsWindows) { ";" } else { ":" }
 $env:PSModulePath = @($env:PSModulePath, $PwshSpectreConsolePath) -join $separator
@@ -75,12 +72,15 @@ if ($newVersion.PreReleaseLabel) {
     }
 }
 
+# Build the module
+& "./build.ps1"
+
 # Publish to gallery
 if ($WhatIfPreference) {
     Write-Host "WhatIf: Would have published module to gallery"
 } else {
-    Import-Module .\PwshSpectreConsole\PwshSpectreConsole.psd1 -Force
-    Publish-Module -Name PwshSpectreConsole -Exclude "Build.ps1" -NugetApiKey $env:PSGALLERY_API_KEY -AllowPrerelease
+    Import-Module (Join-Path $RepositoryRoot "output" "PwshSpectreConsole.psd1") -Force
+    Publish-Module -Name PwshSpectreConsole -NugetApiKey $env:PSGALLERY_API_KEY -AllowPrerelease
 }
 
 # Create a gh release for it
@@ -101,7 +101,7 @@ if ($Type -eq "prerelease") {
     } else {
         # Publish prerelease docs
         Install-Module HelpOut -Scope CurrentUser -RequiredVersion 0.5 -Force
-        & "$RepositoryRoot/PwshSpectreConsole.Docs/src/powershell/UpdateDocs.ps1" -NonInteractive -Branch "prerelease"
+        & "$RepositoryRoot/PwshSpectreConsole.Docs/src/powershell/UpdateDocs.ps1" -NoModuleBuild -NonInteractive -Branch "prerelease"
 
         # Push any docs changes
         git push
