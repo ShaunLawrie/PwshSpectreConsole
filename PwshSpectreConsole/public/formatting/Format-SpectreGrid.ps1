@@ -57,7 +57,6 @@ function Format-SpectreGrid {
         if ($Width) {
             $grid.Width = $Width
         }
-        $grid.Alignment = [Spectre.Console.Justify]::$Justify
         $col = [Spectre.Console.GridColumn]::new()
         $grid = $grid.AddColumn()
     }
