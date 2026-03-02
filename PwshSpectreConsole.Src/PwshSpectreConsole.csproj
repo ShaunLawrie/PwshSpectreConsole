@@ -11,9 +11,9 @@
         <AnalysisLevel>latest-Recommended</AnalysisLevel>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Spectre.Console" Version="0.54.0" />
-        <PackageReference Include="Spectre.Console.Testing" Version="0.54.0" />
-        <PackageReference Include="Spectre.Console.Json" Version="0.54.0" />
+        <ProjectReference Include="..\PwshSpectreConsole.Spectre.Console\src\Spectre.Console\Spectre.Console.csproj" />
+        <ProjectReference Include="..\PwshSpectreConsole.Spectre.Console\src\Spectre.Console.Testing\Spectre.Console.Testing.csproj" />
+        <ProjectReference Include="..\PwshSpectreConsole.Spectre.Console\src\Extensions\Spectre.Console.Json\Spectre.Console.Json.csproj" />
         <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
         <PackageReference Include="System.Management.Automation" Version="7.4" PrivateAssets="all" />
         <PackageReference Include="Roslynator.Analyzers" Version="4.*">

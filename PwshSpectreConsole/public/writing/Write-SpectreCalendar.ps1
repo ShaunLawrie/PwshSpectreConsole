@@ -65,7 +65,6 @@ function Write-SpectreCalendar {
         [Switch] $PassThru
     )
     $calendar = [Spectre.Console.Calendar]::new($date)
-    $calendar.Alignment = [Spectre.Console.Justify]::$Alignment
     $calendar.Border = [Spectre.Console.TableBorder]::$Border
     $calendar.BorderStyle = [Spectre.Console.Style]::new($Color)
     $calendar.Culture = $Culture
@@ -75,7 +74,7 @@ function Write-SpectreCalendar {
         $calendar.ShowHeader = $false
     }
 
-    $outputData = @($calendar)
+    $eventsTable = $null
 
     if ($Events) {
         foreach ($calendarEvent in $events.GetEnumerator()) {
@@ -87,13 +86,21 @@ function Write-SpectreCalendar {
         
         # Apply alignment to the events table
         $eventsTable = $eventsTable | Format-SpectreAligned -HorizontalAlignment $Alignment
-        
+    }
+
+    if ($Alignment) {
+        $calendar = $calendar | Format-SpectreAligned -HorizontalAlignment $Alignment
+    }
+
+    $outputData = @($calendar)
+    
+    if ($eventsTable) {
         $outputData += $eventsTable
     }
 
     if ($PassThru) {
-        return $outputData
+        return $outputData | Format-SpectreRows
     }
     
-    $outputData | Out-SpectreHost
+    $outputData | Format-SpectreRows | Out-SpectreHost
 }
