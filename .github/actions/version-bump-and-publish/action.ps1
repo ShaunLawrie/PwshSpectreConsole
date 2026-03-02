@@ -50,7 +50,7 @@ if ($WhatIfPreference) {
     git add (Join-Path $RepositoryRoot "PwshSpectreConsole" "PwshSpectreConsole.psd1")
     $changes = git diff --cached --name-only
     if ($changes) {
-        git commit -m "Bump version to $newVersion"
+        git commit -m "[skip ci] Bump version to $newVersion"
         git push
     }
 }
