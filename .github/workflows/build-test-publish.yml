@@ -26,6 +26,7 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ secrets.PIPELINE_PAT }}
+          submodules: recursive
       - name: Version Bump and Publish
         uses: ./.github/actions/version-bump-and-publish
         with:
@@ -52,6 +53,7 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ secrets.PIPELINE_PAT }}
+          submodules: recursive
       - name: Version Bump and Publish
         id: version-bump-and-publish
         uses: ./.github/actions/version-bump-and-publish
