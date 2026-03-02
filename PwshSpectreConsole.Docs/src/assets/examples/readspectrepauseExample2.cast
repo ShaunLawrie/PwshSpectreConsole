@@ -5,10 +5,10 @@
 [0, "o", "ANY"]
 [0, "o", "\u001B[0m"]
 [0, "o", " key to continue, when you press it this message will disappear..."]
-[4.001, "o", "\r\n"]
-[4.001, "o", "                                                                                       "]
-[4.001, "o", "\r\n"]
-[4.001, "o", "\u001B[2A"]
+[4, "o", "\r\n"]
+[4, "o", "                                                                                       "]
+[4, "o", "\r\n"]
+[4, "o", "\u001B[2A"]
 [4.001, "o", "\r\n"]
 
 
