@@ -3,5 +3,6 @@
     "editor.formatOnPaste": false,
     "editor.formatOnSave": false,
     "editor.formatOnType": false,
-    "editor.tabSize": 4
+    "editor.tabSize": 4,
+    "dotnet.defaultSolution": "PwshSpectreConsole.Src.slnx"
 }

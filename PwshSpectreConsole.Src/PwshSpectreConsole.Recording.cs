@@ -164,8 +164,6 @@ public partial class RecordingConsole : IAnsiConsole {
 
     public void Write(IRenderable renderable) => _ansiConsole.Write(renderable);
 
-    public void WriteAnsi(Action<AnsiWriter> action) => _ansiConsole.WriteAnsi(action);
-
     [GeneratedRegex(@"\\n")]
     private static partial Regex Newline();
 

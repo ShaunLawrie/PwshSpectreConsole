@@ -7,12 +7,10 @@ public sealed class SpanParagraph : Renderable, IHasJustification, IOverflowable
     private readonly struct SpanSegment {
         public readonly ReadOnlyMemory<char> Text;
         public readonly Style Style;
-        public readonly Link? Link;
 
-        public SpanSegment(ReadOnlyMemory<char> text, Style style, Link? link) {
+        public SpanSegment(ReadOnlyMemory<char> text, Style style) {
             Text = text;
             Style = style;
-            Link = link;
         }
     }
 
@@ -28,7 +26,7 @@ public sealed class SpanParagraph : Renderable, IHasJustification, IOverflowable
         _lines = [[]];
     }
 
-    public SpanParagraph Append(ReadOnlySpan<char> text, Style? style = null, Link? link = null) {
+    public SpanParagraph Append(ReadOnlySpan<char> text, Style? style = null) {
         if (text.IsEmpty) return this;
         Style s = style ?? Style.Plain;
 
@@ -39,7 +37,7 @@ public sealed class SpanParagraph : Renderable, IHasJustification, IOverflowable
 
             ReadOnlySpan<char> part = text.Slice(idx, nl);
             if (part.Length > 0) {
-                _lines[^1].Add(new SpanSegment(part.ToArray(), s, link));
+                _lines[^1].Add(new SpanSegment(part.ToArray(), s));
             }
 
             idx += nl;
@@ -102,7 +100,7 @@ public sealed class SpanParagraph : Renderable, IHasJustification, IOverflowable
         var paragraph = new Paragraph();
         for (int li = 0; li < _lines.Count; li++) {
             foreach (SpanSegment segment in _lines[li]) {
-                paragraph.Append(segment.Text.ToString(), segment.Style, segment.Link);
+                paragraph.Append(segment.Text.ToString(), segment.Style);
             }
             if (li < _lines.Count - 1) paragraph.Append("\n");
         }
