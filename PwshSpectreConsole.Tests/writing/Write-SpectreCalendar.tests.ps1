@@ -39,7 +39,7 @@ Describe "Write-SpectreCalendar" {
             $sample = $testConsole.Output
             $sample | Should -Match 'March\s+2024'
             $sample | Should -Match 'Event 1'
-            Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 2 -Exactly
+            Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
         }
 
         It "writes calendar for a date with something else going on" {

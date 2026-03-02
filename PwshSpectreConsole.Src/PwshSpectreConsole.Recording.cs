@@ -1,14 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
-using Spectre.Console;
-using Spectre.Console.Rendering;
 
 // I tried this as a powershell class but ran into the main thread being deadlocked and hanging the terminal
 namespace PwshSpectreConsole;
@@ -172,6 +163,8 @@ public partial class RecordingConsole : IAnsiConsole {
     public void Clear(bool home) => _ansiConsole.Clear(home);
 
     public void Write(IRenderable renderable) => _ansiConsole.Write(renderable);
+
+    public void WriteAnsi(Action<AnsiWriter> action) => _ansiConsole.WriteAnsi(action);
 
     [GeneratedRegex(@"\\n")]
     private static partial Regex Newline();

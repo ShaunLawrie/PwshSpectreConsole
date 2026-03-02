@@ -38,7 +38,7 @@ public static class VTParser {
                     // flush accumulated text
                     if (VsbLength(ref vsb) > 0) {
                         ReadOnlySpan<char> textSpan = vsb.AsSpan();
-                        paragraph.Append(textSpan, currentStyle.HasAnyStyle ? currentStyle.ToSpectreStyle() : Style.Plain);
+                        paragraph.Append(textSpan, currentStyle.HasAnyStyle ? currentStyle.ToSpectreStyle() : Style.Plain, currentStyle.Link);
                         vsb.Clear();
                     }
 
@@ -61,7 +61,12 @@ public static class VTParser {
                     OscResult oscResult = ParseOscSequence(span, i, ref currentStyle);
                     if (oscResult.End > i) {
                         // If OSC returned a link text, append it with the current style
-                        if (!string.IsNullOrEmpty(oscResult.LinkText)) paragraph.Append(oscResult.LinkText.AsSpan(), currentStyle.HasAnyStyle ? currentStyle.ToSpectreStyle() : Style.Plain);
+                        if (!string.IsNullOrEmpty(oscResult.LinkText)) {
+                            paragraph.Append(
+                                oscResult.LinkText.AsSpan(),
+                                currentStyle.HasAnyStyle ? currentStyle.ToSpectreStyle() : Style.Plain,
+                                currentStyle.Link);
+                        }
                         i = oscResult.End;
                     }
                     else {
@@ -80,7 +85,7 @@ public static class VTParser {
 
         if (VsbLength(ref vsb) > 0) {
             ReadOnlySpan<char> textSpan = vsb.AsSpan();
-            paragraph.Append(textSpan, currentStyle.HasAnyStyle ? currentStyle.ToSpectreStyle() : Style.Plain);
+            paragraph.Append(textSpan, currentStyle.HasAnyStyle ? currentStyle.ToSpectreStyle() : Style.Plain, currentStyle.Link);
         }
 
         return paragraph;
@@ -189,7 +194,7 @@ public static class VTParser {
 
                         if (linkTextEnd > linkTextStart) {
                             string linkText = span[linkTextStart..linkTextEnd].ToString();
-                            style.Link = url;
+                            style.Link = new Link(url);
                             return new OscResult(linkTextEnd + 7, linkText); // Skip ESC]8;;ESC\\
                         }
                     }
@@ -215,10 +220,13 @@ public static class VTParser {
     }
 
     internal struct StyleState {
-        public Color? Foreground; public Color? Background; public Decoration Decoration; public string? Link;
-        public readonly bool HasAnyStyle => Foreground.HasValue || Background.HasValue || Decoration is not Decoration.None || Link is not null;
+        public Color? Foreground;
+        public Color? Background;
+        public Decoration Decoration;
+        public Link? Link;
+        public readonly bool HasAnyStyle => Foreground.HasValue || Background.HasValue || Decoration is not Decoration.None;
         public void Reset() { Foreground = null; Background = null; Decoration = Decoration.None; Link = null; }
-        public readonly Style ToSpectreStyle() => Link is null ? new(Foreground, Background, Decoration) : new(Foreground, Background, Decoration, Link);
+        public readonly Style ToSpectreStyle() => new(Foreground, Background, Decoration);
     }
 
     private static void ApplySgrParameters(ReadOnlySpan<byte> parameters, ref StyleState style) {

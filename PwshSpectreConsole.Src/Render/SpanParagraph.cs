@@ -4,7 +4,19 @@
 // necessary Renderable interfaces so it can be used anywhere a Spectre
 // Paragraph is used (tables, cells, etc.).
 public sealed class SpanParagraph : Renderable, IHasJustification, IOverflowable {
-    private readonly List<List<(ReadOnlyMemory<char> Text, Style Style)>> _lines;
+    private readonly struct SpanSegment {
+        public readonly ReadOnlyMemory<char> Text;
+        public readonly Style Style;
+        public readonly Link? Link;
+
+        public SpanSegment(ReadOnlyMemory<char> text, Style style, Link? link) {
+            Text = text;
+            Style = style;
+            Link = link;
+        }
+    }
+
+    private readonly List<List<SpanSegment>> _lines;
     // Optional override to control single-line rendering without reflection.
     // If null, code falls back to reflection to detect `RenderOptions.SingleLine`.
     public bool? SingleLineOverride { get; set; }
@@ -16,7 +28,7 @@ public sealed class SpanParagraph : Renderable, IHasJustification, IOverflowable
         _lines = [[]];
     }
 
-    public SpanParagraph Append(ReadOnlySpan<char> text, Style? style = null) {
+    public SpanParagraph Append(ReadOnlySpan<char> text, Style? style = null, Link? link = null) {
         if (text.IsEmpty) return this;
         Style s = style ?? Style.Plain;
 
@@ -27,7 +39,7 @@ public sealed class SpanParagraph : Renderable, IHasJustification, IOverflowable
 
             ReadOnlySpan<char> part = text.Slice(idx, nl);
             if (part.Length > 0) {
-                _lines[^1].Add((part.ToArray(), s));
+                _lines[^1].Add(new SpanSegment(part.ToArray(), s, link));
             }
 
             idx += nl;
@@ -48,11 +60,11 @@ public sealed class SpanParagraph : Renderable, IHasJustification, IOverflowable
         if (_lines.Count == 0) return new Measurement(0, 0);
 
         int min = 0, max = 0;
-        foreach (List<(ReadOnlyMemory<char> Text, Style Style)> line in _lines) {
+        foreach (List<SpanSegment> line in _lines) {
             int lineCells = 0;
-            foreach ((ReadOnlyMemory<char> Text, Style Style) in line) {
+            foreach (SpanSegment segment in line) {
                 // approximate by character count; accurate measurement requires Segment.CellCount
-                lineCells += Text.Length;
+                lineCells += segment.Text.Length;
             }
             min = Math.Max(min, lineCells);
             max = Math.Max(max, lineCells);
@@ -63,11 +75,11 @@ public sealed class SpanParagraph : Renderable, IHasJustification, IOverflowable
 
     protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth) {
         var linesOut = new List<SegmentLine>();
-        foreach (List<(ReadOnlyMemory<char> Text, Style Style)> line in _lines) {
+        foreach (List<SpanSegment> line in _lines) {
             var segLine = new SegmentLine();
-            foreach ((ReadOnlyMemory<char> Text, Style Style) in line) {
+            foreach (SpanSegment segment in line) {
                 // Convert slice to string now (deferred allocation)
-                segLine.Add(new Segment(Text.ToString(), Style));
+                segLine.Add(new Segment(segment.Text.ToString(), segment.Style));
             }
             linesOut.Add(segLine);
         }
@@ -89,8 +101,8 @@ public sealed class SpanParagraph : Renderable, IHasJustification, IOverflowable
     public Paragraph ToParagraph() {
         var paragraph = new Paragraph();
         for (int li = 0; li < _lines.Count; li++) {
-            foreach ((ReadOnlyMemory<char> Text, Style Style) in _lines[li]) {
-                paragraph.Append(Text.ToString(), Style);
+            foreach (SpanSegment segment in _lines[li]) {
+                paragraph.Append(segment.Text.ToString(), segment.Style, segment.Link);
             }
             if (li < _lines.Count - 1) paragraph.Append("\n");
         }

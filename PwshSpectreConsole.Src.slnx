@@ -1,3 +1,6 @@
 <Solution>
+  <Project Path="PwshSpectreConsole.Spectre.Console/src/Spectre.Console/Spectre.Console.csproj" />
+  <Project Path="PwshSpectreConsole.Spectre.Console/src/Spectre.Console.Testing/Spectre.Console.Testing.csproj" />
+  <Project Path="PwshSpectreConsole.Spectre.Console/src/Extensions/Spectre.Console.Json/Spectre.Console.Json.csproj" />
   <Project Path="PwshSpectreConsole.Src/PwshSpectreConsole.csproj" />
 </Solution>
