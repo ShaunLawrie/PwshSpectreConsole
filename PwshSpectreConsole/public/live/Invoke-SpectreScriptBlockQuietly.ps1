@@ -1,11 +1,11 @@
 function Invoke-SpectreScriptBlockQuietly {
     <#
     .SYNOPSIS
-        This is a test function for invoking a script block in a background job inside Invoke-SpectreCommandWithProgress to help with https://github.com/ShaunLawrie/PwshSpectreConsole/issues/7  
-        Some commands cause output that interferes with the progress bar, this function is an attempt to suppress that output when all other attempts have failed.
+        This function invokes a script block in a background job and returns the output.
         
     .DESCRIPTION
-        This function invokes a script block in a background job and returns the output. It also provides an option to suppress the output even more if there is garbage being printed to stderr if using Level = Quieter.
+        This is a test function for invoking a script block in a background job inside Invoke-SpectreCommandWithProgress to help with https://github.com/ShaunLawrie/PwshSpectreConsole/issues/7  
+        Some commands cause output that interferes with the progress bar, this function is an attempt to suppress that output when all other attempts have failed.
 
     .EXAMPLE
         # **Example 1**  

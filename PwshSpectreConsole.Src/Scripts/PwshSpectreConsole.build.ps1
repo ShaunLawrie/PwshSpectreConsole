@@ -30,6 +30,7 @@ function MergePSM1 {
     [Environment]::NewLine
     $content = $content -replace '(?m)^using (module|namespace).*$' -replace '(?m)\r?\n',([Environment]::NewLine)
     $content.Trim()
+    [Environment]::NewLine
     '#endregion'
     [Environment]::NewLine
 }
