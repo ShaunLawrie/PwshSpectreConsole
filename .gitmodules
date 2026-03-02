@@ -1,4 +1,4 @@
 [submodule "PwshSpectreConsole.Spectre.Console"]
 	path = PwshSpectreConsole.Spectre.Console
-	url = https://github.com/ShaunLawrie/spectre.console
+	url = git@github.com:ShaunLawrie/spectre.console
     branch = pwshspectreconsole
