@@ -1,0 +1,359 @@
+---
+sidebar:
+  badge:
+    text: New
+    variant: tip
+title: Format-SpectreMarkdown
+---
+
+
+
+
+
+
+
+import Asciinema from '../../../../components/Asciinema.astro'
+import formatspectremarkdownExample1 from '../../../../assets/examples/formatspectremarkdownExample1.cast?url'
+import formatspectremarkdownExample2 from '../../../../assets/examples/formatspectremarkdownExample2.cast?url'
+import formatspectremarkdownExample3 from '../../../../assets/examples/formatspectremarkdownExample3.cast?url'
+import formatspectremarkdownExample4 from '../../../../assets/examples/formatspectremarkdownExample4.cast?url'
+import formatspectremarkdownExample5 from '../../../../assets/examples/formatspectremarkdownExample5.cast?url'
+
+### Description
+
+Parses Markdown via Markdig and maps block-level elements to Spectre.Console
+renderables: headings to Rules, paragraphs to Markup, fenced code to Panels,
+tables to Tables, blockquotes to bordered Panels, and lists to styled Markup.
+
+Inline formatting (bold, italic, inline code, links) is preserved throughout.
+
+Images are shown as [image: alt text] placeholders by default. Use -IncludeImages
+to render them via Get-SpectreImage (canvas or Sixel depending on terminal support).
+Remote http/https URLs are downloaded automatically. Relative paths are resolved
+against -ImageBasePath (defaults to the current directory).
+
+This function relies on the Markdig library included with PowerShell 7+ ($PSHOME\Markdig.Signed.dll).
+
+
+
+---
+
+
+### Examples
+
+
+**Example 1**
+This example demonstrates how to render a basic Markdown string.
+
+
+
+```powershell
+"# Hello World`n`nThis is **bold** and *italic*." | Format-SpectreMarkdown
+```
+<Asciinema
+    src={formatspectremarkdownExample1}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+**Example 2**
+This example demonstrates how to render a multi-line Markdown string with a table.
+
+
+
+```powershell
+$markdown = "## Results`n`n| Name | Value |`n| --- | --- |`n| Foo | 1 |`n| Bar | 2 |"
+$markdown | Format-SpectreMarkdown
+```
+<Asciinema
+    src={formatspectremarkdownExample2}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+**Example 3**
+This example demonstrates how to use PassThru to get renderables for composition.
+
+
+
+```powershell
+$renderables = "## Section`n`nSome text." | Format-SpectreMarkdown -PassThru
+```
+<Asciinema
+    src={formatspectremarkdownExample3}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+**Example 4**
+This example demonstrates how to wrap the output in a titled panel.
+
+
+
+```powershell
+$markdown = "This is a **response** with _formatted_ text.`n`n- Item one`n- Item two"
+Format-SpectreMarkdown -Markdown $markdown -Title "AI Response" -Color Green
+```
+<Asciinema
+    src={formatspectremarkdownExample4}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+**Example 5**
+This example demonstrates how to render an image inline using IncludeImages.
+
+
+
+```powershell
+$markdown = "![Smiley](.\private\images\smiley.png)`n`nCaption below the image."
+$markdown | Format-SpectreMarkdown -IncludeImages -ImageMaxWidth 25
+```
+<Asciinema
+    src={formatspectremarkdownExample5}
+    settings={{
+        loop: false,
+        terminalLineHeight: 1.1,
+        theme: "spectre",
+        fit: "none",
+        terminalFontFamily: "'Cascadia Code', monospace"
+    }}
+/>
+
+
+---
+
+
+### Parameters
+#### **Markdown**
+
+The Markdown string to render. Accepts pipeline input.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput                 |
+|----------|--------|--------|------------------------------|
+|`[String]`|true    |1       |true (ByValue, ByPropertyName)|
+
+
+
+#### **Title**
+
+Wraps the entire output in a Spectre Panel with this title.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |2       |false        |
+
+
+
+#### **Border**
+
+The type of border to be displayed around the panel when Title is provided. Defaults to 'Rounded'.
+
+
+
+Valid Values:
+
+* Ascii
+* Double
+* Heavy
+* None
+* Rounded
+* Square
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |3       |false        |
+
+
+
+#### **Color**
+
+The color of the panel border when Title is provided. Defaults to the module's accent color.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Color]`|false   |4       |false        |
+
+
+
+#### **Expand**
+
+Switch parameter that specifies whether the panel should be expanded to fill the available space when Title is provided.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|false   |named   |false        |
+
+
+
+#### **Padding**
+
+The padding to use inside the panel when Title is provided. Defaults to 1 (left/right).
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |5       |false        |
+
+
+
+#### **PassThru**
+
+Returns the array of Spectre.Console IRenderable objects instead of writing to the console. Useful for composing into larger layouts.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|false   |named   |false        |
+
+
+
+#### **IncludeImages**
+
+Render images inline using Get-SpectreImage instead of showing a placeholder.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|false   |named   |false        |
+
+
+
+#### **ImageMaxWidth**
+
+Maximum width in characters for rendered images. 0 (default) means no limit.
+
+
+
+
+
+
+|Type     |Required|Position|PipelineInput|
+|---------|--------|--------|-------------|
+|`[Int32]`|false   |6       |false        |
+
+
+
+#### **ImageBasePath**
+
+Base directory used to resolve relative image paths. Defaults to the current directory.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |7       |false        |
+
+
+
+#### **Justify**
+
+Aligns all block-level output. Defaults to 'Left'.
+
+
+
+Valid Values:
+
+* Left
+* Center
+* Right
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[String]`|false   |8       |false        |
+
+
+
+#### **Center**
+
+Centers the output. Shortcut for -Justify Center.
+
+
+
+
+
+
+|Type      |Required|Position|PipelineInput|
+|----------|--------|--------|-------------|
+|`[Switch]`|false   |named   |false        |
+
+
+
+
+
+---
+
+
+### Syntax
+```powershell
+Format-SpectreMarkdown [-Markdown] <String> [[-Title] <String>] [[-Border] <String>] [[-Color] <Color>] [-Expand] [[-Padding] <Int32>] [-PassThru] [-IncludeImages] [[-ImageMaxWidth] <Int32>] [[-ImageBasePath] <String>] [[-Justify] <String>] [-Center] [<CommonParameters>]
+```
