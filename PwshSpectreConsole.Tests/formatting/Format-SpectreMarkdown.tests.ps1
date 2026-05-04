@@ -46,6 +46,58 @@ Get-Process
             $renderables[0].Header.Text | Should -Be "[bold]My Title[/]"
         }
 
+        It "Should render nested lists using tree guide characters" {
+            $markdown = @'
+- Item 1
+  - Sub A
+    - Deep
+  - Sub B
+- Item 2
+'@
+            $renderables = $markdown | Format-SpectreMarkdown -PassThru
+            $renderables[0] | Should -BeOfType [Spectre.Console.Panel]
+            $testConsole.Write($renderables[0])
+            # Tree widget produces guide characters for hierarchy
+            $testConsole.Output | Should -Match '├──|└──'
+        }
+
+        It "Should render an ordered list using tree guide characters" {
+            $markdown = @'
+1. First
+2. Second
+   1. Nested
+'@
+            $renderables = $markdown | Format-SpectreMarkdown -PassThru
+            $renderables[0] | Should -BeOfType [Spectre.Console.Panel]
+            $testConsole.Write($renderables[0])
+            $testConsole.Output | Should -Match '├──|└──'
+        }
+
+        It "Should render nested blockquotes with multiple Heavy borders" {
+            $markdown = @'
+> Outer quote
+>> Inner quote
+'@
+            $renderables = $markdown | Format-SpectreMarkdown -PassThru
+            $renderables[0] | Should -BeOfType [Spectre.Console.Panel]
+            $testConsole.Write($renderables[0])
+            # Both the outer and inner blockquote produce a Heavy top border (┏)
+            ($testConsole.Output | Select-String '┏' -AllMatches).Matches.Count | Should -BeGreaterOrEqual 2
+        }
+
+        It "Should render table cells with inline Markdown formatting" {
+            $markdown = @'
+| Name | Status |
+| --- | --- |
+| **Bold** | `code` |
+'@
+            $renderables = $markdown | Format-SpectreMarkdown -PassThru
+            $renderables[0] | Should -BeOfType [Spectre.Console.Table]
+            $testConsole.Write($renderables[0])
+            # Bold cell renders ANSI bold sequence
+            $testConsole.Output | Should -Match '\[1m'
+        }
+
         It "Should match the snapshot" {
             $markdown = @'
 # PwshSpectreConsole Markdown

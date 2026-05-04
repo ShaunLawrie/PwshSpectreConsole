@@ -20,6 +20,7 @@ function Convert-MarkdigBlockToRenderable {
         [string]$Justify = 'Left'
     )
 
+
     $renderables = [System.Collections.Generic.List[object]]::new()
     $script:RecursionDepth = if ($script:RecursionDepth) { $script:RecursionDepth + 1 } else { 1 }
 
@@ -52,7 +53,6 @@ function Convert-MarkdigBlockToRenderable {
                     default { '[bold]'  }
                 }
 
-                # H1/H2/H3 get a full rule; H4+ are plain styled lines
                 if ($level -le 3) {
                     $rule = [Spectre.Console.Rule]::new("$style$text[/]")
                     $rule.Justification = [Spectre.Console.Justify]::Left
@@ -84,7 +84,6 @@ function Convert-MarkdigBlockToRenderable {
                                 $imgUrl    = $inline.Url
                                 $imageNode = $inline
                             } else {
-                                # Check for nested image: [![alt](img)](url)
                                 foreach ($child in $inline) {
                                     if ($child.GetType().Name -eq 'LinkInline' -and $child.IsImage) {
                                         $isImage   = $true
@@ -103,19 +102,19 @@ function Convert-MarkdigBlockToRenderable {
                                 $renderables.Add([Spectre.Console.Markup]::new("$buffered`n"))
                                 [void]$textBuf.Clear()
                             }
-                            
+
                             $url = $imgUrl
                             if (-not ($url.StartsWith('http://') -or $url.StartsWith('https://'))) {
                                 $base = if ($ImageBasePath) { $ImageBasePath } else { $PWD.Path }
                                 $url  = Join-Path $base $url
                             }
-                            
+
                             try {
                                 $imgParams = @{ ImagePath = $url; ErrorAction = 'Stop' }
                                 if ($ImageMaxWidth -gt 0) { $imgParams.MaxWidth = $ImageMaxWidth }
                                 $image = Get-SpectreImage @imgParams
                                 $renderables.Add($image)
-                                
+
                                 if ($linkUrl) {
                                     $renderables.Add([Spectre.Console.Markup]::new("[dim]Link: [link=$linkUrl]$linkUrl[/][/]`n"))
                                 }
@@ -143,24 +142,19 @@ function Convert-MarkdigBlockToRenderable {
             }
 
             # ------------------------------------------------------------------
-            # Fenced code blocks  →  Panel with language label
+            # Fenced code blocks  →  Panel with language label + syntax colour
             # ------------------------------------------------------------------
             { $_ -in 'FencedCodeBlock', 'CodeBlock' } {
-                $code = $block.Lines.ToString().TrimEnd()
-                # Escape Spectre markup in code
-                $code = $code -replace '\[', '[[' -replace '\]', ']]'
-
                 $lang = if ($typeName -eq 'FencedCodeBlock' -and $block.Info) {
                     $block.Info.Trim()
                 } else {
                     ''
                 }
 
-                $header = if ($lang) { $lang } else { 'code' }
+                $header      = if ($lang) { $lang } else { 'code' }
+                $highlighted = ConvertTo-SpectreCodeMarkup -Code $block.Lines.ToString().TrimEnd() -Language $lang
 
-                $panel = [Spectre.Console.Panel]::new(
-                    [Spectre.Console.Markup]::new("[grey]$code[/]")
-                )
+                $panel             = [Spectre.Console.Panel]::new([Spectre.Console.Markup]::new($highlighted))
                 $panel.Header      = [Spectre.Console.PanelHeader]::new("[dim]$header[/]")
                 $panel.Border      = [Spectre.Console.BoxBorder]::Rounded
                 $panel.BorderStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::Grey)
@@ -169,60 +163,23 @@ function Convert-MarkdigBlockToRenderable {
             }
 
             # ------------------------------------------------------------------
-            # Blockquotes  →  left-bordered Panel
+            # Blockquotes  →  bordered Panel (nested blockquotes recurse)
             # ------------------------------------------------------------------
             'QuoteBlock' {
-                $sb = [System.Text.StringBuilder]::new()
-                foreach ($childBlock in $block) {
-                    if ($childBlock.GetType().Name -eq 'ParagraphBlock') {
-                        $text = ConvertTo-SpectreMarkup -Container $childBlock.Inline
-                        [void]$sb.AppendLine($text)
-                    }
-                }
-                $quoteText = $sb.ToString().TrimEnd()
-
-                $panel = [Spectre.Console.Panel]::new(
-                    [Spectre.Console.Markup]::new("[italic grey]$quoteText[/]")
-                )
-                $panel.Border      = [Spectre.Console.BoxBorder]::Heavy
-                $panel.BorderStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::Grey46)
-                $panel.Padding     = [Spectre.Console.Padding]::new(1, 0)
-                $renderables.Add($panel)
+                $renderables.Add((ConvertTo-QuoteBlockPanel $block))
             }
 
             # ------------------------------------------------------------------
-            # Lists  →  formatted Markup with bullets or numbers
+            # Lists  →  Spectre.Console.Tree (supports nested sub-lists)
             # ------------------------------------------------------------------
             'ListBlock' {
-                $sb      = [System.Text.StringBuilder]::new()
-                $ordered = $block.IsOrdered
-                $index   = if ($ordered -and $block.OrderedStart) {
-                    [int]$block.OrderedStart
-                } else { 1 }
+                $tree = [Spectre.Console.Tree]::new([Spectre.Console.Markup]::new(""))
+                Add-MarkdownListNodes -Parent $tree -ListBlock $block -Depth 0
 
-                foreach ($item in $block) {
-                    $itemText = ''
-                    foreach ($childBlock in $item) {
-                        if ($childBlock.GetType().Name -eq 'ParagraphBlock') {
-                            $itemText += ConvertTo-SpectreMarkup -Container $childBlock.Inline
-                        }
-                    }
-
-                    $bullet = if ($ordered) {
-                        "[bold cyan]$index.[/]"
-                    } else {
-                        "[bold cyan]•[/]"
-                    }
-
-                    [void]$sb.AppendLine("  $bullet $itemText")
-                    $index++
-                }
-
-                $listMarkup = [Spectre.Console.Markup]::new($sb.ToString())
-                $listPanel = [Spectre.Console.Panel]::new($listMarkup)
-                $listPanel.Border = [Spectre.Console.BoxBorder]::None
+                $listPanel         = [Spectre.Console.Panel]::new($tree)
+                $listPanel.Border  = [Spectre.Console.BoxBorder]::None
                 $listPanel.Padding = [Spectre.Console.Padding]::new(0, 0)
-                $listPanel.Expand = $false
+                $listPanel.Expand  = $false
                 $renderables.Add($listPanel)
             }
 
@@ -236,10 +193,10 @@ function Convert-MarkdigBlockToRenderable {
             }
 
             # ------------------------------------------------------------------
-            # Tables (Markdig extension)
+            # Tables (Markdig extension) — cells support inline Markdown
             # ------------------------------------------------------------------
             'Table' {
-                $spectreTable = [Spectre.Console.Table]::new()
+                $spectreTable             = [Spectre.Console.Table]::new()
                 $spectreTable.Border      = [Spectre.Console.TableBorder]::Rounded
                 $spectreTable.BorderStyle = [Spectre.Console.Style]::new([Spectre.Console.Color]::Grey)
                 $spectreTable.Expand      = $false
@@ -251,26 +208,29 @@ function Convert-MarkdigBlockToRenderable {
 
                     if ($rowTypeName -eq 'TableRow') {
                         $cells = @($row | ForEach-Object {
-                            $cellText = ConvertTo-SpectreMarkup -Container $_.Inline
-                            $cellText
+                            ConvertTo-SpectreMarkup -Container $_.Inline
                         })
 
                         if (-not $headerProcessed -and $row.IsHeader) {
                             foreach ($cell in $cells) {
                                 [void]$spectreTable.AddColumn(
-                                    [Spectre.Console.TableColumn]::new("[bold]$cell[/]")
+                                    [Spectre.Console.TableColumn]::new(
+                                        [Spectre.Console.Markup]::new("[bold]$cell[/]")
+                                    )
                                 )
                             }
                             $headerProcessed = $true
                         } elseif (-not $row.IsHeader) {
                             if (-not $headerProcessed) {
-                                # Table has no header row — create blank columns
                                 for ($i = 0; $i -lt $cells.Count; $i++) {
                                     [void]$spectreTable.AddColumn([Spectre.Console.TableColumn]::new(''))
                                 }
                                 $headerProcessed = $true
                             }
-                            [void][Spectre.Console.TableExtensions]::AddRow($spectreTable, [string[]]$cells)
+                            $renderableCells = [Spectre.Console.Markup[]]@(
+                                $cells | ForEach-Object { [Spectre.Console.Markup]::new($_) }
+                            )
+                            [void][Spectre.Console.TableExtensions]::AddRow($spectreTable, $renderableCells)
                         }
                     }
                 }
@@ -316,7 +276,6 @@ function Convert-MarkdigBlockToRenderable {
                 $r.Justification = [Spectre.Console.Justify]::$Justify
                 $aligned.Add($r)
             } else {
-                # Wrap others in Align
                 $aligned.Add([Spectre.Console.Align]::$Justify($r))
             }
         }
