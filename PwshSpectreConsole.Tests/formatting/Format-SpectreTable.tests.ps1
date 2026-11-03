@@ -176,6 +176,21 @@ Describe "Format-SpectreTable" {
             Assert-MockCalled -CommandName "Write-AnsiConsole" -Times 1 -Exactly
         }
 
+        It "Should apply column Alignment from calculated property hashtables" {
+            # Regression: ::$lookup.Alignment parsed as (::$lookup).Alignment and silently
+            # assigned $null, dropping Left/Center/Right alignment (jakehildreth/Deck#25).
+            $testData = @([PSCustomObject]@{ L = 'a'; C = 'b'; R = 'c' })
+            $testProperties = @(
+                @{ Name = 'L'; Expression = 'L'; Alignment = 'Left' }
+                @{ Name = 'C'; Expression = 'C'; Alignment = 'Center' }
+                @{ Name = 'R'; Expression = 'R'; Alignment = 'Right' }
+            )
+            $table = Format-SpectreTable -Data $testData -Property $testProperties
+            $table.Columns[0].Alignment | Should -Be ([Spectre.Console.Justify]::Left)
+            $table.Columns[1].Alignment | Should -Be ([Spectre.Console.Justify]::Center)
+            $table.Columns[2].Alignment | Should -Be ([Spectre.Console.Justify]::Right)
+        }
+
         It "Should match the snapshot" {
             Mock Write-AnsiConsole {
                 $testConsole.Write($RenderableObject)

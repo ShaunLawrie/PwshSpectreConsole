@@ -32,8 +32,11 @@ function Add-TableColumns {
                 # width 0 is autosize, select the last entry in the column list
                 $table.Columns[-1].Width = $lookup.Width
             }
-            if ($lookup.Alignment -ne 'undefined') {
-                $table.Columns[-1].Alignment = [Spectre.Console.Justify]::$lookup.Alignment
+            $alignment = $lookup.Alignment
+            if ($alignment -and $alignment -ne 'undefined') {
+                # Dynamic static member access (::$name) requires a plain variable;
+                # ::$lookup.Alignment parses as (::$lookup).Alignment and silently yields $null.
+                $table.Columns[-1].Alignment = [Spectre.Console.Justify]::$alignment
             }
             if (-Not $Wrap) {
                 # https://github.com/spectreconsole/spectre.console/issues/1185
